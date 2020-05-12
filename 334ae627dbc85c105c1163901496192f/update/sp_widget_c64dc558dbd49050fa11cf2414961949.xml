@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($rootScope,$scope, categorySubscribe) {
+
+	// Função encontrada no Community: https://community.servicenow.com/community?id=community_blog&sys_id=e60eea2ddbd0dbc01dcaf3231f961972
+
+	/* widget controller */
+
+	var c = this;
+
+	c.selectedPill = c.data.idname; // Quando a página carrega, não seleciona nenhum widget para exibir
+
+	//Exibe a seleção sempre que selecionado cada valor
+
+	$scope.selectPill = function(){
+		categorySubscribe.setIconLink();
+		$rootScope.$broadcast('showHideWidget', c.data.idname);
+	};
+
+	$scope.$on('openMenu', function (event, data) {
+		/*if(data == c.data.idname){
+			$rootScope.$broadcast('showHideWidget', c.data.idname);
+		}*/
+		//Utilizado para aparecer o widget de serviços
+	});
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.text-align {
+  text-align:center;
+}
+
+.text-format-custom{
+
+}
+
+.icon-img{
+  display: block;
+  margin: 0 auto;
+  height: 125px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.block {
+  width: 100%;
+  display: inline-block;
+}
+
+.image-link-header{
+  font-family: $text-bold;
+  font-size: $font-size-h1;
+  padding-bottom: 25px;
+}
+
+.description {
+  font-family: $text-bold;
+  font-size: $font-size-h4;
+}
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list>ref_sp_instance_link.type,url,ref_sp_instance_link.sc_category,ref_sp_instance_link.sc_cat_item,ref_sp_instance_link.kb_topic,ref_sp_instance_link.kb_article,ref_sp_instance_link.kb_category,ref_sp_instance_link.sp_page,title,color,class_name</field_list>
+        <has_preview>false</has_preview>
+        <id>gservice_icon_link</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>GService Icon Link</name>
+        <option_schema>[{"name":"image","section":"Presentation","label":"Image","type":"string"},{"name":"description","section":"Presentation","label":"Description","type":"string"},{"hint":"Defina um ID para colocar como parent em outros widgets","name":"id_name","section":"Data","label":"ID Name","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function(){
+	/*
+	Option Schema para escolher o ID do app para cada instância, assim,
+	pode ser alterado no designer para escolher o que ele esconde e 
+	configurar os "child" widgets do mesmo
+	*/
+	
+	data.idname = options.id_name;
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 17:41:26</sys_created_on>
+        <sys_id>c64dc558dbd49050fa11cf2414961949</sys_id>
+        <sys_mod_count>191</sys_mod_count>
+        <sys_name>GService Icon Link</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_c64dc558dbd49050fa11cf2414961949</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-12 15:09:20</sys_updated_on>
+        <template><![CDATA[<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-20 block">
+  <!-- Widget nativo para imagens com customizações--> <!-- Função ng-click utilizada para esconder os widgets abaixo e, ao selecionar, abri-los-->
+  <a href="" target="" aria-label="{{c.options.description}}" class="text-align" ng-click="selectPill()"> <!--Link para criar modal ou page-->
+    ${{{c.options.link_title}}}
+
+    <img src="{{c.options.image}}" class="icon-img"/>
+    <div class="image-link-header text-truncate">
+      {{c.options.title}}
+    </div>
+    <div class="description"><p class="text-format-custom">
+      ${{{c.options.description}}}
+      </p>
+    </div>
+  </a>
+</div>]]></template>
+    </sp_widget>
+</record_update>
