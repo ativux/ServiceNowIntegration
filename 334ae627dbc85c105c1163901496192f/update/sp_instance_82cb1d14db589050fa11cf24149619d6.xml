@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css>.image-link-header{&#13;
+  color: $orange;&#13;
+}&#13;
+&#13;
+.description {&#13;
+  margin: 0 -3px;&#13;
+  color: $orange;&#13;
+}</css>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description>.</short_description>
+        <size>md</size>
+        <sp_column display_value="3">a0bb5d14db589050fa11cf24149619d8</sp_column>
+        <sp_widget display_value="GService Icon Link">c64dc558dbd49050fa11cf2414961949</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 18:44:47</sys_created_on>
+        <sys_id>82cb1d14db589050fa11cf24149619d6</sys_id>
+        <sys_mod_count>15</sys_mod_count>
+        <sys_name>FAÇA VOCÊ MESMO</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_instance_82cb1d14db589050fa11cf24149619d6</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-14 17:58:54</sys_updated_on>
+        <title>FAÇA VOCÊ MESMO</title>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"image": {
+		"value": "doItYourself.png",
+		"displayValue": "doItYourself.png"
+	},
+	"description": {
+		"value": "Se você é daqueles que gosta de resolver as coisas do seu jeito e no seu tempo, o seu caminho é por aqui!",
+		"displayValue": "Se você é daqueles que gosta de resolver as coisas do seu jeito e no seu tempo, o seu caminho é por aqui!"
+	},
+	"link": {
+		"value": "",
+		"displayValue": ""
+	},
+	"link_title": {
+		"value": "",
+		"displayValue": ""
+	}
+}]]></widget_parameters>
+    </sp_instance>
+    <sys_translated_text action="delete_multiple" query="documentkey=82cb1d14db589050fa11cf24149619d6"/>
+</record_update>

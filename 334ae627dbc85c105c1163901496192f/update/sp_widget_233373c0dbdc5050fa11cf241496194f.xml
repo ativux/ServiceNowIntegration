@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope) {
+  /* widget controller */
+  var c = this;
+	
+	$scope.userID = $scope.user.sys_id;
+	// Coleta informações sobre a foto do usuário logado
+	$rootScope.$on('sp.avatar_changed', function() {
+		$scope.userID = "";
+		$timeout(function(){
+			$scope.userID = $scope.user.sys_id;
+		});
+	});
+	
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.avatar-custom-size{
+  margin-top: 42px;
+  margin-bottom: 20px;
+  height:125px;
+  width:125px;
+  box-shadow: 0 0 0 4px $deep-sky-blue;
+  font-size: 20px !important;
+}
+
+.em-tight { 
+  letter-spacing: -0.05em;
+}
+
+.align-all{
+  text-align: left;
+}
+
+.img-border{
+  padding-bottom: 30px;
+}
+
+.hello-stranger {
+  font-family: $text-bold;
+  color: $deep-sky-blue;
+  font-size: 34px;
+  letter-spacing: 0;
+}
+
+.stranger-help {
+  font-family: $text-rough;
+  color: $deep-sky-blue;
+  font-size: 30px;
+  letter-spacing: 0;
+}
+
+.avatar-container .avatar.soloAvatar .sub-avatar{
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  font-size: 50px;
+  line-height: 130px;
+  font-family: $text-bold;
+  background-color: white;
+  color: $deep-sky-blue;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_main_user</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>GService Main User</name>
+        <option_schema/>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function() {  /* populate the 'data' object */  /* e.g., data.table = $sp.getValue('table'); */})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 11:08:03</sys_created_on>
+        <sys_id>233373c0dbdc5050fa11cf241496194f</sys_id>
+        <sys_mod_count>120</sys_mod_count>
+        <sys_name>GService Main User</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_233373c0dbdc5050fa11cf241496194f</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-14 18:01:44</sys_updated_on>
+        <template><![CDATA[<div ng-if="::user.logged_in" class="align-all">
+  
+  <div>
+    <a title="Avatar Pic" href=""><!-- Exibe a foto do usuário logado -->
+      <sn-avatar class="avatar-custom-size" primary="userID" />
+    </a>
+  </div>
+  
+  <div class="hello-stranger em-tight">${Hello} {{::user.name}}!</div>
+  
+  <div class="stranger-help em-tight" style="line-height:0.95">
+    <div>${Em que conseguimos <br> te ajudar hoje?}</div>
+  </div>
+  
+</div>
+]]></template>
+    </sp_widget>
+</record_update>

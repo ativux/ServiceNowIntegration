@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance_menu">
+    <sp_instance_menu action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description>.</short_description>
+        <size>md</size>
+        <sp_column/>
+        <sp_widget display_value="GService Header Menu">8ed872e7db40dc10fa11cf241496192b</sp_widget>
+        <sys_class_name>sp_instance_menu</sys_class_name>
+        <sys_created_by>organize.vinicius.oliveira</sys_created_by>
+        <sys_created_on>2020-04-14 17:35:40</sys_created_on>
+        <sys_id>02c8f2a7db40dc10fa11cf2414961921</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>GService SP Header Menu</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_instance_menu_02c8f2a7db40dc10fa11cf2414961921</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-14 17:58:54</sys_updated_on>
+        <title>GService SP Header Menu</title>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"enable_cart": {
+		"displayValue": "true",
+		"value": true
+	},
+      "enable_wishlist": {
+        "displayValue": "true",
+          "value": true
+      }
+}]]></widget_parameters>
+    </sp_instance_menu>
+    <sys_translated_text action="delete_multiple" query="documentkey=02c8f2a7db40dc10fa11cf2414961921"/>
+</record_update>

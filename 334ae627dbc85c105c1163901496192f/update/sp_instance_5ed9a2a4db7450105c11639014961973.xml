@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>3</order>
+        <roles/>
+        <short_description>.</short_description>
+        <size>md</size>
+        <sp_column display_value="1">2c64199ddb9c14505c11639014961944</sp_column>
+        <sp_widget display_value="GService My Requests">f3d6f920dbf050105c11639014961977</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-12 15:35:44</sys_created_on>
+        <sys_id>5ed9a2a4db7450105c11639014961973</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_instance_5ed9a2a4db7450105c11639014961973</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-14 18:22:36</sys_updated_on>
+        <title/>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"table": {
+		"value": "myRequests",
+		"displayValue": "myRequests"
+	},
+	"cart_template": {
+		"value": "gservice_my_requests_table",
+		"displayValue": "gservice_my_requests_table"
+	}
+}]]></widget_parameters>
+    </sp_instance>
+    <sys_translated_text action="delete_multiple" query="documentkey=5ed9a2a4db7450105c11639014961973"/>
+</record_update>

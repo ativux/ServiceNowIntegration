@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>standard</category>
-        <client_script><![CDATA[function ($http, $filter, $location,spAriaUtil, $window, $scope, spAriaFocusManager) {
+        <client_script><![CDATA[function ($http, $filter, $location,spAriaUtil, $window, $scope, spAriaFocusManager, $rootScope) {
 	var c = this;
 	c.options.glyph = c.options.glyph || 'search';
 	c.options.title = c.options.title || c.data.searchMsg;
@@ -11,48 +11,37 @@
 	c.showSuggestions =  c.data.searchTypeBehavior === "suggestions" && c.data.isSuggestionsEnabled === "true";
 
 	c.onSelect = function($item, $model, $label) {
-		c.searchTerm = ""; // prevents unexpected result if user quickly clicks search button after selecting
-		if (c.showSuggestions)
-			$item.url = "?id=search&q="+encodeURIComponent($item.name);
-
-		if(!$item.url || $item.url === "")
-			return;
-
-		if ($item.target)
-			window.open($item.url, $item.target);
-		else {
-			var newUrl = $location.url($item.url);
-			spAriaFocusManager.navigateToLink(newUrl.url());
-		}
+		c.searchTerm = $item; // prevents unexpected result if user quickly clicks search button after selecting
+		c.submitSearch();
 	};
-	
+
 	c.getSearchSuggestions = function(query) {	 
 		if ($location.search().q == query)
-				 return;
-		
-		 var payload = {
-			 params: {
-				 "sysparm_term" : query, 
-				 "sysparm_sp_portal_id": c.data.portalID,
-				 "sysparm_suggestions_limit": c.options.limit > 0 ? c.options.limit : "",
-				 "sysparm_search_sources": c.data.searchSourceSysIds || ""
-			 },
-			 headers : {'Accept' : 'application/json'}
-		 };
+			return;
+		var payload = {
+			params: {
+				"sysparm_term" : query, 
+				"sysparm_sp_portal_id": c.data.portalID,
+				"sysparm_suggestions_limit": c.options.limit > 0 ? c.options.limit : "",
+				"sysparm_search_sources": c.data.searchSourceSysIds || ""
+			},
+			headers : {'Accept' : 'application/json'}
+		};
 
-		 return $http.get("/api/now/search/sp_suggestions", payload).then(function(response){ 
-			 var result = response.data.result;
-			 var resultCount = result != null ? result.entries.length : 0;
-			 sendLiveMessage(resultCount);
-		 
-			 return result.entries.map(function(item) {	
-				 item.query = getQueryToHighlight(item, query);
-				 item.glyph = getIcon(item.type);
-				 item.term = item.name;
-				 return item;	 
-			 });
-		 });
-  	};
+		var test = $http.get("/api/now/search/sp_suggestions", payload).then(function(response){ 
+			var result = response.data.result;
+			var resultCount = result != null ? result.entries.length : 0;
+			sendLiveMessage(resultCount);
+
+			return result.entries.map(function(item) {	
+				item.query = getQueryToHighlight(item, query);
+				item.glyph = getIcon(item.type);
+				item.term = item.name;
+				return item;	 
+			});
+		});
+		return test;
+	};
 
 	function getSearchSources(result, c) {
 		var sources = {};
@@ -98,7 +87,7 @@
 
 		this.server.get(payloadObject);
 	}
-	
+
 	// Attach event handler to update click rank
 	// Run only once
 	var attachClickRankHandler = function() {
@@ -111,7 +100,14 @@
 		attachClickRankHandler = function() {};
 	}
 
-	c.getResults = function(query) {
+	c.submitSearch = function(){
+		c.getResults().then(function(response){
+			$rootScope.$broadcast(c.data.broadcast_name, c.data.results, c.data.searchSourceID);
+		});
+	};
+
+	c.getResults = function() {
+		var query = c.searchTerm;
 		var payload = {
 			"query": query,
 			"portal": c.data.portalID,
@@ -175,7 +171,7 @@
 
 	function searchSourceChanged(newUrl, oldUrl) {
 		var newUrlParams = newUrl.match(/t=.+/),
-		oldUrlParams = oldUrl.match(/t=.+/);
+				oldUrlParams = oldUrl.match(/t=.+/);
 
 		if(!newUrlParams && !oldUrlParams) {
 			return false;
@@ -188,33 +184,10 @@
 		return newUrlParams[0].split("&")[0] !== oldUrlParams[0].split("&")[0];
 	}
 
-	c.submitSearch = function() {
-		var shouldReloadPage = c.data.refreshPageOnSearch && $location.search().id === 'search';
-
-		if (c.searchTerm) {
-			var newUrl = $location.search({
-				id: 'search',
-				spa: '1',
-				t: c.searchType,
-				q: c.searchTerm
-			});
-
-			if (shouldReloadPage)
-				$scope.$emit("sp.page.reload");
-			
-			spAriaFocusManager.navigateToLink(newUrl.url());
-			//Pass the current page ID to search page for Search Analytics
-			$window.spSearchAnalytics = {
-				page_id: c.pageID,
-				refinement_occurred: false
-			};
-		}
-	}
-
 	function sendLiveMessage(resultCount) {
 		spAriaUtil.sendLiveMessage(resultCount + " " +
-									c.data.resultMsg + " " +
-									(resultCount > 0 ? ' ' + c.data.navigationMsg : ''));
+															 c.data.resultMsg + " " +
+															 (resultCount > 0 ? ' ' + c.data.navigationMsg : ''));
 	}
 
 	function getIcon(itemType) {
@@ -249,7 +222,7 @@ ul.dropdown-menu i.ta-icon, i.ta-img {
   margin-right: 8px;
 }
 
-.icon-img{
+.icon-img {
   height: 60px;
   border: 0;
 }
@@ -269,7 +242,8 @@ ul.dropdown-menu i.ta-icon, i.ta-img {
 }
 
 .input-group {
-  border-bottom: 2px solid #00BFFF;
+  //border-bottom: 2px solid #00BFFF;
+  border-bottom: 2px solid $dodger-blue;
 }
 
 .margins{
@@ -280,7 +254,6 @@ input[name='q'] {
   border: 0;
   margin-top: 10%;
 }
-
 input[name='q']:focus {
   outline: none;
   box-shadow: none;
@@ -291,22 +264,31 @@ input[name='q']:focus {
         <docs/>
         <field_list/>
         <has_preview>false</has_preview>
-        <id>gservice_main_typeahead</id>
+        <id>gservice_typeahead_search</id>
         <internal>false</internal>
         <link><![CDATA[function(scope) {
 	var lazyLoader = $injector.get("lazyLoader");
 	lazyLoader.putTemplates(scope.data.typeaheadTemplates);
 }]]></link>
-        <name>GService Main Typeahead Search</name>
-        <option_schema>[{"name":"title","section":"Presentation","label":"Title","type":"string"},{"name":"color","section":"Presentation","label":"Color","type":"string"},{"name":"glyph","section":"Presentation","label":"glyph","type":"string"},{"name":"size","section":"Presentation","label":"Size","type":"string"},{"hint":"Number of typeahead search results returned (default 15)","name":"limit","section":"Behavior","label":"Limit","type":"integer"},{"name":"image","section":"Presentation","label":"Image on the left side","type":"string"},{"displayValue":"Search Source","hint":"If provided, limit the scope of the typeahead search to the given search sources","name":"contextual_search_sources","display_value_list":[],"section":"Behavior","label":"Contextual Search Sources","type":"glide_list","value":"sp_search_source","ed":{"reference":"sp_search_source"}}]</option_schema>
+        <name>GService Typeahead Search</name>
+        <option_schema>[{"name":"title","section":"Presentation","label":"Title","type":"string"},{"name":"color","section":"Presentation","label":"Color","type":"string"},{"name":"glyph","section":"Presentation","label":"glyph","type":"string"},{"name":"size","section":"Presentation","label":"Size","type":"string"},{"hint":"Number of typeahead search results returned (default 15)","name":"limit","section":"Behavior","label":"Limit","type":"integer"},{"displayValue":"Search Source","hint":"If provided, limit the scope of the typeahead search to the given search sources","name":"contextual_search_sources","display_value_list":[],"section":"Behavior","label":"Contextual Search Sources","type":"glide_list","value":"sp_search_source","ed":{"reference":"sp_search_source"}},{"name":"broadcast_name","section":"Behavior","label":"Broadcast Name","type":"string"},{"name":"category_color","section":"Behavior","label":"Category Color","type":"string"},{"name":"category_bg_color","section":"Behavior","label":"Category Bg Color","type":"string"},{"name":"category_bd_color","section":"Behavior","label":"Category Bd Color","type":"string"},{"name":"category_search_img","section":"Behavior","label":"category Search Img","type":"string"}]</option_schema>
         <public>true</public>
         <roles/>
         <script><![CDATA[(function() {
-	if (input && input.action === "GlideSPSearchAnalyticsUpdateRank") {
+	/*if (input && input.action === "GlideSPSearchAnalyticsUpdateRank") {
 		input.action = "";
 		var textSearchAnalytics = new GlideSPSearchAnalytics().publish(JSON.stringify(input.payload));
 		return ;
-	}
+	}*/
+	var localInput = input;
+
+	data.searchSourceID = options.contextual_search_sources;
+	data.broadcast_name = options.broadcast_name;
+
+	data.categoryColor = options.category_color;
+	data.categoryBgColor = options.category_bg_color;
+	data.categoryBdColor = options.category_bd_color;
+	data.categorySearchImg = options.category_search_img;
 
 	if (options.title) {
 		options.title = gs.getMessage(options.title);
@@ -361,65 +343,55 @@ input[name='q']:focus {
 		} else {
 			sourceTemplateConfiguration.type = "SIMPLE";
 			if (!sourceTemplateConfiguration.linkToPage)
-			console.log("Warning: No typeahead page or URL provided for search source " + source.name);
+				console.log("Warning: No typeahead page or URL provided for search source " + source.name);
 		}
 
 		data.searchSourceConfiguration[source.id] = sourceTemplateConfiguration;
 	});
+
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
-        <sys_created_by>organize.henrique</sys_created_by>
-        <sys_created_on>2020-04-16 19:48:37</sys_created_on>
-        <sys_id>c96a6910dbd89050fa11cf24149619c0</sys_id>
-        <sys_mod_count>78</sys_mod_count>
-        <sys_name>GService Main Typeahead Search</sys_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-15 15:27:43</sys_created_on>
+        <sys_id>d1156733dbc81050fa11cf2414961952</sys_id>
+        <sys_mod_count>121</sys_mod_count>
+        <sys_name>GService Typeahead Search</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
-        <sys_update_name>sp_widget_c96a6910dbd89050fa11cf24149619c0</sys_update_name>
+        <sys_update_name>sp_widget_d1156733dbc81050fa11cf2414961952</sys_update_name>
         <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-14 18:01:36</sys_updated_on>
+        <sys_updated_on>2020-05-14 18:02:18</sys_updated_on>
         <template><![CDATA[<form ng-submit="c.submitSearch()">
   <input type="hidden" name="id" value="search"/>
   <input type="hidden" name="t" value="{{c.searchType}}"/>
-  <div class="margins">
-    <div class="input-group input-group-{{::c.options.size}}">
-      <!-- uses ui.bootstrap.typeahead -->
-      <span class="input-group-btn">
-        <button name="search" type="submit" class="btn btn-{{::c.options.color}}"
-                title="{{::c.data.searchMsg}}" aria-label="{{::c.data.searchMsg}}">
-          <img src="{{c.options.image}}" class="icon-img"/>
-        </button>
-      </span>
-      <input ng-if="c.showSuggestions"
-             name="q" type="text" ng-model="c.searchTerm"
-             autocomplete="off"
-             uib-typeahead="item as item.term for item in c.getSearchSuggestions($viewValue)"
-             typeahead-wait-ms="250"
-             typeahead-min-length="1"
+  <div class="input-group input-group-{{::c.options.size}} {{data.categoryBdColor}}">
+    
+    <span class="input-group-btn">
 
-             typeahead-on-select="c.onSelect($item, $model, $label)"
-             typeahead-template-url="sp-typeahead.html"
-             typeahead-popup-template-url="gservice-sp-typeahead-popup.html"
-             class="form-control input-typeahead"
-             role="textbox"
-             aria-label="{{::c.options.title}}" tabindex="0" aria-haspopup="true">
-      <input ng-if="!c.showSuggestions"
-             name="q" type="text" ng-model="c.searchTerm"
-             autocomplete="off"
-             uib-typeahead="item as item.primary for item in c.getResults($viewValue)"
-             typeahead-wait-ms="250"
-             typeahead-min-length="2"
+      <button name="search" type="submit" class="btn btn-{{::c.options.color}}"
+              title="{{::c.data.searchMsg}}" aria-label="{{::c.data.searchMsg}}">
+        <img src="{{data.categorySearchImg}}" class="icon-img"/>
+      </button>
 
-             typeahead-on-select="c.onSelect($item, $model, $label)"
-             typeahead-template-url="sp-typeahead.html"
-             typeahead-popup-template-url="gservice-sp-typeahead-popup.html"
-             class="form-control input-typeahead"
-             role="textbox"
-             aria-label="{{::c.options.title}}" tabindex="0" aria-haspopup="true">
-    </div>
-    <div class="text-left">{{data.searchMsg}}</div>
+    </span>
+    <input ng-if="c.showSuggestions"
+           name="q" type="text" ng-model="c.searchTerm"
+           autocomplete="off"
+           uib-typeahead="item as item.term for item in c.getSearchSuggestions($viewValue)"
+           typeahead-wait-ms="250"
+           typeahead-min-length="1"
+           typeahead-focus-first="false"
+           typeahead-on-select="c.onSelect($item, $model, $label)"
+           typeahead-template-url="gservice-typeahead.html"
+           typeahead-popup-template-url="gservice-typeahead-popup.html"
+           class="form-control input-typeahead"
+           role="textbox"
+           aria-label="{{::c.options.title}}" tabindex="0" aria-haspopup="true">
+  </div>
+  <div class="text-left">
+    {{data.searchMsg}}
   </div>
 </form>]]></template>
     </sp_widget>

@@ -10,23 +10,23 @@
         <roles/>
         <short_description>.</short_description>
         <size>md</size>
-        <sp_column display_value="1">323d6193dba8d010fa11cf24149619d9</sp_column>
-        <sp_widget display_value="GService SC Shopping Cart v2">b0534e50db7810105c1163901496192c</sp_widget>
+        <sp_column display_value="1">08083a0adb9418505c11639014961939</sp_column>
+        <sp_widget display_value="GService Categories">832ac777dbc41050fa11cf2414961944</sp_widget>
         <sys_class_name>sp_instance</sys_class_name>
-        <sys_created_by>organize.henrique</sys_created_by>
-        <sys_created_on>2020-05-12 15:35:27</sys_created_on>
-        <sys_id>42c962a4db7450105c1163901496197b</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-22 11:57:04</sys_created_on>
+        <sys_id>5c083a0adb9418505c11639014961943</sys_id>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name/>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
-        <sys_update_name>sp_instance_42c962a4db7450105c1163901496197b</sys_update_name>
+        <sys_update_name>sp_instance_5c083a0adb9418505c11639014961943</sys_update_name>
         <sys_updated_by>organize.henrique</sys_updated_by>
         <sys_updated_on>2020-05-14 17:58:54</sys_updated_on>
         <title/>
         <url/>
         <widget_parameters/>
     </sp_instance>
-    <sys_translated_text action="delete_multiple" query="documentkey=42c962a4db7450105c1163901496197b"/>
+    <sys_translated_text action="delete_multiple" query="documentkey=5c083a0adb9418505c11639014961943"/>
 </record_update>

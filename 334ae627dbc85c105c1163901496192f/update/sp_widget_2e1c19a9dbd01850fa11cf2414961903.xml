@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope,$rootScope,$timeout) {
+	/* widget controller */
+
+	var c = this;
+
+	$scope.showWidget = "";
+
+	//Listening for "showHideWidget" event
+
+	$rootScope.$on('showHideWidget', function(event,data) {
+		//Se quiser adicionar algo além do modal, ativar isso
+		//$scope.showWidget = data;
+		//If utilizado para limpar as escolhas sempre que for aberto
+		//Caso alguém feche e reabra, ele zera a escolha
+		if(data == c.data.parentid){
+			for (i in c.data.categories){
+				if(c.data.categories[i].selected){
+					c.data.categories[i].selected = false;
+				}
+			}
+			//Exibe o modal de error
+			$('#errorModal').modal("show");
+		}
+
+
+	});
+
+	// SPModal
+	c.data.stage = '';
+
+	c.filterStage = function(errorType) {
+		c.data.errorType = errorType;
+	}
+
+	//Modal Funcions
+	//Função do modal utilizada para enviar informações para o próximo widget e abri-lo em outro modal
+	c.nextModal = function() {
+		var selectedError = '';
+		//Envia objeto Json para o próximo Widget
+		//Breadcrumb enviado somente para não quebrar o próximo Widget
+		var jsonItem = {itemID: c.data.errorType.sys_id, table: "incident", breadcrumb : "", name : c.data.errorType.name};
+		$rootScope.$broadcast('openIncident', jsonItem, 'openIncident');
+		$('#formModal').modal("show");
+
+		$('#errorModal').modal("hide");
+	};
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>//Configurações do Radio check
+input[type="radio"]{
+  display: none;
+}
+
+.radio-properties {
+  position: relative;
+  display: inline-block;
+  padding-left: 30px;
+}
+
+.wrapper-sc-cat-item {
+  padding: 30px 50px !important;
+  padding-bottom: 10px !important;
+  min-height: 250px;
+}
+
+.new-radio {
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  border: 3px solid #737373;
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 6px;
+}
+input[type="radio"]:checked + .new-radio:after {
+  content: "";
+  height: 12px;
+  width: 12px;
+  background: $coral;
+  display: block;
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  transform: translate(-50%, -50%) scale(1);
+  border-radius: 50%;
+  transition: 900ms ease-in-out 0s;
+}
+
+.categories {
+  label {
+    font-size: 18px;
+    font-family: $text-bold;
+    color: #737373;
+    padding: 5px 0 2px 10px;
+  }
+
+  .label-current {
+    font-size: 18px;
+    font-family: $text-bold;
+    color: $coral;
+    padding: 5px 0 2px 10px;
+  }
+
+  input[type="radio"]:checked + label{
+    font-size: 18px;
+    font-family: $text-bold;
+    color: $coral;
+    padding: 5px 0 2px 10px;
+  }
+
+  label:hover{
+    padding: 5px 0 2px 10px;
+    font-size: 18px;
+    font-family: $text-bold;
+    color: $coral;
+  }
+}
+
+//Demais estilizações
+.title-properties {
+  padding-top: 0;
+  padding-bottom: 20px;
+  font-size: 40px;
+  font-family: $text-rough;
+  color: $coral;
+  line-height: 1;
+}
+.padding-left{
+  padding-left: 40px;
+}
+.cursor-properties {
+  cursor: pointer;
+}
+.button-position {
+  position: relative;
+  float: right;
+  color: $coral !important;
+}
+.button-color {
+  font-size: 18px;
+  font-family: $text-bold;
+  color: $coral !important;
+}
+
+.selected_error{
+  color: $coral;
+  font-weight: bold;
+  font-size: 100px;
+}
+
+.unselected_error{
+  color: #737373;
+  font-family: $text-rough;
+  font-size: 18px;
+}
+
+.modal {
+  .modal-content {
+    overflow: auto;
+
+    .modal-body {
+      max-height: calc(100vh - 50px);
+      overflow: auto;
+    }
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_error_modal</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}
+
+]]></link>
+        <name>GService Error Modal</name>
+        <option_schema>[{"name":"parent_id","section":"other","label":"Parent ID","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	/* populate the 'data' object */
+	/* e.g., data.table = $sp.getValue('table'); */
+	// Utilizado para linkar com GService Icon Link
+	data.parentid = "error";
+	data.categories = [];
+
+	var sc_catalog_item_options = {"show_add_cart_button": "true",
+																 "show_field_validation_messages": "false",
+																 "show_add_to_wishlist_button": "false",
+																 "display_cart_on_right": "false",
+																 "show_less_description": "false",
+																 "hide_delivery_time": "false",
+																 "category_color": "",
+																 "category_bd_color": "",
+																 "category_submit_img": "",
+																 "broadcast_name" : "openIncident"};
+	data.gserviceCatalogItem = $sp.getWidget('gservice_sc_catalog_item', sc_catalog_item_options);
+//		data.gserviceCatalogItem = $sp.getWidget('widget-sc-cat-item-v2', sc_catalog_item_options);
+
+	var gr = new GlideRecord("sc_cat_item_producer");
+	gr.addActiveQuery();
+	gr.addQuery("table_name", "incident");
+	gr.query();
+	//Query para coletar informações de Record Producers da table de incidents
+	while(gr.next()){
+		var categoryJSON = {"title" : gr.getValue("title"),
+												"sys_id" : gr.getUniqueValue(),
+												"name" : gr.getValue("name"),
+												"description" : gr.getValue("short_description"),
+												"selected" : false};
+		data.categories.push(categoryJSON);
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 15:58:36</sys_created_on>
+        <sys_id>2e1c19a9dbd01850fa11cf2414961903</sys_id>
+        <sys_mod_count>651</sys_mod_count>
+        <sys_name>GService Error Modal</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_2e1c19a9dbd01850fa11cf2414961903</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-14 18:01:02</sys_updated_on>
+        <template><![CDATA[<!--<div ng-if="showWidget == c.data.parentid">	Se quiser adicionar algo além do modal, ativar isso-->
+<div class="modal fade" style="z-index: 1041" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="panel-body wrapper-xl">
+          <img src="pineappleError.png" height="100">
+          <div><h1 class="title-properties">Em qual categoria gostaria <br> de reportar um erro?</h1></div>
+          <div ng-repeat="errorType in data.categories" class="categories">
+            <span method="get" class="cursor-properties radio-properties">
+              <label class="cursor-properties" for="{{errorType.sys_id}}">
+                <input type="radio"
+                       id="{{errorType.sys_id}}"
+                       name="selectedItem"
+                       value="{{errorType.sys_id}}"
+                       ng-model="errorType.selected"
+                       ng-click="c.filterStage(errorType)"
+                       class="cursor-properties"> <!-- Seleciona a opção escolhida -->
+                {{errorType.name}}
+                <span class="new-radio"></span>
+              </label>
+            </span>
+          </div>
+          <!--  ng-class="stage.selected ? 'selected_error' : 'unselected_error'" -->
+          <!-- Botão finaliza a escolha de item e abre o novo modal enviando objeto JSON -->
+          <p class="button-color cursor-properties"><a class="button-position" ng-click="c.nextModal()">${PRÓXIMO PASSO}</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para widget de abertura de formulário, chamado pela função nextModal -->
+<div class="modal fade" style="z-index: 1041" id="formModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="panel-body wrapper-xl wrapper-sc-cat-item">
+          <div class="form-group">
+            <sp-widget widget="data.gserviceCatalogItem"></sp-widget>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

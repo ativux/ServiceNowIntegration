@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope, categorySubscribe) {
+	/* widget controller */
+	var c = this;
+
+	$scope.$on('openSelectedCategoryItem', function (event, categoryID, itemID) {
+		c.server.get({
+			action: "openCategoryItem",
+			categoryID: categoryID,
+			itemID: itemID
+		}).then(function(response) {
+			//			$rootScope.$broadcast('openMenu', "service");
+			if(response.data.showItem){
+				categorySubscribe.setSelectedItem(response.data.category, response.data.secondCategory, response.data.thirdCategory,
+																					itemID);
+			}
+			else if(response.data.showThirdCategory){
+				categorySubscribe.setThirdCat(response.data.category, response.data.secondCategory, response.data.thirdCategory);
+			}
+			else if(response.data.showSecondCategory){
+				categorySubscribe.setSecondCat(response.data.category, response.data.secondCategory);
+			}
+			else{
+				categorySubscribe.setCategoryID(response.data.category);
+			}
+		});
+	});
+
+
+
+
+	if(c.data.refresh){
+		setTimeout(function(){
+			c.server.update().then(function(response){
+				if(c.data.cart_item_selected){
+					if(c.data.showItem){
+						categorySubscribe.setDuplicateItem(c.data.category, c.data.secondCategory, c.data.thirdCategory,c.data.itemID,
+																							 c.data.cart_item_id);
+					}
+				}
+				else if(c.data.item_selected){	
+					categorySubscribe.setSelectedItem(c.data.category, c.data.secondCategory, c.data.thirdCategory,c.data.itemID);
+				}
+			});
+		}, 500);
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_catalog_navigation</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService Catalog Navigation</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	/* populate the 'data' object */
+	/* e.g., data.table = $sp.getValue('table'); */
+	var localInput = input;
+	
+	data.refresh = true;
+	data.cart_item_id = false;
+
+	if(localInput){
+		if(localInput.action == "openCategoryItem"){
+			data.thirdCategory = false;
+			data.showItem = false;
+			var categoryID = localInput.categoryID;
+			var itemID = localInput.itemID;
+
+			getItemCategory(itemID, categoryID);
+		}
+
+		else{
+			data.refresh = false;
+			
+			data.cart_item_selected = false;
+			data.item_selected = false;
+
+			var cart_item_id = $sp.getParameter("cart_id");
+			var item_id = $sp.getParameter("item_id");
+
+			if(cart_item_id){
+				var grCartItem = new GlideRecord("sc_cart_item");
+				grCartItem.get(cart_item_id);
+
+				var cat_item_id = grCartItem.getValue("cat_item");
+
+				getItemCategory(cat_item_id, null);
+				data.cart_item_id = cart_item_id;
+				data.cart_item_selected = true;
+			}
+			else if(item_id){
+				getItemCategory(item_id);
+				data.item_selected = true;
+				
+			}
+		}
+
+	}
+	function getItemCategory (itemID, categoryID){
+		data.itemID = itemID;
+		if(itemID){
+			data.showItem = true;
+
+			var grItem = new GlideRecord("sc_cat_item");
+			grItem.get(itemID);
+
+			categoryID = grItem.getValue("category");
+		}
+
+		var portalUtils = new global.OCLPortalUtils();
+		data.showSecondCategory = false;
+		data.showThirdCategory = false;
+		var grCategory = new GlideRecord("sc_category");
+		grCategory.get(categoryID);
+		data.category = grCategory.getUniqueValue();
+		if(!grCategory.getValue("parent")){
+			return;
+		}
+		else{
+			data.showSecondCategory = true;
+			var grSecondCategory = grCategory;
+
+			grCategory = new GlideRecord("sc_category");
+			grCategory.get(grSecondCategory.getValue("parent"));
+
+			if(!grCategory.getValue("parent")){
+				data.category = grCategory.getUniqueValue();
+				var jsonCategory = portalUtils.selectedCategory(grSecondCategory.getValue("parent"));
+				for(i in jsonCategory.secondCategories){
+					if(jsonCategory.secondCategories[i].sys_id == categoryID){
+						data.secondCategory = jsonCategory.secondCategories[i];
+					}
+				}
+				return;
+			}
+			else{
+				data.showThirdCategory = true;
+
+				var grThirdCategory = grSecondCategory;
+				grSecondCategory = grCategory;
+
+				data.category = grSecondCategory.getValue("parent");
+
+				var jsonCategory = portalUtils.selectedCategory(data.category);
+				for(i in jsonCategory.secondCategories){
+					if(jsonCategory.secondCategories[i].sys_id == grSecondCategory.getUniqueValue()){
+						data.secondCategory = jsonCategory.secondCategories[i];
+					}
+				}
+
+				var thirdCategories = portalUtils.getSubcategories(data.secondCategory.sys_id, data.secondCategory.title);
+
+				for(i in thirdCategories){
+					if(thirdCategories[i].sys_id == categoryID){
+						data.thirdCategory = thirdCategories[i];
+					}
+				}
+			}
+		}
+
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-27 16:02:31</sys_created_on>
+        <sys_id>05002d37db985010fa11cf2414961998</sys_id>
+        <sys_mod_count>130</sys_mod_count>
+        <sys_name>GService Catalog Navigation</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_05002d37db985010fa11cf2414961998</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-14 18:00:39</sys_updated_on>
+        <template/>
+    </sp_widget>
+</record_update>

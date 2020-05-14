@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function() {
+  /* widget controller */
+  var c = this;
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.text-container {
+  width: 100%;
+	font-size: 32px;
+  display: inline;
+}
+
+td, th {
+	padding: 8px;
+}
+
+.text1 { 
+  font-family: 'globorounded_th'; 
+}
+
+.text2 { 
+  font-family: 'globorounded_th_it'; 
+}
+
+.text3 { 
+  font-family: 'globorounded_lt'; 
+
+}
+
+.text4 { 
+  font-family: 'globorounded_lt_it'; 
+}
+
+.text5 { 
+  font-family: 'globorounded_rg'; 
+}
+
+.text6 { 
+  font-family: 'globorounded_rg_it'; 
+}
+
+.text7 { 
+  font-family: 'globorounded_bd'; 
+}
+
+.text8 { 
+  font-family: 'globorounded_bd_it'; 
+}
+
+.text9 { 
+  font-family: 'globorounded_bk'; 
+}
+
+.text10 { 
+  font-family: 'globorounded_bk_it'; 
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>gservice_fonts_demo</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService Portal Fonts Demo</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.vinicius.oliveira</sys_created_by>
+        <sys_created_on>2020-04-17 14:15:25</sys_created_on>
+        <sys_id>5ca7e9e0db5cd050fa11cf241496197e</sys_id>
+        <sys_mod_count>28</sys_mod_count>
+        <sys_name>GService Portal Fonts Demo</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_5ca7e9e0db5cd050fa11cf241496197e</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-14 18:01:11</sys_updated_on>
+        <template><![CDATA[<div>
+  
+<!-- your widget template -->
+  <div class="text-container">
+	<table>
+    
+    	<tr>
+    		<th>Sample</th>
+    		<th>Globorounded variant</th>
+        <th>Theme Variable</th>
+    	</tr>
+    
+      <tr>
+      	<td>
+          <div class="text1">GService Portal</div>
+        </td>
+        <td>
+        	<div>th</div>
+        </td>
+        <td>
+        	<div>$text-thin</div>
+        </td>
+      </tr>
+      
+      <tr>
+      	<td>
+          <div class="text2">GService Portal</div>
+        </td>
+        <td>
+        	<div>th_it</div>
+        </td>
+        <td>
+        	<div>$text-thin-italic</div>
+        </td>
+      </tr>
+      
+      <tr>
+      	<td>
+          <div class="text3">GService Portal</div>
+        </td>
+        <td>
+        	<div>lt</div>
+        </td>
+        <td>
+        	<div>$text-light</div>
+        </td>
+      </tr>     
+      
+      <tr>
+      	<td>
+          <div class="text4">GService Portal</div>
+        </td>
+        <td>
+        	<div>lt_it</div>
+        </td>
+        <td>
+        	<div>$text-light-italic</div>
+        </td>
+      </tr>
+    
+      <tr>
+      	<td>
+          <div class="text5">GService Portal</div>
+        </td>
+        <td>
+        	<div>rg</div>
+        </td>
+        <td>
+        	<div>$text-rough</div>
+        </td>
+      </tr>
+      
+      <tr>
+      	<td>
+          <div class="text6">GService Portal</div>
+        </td>
+        <td>
+        	<div>rg_it</div>
+        </td>
+        <td>
+        	<div>$text-rough-italic</div>
+        </td>
+      </tr>
+                 
+      <tr>
+      	<td>
+          <div class="text7">GService Portal</div>
+        </td>
+        <td>
+        	<div>bd</div>
+        </td>
+        <td>
+        	<div>$text-bold</div>
+        </td>
+      </tr>
+      
+      <tr>
+      	<td>
+          <div class="text8">GService Portal</div>
+        </td>
+        <td>
+        	<div>bd_it</div>
+        </td>
+        <td>
+        	<div>$text-bold-italic</div>
+        </td>
+      </tr>
+    
+      <tr>
+      	<td>
+          <div class="text9">GService Portal</div>
+        </td>
+        <td>
+        	<div>bk</div>
+        </td>
+        <td>
+        	<div>$text-bolder</div>
+        </td>
+      </tr>
+      
+      <tr>
+      	<td>
+          <div class="text10">GService Portal</div>
+        </td>
+        <td>
+        	<div>bk_it</div>
+        </td>
+        <td>
+        	<div>$text-bolder-talic</div>
+        </td>
+      </tr>
+    
+  </table>
+ 	</div>  
+  
+</div>]]></template>
+    </sp_widget>
+</record_update>
