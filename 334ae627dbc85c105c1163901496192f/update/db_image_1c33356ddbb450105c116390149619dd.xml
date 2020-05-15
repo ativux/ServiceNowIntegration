@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>230</height>
+        <image>e7433d2ddbb450105c1163901496193d</image>
+        <name>gservice_requestsTab_after.png</name>
+        <size_bytes>2469</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-15 14:11:15</sys_created_on>
+        <sys_id>1c33356ddbb450105c116390149619dd</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>gservice_requestsTab_after.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_1c33356ddbb450105c116390149619dd</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-15 14:11:21</sys_updated_on>
+        <thumbnail/>
+        <width>230</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#0</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>3cd4f398c393279baa3afa60e6aba4a9beff1764fe32191c0acd1a8dc3bc6381</hash>
+        <image_height>230</image_height>
+        <image_width>230</image_width>
+        <size_bytes>2469</size_bytes>
+        <size_compressed>2118</size_compressed>
+        <state>available</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-15 14:11:21</sys_created_on>
+        <sys_id>e7433d2ddbb450105c1163901496193d</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-15 14:11:21</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>1c33356ddbb450105c116390149619dd</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="e7433d2ddbb450105c1163901496193d">e7433d2ddbb450105c1163901496193d</sys_attachment>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-15 14:11:21</sys_created_on>
+        <sys_id>2b433d2ddbb450105c1163901496193d</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>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</data>
+        <length>2812</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="e7433d2ddbb450105c1163901496193d">e7433d2ddbb450105c1163901496193d</sys_attachment>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-15 14:11:21</sys_created_on>
+        <sys_id>ab433d2ddbb450105c1163901496193d</sys_id>
+    </sys_attachment_doc>
+</record_update>

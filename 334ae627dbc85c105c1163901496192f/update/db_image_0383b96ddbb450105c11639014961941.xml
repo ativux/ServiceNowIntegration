@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>230</height>
+        <image>f6a3796ddbb450105c11639014961940</image>
+        <name>gservice_requestsTab.png</name>
+        <size_bytes>2448</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-15 14:12:44</sys_created_on>
+        <sys_id>0383b96ddbb450105c11639014961941</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>gservice_requestsTab.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_0383b96ddbb450105c11639014961941</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-15 14:12:57</sys_updated_on>
+        <thumbnail/>
+        <width>231</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#0</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>8fc4f83a9262c4947b502307bda3c57d7af8f8df0b9c640812bd27087a5415c2</hash>
+        <image_height>230</image_height>
+        <image_width>231</image_width>
+        <size_bytes>2448</size_bytes>
+        <size_compressed>2099</size_compressed>
+        <state>available</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-15 14:12:56</sys_created_on>
+        <sys_id>f6a3796ddbb450105c11639014961940</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-15 14:12:57</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>0383b96ddbb450105c11639014961941</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="f6a3796ddbb450105c11639014961940">f6a3796ddbb450105c11639014961940</sys_attachment>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-15 14:12:56</sys_created_on>
+        <sys_id>3aa3796ddbb450105c11639014961940</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>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</data>
+        <length>2788</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="f6a3796ddbb450105c11639014961940">f6a3796ddbb450105c11639014961940</sys_attachment>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-15 14:12:56</sys_created_on>
+        <sys_id>baa3796ddbb450105c11639014961940</sys_id>
+    </sys_attachment_doc>
+</record_update>
