@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
+    <sp_container action="INSERT_OR_UPDATE">
+        <background_color/>
+        <background_image/>
+        <background_style>default</background_style>
+        <bootstrap_alt>false</bootstrap_alt>
+        <class_name/>
+        <container_class_name/>
+        <name>Henrique Test - Container 1</name>
+        <order>1</order>
+        <sp_page display_value="henrique_test">0d6e2a7fdbc01050fa11cf24149619d3</sp_page>
+        <subheader>false</subheader>
+        <sys_class_name>sp_container</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-15 11:12:15</sys_created_on>
+        <sys_id>b74a0521db7450105c1163901496193a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Henrique Test - Container 1</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_container_b74a0521db7450105c1163901496193a</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-15 11:12:15</sys_updated_on>
+        <title/>
+        <width>container</width>
+    </sp_container>
+</record_update>
