@@ -1,0 +1,867 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $location, $rootScope, $timeout, spModal, categorySubscribe) {
+	/* widget controller */
+	var c = this;
+
+	//Has the id from the selected item
+	c.selectedItemID = null;
+
+	//Has the cart item id that is going to be duplicated
+	//The flag is used to ensure that the item is duplicated only one time
+	c.duplicatedItemID = false;
+	c.duplicatedItemFlag = false;
+
+	//Used to define to where the screen will scroll
+	c.scroll = false;
+	c.scrollSelect = false;
+	c.categorySelect = false;
+
+	//When the category is selected in the previous widget, we receive her sys_id to render in this widget
+	$scope.$on('selectedCategory', function (event) {
+		selectedCategory(categorySubscribe.getCategoryID());
+	});
+
+	function replaceHtml(string) {
+		return string.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g,'"');
+	}
+
+	//When a second category is clicked
+	c.selectedSecondCategory = function(category){
+		if(categorySubscribe.getSecondCat()){
+			if(categorySubscribe.getSecondCat().sys_id != category.sys_id){
+				categorySubscribe.setSecondCatOnly(category);
+			}
+		}
+		else{
+			categorySubscribe.setSecondCatOnly(category);
+		}
+		selectedSecondCategory(category);
+	}
+
+	//When a third category is clicked
+	c.selectedThirdCategory = function(category){
+		if(categorySubscribe.getThirdCat()){
+			if(categorySubscribe.getThirdCat().sys_id != category.sys_id){
+				categorySubscribe.setThirdCatOnly(category);
+			}
+		}
+		else{
+			categorySubscribe.setThirdCatOnly(category);
+		}
+		selectedThirdCategory(category)
+	}
+
+	//When a item is clicked
+	c.selectItem = function(itemID){
+		if(categorySubscribe.getItemID()){
+			if(categorySubscribe.getItemID().sys_id != itemID.sys_id){
+				categorySubscribe.setSelectedItemOnly(itemID);
+			}
+		}
+
+		for(i in c.data.arrayItems){
+			if(c.data.arrayItems[i].sys_id == itemID){
+				if(!c.data.arrayItems[i].selected){
+					c.data.showSelectedItem = false;
+				}
+				else{
+					c.data.showSelectedItem = true;
+					var jsonItem = {itemID: itemID, breadcrumb: c.data.breadcrumb, table: "sc_cat_item", duplicatedItemID : false};
+					$rootScope.$broadcast('openItem', jsonItem, "openItem");		
+				}
+			}
+		}
+	}
+
+	//When a broadcast is sended from GService Catalog Navigation
+	//This broadcast navigate directly to the second category selected, passing all the previous steps
+	$scope.$on('secondCategory', function (event) {
+		c.scrollSelect = "secondCategory";
+		c.categorySelect = "secondCategory";
+		selectedCategory(categorySubscribe.getCategoryID());
+	});
+
+	//When a broadcast is sended from GService Catalog Navigation
+	//This broadcast navigate directly to the third category selected, passing all the previous steps
+	$scope.$on('thirdCategory', function (event) {
+		c.scrollSelect = "thirdCategory";
+		c.categorySelect = "thirdCategory";
+		selectedCategory(categorySubscribe.getCategoryID());
+	});
+
+	//When a broadcast is sended from GService Catalog Navigation
+	//This broadcast navigate directly to the item selected, passing all the previous steps
+	$scope.$on('selectItem', function (event) {
+		c.scrollSelect = "showItems";
+		c.selectedItemID = categorySubscribe.getItemID();
+		c.duplicatedItemID = categorySubscribe.getDuplicateItem();
+
+		if(categorySubscribe.getThirdCat()){
+			c.categorySelect = "thirdCategory";
+		}
+		else{
+			c.categorySelect = "secondCategory";
+		}
+		selectedCategory(categorySubscribe.getCategoryID());
+
+	});
+
+	//Cancel the selection of an item
+	$scope.$on('cancelItem', function (event, data) {
+		hideItem();
+	});
+
+	//Hide the entire widget
+	$scope.$on('hideCategory', function (event, data) {
+		c.data.showWidget = false;
+	});
+
+	//Used to show the selected category
+	//Is used either by selecting directly a category or by selecting a child category (when selecting a child category
+	//need to show the parent category in the previous steps of the widget)
+	function selectedCategory(data){
+		c.data.action = "selectedCategory";
+		c.data.selectedCategory = data;
+		c.server.update().then(function(response){
+			c.data.showThirdCategories = false;
+			$rootScope.$broadcast('getSearchedItemsCategoryTitle', c.data.title, c.data.categoryColor);
+			if(!c.scrollSelect){
+				scrollCategory();
+			}
+
+			if(c.categorySelect == "secondCategory"){
+				selectedSecondCategory(categorySubscribe.getSecondCat());
+			}
+			else if(c.categorySelect == "thirdCategory"){
+				showThirdCategory(categorySubscribe.getSecondCat(), categorySubscribe.getThirdCat());
+			}
+
+		});
+
+	}
+
+	//Used to show the selected second category
+	//Is used either by selecting directly a second category or by selecting an item (when selecting an item, need to show
+	//the parent category in the previous steps of the widget)
+	function selectedSecondCategory(category){
+		c.server.get({
+			action: "selectedSecondCategory",
+			secCategory: category
+		}).then(function(response) {
+			for(i in c.data.secCategories){
+				if(c.data.secCategories[i].sys_id == category.sys_id){
+					c.data.secCategories[i].selected = true;
+				}
+				else{
+					c.data.secCategories[i].selected = false;
+				}
+			}
+
+			c.data.thirdCategories = response.data.thirdCategories;
+			c.data.showThirdCategories = response.data.showThirdCategories;
+
+			c.data.showItems = response.data.showItems;
+
+			c.data.subcategorySelected = response.data.subcategorySelected;
+
+			hideItem();
+			c.categorySelect = false;
+
+			c.data.arrayItems = response.data.arrayItems;
+
+			c.data.categoryTitle = category.title;
+			c.data.breadcrumb = c.data.title + " > " + category.title;
+			c.originalBreadcrumb = c.data.breadcrumb;
+
+			//If this function is called when selecting an item, need to select the item using the function below
+			if(c.selectedItemID){
+				selectedItem(c.selectedItemID);
+			}
+			else{
+				if(c.data.showThirdCategories){
+					scrollThirdCategory();
+				}
+				else{
+					scrollAllItems();
+				}
+			}
+			c.selectedItemID = false;
+			c.scrollSelect = false;
+		});
+	}
+
+	//Used to show the selected third category
+	function selectedThirdCategory(category){
+		c.server.get({
+			action: "selectedThirdCategory",
+			thirdCategory: category
+		}).then(function(response) {
+			for(i in c.data.thirdCategories){
+				if(c.data.thirdCategories[i].sys_id == category.sys_id){
+					c.data.thirdCategories[i].selected = true;
+				}
+				else{
+					c.data.thirdCategories[i].selected = false;
+				}
+			}
+			c.data.subcategorySelected = response.data.subcategorySelected;
+			c.data.arrayItems = response.data.arrayItems;
+			c.data.showItems = response.data.showItems;
+			hideItem();
+			c.data.categoryTitle = category.title;
+			c.data.breadcrumb = c.originalBreadcrumb;
+			c.data.breadcrumb += " > " + category.title;
+			scrollAllItems();
+		});
+	}
+
+	//Used to show the selected category and his parent second category
+	//Is used when selecting the third category or an item in a search or another widget (when selecting a third category by this way,
+	//need to show the parent category in the previous steps of the widget)
+	function showThirdCategory(secCategory, thirdCategory){
+		c.server.get({
+			action: "showThirdCategory",
+			secCategory: secCategory,
+			thirdCategory : thirdCategory
+		}).then(function(response) {
+			c.data.thirdCategories = response.data.thirdCategories;
+			
+			for(i in c.data.secCategories){
+				if(c.data.secCategories[i].sys_id == secCategory.sys_id){
+					c.data.secCategories[i].selected = true;
+				}
+			}
+			
+			for(i in c.data.thirdCategories){
+				if(c.data.thirdCategories[i].sys_id == thirdCategory.sys_id){
+					c.data.thirdCategories[i].selected = true;
+				}
+			}
+			
+			
+			c.data.showThirdCategories = response.data.showThirdCategories;
+
+			c.data.subcategorySelected = response.data.subcategorySelected;
+			c.data.arrayItems = response.data.arrayItems;
+
+			c.data.showItems = response.data.showItems;
+			hideItem();
+
+			c.categorySelect = false;
+
+			c.data.categoryTitle = thirdCategory.title;
+			c.originalBreadcrumb = c.data.title + " > " + secCategory.title;
+			c.data.breadcrumb = c.data.title + " > " + secCategory.title + " > " + thirdCategory.title;
+
+			//If this function is called when selecting an item, need to select the item using the function below
+			if(c.selectedItemID){
+				selectedItem(c.selectedItemID);
+			}
+			else{
+				scrollAllItems();
+			}
+			c.selectedItemID = false;
+			c.scrollSelect = false;
+		});
+	}
+
+	//When selected an item in another widget or search, use this function to show the selected item
+	function selectedItem(itemID){
+		for(i in c.data.arrayItems){
+			if(c.data.arrayItems[i].sys_id == itemID){
+				c.data.arrayItems[i].selected = c.data.arrayItems[i].title;
+				c.data.showSelectedItem = true;
+			}
+		}
+		var duplicatedItemID = false;
+		if(c.duplicatedItemID && !c.duplicatedItemFlag){
+			c.duplicatedItemFlag = true;
+			duplicatedItemID = c.duplicatedItemID;
+		}
+		var jsonItem = {itemID: itemID, breadcrumb: c.data.breadcrumb, table: "sc_cat_item", duplicatedItemID : duplicatedItemID};
+		$rootScope.$broadcast('openItem', jsonItem, "openItem");
+		$rootScope.$broadcast('hideSideMenu', jsonItem);
+	}
+
+	function hideItem(){
+		for(i in c.data.arrayItems){
+			c.data.arrayItems[i].selected = false;
+		}
+		c.data.showSelectedItem = false;
+	}
+
+	function scrollCategory(){
+		//Template abaixo utilizado para destravar o scroll caso o usuário use o mesmo durante a animação
+		$timeout(function() {
+			scrollTo("widget-category");
+		});
+	}
+
+	function scrollThirdCategory(){
+		$timeout(function() {
+			scrollTo("third-categories");
+		});
+	}
+
+	function scrollAllItems(){
+		$timeout(function() {
+			scrollTo("show-items");
+		});
+	}
+
+	$scope.$on('scrollItem', function (event) {
+		$timeout(function() {
+			scrollTo("show-selected-item");
+		});
+	});
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.content {
+  background-color: white;
+  margin: 50px 0;
+  padding-bottom: 40px;
+  margin-top: 0;
+
+  .content_center {
+    width: 50%;
+    padding: 0 50px;
+  }
+
+  .content_header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    img { max-width: 350px; }
+
+    .content_center {
+      .title, .description {
+        text-align: center;
+      }
+      .title {
+        font-size: 52px;
+        text-transform: uppercase;
+        margin-top: 40px;
+        padding: 0 20px;
+        line-height: 1;
+      }
+      .description {
+        font-size: 14px;
+        color: $slate-gray;
+        padding-top: 40px;
+        padding-bottom: 20px;
+      }
+    }
+  }
+
+  .content_body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 100px;
+
+    .line {
+      width: 100%;
+      height: 2px;
+      margin: 30px 0;
+    }
+
+    .form-group {
+      .icon-img {
+        width: 50px;
+        height: 50px;
+      }
+      .input-group { border-bottom: 2px solid $dodger-blue; }
+      .text-left { font-size: 12px; }
+    }
+
+    .articles {
+      margin-bottom: 50px;
+
+      .article_list {
+        margin-bottom: 5px;
+        &amp;:last-child { margin-bottom: 0; }
+
+        .article_title {
+          font-size: 15px;
+          font-weight: bold;
+          color: $slate-gray;
+          text-decoration: underline;
+
+          &amp;:hover {
+            color: $dodger-blue;
+          }
+        }
+      }
+    }
+
+    .categories_title {
+      color: $slate-gray;
+      text-align: center;
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .categories_list {
+      color: $slate-gray;
+      text-align: center;
+      font-weight: bold;
+      font-size: 24px;
+      &amp;:hover {
+        text-decoration: underline;
+      }
+    }
+    .subcategory_list {
+      font-weight: normal;
+    }
+
+    .content_breadcrumb_items {
+      width: 100%;
+
+      .breadcrumb_item {
+        color: $slate-gray;
+        font-weight: bold;
+      }
+      .request_title {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      .content_cat_items {
+        margin: 3px 0;
+        padding: 0;
+
+        .cat_item {
+          color: $slate-gray;
+          font-weight: bold;
+          font-size: 14px;
+
+          &amp;:hover {
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+          }
+        }
+
+        label {
+          font-size: 18px;
+          font-family: $text-bold;
+          color: #737373;
+          padding: 6px 0 2px 10px;
+        }
+
+        input[type="radio"]:checked + label {
+          font-size: 18px;
+          font-family: $text-bold;
+          padding: 6px 0 2px 10px;
+        }
+
+        label:hover{
+          padding: 6px 0 2px 10px;
+          font-size: 18px;
+          font-family: $text-bold;
+        }
+
+      }
+
+      .content_mostviewed_articles {
+        width: 80%;
+      }
+    }
+  }
+
+  //Configurações do Radio check
+  .content_breadcrumb_items {
+    input[type="radio"]{
+      display: none;
+    }
+
+    .radio-properties{
+      position: relative;
+      display: inline-block;
+      padding-left: 30px;
+    }
+
+    .new-radio {
+      height: 22px;
+      width: 22px;
+      border-radius: 50%;
+      border: 3px solid #737373;
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 4px;
+    }
+  }
+
+  .radio-after{
+    input[type="radio"]:checked + .new-radio:after {
+      content: "";
+      height: 12px;
+      width: 12px;
+      display: block;
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      transform: translate(-50%, -50%) scale(1);
+      border-radius: 50%;
+      transition: 900ms ease-in-out 0s;
+    }
+  }
+
+  .radio-color_category1{
+    input[type="radio"]:checked + .new-radio:after {background: $dodger-blue;}
+    .item_title:hover {color: $dodger-blue; !important}
+  }
+  .radio-color_category2{
+    input[type="radio"]:checked + .new-radio:after {background: $dark-orchid;}
+    .item_title:hover {color: $dark-orchid; !important}
+  }
+  .radio-color_category3{
+    input[type="radio"]:checked + .new-radio:after {background: $tan;}
+    .item_title:hover {color: $tan; !important}
+  }
+  .radio-color_category4{
+    input[type="radio"]:checked + .new-radio:after {background: $orange;}
+    .item_title:hover {color: $orange; !important}
+  }
+  .radio-color_category5{
+    input[type="radio"]:checked + .new-radio:after {background: $turquoise;}
+    .item_title:hover {color: $turquoise; !important}
+  }
+
+  .selected_category {
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_categories</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService Categories</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var localInput = input;
+	var portalUtils = new global.OCLPortalUtils();
+
+	data.showWidget = false;
+
+	data.categoryColor = '';
+	data.categoryBgColor = '';
+	data.categoryBdColor = '';
+	data.categorySearchImg = '';
+	data.categorySubmitImg = '';
+
+	//Getting the search sources id on the property gservice_categories_contextual_search_sources
+	data.search_property = gs.getProperty("gservice_categories_contextual_search_sources");
+
+	data.title = "";
+	data.subTitle = "";
+	data.selectedCategory = null;
+	data.secCategories = [];
+	data.arrayItems = [];
+	data.showItems = false;
+	data.showSelectedItem = false;
+	data.showSecondCategories = false;
+	data.typeahead_search_options = {"contextual_search_sources": data.search_property, "limit": 5, 
+																	 "broadcast_name" : "getSearchedItemsCategory",
+																	 "category_color" : "",
+																	 "category_bg_color" : "",
+																	 "category_bd_color" : ""
+																	};
+
+	var sc_catalog_item_options = {"show_add_cart_button": "true",
+																 "show_field_validation_messages": "false",
+																 "show_add_to_wishlist_button": "false",
+																 "display_cart_on_right": "false",
+																 "show_less_description": "false",
+																 "hide_delivery_time": "false",
+																 "category_color": "",
+																 "category_bd_color": "",
+																 "category_submit_img": "",
+																 "broadcast_name" : "openItem"};
+
+	data.gserviceCatalogItem = $sp.getWidget('gservice_sc_catalog_item', sc_catalog_item_options);
+
+	data.kb_most_viewed_options = {"max_number": "4", "title" : gs.getMessage("Artigos mais visitados"),
+																 "category_bg_color" : ""};
+
+	data.search_result_options = {"broadcast_name" : "getSearchedItemsCategory",
+																"class_color" : "asdf"}
+
+	data.articleWidget = $sp.getWidget("gservice_knowledge_article_content");
+	data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful");
+	data.scCatItemCategory = $sp.getWidget("widget-sc-cat-item-v2");
+
+
+	data.itemSelectMessage = gs.getMessage("Item Select Message");
+
+	if(localInput){
+		//When selected the category in the previous widget
+		//In this case we get the categories above the first category and others values to show in the widget (Title, subtitle, etc)
+		if(localInput.action == "selectedCategory") {
+			selectedCategory();
+		}
+
+		//The step after clicking in a second category
+		//In this case we render the categories above the selected, if we have categories.
+		//If the category only has items, we render the items instead.
+		if(localInput.action == "selectedSecondCategory"){
+			selectedSecondCategory();
+		}
+
+		//When clicking in a thirdCategory, if we have.
+		//In this case we can only have items above this category, so, we render them.
+		if(localInput.action == "selectedThirdCategory"){
+			selectedThirdCategory();
+		}
+
+		if(localInput.action == "showThirdCategory"){
+			selectedSecondCategory();
+			selectedThirdCategory();
+		}
+	}
+
+
+	function selectedCategory(){
+		var jsonCategory = portalUtils.selectedCategory(localInput.selectedCategory);
+		data.selectedCategory = jsonCategory.selectedCategory;
+		data.title = jsonCategory.title;
+		data.subTitle = jsonCategory.subTitle;
+		data.subcategoriesTitle = jsonCategory.subcategoriesTitle;
+		data.secCategories = jsonCategory.secondCategories;
+
+		data.showWidget = true;
+		var category_property = gs.getProperty("categories_color");
+		var parse = JSON.parse(category_property);
+		data.categoryColor = parse[localInput.selectedCategory].color;
+		data.radioColor = "radio-"+ data.categoryColor;
+		data.categoryBgColor = parse[localInput.selectedCategory].bgcolor;
+		data.categoryBdColor = parse[localInput.selectedCategory].bdcolor;
+		data.categoryImgLeft = parse[localInput.selectedCategory].imgleft;
+		data.categoryImgRight = parse[localInput.selectedCategory].imgright;
+		data.categorySearchImg = parse[localInput.selectedCategory].searchImg;
+		data.categorySubmitImg = parse[localInput.selectedCategory].submitImg;
+
+		data.typeahead_search_options = {"contextual_search_sources": data.search_property, "limit": 5, 
+																		 "broadcast_name" : "getSearchedItemsCategory",
+																		 "category_color" : data.categoryColor,
+																		 "category_bg_color" : data.categoryBgColor,
+																		 "category_bd_color" : data.categoryBdColor,
+																		 "category_search_img" : data.categorySearchImg};
+
+		sc_catalog_item_options = {"show_add_cart_button": "true",
+															 "show_field_validation_messages": "false",
+															 "show_add_to_wishlist_button": "false",
+															 "display_cart_on_right": "false",
+															 "show_less_description": "false",
+															 "hide_delivery_time": "false",
+															 "category_color": data.categoryColor,
+															 "category_bd_color": data.categoryBdColor,
+															 "category_submit_img": data.categorySubmitImg};
+
+		data.gserviceCatalogItem = $sp.getWidget('gservice_sc_catalog_item', sc_catalog_item_options);
+
+		data.kb_most_viewed_options = {"max_number": "4", "title" : gs.getMessage("Artigos mais visitados"),
+																	 "category_bg_color" : data.categoryBgColor};
+	}
+
+	function selectedSecondCategory(){
+		data.thirdCategories = portalUtils.getSubcategories(localInput.secCategory.sys_id, localInput.secCategory.title);
+
+		//Utilizado para deixar as subcategorias em ordem alfabética
+		data.thirdCategories.sort(function (a, b) {
+			if (a.title > b.title) {
+				return 1;
+			}
+			if (a.title < b.title) {
+				return -1;
+			}
+			// a must be equal to b
+			return 0;
+		});
+
+		if(data.thirdCategories.length != 0){
+			data.showThirdCategories = true;
+			data.showItems = false;
+		}
+		else{
+			data.showThirdCategories = false;
+			data.subcategorySelected = true;
+
+			data.arrayItems = portalUtils.getItems(localInput.secCategory.sys_id);
+			if(data.arrayItems.length > 0){
+				data.showItems = true;
+			}
+		}
+
+	}
+
+	function selectedThirdCategory(){
+		data.subcategorySelected = true;
+		data.arrayItems = portalUtils.getItems(localInput.thirdCategory.sys_id);
+		if(data.arrayItems.length > 0){
+			data.showItems = true;
+		}
+	}
+
+	//Utilizado para deixar as categorias em ordem alfabética
+	data.secCategories.sort(function (a, b) {
+		if (a.title > b.title) {
+			return 1;
+		}
+		if (a.title < b.title) {
+			return -1;
+		}
+		// a must be equal to b
+		return 0;
+	});
+
+	//Utilizado para deixar os itens em ordem alfabética
+	data.arrayItems.sort(function (a, b) {
+		if (a.title > b.title) {
+			return 1;
+		}
+		if (a.title < b.title) {
+			return -1;
+		}
+		// a must be equal to b
+		return 0;
+	});
+
+	var half = Math.ceil(data.arrayItems.length/2);
+	var minor = [];
+	var major = [];
+	//Utilizado para deixar primeiros do lado esquerdo
+	for(i in data.arrayItems){
+		if (i<half){
+			minor.push(data.arrayItems[i]);
+		} 
+		if (i>=half){
+			major.push(data.arrayItems[i]);
+		}
+	}
+	var total = [];	
+	for(i in minor){
+		total.push(minor[i]);
+		if (major[i]){
+			total.push(major[i]);
+		}
+	}
+	data.arrayItems = total;
+
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-15 13:30:17</sys_created_on>
+        <sys_id>832ac777dbc41050fa11cf2414961944</sys_id>
+        <sys_mod_count>1428</sys_mod_count>
+        <sys_name>GService Categories</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_832ac777dbc41050fa11cf2414961944</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-05-15 17:25:38</sys_updated_on>
+        <template><![CDATA[<div id="widget-category" class="content" ng-show="data.showWidget">
+  <div class="">
+
+    <div class="content_header">
+      <img src="{{data.categoryImgLeft}}"/>
+      <div class="content_center">
+        <div class="title {{data.categoryColor}}">{{data.title}}</div>
+        <div class="description">{{data.subTitle}}</div>
+      </div>
+      <img src="{{data.categoryImgRight}}"/>
+    </div>
+
+    <div class="content_body">
+
+      <div class="content_center">
+        <div class="form-group">
+          <widget id="gservice_typeahead_search" options='data.typeahead_search_options'></widget>
+        </div>
+
+        <div>
+          <widget id="gservice_search_result" options="data.search_result_options"></widget>
+        </div>
+
+        <div class="categories_title">{{data.subcategoriesTitle}}</div>
+        <div ng-repeat="category in c.data.secCategories">
+          <div class="row text-center">
+            <span ng-click="c.selectedSecondCategory(category)" ng-class="category.selected ? '{{data.categoryColor}} selected_category' : 'categories_list'">{{category.title}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="line {{data.categoryBgColor}}"></div>
+
+      <div id="third-categories" class="content_center">
+        <div ng-repeat="category in c.data.thirdCategories" ng-if="c.data.showThirdCategories">
+          <div class="row text-center">
+            <span ng-click="c.selectedThirdCategory(category)" ng-class="category.selected ? '{{data.categoryColor}} selected_category subcategory_list' : 'categories_list subcategory_list'">{{category.title}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="line {{data.categoryBgColor}}" id="line-breadcrumb" ng-if="c.data.showThirdCategories"></div>
+
+      <div class="content_breadcrumb_items">
+        <div id="show-items" ng-show="data.showItems">
+          <div class="breadcrumb_item">{{data.breadcrumb}}</div>
+          <h3 class="request_title {{data.categoryColor}}">{{data.itemSelectMessage}} {{data.categoryTitle}}?</h3>
+
+          <div class="m-b-s col-md-6 content_cat_items {{data.categoryHoverColor}}" ng-repeat="item in c.data.arrayItems">
+            <div class="text-left ">
+              <span method="get" class="radio-properties">
+                <label for="{{item.title}}" class="cat_item radio-after {{data.radioColor}}">
+                  <input type="radio"
+                         id="{{item.title}}"
+                         name="selectedItem"
+                         value="{{item.title}}"
+                         ng-model="item.selected"
+                         ng-click="c.selectItem(item.sys_id)">
+                  <div class="item_title">{{item.title}}</div>
+                  <span class="new-radio {{data.categoryBdColor}}"></span>
+                </label>
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="line {{data.categoryBgColor}}" ng-show="c.data.showSelectedItem"></div>
+
+      <div id="show-selected-item" ng-show="c.data.showSelectedItem">
+        <sp-widget widget="data.gserviceCatalogItem"></sp-widget>
+      </div>
+
+      <div class="line {{data.categoryBgColor}}" ng-show="data.showItems"></div>
+
+      <div class="content_mostviewed_articles">
+        <widget id="gservice_kb_most_viewed" options='data.kb_most_viewed_options'></widget>
+      </div>
+
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>
