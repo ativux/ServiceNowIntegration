@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope, $timeout, categorySubscribe, $element, spUtil) {
+
+	/* widget controller */
+
+	var c = this;
+	
+	c.selectTab = function(tab){
+		for(i in c.data.tabs){
+			if(c.data.tabs[i].name == tab.name){
+				c.data.tabs[i].selected = true;
+			}
+			else{
+				c.data.tabs[i].selected = false;
+			}
+		}
+		
+		c.server.get({
+			action: "selectedTab",
+			tab: tab 
+		}).then(function(response) {
+			c.data.gservice_dashboard_list = response.data.gservice_dashboard_list;
+			$rootScope.$broadcast('updateRequestList');
+		});
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.panel-content {
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+.icon-img {
+  display: block;
+  margin: 0 auto;
+  height: 100px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.tabs {
+  padding-bottom: 10px;
+  font-size: 22px;
+  font-family: $text-bolder;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.categories:nth-child(3) .category-items {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.text-align {
+  text-align:center;
+  padding-bottom: 30px;
+}
+
+.margin-align {
+  margin: 0 auto;
+  text-align: center;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_my_dashboard</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>GService My Dashboard</name>
+        <option_schema>[{"displayValue":"Category","hint":"Selecione a categoria que deseja exibir","name":"selected_category","display_value_list":[],"section":"Data","label":"Category","type":"glide_list","value":"sc_category","ed":{"reference":"sc_category"}}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	/* populate the 'data' object */
+	/* e.g., data.table = $sp.getValue('table'); */
+
+	var localInput = input;
+
+	var tabs = gs.getProperty("gservice_dashboard_tabs").split("|");
+	data.tabs = [];
+	for(i in tabs){
+		var tab = JSON.parse(tabs[i]);
+		data.tabs.push(tab);
+		data.tabs[i].label = gs.getMessage(tab.label);
+	}
+
+
+	var gservice_dashboard_list_options = {"table": data.tabs[0].name,
+																				 "table_template": data.tabs[0].template};
+	data.gservice_dashboard_list = $sp.getWidget('gservice_all_dashboards', gservice_dashboard_list_options);
+
+
+	if(localInput){
+		if(localInput.action == "selectedTab"){
+			var gservice_dashboard_list_options = {"table": localInput.tab.name,
+																						 "table_template": localInput.tab.template};
+			data.gservice_dashboard_list = $sp.getWidget('gservice_all_dashboards', gservice_dashboard_list_options);
+		}
+	}
+
+
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-05-15 13:49:52</sys_created_on>
+        <sys_id>f46e612ddbb45010fa11cf24149619bb</sys_id>
+        <sys_mod_count>36</sys_mod_count>
+        <sys_name>GService My Dashboard</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_f46e612ddbb45010fa11cf24149619bb</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-18 11:12:44</sys_updated_on>
+        <template><![CDATA[<div class="panel-content panel" id="widget-category-items">
+  <div class="row margin-align">
+    <div class="col-md-1"></div>
+    <div ng-repeat="tab in data.tabs" class="categories">
+      <div class="m-b-s col-md-2 text-align">
+        <div ng-click="c.selectTab(tab)">
+          <img ng-if="!tab.selected" src="{{tab.img}}" class="icon-img"/>
+          <img ng-if="tab.selected" src="{{tab.imgSelected}}" class="icon-img"/>
+          <div>
+            <div class="tabs">{{tab.label}}</div>
+          </div>
+        </div>       
+      </div>
+    </div>
+  </div>
+
+  <div id="show-selected-item">
+    <sp-widget widget="data.gservice_dashboard_list"></sp-widget>
+  </div>
+
+</div>
+
+]]></template>
+    </sp_widget>
+</record_update>
