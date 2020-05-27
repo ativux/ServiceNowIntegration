@@ -66,54 +66,74 @@
         <css>.content {
   padding-top: 20px;
   padding-bottom: 10px;
-}
 
-.category-title {
-  text-align: center;
-  padding-bottom: 30px;
-  font-size: $font-size-h1;
-  font-family: $text-bold;
-  color: $dodger-blue;
-}
+  .category-title {
+    text-align: center;
+    padding-bottom: 30px;
+    font-size: 32px;
+    font-family: $text-bold;
+    color: $dodger-blue;
+  }
+  .margin-align {
+    margin: 0 auto;
+    text-align: center;
+  }
 
-.icon-img {
-  display: block;
-  margin: 0 auto;
-  height: 100px;
-  margin-top: 30px;
-  margin-bottom: 30px;
-}
-.category-items {
-  padding-bottom: 10px;
-  font-size: 22px;
-  font-family: $text-bolder;
-  text-align: center;
-  text-transform: uppercase;
-  line-height: 1.2;
-}
-.categories:nth-child(3) .category-items {
-  padding-left: 20px;
-  padding-right: 20px;
-}
+  .categories:nth-child(3) .category-items {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .categories {
 
-.description-properties {
-  font-family: $text-bold;
-  font-size: 14px;
-  line-height: 1.2;
-}
+    .text-align {
+      text-align:center;
+      padding-bottom: 30px;
+    }
 
-.text-align {
-  text-align:center;
-  padding-bottom: 30px;
-}
+    img {
+      transition: .3s ease-in-out;
+      display: block;
+      margin: 30px auto;
+      height: 80px;
+    }
+    .category-items {
+      transition: .3s ease-in-out;
+      padding-bottom: 10px;
+      font-size: 18px;
+      font-family: $text-bolder;
+      text-align: center;
+      text-transform: uppercase;
+      line-height: 1.2;
+      width: 160px;
+      margin: 0 auto;
+    }
+    .description-properties {
+      transition: .5s ease-in-out;
+      font-family: $text-bold;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+    &amp;:hover {
 
-.margin-align {
-  margin: 0 auto;
-  text-align: center;
-}
+      img {
+        transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        -o-transform: scale(1.1);
+      }
+      .category-items {
+        transform: translateY(-10px);
+        -webkit-transform: translateY(-10px);
+        -ms-transform: translateY(-10px);
+        -moz-transform: translateY(-10px);
+        -o-transform: translateY(-10px);
+      }
+      .description-properties {
+      }
+    }
+  }
 
-h3 {
-  color:red;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -134,27 +154,10 @@ h3 {
 
 	data.showWidget = false;
 
-	var category_property = gs.getProperty("categories_color");
-	var parse = JSON.parse(category_property);
+	var portalUtils = new global.OCLPortalUtils();
+	var categoriesID = options.selected_category.split(",");
 	
-	var categories = options.selected_category.split(",");
-
-	var allCategories = [];
-	var grCategories = new GlideRecord("sc_category");
-	for(var i=0; i<categories.length; i++){
-		grCategories.get(categories[i])
-		var categoryJSON = {title : grCategories.getValue("title"),
-												description : grCategories.getValue("description"),
-												sys_id : grCategories.getUniqueValue(),
-												img : parse[categories[i]].imgcategory,
-												color : parse[categories[i]].color
-											 }
-		
-		allCategories.push(categoryJSON);
-	}
-	
-	data.categories = allCategories;	
-	
+	data.categories = portalUtils.getSelectableCategories(categoriesID);
 	
 })();]]></script>
         <servicenow>false</servicenow>
@@ -162,29 +165,35 @@ h3 {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-05 19:19:17</sys_created_on>
         <sys_id>64e9131adbe81010fa11cf241496191a</sys_id>
-        <sys_mod_count>227</sys_mod_count>
+        <sys_mod_count>257</sys_mod_count>
         <sys_name>GService Category Items V2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_64e9131adbe81010fa11cf241496191a</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-15 14:47:54</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-05-26 15:00:43</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
   <h1 class="category-title">${GService Request a Service}</h1>
   <div class="row margin-align">
     <div class="col-md-1"></div>
+    
     <div ng-repeat="item in data.categories" class="categories">
+      
       <div class="m-b-s col-md-2 text-align {{item.color}}">
+        
         <div ng-click="selectedCategory(item.sys_id)">
-          <img src="{{item.img}}" class="icon-img"/>
+          <img src="{{item.img}}" class="icon-img">
           <div>
             <div class="category-items category-item">{{item.title}}</div>
             <div class="description-properties">{{item.description}}</div>
           </div>
-        </div>       
+        </div>
+        
       </div>
+      
     </div>
+    
   </div>  
 </div>]]></template>
     </sp_widget>

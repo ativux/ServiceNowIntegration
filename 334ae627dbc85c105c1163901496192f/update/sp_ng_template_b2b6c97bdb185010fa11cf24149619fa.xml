@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_ng_template">
+    <sp_ng_template action="INSERT_OR_UPDATE">
+        <id>gservice_large_shopping_cart_v2.html</id>
+        <sp_widget display_value="GService SC Shopping Cart">10baf4bfdbd45010fa11cf24149619b3</sp_widget>
+        <sys_class_name>sp_ng_template</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-27 14:11:59</sys_created_on>
+        <sys_id>b2b6c97bdb185010fa11cf24149619fa</sys_id>
+        <sys_mod_count>105</sys_mod_count>
+        <sys_name>gservice_large_shopping_cart_v2.html</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_ng_template_b2b6c97bdb185010fa11cf24149619fa</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-05-20 20:39:18</sys_updated_on>
+        <template><![CDATA[<div ng-if="c.data.cartItems.length > 0">
+  <div class="panel panel-primary b {{::c.data.isMEE ? 'cart-mobile' : ''}}">
+    <div class="cart-header">
+      <h2 class="padder-md h3 m-t-sm col-sm-6 col-xs-8">${GService Checkout}</h2>
+    </div>
+    <table ng-if="::!c.data.isMEE" id="cart" class="table table-hover b-t table-condensed cart-table">
+      <thead>
+        <tr>
+          <th class="col-lg-2 wrapper">${GService Category}</th>
+          <th class="col-lg-2 hidden-xs">${GService Service}</th>
+          <th class="col-lg-2 hidden-xs">${GService Summary}</th>
+          <th class="col-lg-1 hidden-xs">${GService Deadline}</th>
+          <th class="col-lg-3 hidden-xs"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="item-row b-b" ng-repeat="item in c.data.cartItems | orderBy: 'created_on' track by item.sys_id">
+
+          <td data-th="Product"> <!-- class="col-lg-2" -->
+            <div class="">
+              <div class=""> <!-- col-sm-2 -->
+                <!-- Necessário realizar query para buscar a imagem da categoria e categoria do parent-->
+                <img src="{{::item.categoryImg}}">
+                <h4>{{::item.parent_name}}</h4>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row">
+              <div>
+                <div class="service_title">{{::item.category_name}}</div>
+                <div class="service_description">{{::item.name}}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="">
+              <div> <!-- class="col-lg-2" -->
+                <div>REQUESTED FOR: {{::item.username}}</div>
+                <div>EMAIL: {{item.email}}</div>
+                <div>LOCATION: {{item.location}}</div>
+                <div>PHONE: {{item.phone}}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row">
+              <div> <!-- class="col-lg-1" -->
+                <!-- Necessário realizar query para buscar sla-->
+                <p class="">SLA: {{::item.delivery_time}}</p>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row">
+              <!-- Botões para duplicar e excluir -->
+              <div class="duplicate_trash">
+                <div class="duplicate_button" ng-click="c.duplicateItem(item)" aria-label="${GService Duplicate Cart Item} {{::item.name}}" title="${GService Duplicate Cart Item} {{::item.name}}">
+                  <img src="duplicate.png"/>
+                </div>
+                <div class="trash_button" ng-click="c.removeItem(item)" aria-label="${Remove Item From Cart} {{::item.name}}" title="${Remove Item} {{::item.name}}">
+                  <img src="trash.png"/>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div ng-if="::c.data.isMEE">
+      <div ng-repeat="item in c.data.cartItems | orderBy: 'created_on' track by item.sys_id" class="cart-item-mobile-info b-b">
+        <div class="col-xs-3">
+          <a ng-href="{{::item.item_url}}" ng-if ="::item.picture">
+            <img ng-show="item.picture" ng-src="{{::item.picture}}" alt="{{::item.name}}" class="img-responsive item-image"/>
+          </a>
+        </div>
+        <div class="item-info col-xs-7">
+          <div class="col-sm-9">
+            <h2 class="nomargin h4"><a ng-href="{{::item.item_url}}" ng-class="::{'a-disabled': !item.can_order}" style="font-size: 16px !important;">{{::item.name}}</a></h2>
+          </div>
+          <div class="col-sm-4 col-xs-4">
+            <h2 class="nomargin h4"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix" ng-class="{'wrapper': !c.data.isMEE}">
+      <div class="sc-btn-group footer_checkout">
+        <!-- Falta decidir funcionalidade -->
+        <a ng-if="::!c.data.isMEE" href="?id=gservice_index" name="submit" class="btn sc-btn btn-default m-r-xs continue_shopping">${Continue Shopping}</a>
+        <div ng-if="::!c.data.isMEE" class="sc-btn-group pull-right submit_button">
+          <a style="cursor: pointer;" ng-disabled="c.checkoutInProgress" name="submit" ng-click="c.triggerCheckout()" class="submit_button_content" ng-class="{'rounded m-r-lg padder-xl': c.data.isMEE}">
+            <img src="submit.png" class="submit_img"/>
+            <div class="submit_title" ng-show="!c.checkoutInProgress && !c.data.sys_properties.twostep">${GService Submit}</div>
+            <span ng-show="c.checkoutInProgress">${Ordering...}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-show="c.data.cartItems.length == 0" class="empty_content">
+  <!-- <div class="empty-state-content"> -->
+  <div class="empty_title">${GService Checkout}</div>
+  <div class="empty_description">Não existem pedidos pendentes de envio no seu Checkout.<br>Verifique seu Dashboard para acompanhar seus pedidos</div>
+</div>]]></template>
+    </sp_ng_template>
+</record_update>

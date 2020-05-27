@@ -41,11 +41,13 @@
 		var selectedError = '';
 		//Envia objeto Json para o próximo Widget
 		//Breadcrumb enviado somente para não quebrar o próximo Widget
-		var jsonItem = {itemID: c.data.errorType.sys_id, table: "incident", breadcrumb : "", name : c.data.errorType.name};
-		$rootScope.$broadcast('openIncident', jsonItem, 'openIncident');
-		$('#formModal').modal("show");
+		if(c.data.errorType.sys_id){
+			var jsonItem = {itemID: c.data.errorType.sys_id, table: "incident", breadcrumb : "", name : c.data.errorType.name};
+			$rootScope.$broadcast('openIncident', jsonItem, 'openIncident');
+			$('#formModal').modal("show");
 
-		$('#errorModal').modal("hide");
+			$('#errorModal').modal("hide");
+		}
 	};
 }]]></client_script>
         <controller_as>c</controller_as>
@@ -203,7 +205,7 @@ input[type="radio"]:checked + .new-radio:after {
 																 "category_submit_img": "",
 																 "broadcast_name" : "openIncident"};
 	data.gserviceCatalogItem = $sp.getWidget('gservice_sc_catalog_item', sc_catalog_item_options);
-//		data.gserviceCatalogItem = $sp.getWidget('widget-sc-cat-item-v2', sc_catalog_item_options);
+	//		data.gserviceCatalogItem = $sp.getWidget('widget-sc-cat-item-v2', sc_catalog_item_options);
 
 	var gr = new GlideRecord("sc_cat_item_producer");
 	gr.addActiveQuery();
@@ -225,14 +227,14 @@ input[type="radio"]:checked + .new-radio:after {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-20 15:58:36</sys_created_on>
         <sys_id>2e1c19a9dbd01850fa11cf2414961903</sys_id>
-        <sys_mod_count>651</sys_mod_count>
+        <sys_mod_count>655</sys_mod_count>
         <sys_name>GService Error Modal</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2e1c19a9dbd01850fa11cf2414961903</sys_update_name>
         <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-14 18:01:02</sys_updated_on>
+        <sys_updated_on>2020-05-21 15:19:40</sys_updated_on>
         <template><![CDATA[<!--<div ng-if="showWidget == c.data.parentid">	Se quiser adicionar algo além do modal, ativar isso-->
 <div class="modal fade" style="z-index: 1041" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">

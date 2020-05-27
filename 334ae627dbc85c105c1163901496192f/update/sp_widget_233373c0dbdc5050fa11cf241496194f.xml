@@ -20,8 +20,8 @@
         <css>.avatar-custom-size{
   margin-top: 42px;
   margin-bottom: 20px;
-  height:125px;
-  width:125px;
+  height: 100px;
+  width: 100px;
   box-shadow: 0 0 0 4px $deep-sky-blue;
   font-size: 20px !important;
 }
@@ -41,15 +41,16 @@
 .hello-stranger {
   font-family: $text-bold;
   color: $deep-sky-blue;
-  font-size: 34px;
+  font-size: 32px;
   letter-spacing: 0;
 }
 
 .stranger-help {
   font-family: $text-rough;
   color: $deep-sky-blue;
-  font-size: 30px;
+  font-size: 26px;
   letter-spacing: 0;
+  line-height: 1;
 }
 
 .avatar-container .avatar.soloAvatar .sub-avatar{
@@ -57,7 +58,7 @@
   height: 100%;
   border-radius: 0;
   font-size: 50px;
-  line-height: 130px;
+  line-height: 110px;
   font-family: $text-bold;
   background-color: white;
   color: $deep-sky-blue;
@@ -81,14 +82,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-16 11:08:03</sys_created_on>
         <sys_id>233373c0dbdc5050fa11cf241496194f</sys_id>
-        <sys_mod_count>120</sys_mod_count>
+        <sys_mod_count>127</sys_mod_count>
         <sys_name>GService Main User</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_233373c0dbdc5050fa11cf241496194f</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-14 18:01:44</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-05-26 15:02:15</sys_updated_on>
         <template><![CDATA[<div ng-if="::user.logged_in" class="align-all">
   
   <div>
@@ -97,7 +98,7 @@
     </a>
   </div>
   
-  <div class="hello-stranger em-tight">${Hello} {{::user.name}}!</div>
+  <div class="hello-stranger em-tight">Olá {{::user.name}}!</div>
   
   <div class="stranger-help em-tight" style="line-height:0.95">
     <div>${Em que conseguimos <br> te ajudar hoje?}</div>

@@ -6,75 +6,66 @@
 .col-md-12 {
   //padding-left: 0;
   //padding-right: 0;
-}
-.container {
-	//padding-left: 0;
-	//padding-right: 0;
-}
-
-.content-subcategory {
-  padding-left: 0;
-	padding-right: 0;
 }</css>
         <draft>false</draft>
         <dynamic_title_structure/>
-        <id>gservice_index</id>
+        <id>gservice_my_dashboard</id>
         <internal>false</internal>
         <public>false</public>
         <roles/>
         <short_description/>
         <sys_class_name>sp_page</sys_class_name>
-        <sys_created_by>organize.vinicius.oliveira</sys_created_by>
-        <sys_created_on>2020-04-14 17:25:49</sys_created_on>
-        <sys_id>1b567a63db40dc10fa11cf241496196e</sys_id>
-        <sys_mod_count>86</sys_mod_count>
-        <sys_name>gservice_index</sys_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 11:28:45</sys_created_on>
+        <sys_id>0d6e2a7fdbc01050fa11cf24149619d3</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>gservice_my_dashboard</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
-        <sys_update_name>sp_page_1b567a63db40dc10fa11cf241496196e</sys_update_name>
+        <sys_update_name>sp_page_0d6e2a7fdbc01050fa11cf24149619d3</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-26 13:58:38</sys_updated_on>
-        <title>GService Homepage</title>
+        <sys_updated_on>2020-05-26 19:31:15</sys_updated_on>
+        <title>GService My Dashboard</title>
     </sp_page>
-    <sys_translated_text action="delete_multiple" query="documentkey=1b567a63db40dc10fa11cf241496196e"/>
+    <sys_translated_text action="delete_multiple" query="documentkey=0d6e2a7fdbc01050fa11cf24149619d3"/>
     <sys_translated_text action="INSERT_OR_UPDATE">
-        <documentkey>1b567a63db40dc10fa11cf241496196e</documentkey>
+        <documentkey>0d6e2a7fdbc01050fa11cf24149619d3</documentkey>
         <fieldname>dynamic_title_structure</fieldname>
         <language>pb</language>
         <sys_created_by>organize.jorge.garcia</sys_created_by>
-        <sys_created_on>2020-05-07 14:09:39</sys_created_on>
-        <sys_id>d0362847db289010fa11cf24149619f8</sys_id>
+        <sys_created_on>2020-05-21 12:13:30</sys_created_on>
+        <sys_id>23d11c2fdb38d410fa11cf2414961957</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-07 14:09:39</sys_updated_on>
+        <sys_updated_on>2020-05-21 12:13:30</sys_updated_on>
         <tablename>sp_page</tablename>
         <value/>
     </sys_translated_text>
     <sys_translated_text action="INSERT_OR_UPDATE">
-        <documentkey>1b567a63db40dc10fa11cf241496196e</documentkey>
+        <documentkey>0d6e2a7fdbc01050fa11cf24149619d3</documentkey>
         <fieldname>short_description</fieldname>
         <language>pb</language>
         <sys_created_by>organize.jorge.garcia</sys_created_by>
-        <sys_created_on>2020-05-07 14:09:39</sys_created_on>
-        <sys_id>10362807db289010fa11cf241496196f</sys_id>
+        <sys_created_on>2020-05-21 12:13:30</sys_created_on>
+        <sys_id>dfd1d82fdb38d410fa11cf24149619ee</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-07 14:09:39</sys_updated_on>
+        <sys_updated_on>2020-05-21 12:13:30</sys_updated_on>
         <tablename>sp_page</tablename>
         <value/>
     </sys_translated_text>
     <sys_translated_text action="INSERT_OR_UPDATE">
-        <documentkey>1b567a63db40dc10fa11cf241496196e</documentkey>
+        <documentkey>0d6e2a7fdbc01050fa11cf24149619d3</documentkey>
         <fieldname>title</fieldname>
         <language>pb</language>
         <sys_created_by>organize.jorge.garcia</sys_created_by>
-        <sys_created_on>2020-05-07 14:09:39</sys_created_on>
-        <sys_id>10362847db289010fa11cf24149619f6</sys_id>
+        <sys_created_on>2020-05-21 12:13:30</sys_created_on>
+        <sys_id>57d1d82fdb38d410fa11cf24149619f1</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-07 14:09:39</sys_updated_on>
+        <sys_updated_on>2020-05-21 12:13:30</sys_updated_on>
         <tablename>sp_page</tablename>
-        <value>GService Homepage</value>
+        <value>GService My Dashboard</value>
     </sys_translated_text>
 </record_update>

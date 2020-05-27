@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>43</height>
+        <image>d174fb1ddb8d1c105c1163901496199b</image>
+        <name>requester_information.png</name>
+        <size_bytes>831</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-27 15:12:40</sys_created_on>
+        <sys_id>2354fb1ddb8d1c105c11639014961935</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>requester_information.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_2354fb1ddb8d1c105c11639014961935</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-27 15:12:51</sys_updated_on>
+        <thumbnail/>
+        <width>43</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#708090</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>d2d4c8e7fdc1dcde7c17d4d41e5e74e36677fce53f0fd4e48593e4794ca4ba25</hash>
+        <image_height>43</image_height>
+        <image_width>43</image_width>
+        <size_bytes>831</size_bytes>
+        <size_compressed>854</size_compressed>
+        <state>available</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-27 15:12:51</sys_created_on>
+        <sys_id>d174fb1ddb8d1c105c1163901496199b</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-27 15:12:51</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>2354fb1ddb8d1c105c11639014961935</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="d174fb1ddb8d1c105c1163901496199b">d174fb1ddb8d1c105c1163901496199b</sys_attachment>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-27 15:12:51</sys_created_on>
+        <sys_id>1574fb1ddb8d1c105c1163901496199b</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>AT8DwPyJUE5HDQoaCgAAAA1JSERSAAAAKwAAACsIBgAAAOFdccAAAAAJcEhZcwAAFxEAABcRAcom8z8AAALxSURBVFiF7ZnhbdswEIWvRf87G9gb1BvEG0QbxJlA0QSyJpC1gTNBnQkSb5BOUHuDaAIXBJ5j+ulokhLVIkUfwB8WQfLT8Xg8nb8cj0f5LPr6aUhF5FuqiYqqmYnIDD8XIrJHk7rMX1Os0dsNiqq5EZEMzcBNPEN+ioiB3tRl/vZHYAH5iOYDdGknIqtYi0fBFlVjAFcDIFkGelmX+T4ZLKy5FZFbz8Jme9/p+Rxt6hjXAng7GLaomjlAtcUM4Mb012XOkNo8SzRtZx7qMt/0hsUCr8rkB1gj+pRjl4wr5bHATlhMamC+U9eTOVw+SwZAL7BjbAgn8DVYM9Fd6ERyfsE1wtkeJ97pi9i5DRnE+PBCC2/qDVZUTaaAFj6fwk7cw1oG4AcsqApAGQBPmuCFO+rAWtax9VSXuTqBNW6uuIzgQDmFsMUvdFtUTWecZtklnfwWF8BogoUrmn8VAstgQYcJCx6ULp/rnLSm8VO4ow6LrbStegjwU1sZYq9g4YfQ8AaD8FoXsJx1ZfQ7BvRkXeeBCpCxbuniYTfghbxXIMukiiYCXIsCLsG6O6t7gt1WYe27v41N5XCCf4nIi2lF1fTJY3mME9ZWn5yTw5sagjzidU8J/RnWNvcAaQnKLHI6Z+SxLXtDfUk+RVLKhuU3GnKqx4Xt+100gniHu7CQnVCk8OE+4nU/PnkY1rbuJNGhixW73wcTw/Khig07g4SMzxnrGZZvLL5+xxYnURc8F7BK5jTtEdR7yapH2HLDQpxHrjHR2OKiyYE/iTqwSAlt605isy+SNxdG0lPS46DkW5TtuCuqpjNYUUOPWl/mZtUlbO20PFqFhfmf6XGJ8pFTdZmb/gJpnvlkn18rDTnqEq0rCv3NukEG9xpeN5BzzfUtcUVmBn+8V7r7VWSsybVCxEmxta5HB6QXNAhW0lQRrxWb01URCTp1ffYZoEH+/+9Wvlm4ikP/U9jBlbahle6ksLbo3xpb76kS+/9/2o0iEfkNCmdmuRp0WBMAAAAASUVORK5CYIJ7E2RsPwMAAA==</data>
+        <length>1128</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="d174fb1ddb8d1c105c1163901496199b">d174fb1ddb8d1c105c1163901496199b</sys_attachment>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-27 15:12:51</sys_created_on>
+        <sys_id>9574fb1ddb8d1c105c1163901496199b</sys_id>
+    </sys_attachment_doc>
+</record_update>

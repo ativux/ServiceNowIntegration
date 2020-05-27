@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_rectangle_menu_item">
+    <sp_rectangle_menu_item action="INSERT_OR_UPDATE">
+        <active>false</active>
+        <color>default</color>
+        <condition/>
+        <display_1/>
+        <display_2/>
+        <display_date/>
+        <filter/>
+        <glyph/>
+        <hint/>
+        <kb_article/>
+        <kb_category/>
+        <kb_topic/>
+        <label>Meu Dashboard</label>
+        <order>100</order>
+        <record_script><![CDATA[// maximum number of entries in this Menu
+var max = 9999;
+
+var t = data;  // shortcut
+t.items = [];
+
+var u = gs.getUser().getID();
+
+// use record watchers to tell header when to update dropdown counts
+t.record_watchers = [];
+t.record_watchers.push({'table':'incident','filter':'active=true^opened_by=' + u});
+t.record_watchers.push({'table':'sc_req_item','filter':'active=true^opened_by=' + u});
+
+//Incidents
+var z = new GlideRecord('incident');
+//z.addActiveQuery();
+z.addQuery('opened_by', gs.getUserID());
+z.orderByDesc('sys_updated_on');
+z.query();
+while (z.next()) {
+  if (!z.canRead())
+    continue;
+  
+  var a = {};
+  $sp.getRecordValues(a, z, 'short_description,sys_id,number,sys_updated_on');
+  if (z.short_description.nil())
+    a.short_description = "(No description)";
+  a.__table = z.getTableName();
+  a.__page = "ticket";
+  a.type = 'record';
+ // a.sortOrder = z.sys_updated_on.getGlideObject().getNumericValue();
+  t.items.push(a);
+}
+
+//Requests
+var z = new GlideRecord('sc_req_item');
+z.addQuery('opened_by', gs.getUserID());
+z.orderByDesc('sys_updated_on');
+z.query();
+while (z.next()) {
+  if (!z.canRead())
+    continue;
+  
+  var a = {};
+  $sp.getRecordValues(a, z, 'short_description,sys_id,number,sys_updated_on');
+  if (z.short_description.nil())
+    a.short_description = "(No description)";
+  a.__table = z.getTableName();
+  a.__page = "ticket";
+  a.type = 'record';
+ // a.sortOrder = z.sys_updated_on.getGlideObject().getNumericValue();
+  t.items.push(a);
+}
+
+t.items.sort(function(a, b) {
+  return b.sortOrder - a.sortOrder;
+});
+
+t.count = t.items.length;
+t.items = t.items.splice(0, max+1); // only want first 30
+
+var link = {title: gs.getMessage('View all requests'), type: 'link', href: '?id=my_requests', items: []};
+t.items.unshift(link); // put 'View all requests' first]]></record_script>
+        <sc_cat_item/>
+        <sc_category/>
+        <short_description/>
+        <sp_page display_value="gservice_my_dashboard">0d6e2a7fdbc01050fa11cf24149619d3</sp_page>
+        <sp_rectangle_menu display_value="GService SP Header Menu">02c8f2a7db40dc10fa11cf2414961921</sp_rectangle_menu>
+        <sp_rectangle_menu_item/>
+        <sys_class_name>sp_rectangle_menu_item</sys_class_name>
+        <sys_created_by>organize.vinicius.oliveira</sys_created_by>
+        <sys_created_on>2020-04-14 17:38:23</sys_created_on>
+        <sys_id>25497ee7db40dc10fa11cf24149619a3</sys_id>
+        <sys_mod_count>19</sys_mod_count>
+        <sys_name>Meu Dashboard</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_rectangle_menu_item_25497ee7db40dc10fa11cf24149619a3</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-05-20 15:07:49</sys_updated_on>
+        <table/>
+        <type>page</type>
+        <url/>
+        <url_target/>
+    </sp_rectangle_menu_item>
+    <sys_translated_text action="delete_multiple" query="documentkey=25497ee7db40dc10fa11cf24149619a3"/>
+</record_update>

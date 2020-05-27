@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>126</height>
+        <image>9fe16215db491c105c11639014961989</image>
+        <name>mini_search_dodgerblue.png</name>
+        <size_bytes>2082</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-27 09:11:22</sys_created_on>
+        <sys_id>b9816215db491c105c116390149619fc</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>mini_search_dodgerblue.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_b9816215db491c105c116390149619fc</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-27 09:12:26</sys_updated_on>
+        <thumbnail/>
+        <width>126</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#ffffff</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>4c946a76220e3fa71cc125a382c6c7aeba0c3dd003bec126dee4907fa20fe6a6</hash>
+        <image_height>126</image_height>
+        <image_width>126</image_width>
+        <size_bytes>2082</size_bytes>
+        <size_compressed>2105</size_compressed>
+        <state>available</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-27 09:12:16</sys_created_on>
+        <sys_id>9fe16215db491c105c11639014961989</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-27 09:12:16</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>b9816215db491c105c116390149619fc</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="9fe16215db491c105c11639014961989">9fe16215db491c105c11639014961989</sys_attachment>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-27 09:12:16</sys_created_on>
+        <sys_id>dfe16215db491c105c11639014961989</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>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</data>
+        <length>2796</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="9fe16215db491c105c11639014961989">9fe16215db491c105c11639014961989</sys_attachment>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-27 09:12:16</sys_created_on>
+        <sys_id>53e16215db491c105c1163901496198a</sys_id>
+    </sys_attachment_doc>
+</record_update>
