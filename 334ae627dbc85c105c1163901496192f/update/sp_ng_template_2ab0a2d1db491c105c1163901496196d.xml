@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_ng_template">
+    <sp_ng_template action="INSERT_OR_UPDATE">
+        <id>gservice_typeahead_dashboard</id>
+        <sp_widget display_value="GService Typeahead Search">d1156733dbc81050fa11cf2414961952</sp_widget>
+        <sys_class_name>sp_ng_template</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-27 09:07:02</sys_created_on>
+        <sys_id>2ab0a2d1db491c105c1163901496196d</sys_id>
+        <sys_mod_count>16</sys_mod_count>
+        <sys_name>gservice_typeahead_dashboard</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_ng_template_2ab0a2d1db491c105c1163901496196d</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-29 14:46:30</sys_updated_on>
+        <template><![CDATA[<form ng-submit="c.submitSearch()">
+  <input type="hidden" name="id" value="search"/>
+  <input type="hidden" name="t" value="{{c.searchType}}"/>
+  <div class="input-group input-group-dashboard input-group-{{::c.options.size}} {{data.categoryBdColor}}">
+    <input ng-if="c.showSuggestions"
+           name="q" type="text" ng-model="c.searchTerm"
+           placeholder="Busca detalhada por serviço"
+           autocomplete="off"
+           uib-typeahead="item as item.term for item in c.getSearchSuggestions($viewValue)"
+           typeahead-wait-ms="250"
+           typeahead-min-length="1"
+           typeahead-focus-first="false"
+           typeahead-on-select="c.onSelect($item, $model, $label)"
+           typeahead-template-url="gservice-typeahead.html"
+           typeahead-popup-template-url="gservice-typeahead-popup.html"
+           class="form-control input-typeahead"
+           role="textbox"
+           aria-label="{{::c.options.title}}" tabindex="0" aria-haspopup="true">    
+    <div class="close_result" ng-click="c.clearResults()" ng-if="c.showClear">
+      x
+      <span class="tooltip_top">${Clean Search}</span>
+    </div>
+    <span class="input-group-btn dashboard-button">
+      <button name="search" type="submit" class="btn btn-{{::c.options.color}}"
+              title="{{::c.data.searchMsg}}" aria-label="{{::c.data.searchMsg}}">
+        <img src="gservice_mini_search_dashboard.png" class="icon-img-dashboard"/>
+      </button>
+    </span>
+  </div>
+</form>]]></template>
+    </sp_ng_template>
+</record_update>

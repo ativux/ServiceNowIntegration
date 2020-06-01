@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope) {
+
+	var c = this;
+
+	c.applyFilter = function(){
+		var typeFilters = {};
+		for(i in c.data.filters.typeFilter){
+			var key = c.data.filters.typeFilter[i].table;
+			typeFilters[key] = c.data.filters.typeFilter[i].selected;
+		}
+
+		var statusFilters = {};
+		for(i in c.data.filters.statusFilter){
+			var key = c.data.filters.statusFilter[i].name;
+			statusFilters[key] = c.data.filters.statusFilter[i].selected;
+		}
+		$rootScope.$broadcast('applyFilter', typeFilters, statusFilters);
+	}
+
+	c.applyDate = function(daysAgo){
+		$rootScope.$broadcast('applyDate', daysAgo);
+	}
+
+	c.clearAllFilters = function(){
+		for(i in c.data.filters.statusFilter){
+			c.data.filters.statusFilter[i].selected = false;
+		}
+		for(i in c.data.filters.typeFilter){
+			c.data.filters.typeFilter[i].selected = false;
+		}
+		$rootScope.$broadcast('clearAllFilters');
+	}
+	
+	c.statusFilterState = function(){
+		c.data.showStatusFilter = !c.data.showStatusFilter;
+	}
+	
+	c.typeFilterState = function(){
+		c.data.showTypeFilter = !c.data.showTypeFilter;
+	}
+	
+	$scope.$on("getSearchedItemsFilterClear", function (event) {
+		c.server.update();
+	});
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.content_list {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-left: 0 !important;
+
+  .filter-click-size{
+    width: 120px;
+    height: 30px;
+    margin-bottom: 20px;
+  }
+
+  .title {
+    color: $deep-sky-blue;
+    font-size: 14px;
+    font-family: $text-bolder;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 15px !important;
+    .break-line-other{
+      width: 60px;
+    }
+  }
+  .break-line-filter{
+    width: 84px;
+  }
+
+  .status_filter {
+    display: flex;
+
+    input[type="checkbox"]{
+      display: none;
+    }
+
+    .new-radio {
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      border: 2px solid #737373;
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 4px;
+    }
+    .radio-after {
+      content: "";
+      height: 10px;
+      width: 10px;
+      display: block;
+      position: absolute;
+      left: 1px;
+      top: 1px;
+      border-radius: 50%;
+      background-color: $deep-sky-blue;
+    }
+
+    .filter_name {
+      margin-left: 30px;
+      margin-top: 2px;
+      font-family: $text-bold;
+    }
+  }
+
+  .arrow-size {
+    height: 10px;
+    position: relative;
+    top: -34px;
+    left: 100px;
+  }
+  .invert-arrow{
+    transform: rotateX(180deg);
+  }
+
+  .confirm_button {
+    font-size: 12px;
+    color: $deep-sky-blue;
+    font-family: $text-bolder;
+    text-decoration: underline;
+    text-transform: uppercase;
+    margin-left: 30px;
+    padding-top: 10px !important;
+  }
+
+  .radio-properties {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px;
+  }
+
+  .list-properties{
+    padding-left: 0 !important;
+    margin-bottom: -8px;
+  }
+
+  .detail_search {
+    margin-top: -30px;
+    margin-right: 60px;
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_list_filter</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService List Filter</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var localInput = input;
+	
+	data.filters = {statusFilter : [], typeFilter : []};
+	data.showStatusFilter = true;
+	data.showTypeFilter = true;
+
+	var statusFilter = gs.getProperty("gservice_list_filters_status").split("|");
+	var typeFilter = gs.getProperty("gservice_list_filters_type").split("|");
+
+	for(i in statusFilter){
+		data.filters.statusFilter.push(JSON.parse(statusFilter[i]));
+	}
+
+	for(i in typeFilter){
+		data.filters.typeFilter.push(JSON.parse(typeFilter[i]));
+	}
+
+	data.statusFilterTitle = gs.getMessage("Filtrar por status").toUpperCase();
+	data.typeFilterTitle = gs.getMessage("Filtrar por tipo").toUpperCase();
+	
+	data.search_property = "185fda81db851c10fa11cf24149619db";
+
+	var typeahead_search_options = {"contextual_search_sources": data.search_property, "limit": 5, 
+																	"broadcast_name" : "getSearchedItemsFilter",
+																	"category_color" : "",
+																	"category_bg_color" : "",
+																	"category_bd_color" : ""
+																 };
+
+	data.gserviceTypeahead = $sp.getWidget('gservice_typeahead_search', typeahead_search_options);
+
+	data.lastDays = gs.getMessage("Last 15 days").toUpperCase();
+	data.lastMonth = gs.getMessage("Last month").toUpperCase();
+	data.clearFilter = gs.getMessage("Clear Filters").toUpperCase();
+	
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-05-17 16:16:27</sys_created_on>
+        <sys_id>efe26c1edb70d0105c116390149619b9</sys_id>
+        <sys_mod_count>254</sys_mod_count>
+        <sys_name>GService List Filter</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_efe26c1edb70d0105c116390149619b9</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-29 15:02:54</sys_updated_on>
+        <template><![CDATA[<div class="content_list col-md-12">
+
+  <div class="col-md-3 filter-padding">
+    <div ng-click="c.statusFilterState()" class="filter-click-size">
+      <div class="title break-line-filter">{{data.statusFilterTitle}}
+      </div>
+      <img class="arrow-size" src="gservice_filter_dashboard_arrow.png" ng-class="c.data.showStatusFilter ? '' : 'invert-arrow'"/>
+    </div>
+    <div class="list-properties" ng-if="data.showStatusFilter" ng-repeat="statusFilter in data.filters.statusFilter">
+      <div method="get" class="radio-properties">
+        <label for="{{statusFilter.name}}" class="status_filter">
+          <input type="checkbox"
+                 id="{{statusFilter.name}}"
+                 name="selectedItem"
+                 value="{{statusFilter.name}}"
+                 ng-model="statusFilter.selected">
+          <div class="new-radio">
+            <span ng-class="statusFilter.selected ? 'radio-after' : ''"></span>
+          </div>
+          <div class="filter_name">{{statusFilter.name}}</div>
+        </label>
+      </div>
+    </div>
+    <div class="confirm_button" ng-if="data.showStatusFilter" ng-click="c.applyFilter()">${Confirmar}</div>
+  </div>
+
+  <div class="col-md-2 filter-padding">
+    <div ng-click="c.typeFilterState()" class="filter-click-size">
+      <div class="title break-line-filter">{{data.typeFilterTitle}}
+      </div>
+      <img class="arrow-size" src="gservice_filter_dashboard_arrow.png" ng-class="c.data.showTypeFilter ? '' : 'invert-arrow'"/>
+    </div>
+    <div class="list-properties" ng-if="data.showTypeFilter" ng-repeat="typeFilter in data.filters.typeFilter">
+      <div method="get" class="radio-properties">
+        <label for="{{typeFilter.name}}" class="status_filter">
+          <input type="checkbox"
+                 id="{{typeFilter.name}}"
+                 name="selectedItem"
+                 value="{{typeFilter.name}}"
+                 ng-model="typeFilter.selected">
+          <div class="new-radio">
+            <span ng-class="typeFilter.selected ? 'radio-after' : ''"></span>
+          </div>
+          <div class="filter_name">{{typeFilter.name}}</div>
+        </label>
+      </div>
+    </div>
+    <div class="confirm_button" ng-if="data.showTypeFilter" ng-click="c.applyFilter()">${Confirmar}</div>
+  </div>
+
+  <div class="col-md-3 detail_search filter-padding">
+    <sp-widget widget="data.gserviceTypeahead"></sp-widget>
+  </div>
+
+  <div class="col-md-1 title filter-padding">
+    <div ng-click="c.applyDate(15)" class="break-line-other">
+      {{data.lastDays}}
+    </div>
+  </div>
+
+  <div class="col-md-1 title filter-padding">
+    <div ng-click="c.applyDate(30)" class="break-line-other">
+      {{data.lastMonth}}
+    </div>
+  </div>
+
+  <div class="col-md-1 title filter-padding">
+    <div ng-click="c.clearAllFilters()" class="break-line-other">
+      {{data.clearFilter}}
+    </div>
+  </div>
+
+
+</div>]]></template>
+    </sp_widget>
+</record_update>

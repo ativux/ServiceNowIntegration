@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_message">
+    <sys_ui_message action="INSERT_OR_UPDATE">
+        <application/>
+        <key>GService My Dashboard</key>
+        <language>en</language>
+        <message>MY DASHBOARD</message>
+        <sys_class_name>sys_ui_message</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-27 16:27:23</sys_created_on>
+        <sys_id>a7754861db015c105c11639014961944</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService My Dashboard</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_ui_message_a7754861db015c105c11639014961944</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-27 16:27:23</sys_updated_on>
+    </sys_ui_message>
+</record_update>

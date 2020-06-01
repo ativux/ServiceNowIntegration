@@ -7,6 +7,7 @@
 	c.options.title = c.options.title || c.data.searchMsg;
 	c.options.color = c.options.color || "default";
 	c.searchTerm = c.data.q;
+	c.showClear = false;
 	c.pageID = $scope.page.id;
 	c.showSuggestions =  c.data.searchTypeBehavior === "suggestions" && c.data.isSuggestionsEnabled === "true";
 
@@ -102,8 +103,13 @@
 
 	c.submitSearch = function(){
 		c.getResults().then(function(response){
-			$rootScope.$broadcast(c.data.broadcast_name, c.data.results, c.data.searchSourceID);
+			if(c.searchTerm){
+				c.showClear = true;
+				$rootScope.$broadcast(c.data.broadcast_name, c.data.results, c.data.searchSourceID);
+			}
 		});
+
+
 	};
 
 	c.getResults = function() {
@@ -153,6 +159,19 @@
 				return item;
 			});
 		});
+	}
+
+	$scope.$on("clearAllFilters", function (event) {
+		c.searchTerm = "";
+		c.showClear = false;
+		$rootScope.$broadcast(broadcastClear);
+	});
+
+	c.clearResults = function(){
+		c.searchTerm = "";
+		c.showClear = false;
+		var broadcastClear = c.data.broadcast_name + "Clear";
+		$rootScope.$broadcast(broadcastClear);
 	}
 
 	c.searchType = c.data.searchType;
@@ -227,6 +246,15 @@ ul.dropdown-menu i.ta-icon, i.ta-img {
   border: 0;
 }
 
+.icon-img-dashboard {
+  height: 20px;
+  border: 0;
+}
+
+::placeholder {
+  font-size: 13px;
+}
+
 .text-left {
   font-family: arial;
   color: #708090;
@@ -237,17 +265,37 @@ ul.dropdown-menu i.ta-icon, i.ta-img {
   z-index: 3;
 }
 
+.dashboard-button {
+  .btn{
+    padding: 6px 12px !important;
+    margin-bottom: -12px !important;
+  }
+}
+
 .input-group .form-control {
   width: 100%;
 }
 
 .input-group {
-  //border-bottom: 2px solid #00BFFF;
   border-bottom: 2px solid $dodger-blue;
 }
 
+.input-group-dashboard {
+  border-bottom: 2px solid $deep-sky-blue;
+
+  .close_result {
+    position: absolute;
+    z-index: 3;
+    top: 20px !important;
+    right: 60px !important;
+    font-size: 24px;
+    &amp;:hover {
+      opacity: .75;
+    }
+  }
+}
 .margins{
-	margin: 32px 30px 40px 50px;
+  margin: 32px 30px 40px 50px;
 }
 
 input[name='q'] {
@@ -257,6 +305,40 @@ input[name='q'] {
 input[name='q']:focus {
   outline: none;
   box-shadow: none;
+}
+
+input[type="reset"]{
+  border: 0;
+  position: absolute;
+  right: 15px;
+  top: 30px;
+  font-size: 28px;
+  z-index: 4;
+  background: none;
+}
+
+.close_result-default {
+  position: absolute;
+  z-index: 3;
+  top: 75px;
+  right: 10px;
+  font-size: 24px;
+
+  &amp;:hover {
+    opacity: .75;
+  }
+}
+
+.close_result {
+  position: absolute;
+  z-index: 3;
+  top: 30px;
+  right: 10px;
+  font-size: 24px;
+
+  &amp;:hover {
+    opacity: .75;
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -271,7 +353,7 @@ input[name='q']:focus {
 	lazyLoader.putTemplates(scope.data.typeaheadTemplates);
 }]]></link>
         <name>GService Typeahead Search</name>
-        <option_schema>[{"name":"title","section":"Presentation","label":"Title","type":"string"},{"name":"color","section":"Presentation","label":"Color","type":"string"},{"name":"glyph","section":"Presentation","label":"glyph","type":"string"},{"name":"size","section":"Presentation","label":"Size","type":"string"},{"hint":"Number of typeahead search results returned (default 15)","name":"limit","section":"Behavior","label":"Limit","type":"integer"},{"displayValue":"Search Source","hint":"If provided, limit the scope of the typeahead search to the given search sources","name":"contextual_search_sources","display_value_list":[],"section":"Behavior","label":"Contextual Search Sources","type":"glide_list","value":"sp_search_source","ed":{"reference":"sp_search_source"}},{"name":"broadcast_name","section":"Behavior","label":"Broadcast Name","type":"string"},{"name":"category_color","section":"Behavior","label":"Category Color","type":"string"},{"name":"category_bg_color","section":"Behavior","label":"Category Bg Color","type":"string"},{"name":"category_bd_color","section":"Behavior","label":"Category Bd Color","type":"string"},{"name":"category_search_img","section":"Behavior","label":"category Search Img","type":"string"}]</option_schema>
+        <option_schema>[{"name":"title","section":"Presentation","label":"Title","type":"string"},{"name":"color","section":"Presentation","label":"Color","type":"string"},{"name":"glyph","section":"Presentation","label":"glyph","type":"string"},{"name":"size","section":"Presentation","label":"Size","type":"string"},{"hint":"Number of typeahead search results returned (default 15)","name":"limit","section":"Behavior","label":"Limit","type":"integer"},{"displayValue":"Search Source","hint":"If provided, limit the scope of the typeahead search to the given search sources","name":"contextual_search_sources","display_value_list":[],"section":"Behavior","label":"Contextual Search Sources","type":"glide_list","value":"sp_search_source","ed":{"reference":"sp_search_source"}},{"name":"broadcast_name","section":"Behavior","label":"Broadcast Name","type":"string"},{"name":"category_color","section":"Behavior","label":"Category Color","type":"string"},{"name":"category_bg_color","section":"Behavior","label":"Category Bg Color","type":"string"},{"name":"category_bd_color","section":"Behavior","label":"Category Bd Color","type":"string"},{"name":"category_search_img","section":"Behavior","label":"category Search Img","type":"string"},{"hint":"Optional to show category filters","name":"filter_search_source","section":"Data","label":"Filter Search Source","type":"string"}]</option_schema>
         <public>true</public>
         <roles/>
         <script><![CDATA[(function() {
@@ -285,6 +367,15 @@ input[name='q']:focus {
 	data.searchSourceID = options.contextual_search_sources;
 	data.broadcast_name = options.broadcast_name;
 
+	switch(data.broadcast_name){
+		case "getSearchedItems":
+		case "getSearchedItemsCategory":
+			data.htmlTemplate = "gservice_typeahead_default"
+			break;
+		case "getSearchedItemsFilter":
+			data.htmlTemplate = "gservice_typeahead_dashboard"
+			break;
+	}
 	data.categoryColor = options.category_color;
 	data.categoryBgColor = options.category_bg_color;
 	data.categoryBdColor = options.category_bd_color;
@@ -310,9 +401,13 @@ input[name='q']:focus {
 
 	var searchSources;
 	data.searchType = null;
+	//Edited for test, it has to be a search source at the options;
+	//data.searchType = null || options.filter_search_source;
 	data.searchSources = [];
 	if ($sp.getParameter("id") == "search" && $sp.getParameter("t")) {
 		data.searchType = $sp.getParameter("t");
+		//Edited for test, it has to be a search source at the options;
+		//data.searchType = $sp.getParameter("t") || options.filter_search_source;
 		searchSources = $sp.getSearchSources(data.portalID);
 	} else {
 		var contextualSearchSourceIDs = options.contextual_search_sources || null;
@@ -355,44 +450,14 @@ input[name='q']:focus {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 15:27:43</sys_created_on>
         <sys_id>d1156733dbc81050fa11cf2414961952</sys_id>
-        <sys_mod_count>121</sys_mod_count>
+        <sys_mod_count>194</sys_mod_count>
         <sys_name>GService Typeahead Search</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_d1156733dbc81050fa11cf2414961952</sys_update_name>
         <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-14 18:02:18</sys_updated_on>
-        <template><![CDATA[<form ng-submit="c.submitSearch()">
-  <input type="hidden" name="id" value="search"/>
-  <input type="hidden" name="t" value="{{c.searchType}}"/>
-  <div class="input-group input-group-{{::c.options.size}} {{data.categoryBdColor}}">
-    
-    <span class="input-group-btn">
-
-      <button name="search" type="submit" class="btn btn-{{::c.options.color}}"
-              title="{{::c.data.searchMsg}}" aria-label="{{::c.data.searchMsg}}">
-        <img src="{{data.categorySearchImg}}" class="icon-img"/>
-      </button>
-
-    </span>
-    <input ng-if="c.showSuggestions"
-           name="q" type="text" ng-model="c.searchTerm"
-           autocomplete="off"
-           uib-typeahead="item as item.term for item in c.getSearchSuggestions($viewValue)"
-           typeahead-wait-ms="250"
-           typeahead-min-length="1"
-           typeahead-focus-first="false"
-           typeahead-on-select="c.onSelect($item, $model, $label)"
-           typeahead-template-url="gservice-typeahead.html"
-           typeahead-popup-template-url="gservice-typeahead-popup.html"
-           class="form-control input-typeahead"
-           role="textbox"
-           aria-label="{{::c.options.title}}" tabindex="0" aria-haspopup="true">
-  </div>
-  <div class="text-left">
-    {{data.searchMsg}}
-  </div>
-</form>]]></template>
+        <sys_updated_on>2020-05-29 18:35:45</sys_updated_on>
+        <template><![CDATA[<div ng-include="data.htmlTemplate"></div>]]></template>
     </sp_widget>
 </record_update>

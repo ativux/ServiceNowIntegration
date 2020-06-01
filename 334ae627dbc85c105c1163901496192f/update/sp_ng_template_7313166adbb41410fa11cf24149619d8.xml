@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_ng_template">
+    <sp_ng_template action="INSERT_OR_UPDATE">
+        <id>gservice_assets_table</id>
+        <sp_widget display_value="GService My Dashboard Content">123491e2dbf01410fa11cf24149619d9</sp_widget>
+        <sys_class_name>sp_ng_template</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-18 19:04:35</sys_created_on>
+        <sys_id>7313166adbb41410fa11cf24149619d8</sys_id>
+        <sys_mod_count>22</sys_mod_count>
+        <sys_name>gservice_assets_table</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_ng_template_7313166adbb41410fa11cf24149619d8</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-29 19:38:31</sys_updated_on>
+        <template><![CDATA[<!-- Template created for: "MEUS EQUIPAMENTOS E APLICAÇÕES" -->
+<div>
+  <div>
+    <div ng-if="data.showEmptyMessage" class="without_notification">
+      ${Você ainda não tem equipamentos ou aplicações.}
+    </div>
+    <table ng-if="!data.showEmptyMessage" class="table table-hover b-t table-condensed cart-table assets_content">
+      <thead>
+        <tr>
+          <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
+            <div ng-click="c.orderBy(column.order, data.assetsTab)">
+              {{column.name}}
+              <span ng-if="column.order">
+                <span ng-if="!column.direction"><!--VAZIO--></span>
+                <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == -1 ? 'invert-arrow' : ''"}/></span>
+              </span>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="item-row b-b" ng-repeat="item in c.data.assets">
+          <td class="column_name" data-th="Product">
+            <!-- Necessário query para buscar se é equipamento ou aplicação -->
+            <div class="asset_name">{{item.title}}</div>
+          </td>
+          <td>
+            <div class="service_title">{{item.description}}</div>
+          </td>
+          <td>
+            <div class="service_title">${GService View More}</div>
+          </td>
+          <td>
+            <div ng-click="">
+              <img src="GService_DASH_ReportarErro.png"/>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<now-message key="Done" value="${Done}"/>]]></template>
+    </sp_ng_template>
+</record_update>

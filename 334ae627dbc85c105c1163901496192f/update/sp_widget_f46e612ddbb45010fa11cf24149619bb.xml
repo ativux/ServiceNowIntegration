@@ -3,11 +3,78 @@
         <category>custom</category>
         <client_script><![CDATA[function($scope, $rootScope, $timeout, categorySubscribe, $element, spUtil) {
 
-	/* widget controller */
-
 	var c = this;
+	c.isLoading = true;
+	
+	$scope.loadingIndicator = $rootScope.loadingIndicator;
+	//Show widget after loaded
+	$scope.$on('sp_loading_indicator', function(e, value) {
+		if($scope.loadingIndicator && !value){
+			c.isLoading = false;
+		}
+		$scope.loadingIndicator = value;
+	});
+
+	c.data.newNotificationAvailable = false;
+
+	spUtil.recordWatch($scope, "sc_task", c.data.taskQuery, function(event) {
+		c.refreshNotificationsCount(event.data);
+	});
+
+	spUtil.recordWatch($scope, "incident", c.data.incidentQuery, function(event) {
+		c.refreshNotificationsCount(event.data);
+	});
+
+	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
+		c.refreshApprovalsCount();
+	});
+
+	c.refreshNotificationsCount = function(item){
+		c.server.get({
+			action: "notificationsCount",
+			taskQuery: c.data.taskQuery,
+			incidentQuery : c.data.incidentQuery
+		}).then(function(response) {
+			c.data.notificationsCount = response.data.notificationsCount;
+			c.refreshNotifications(item);
+		});
+	}
+	
+	c.refreshNotifications = function(item){
+		if(c.data.selectedTab.name == "notificationsTab"){
+			if(item.record.state.value == "3" || item.record.state.value == "-5"){
+				for(i in item.changes){
+					if(item.changes[i] == "state"){
+						c.data.newNotificationAvailable = true;
+					}
+				}
+			}
+		}
+	}
+
+	c.refreshApprovalsCount = function(){
+		c.server.get({
+			action: "approvalsCount",
+			approverQuery : c.data.approverQuery
+		}).then(function(response) {
+			c.data.approvalsCount = response.data.approvalsCount;
+		});
+	}
+
+	$scope.userID = $scope.user.sys_id;
+	//Get user picture
+	$rootScope.$on('sp.avatar_changed', function() {
+		$scope.userID = "";
+		$timeout(function(){
+			$scope.userID = $scope.user.sys_id;
+		});
+	});
 	
 	c.selectTab = function(tab){
+		c.isLoading = true;
+		//Var used to show notification modal
+		c.data.newNotificationAvailable = false;
+
 		for(i in c.data.tabs){
 			if(c.data.tabs[i].name == tab.name){
 				c.data.tabs[i].selected = true;
@@ -16,52 +83,186 @@
 				c.data.tabs[i].selected = false;
 			}
 		}
-		
+
 		c.server.get({
 			action: "selectedTab",
 			tab: tab 
 		}).then(function(response) {
 			c.data.gservice_dashboard_list = response.data.gservice_dashboard_list;
-			$rootScope.$broadcast('updateRequestList');
+			//$rootScope.$broadcast('updateRequestList');
 		});
 	}
+
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.panel-content {
-  padding-top: 20px;
-  padding-bottom: 10px;
-}
+        <css>.content {
+  background-color: white;
+  padding: 0 90px;
+  padding-top: 30px;
 
-.icon-img {
-  display: block;
-  margin: 0 auto;
-  height: 100px;
-  margin-top: 30px;
-  margin-bottom: 30px;
-}
+  .header-loader{
+    padding: 50px;
+    padding-bottom: 100px;
+    .sp-loading-indicator{
+      color: $deep-sky-blue !important;
+    }
+  }
 
-.tabs {
-  padding-bottom: 10px;
-  font-size: 22px;
-  font-family: $text-bolder;
-  text-align: center;
-  text-transform: uppercase;
-  line-height: 1.2;
-}
+  .content_avatar {
+    display: flex;
 
-.categories:nth-child(3) .category-items {
-  padding-left: 20px;
-  padding-right: 20px;
+    a {
+      .avatar-custom-size {
+        margin-top: 15px;
+        margin-bottom: 30px;
+        height: 90px;
+        width: 90px;
+        box-shadow: 0 0 0 4px $deep-sky-blue;
+        font-size: 20px !important;
+      }
+      .avatar-container .avatar.soloAvatar .sub-avatar {
+        border-radius: 0;
+        font-size: 50px;
+        line-height: 95px;
+        font-family: $text-bold;
+        background-color: white;
+        color: $deep-sky-blue;
+      }
+    }
+
+    .user-info-properties {
+      margin-left: 100px;
+      color: $slate-gray;
+
+      .name-properties {
+        font-size: 30px;
+        font-family: $text-bold;
+        color: $deep-sky-blue;
+        letter-spacing: -1px;
+      }
+      .job-properties {
+        color: $dodger-blue;
+        font-size: 14px;
+      }
+      .location-properties {
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .tabs-align {
+    display: flex;
+    justify-content: center;
+
+    .categories {
+      display: inline-block;
+      width: 20%;
+      position: relative;
+
+      .tab_items {
+        transition: .4s ease-in-out;
+        //padding: 0 20px;
+        margin: 0 auto;
+
+        .tab_images {
+          transition: .4s ease-in-out;
+          height: 80px;
+          display: flex;
+          justify-content: center;
+
+          .icon-img {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            text-align: center;
+          }
+        }
+        .tab_title {
+          transition: .4s ease-in-out;
+          font-size: 14px;
+          font-family: $text-bolder;
+          text-align: center;
+          text-transform: uppercase;
+          line-height: 1;
+          width: 150px;
+          margin: inherit;
+          margin-top: 10px;
+        }
+        &amp;:hover {
+
+          .icon-img {
+            transition: .2s ease-in-out;
+            transform: scale(1.1);
+            -webkit-transform: scale(1.1);
+            -ms-transform: scale(1.1);
+            -moz-transform: scale(1.1);
+            -o-transform: scale(1.1);
+          }
+          .tab_title {
+            transition: .2s ease-in-out;
+            transform: translateY(-10px);
+            -webkit-transform: translateY(-10px);
+            -ms-transform: translateY(-10px);
+            -moz-transform: translateY(-10px);
+            -o-transform: translateY(-10px);
+            color: $deep-sky-blue;
+          }
+        }
+      }
+      .tab_current {
+        color: $deep-sky-blue;
+      }
+
+    }
+    .categories:nth-child(1) {
+      .tab_items {
+        .tab_title { width: 90px; }
+      }
+    }
+    .categories:nth-child(4) {
+      .tab_items {
+        .tab_title { width: 155px; }
+      }
+    }
+
+  }
+
 }
 
 .text-align {
-  text-align:center;
+  text-align: center;
   padding-bottom: 30px;
 }
 
 .margin-align {
   margin: 0 auto;
   text-align: center;
+}
+
+.count-align {
+  text-align: center;
+  background: $coral;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  color: white;
+  font-family: $text-bold;
+  position: absolute;
+  bottom: 95px;
+  right: 20px;
+}
+
+.notification-align {
+  font-size: 12px;
+  font-family: globorounded_bd;
+  line-height: 1;
+}
+
+.line {
+  width: 100%;
+  height: 2px;
+  background-color: $deep-sky-blue;
+  margin-top: 30px;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -69,42 +270,64 @@
         <docs/>
         <field_list/>
         <has_preview>false</has_preview>
-        <id>gservice_my_dashboard</id>
+        <id>gservice_my_dashboard_tabs</id>
         <internal>false</internal>
         <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
-        <name>GService My Dashboard</name>
+        <name>GService My Dashboard Tabs</name>
         <option_schema>[{"displayValue":"Category","hint":"Selecione a categoria que deseja exibir","name":"selected_category","display_value_list":[],"section":"Data","label":"Category","type":"glide_list","value":"sc_category","ed":{"reference":"sc_category"}}]</option_schema>
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
-	/* populate the 'data' object */
-	/* e.g., data.table = $sp.getValue('table'); */
 
 	var localInput = input;
+	var portalUtils = new global.OCLPortalUtils();
+
+	//Used to get the current user sys_id
+	var userID = gs.getUser().getID();
+	data.user_id = userID;
+
+	//Get the current user information
+	var grUserInfo = new GlideRecord ("sys_user");
+	grUserInfo.get(data.user_id);
+	data.name = grUserInfo.getValue("first_name");
+	data.email = grUserInfo.getValue("email");
+	data.phone = grUserInfo.getValue("mobile_phone");
+	data.location = grUserInfo.getDisplayValue("location");
+
+	data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
+	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
+	data.approverQuery = "state=requested^source_table=sc_req_item^approver=" + gs.getUserID();
+
+	data.notificationsCount = portalUtils.setNotificationsCount(data.taskQuery, data.incidentQuery);
+	data.approvalsCount = portalUtils.setApprovalsCount(data.approverQuery);
 
 	var tabs = gs.getProperty("gservice_dashboard_tabs").split("|");
 	data.tabs = [];
 	for(i in tabs){
 		var tab = JSON.parse(tabs[i]);
+		if(tab.show == false){
+			tab.show = (gs.getUser().hasRole("approver_user") || gs.getUser().hasRole("itil"));
+		}
 		data.tabs.push(tab);
 		data.tabs[i].label = gs.getMessage(tab.label);
 	}
-
-
+	
 	var gservice_dashboard_list_options = {"table": data.tabs[0].name,
-																				 "table_template": data.tabs[0].template};
-	data.gservice_dashboard_list = $sp.getWidget('gservice_all_dashboards', gservice_dashboard_list_options);
-
+										   "table_template": data.tabs[0].template};
+	data.gservice_dashboard_list = $sp.getWidget('gservice_my_dashboard_content', gservice_dashboard_list_options);
 
 	if(localInput){
 		if(localInput.action == "selectedTab"){
 			var gservice_dashboard_list_options = {"table": localInput.tab.name,
-																						 "table_template": localInput.tab.template};
-			data.gservice_dashboard_list = $sp.getWidget('gservice_all_dashboards', gservice_dashboard_list_options);
+												   "table_template": localInput.tab.template};
+			data.gservice_dashboard_list = $sp.getWidget('gservice_my_dashboard_content', gservice_dashboard_list_options);
+		}
+		if(localInput.action == "notificationsCount"){
+		}
+		if(localInput.action == "approvalsCount"){
+			data.approvalsCount = portalUtils.setApprovalsCount(localInput.approverQuery);
 		}
 	}
-
-
 
 })();]]></script>
         <servicenow>false</servicenow>
@@ -112,34 +335,61 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-05-15 13:49:52</sys_created_on>
         <sys_id>f46e612ddbb45010fa11cf24149619bb</sys_id>
-        <sys_mod_count>36</sys_mod_count>
-        <sys_name>GService My Dashboard</sys_name>
+        <sys_mod_count>378</sys_mod_count>
+        <sys_name>GService My Dashboard Tabs</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f46e612ddbb45010fa11cf24149619bb</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-18 11:12:44</sys_updated_on>
-        <template><![CDATA[<div class="panel-content panel" id="widget-category-items">
-  <div class="row margin-align">
-    <div class="col-md-1"></div>
-    <div ng-repeat="tab in data.tabs" class="categories">
-      <div class="m-b-s col-md-2 text-align">
-        <div ng-click="c.selectTab(tab)">
-          <img ng-if="!tab.selected" src="{{tab.img}}" class="icon-img"/>
-          <img ng-if="tab.selected" src="{{tab.imgSelected}}" class="icon-img"/>
-          <div>
-            <div class="tabs">{{tab.label}}</div>
-          </div>
-        </div>       
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-01 12:43:46</sys_updated_on>
+        <template><![CDATA[<div class="content" id="widget-category-items">
+
+  <div class="content_avatar">
+    <div class="">
+      <a title="Avatar Pic" href=""><!-- Exibe a foto do usuário logado -->
+        <sn-avatar class="avatar-custom-size" primary="userID" />
+      </a>
+    </div>
+    <div class="user-info-properties">
+      <div class="name-properties">{{data.name}}</div>
+      <div class="job-properties">CARGO DO FUNCIONÁRIO</div>
+      <div class="">{{data.email}}</div>
+      <div class="">{{data.phone}}</div>
+      <div class="location-properties">{{data.location}}</div>
+    </div>
+  </div>
+
+  <div class="tabs-align">
+    <div class="categories" ng-repeat="tab in data.tabs" ng-if="tab.show">
+      <div class="tab_items" ng-class="{'tab_current': tab.selected}" ng-click="c.selectTab(tab)">
+        <span class="notification-align" ng-if="c.data.newNotificationAvailable && tab.name == 'notificationsTab'"> ${Você possui novas notificações, atualize a página ou reabra o menu} </span>
+        <div class="tab_images">
+          <img ng-show="!tab.selected" src="{{tab.img}}" class="icon-img"/>
+          <img ng-show="tab.selected" src="{{tab.imgSelected}}" class="icon-img"/>
+        </div>
+        <span class="count-align" ng-if="data.notificationsCount > 0 && tab.name == 'notificationsTab'"> {{data.notificationsCount}} </span>
+        <span class="count-align" ng-if="data.approvalsCount > 0 && tab.name == 'approvalsTab'"> {{data.approvalsCount}} </span>
+        <div class="tab_title">{{tab.label}}</div>
       </div>
     </div>
   </div>
 
-  <div id="show-selected-item">
-    <sp-widget widget="data.gservice_dashboard_list"></sp-widget>
+  <div class="line"></div>
+  
+  <div class="header-loader" ng-show="c.isLoading">
+    <div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   </div>
-
+  
+  <div ng-if="!c.isLoading">
+    <div id="show-selected-item">
+      <sp-widget widget="data.gservice_dashboard_list"></sp-widget>
+    </div>
+  </div>
 </div>
 
 ]]></template>

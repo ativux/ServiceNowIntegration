@@ -54,7 +54,8 @@
 	}
 
 	//When a item is clicked
-	c.selectItem = function(itemID){
+	c.selectItem = function(itemID, item){
+		c.selected_item = item;
 		if(categorySubscribe.getItemID()){
 			if(categorySubscribe.getItemID().sys_id != itemID.sys_id){
 				categorySubscribe.setSelectedItemOnly(itemID);
@@ -68,11 +69,16 @@
 				}
 				else{
 					c.data.showSelectedItem = true;
-					var jsonItem = {itemID: itemID, breadcrumb: c.data.breadcrumb, table: "sc_cat_item", duplicatedItemID : false};
-					$rootScope.$broadcast('openItem', jsonItem, "openItem");		
+					c.data.itemDescription = item.description;
 				}
 			}
+			else{
+				c.data.arrayItems[i].selected = false;
+			}
 		}
+		
+		var jsonItem = {itemID: itemID, breadcrumb: c.data.breadcrumb, table: "sc_cat_item", duplicatedItemID : false};
+		$rootScope.$broadcast('openItem', jsonItem, "openItem");
 	}
 
 	//When a broadcast is sended from GService Catalog Navigation
@@ -126,6 +132,7 @@
 		c.data.selectedCategory = data;
 		c.server.update().then(function(response){
 			c.data.showThirdCategories = false;
+			$rootScope.$broadcast('knowledgeCategory', c.data.categoryColor);
 			$rootScope.$broadcast('getSearchedItemsCategoryTitle', c.data.title, c.data.categoryColor);
 			if(!c.scrollSelect){
 				scrollCategory();
@@ -227,20 +234,20 @@
 			thirdCategory : thirdCategory
 		}).then(function(response) {
 			c.data.thirdCategories = response.data.thirdCategories;
-			
+
 			for(i in c.data.secCategories){
 				if(c.data.secCategories[i].sys_id == secCategory.sys_id){
 					c.data.secCategories[i].selected = true;
 				}
 			}
-			
+
 			for(i in c.data.thirdCategories){
 				if(c.data.thirdCategories[i].sys_id == thirdCategory.sys_id){
 					c.data.thirdCategories[i].selected = true;
 				}
 			}
-			
-			
+
+
 			c.data.showThirdCategories = response.data.showThirdCategories;
 
 			c.data.subcategorySelected = response.data.subcategorySelected;
@@ -270,9 +277,12 @@
 	//When selected an item in another widget or search, use this function to show the selected item
 	function selectedItem(itemID){
 		for(i in c.data.arrayItems){
+			c.data.arrayItems[i].selected = false;
 			if(c.data.arrayItems[i].sys_id == itemID){
+				c.selected_item = c.data.arrayItems[i];
 				c.data.arrayItems[i].selected = c.data.arrayItems[i].title;
 				c.data.showSelectedItem = true;
+				c.data.itemDescription = c.data.arrayItems[i].description;
 			}
 		}
 		var duplicatedItemID = false;
@@ -325,31 +335,31 @@
   padding-bottom: 40px;
   margin-top: 0;
 
-  .content_center {
-    width: 50%;
-    padding: 0 50px;
-  }
-
   .content_header {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    img { max-width: 350px; }
+
+    img {
+      width: 30%;
+    }
 
     .content_center {
+      padding: 0 50px;
+      width: 40%;
+
       .title, .description {
         text-align: center;
       }
       .title {
-        font-size: 52px;
+        font-size: 46px;
         text-transform: uppercase;
         margin-top: 40px;
-        padding: 0 20px;
         line-height: 1;
       }
       .description {
-        font-size: 14px;
+        font-size: 16px;
         color: $slate-gray;
         padding-top: 40px;
         padding-bottom: 20px;
@@ -361,7 +371,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
     padding: 0 100px;
 
     .line {
@@ -370,17 +379,24 @@
       margin: 30px 0;
     }
 
-    .form-group {
-      .icon-img {
-        width: 50px;
-        height: 50px;
+    .content-form-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .form-group {
+        width: 400px;
+        .icon-img {
+          width: 50px;
+          height: 50px;
+        }
+        .input-group { border-bottom: 2px solid $dodger-blue; }
+        .text-left { font-size: 12px; }
       }
-      .input-group { border-bottom: 2px solid $dodger-blue; }
-      .text-left { font-size: 12px; }
     }
 
     .articles {
-      margin-bottom: 50px;
+      margin-bottom: -30px;
 
       .article_list {
         margin-bottom: 5px;
@@ -472,6 +488,13 @@
         width: 80%;
       }
     }
+
+    .description_item {
+      font-size: 18px;
+      font-family: globorounded_bd;
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
   }
 
   //Configurações do Radio check
@@ -487,57 +510,91 @@
     }
 
     .new-radio {
-      height: 22px;
-      width: 22px;
+      height: 20px;
+      width: 20px;
       border-radius: 50%;
-      border: 3px solid #737373;
+      border: 2px solid $slate-gray;
       display: block;
       position: absolute;
       left: 0;
       top: 4px;
-    }
-  }
 
-  .radio-after{
-    input[type="radio"]:checked + .new-radio:after {
+    }
+
+    .radio-after {
       content: "";
       height: 12px;
       width: 12px;
       display: block;
       position: absolute;
-      left: 8px;
-      top: 8px;
-      transform: translate(-50%, -50%) scale(1);
+      left: 2px;
+      top: 2px;
       border-radius: 50%;
-      transition: 900ms ease-in-out 0s;
     }
-  }
 
-  .radio-color_category1{
-    input[type="radio"]:checked + .new-radio:after {background: $dodger-blue;}
-    .item_title:hover {color: $dodger-blue; !important}
-  }
-  .radio-color_category2{
-    input[type="radio"]:checked + .new-radio:after {background: $dark-orchid;}
-    .item_title:hover {color: $dark-orchid; !important}
-  }
-  .radio-color_category3{
-    input[type="radio"]:checked + .new-radio:after {background: $tan;}
-    .item_title:hover {color: $tan; !important}
-  }
-  .radio-color_category4{
-    input[type="radio"]:checked + .new-radio:after {background: $orange;}
-    .item_title:hover {color: $orange; !important}
-  }
-  .radio-color_category5{
-    input[type="radio"]:checked + .new-radio:after {background: $turquoise;}
-    .item_title:hover {color: $turquoise; !important}
+    .item_title {
+      font-size: 16px;
+    }
+
+    .radio-color_category1{
+      background: $dodger-blue !important;
+      .item_title:hover {color: $dodger-blue; !important}
+    }
+    .radio-color_category2{
+      background: $dark-orchid;
+      .item_title:hover {color: $dark-orchid; !important}
+    }
+    .radio-color_category3{
+      background: $tan;
+      .item_title:hover {color: $tan; !important}
+    }
+    .radio-color_category4{
+      background: $orange;
+      .item_title:hover {color: $orange; !important}
+    }
+    .radio-color_category5{
+      background: $turquoise;
+      .item_title:hover {color: $turquoise; !important}
+    }
+
+    .hover_color_category1{
+      .item_title_current {color: $dodger-blue; !important}
+      .item_title:hover {color: $dodger-blue; !important}
+    }
+    .hover_color_category2{
+      .item_title_current {color: $dark-orchid; !important}
+      .item_title:hover {color: $dark-orchid; !important}
+    }
+    .hover_color_category3{
+      .item_title_current {color: $tan; !important}
+      .item_title:hover {color: $tan; !important}
+    }
+    .hover_color_category4{
+      .item_title_current {color: $orange; !important}
+      .item_title:hover {color: $orange; !important}
+    }
+    .hover_color_category5{
+      .item_title_current {color: $turquoise; !important}
+      .item_title:hover {color: $turquoise; !important}
+    }
   }
 
   .selected_category {
     text-align: center;
     font-weight: bold;
     font-size: 24px;
+  }
+}
+
+@media only screen and (max-width : 1100px)  {
+  .content {
+    .content_header {
+      .content_center {
+        .title {
+          font-size: 32px;
+        }
+      }
+    }
   }
 }</css>
         <data_table>sp_instance</data_table>
@@ -608,7 +665,6 @@
 	data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful");
 	data.scCatItemCategory = $sp.getWidget("widget-sc-cat-item-v2");
 
-
 	data.itemSelectMessage = gs.getMessage("Item Select Message");
 
 	if(localInput){
@@ -673,28 +729,23 @@
 															 "hide_delivery_time": "false",
 															 "category_color": data.categoryColor,
 															 "category_bd_color": data.categoryBdColor,
-															 "category_submit_img": data.categorySubmitImg};
+															 "category_submit_img": data.categorySubmitImg,
+															 "broadcast_name" : "openItem"};
 
 		data.gserviceCatalogItem = $sp.getWidget('gservice_sc_catalog_item', sc_catalog_item_options);
 
 		data.kb_most_viewed_options = {"max_number": "4", "title" : gs.getMessage("Artigos mais visitados"),
 																	 "category_bg_color" : data.categoryBgColor};
+
+		data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful");
+
 	}
 
 	function selectedSecondCategory(){
 		data.thirdCategories = portalUtils.getSubcategories(localInput.secCategory.sys_id, localInput.secCategory.title);
 
 		//Utilizado para deixar as subcategorias em ordem alfabética
-		data.thirdCategories.sort(function (a, b) {
-			if (a.title > b.title) {
-				return 1;
-			}
-			if (a.title < b.title) {
-				return -1;
-			}
-			// a must be equal to b
-			return 0;
-		});
+		data.thirdCategories = portalUtils.sortObject(data.thirdCategories, "title");
 
 		if(data.thirdCategories.length != 0){
 			data.showThirdCategories = true;
@@ -721,28 +772,10 @@
 	}
 
 	//Utilizado para deixar as categorias em ordem alfabética
-	data.secCategories.sort(function (a, b) {
-		if (a.title > b.title) {
-			return 1;
-		}
-		if (a.title < b.title) {
-			return -1;
-		}
-		// a must be equal to b
-		return 0;
-	});
+	data.secCategories = portalUtils.sortObject(data.secCategories, "title");
 
 	//Utilizado para deixar os itens em ordem alfabética
-	data.arrayItems.sort(function (a, b) {
-		if (a.title > b.title) {
-			return 1;
-		}
-		if (a.title < b.title) {
-			return -1;
-		}
-		// a must be equal to b
-		return 0;
-	});
+	data.arrayItems = portalUtils.sortObject(data.arrayItems, "title");
 
 	var half = Math.ceil(data.arrayItems.length/2);
 	var minor = [];
@@ -772,16 +805,16 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 13:30:17</sys_created_on>
         <sys_id>832ac777dbc41050fa11cf2414961944</sys_id>
-        <sys_mod_count>1428</sys_mod_count>
+        <sys_mod_count>1555</sys_mod_count>
         <sys_name>GService Categories</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_832ac777dbc41050fa11cf2414961944</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-15 17:25:38</sys_updated_on>
+        <sys_updated_on>2020-05-28 11:06:57</sys_updated_on>
         <template><![CDATA[<div id="widget-category" class="content" ng-show="data.showWidget">
-  <div class="">
+  <div>
 
     <div class="content_header">
       <img src="{{data.categoryImgLeft}}"/>
@@ -794,26 +827,27 @@
 
     <div class="content_body">
 
-      <div class="content_center">
+      <div class="content-form-group">
         <div class="form-group">
           <widget id="gservice_typeahead_search" options='data.typeahead_search_options'></widget>
         </div>
+      </div>
 
-        <div>
-          <widget id="gservice_search_result" options="data.search_result_options"></widget>
-        </div>
+      <div>
+        <widget id="gservice_search_result" options="data.search_result_options"></widget>
+      </div>
 
-        <div class="categories_title">{{data.subcategoriesTitle}}</div>
-        <div ng-repeat="category in c.data.secCategories">
-          <div class="row text-center">
-            <span ng-click="c.selectedSecondCategory(category)" ng-class="category.selected ? '{{data.categoryColor}} selected_category' : 'categories_list'">{{category.title}}</span>
-          </div>
+      <div class="categories_title">{{data.subcategoriesTitle}}</div>
+
+      <div ng-repeat="category in c.data.secCategories">
+        <div class="row text-center">
+          <span ng-click="c.selectedSecondCategory(category)" ng-class="category.selected ? '{{data.categoryColor}} selected_category' : 'categories_list'">{{category.title}}</span>
         </div>
       </div>
 
       <div class="line {{data.categoryBgColor}}"></div>
 
-      <div id="third-categories" class="content_center">
+      <div id="third-categories">
         <div ng-repeat="category in c.data.thirdCategories" ng-if="c.data.showThirdCategories">
           <div class="row text-center">
             <span ng-click="c.selectedThirdCategory(category)" ng-class="category.selected ? '{{data.categoryColor}} selected_category subcategory_list' : 'categories_list subcategory_list'">{{category.title}}</span>
@@ -828,25 +862,28 @@
           <div class="breadcrumb_item">{{data.breadcrumb}}</div>
           <h3 class="request_title {{data.categoryColor}}">{{data.itemSelectMessage}} {{data.categoryTitle}}?</h3>
 
-          <div class="m-b-s col-md-6 content_cat_items {{data.categoryHoverColor}}" ng-repeat="item in c.data.arrayItems">
+          <div class="m-b-s col-md-6 content_cat_items hover_{{data.categoryColor}}" ng-repeat="item in c.data.arrayItems">
             <div class="text-left ">
               <span method="get" class="radio-properties">
-                <label for="{{item.title}}" class="cat_item radio-after {{data.radioColor}}">
+                <label for="{{item.title}}" class="cat_item">
                   <input type="radio"
                          id="{{item.title}}"
                          name="selectedItem"
                          value="{{item.title}}"
                          ng-model="item.selected"
-                         ng-click="c.selectItem(item.sys_id)">
-                  <div class="item_title">{{item.title}}</div>
-                  <span class="new-radio {{data.categoryBdColor}}"></span>
+                         ng-click="c.selectItem(item.sys_id, item)">
+                  <div class="item_title" ng-class="{'item_title_current':item==c.selected_item}">{{item.title}}</div>
+                  <div class="new-radio">
+                    <span ng-class="item.selected ? '{{data.radioColor}} radio-after' : ''"></span>
+                  </div>
                 </label>
               </span>
             </div>
           </div>
-
         </div>
       </div>
+
+      <div class="description_item" ng-show="c.data.showSelectedItem">{{c.data.itemDescription}}</div>
 
       <div class="line {{data.categoryBgColor}}" ng-show="c.data.showSelectedItem"></div>
 

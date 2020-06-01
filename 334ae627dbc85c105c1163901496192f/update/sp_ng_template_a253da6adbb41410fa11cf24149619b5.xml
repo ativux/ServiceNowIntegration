@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_ng_template">
+    <sp_ng_template action="INSERT_OR_UPDATE">
+        <id>gservice_my_requests_table</id>
+        <sp_widget display_value="GService My Dashboard Content">123491e2dbf01410fa11cf24149619d9</sp_widget>
+        <sys_class_name>sp_ng_template</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-18 19:05:35</sys_created_on>
+        <sys_id>a253da6adbb41410fa11cf24149619b5</sys_id>
+        <sys_mod_count>252</sys_mod_count>
+        <sys_name>gservice_my_requests_table</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_ng_template_a253da6adbb41410fa11cf24149619b5</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-01 12:51:18</sys_updated_on>
+        <template><![CDATA[<!-- Template created for: "MINHAS SOLICITAÇÕES" -->
+<div ng-if="data.showEmptyMessage" ng-show="!c.isLoading" class="without_notification">
+  ${Você ainda não tem solicitações.}
+</div>
+
+<div ng-if="!data.showEmptyMessage">
+  <div class="col-md-12 filter-padding">
+    <sp-widget widget="data.listFilter_widget"></sp-widget>
+  </div>
+
+  <div >
+    <div>
+      <table class="table table-hover b-t table-condensed cart-table">
+
+        <div class="center-loading">
+          <div class="col-md-12" ng-show="c.isLoading">
+            <div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+
+        <thead ng-show="!c.isLoading" class="thead_myrequests" id="list-columns">
+          <tr>
+            <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
+              <div ng-click="c.orderBy(column.order, data.requests)">
+                {{column.name}}
+                <span ng-if="column.order">
+                  <span ng-if="!column.direction"></span>
+                  <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == -1 ? 'invert-arrow' : ''"}/></span>
+                </span>
+              </div>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody ng-show="!c.isLoading" ng-repeat="item in c.data.requests">
+          <div ng-if="data.showFilterClean" class="without_notification">
+            ${Ops! Não encontramos resultados para essa busca.}
+          </div>
+
+          <!-- Requests Init -->
+          <tr class="item-row b-b" ng-show="item.show">
+            <td data-th="Product" class="column_product">
+              <div>
+                <div>
+                  <!-- Necessário realizar query para buscar a imagem da categoria e categoria do parent-->
+                  <div class="number_text">{{item.number}}</div>
+                  <div class="item_text">{{item.title}}</div>
+                  <div ng-if="item.watch">${GService FollowUp} {{item.watch}}</div>
+                  <div class="more_detail" ng-click="c.showDetails(item)">${GService Details}</div>
+                </div>
+              </div>
+            </td>
+            <td class="column_status">
+              <div class="row">
+                <div>
+                  <div class="service_title {{item.colorClass}}">{{item.statusLabel}}</div>
+                </div>
+              </div>
+            </td>
+            <td class="column_opened">
+              <div class="item_opened">{{item.opened}}</div>
+            </td>
+            <td class="column_sla">
+              <p class="sla_description">SLA: {{item.delivery_time}}</p>
+            </td>
+            <td class="column_buttons">
+              <div ng-if="item.eraseButton" class="button_erase" ng-click="c.itemAction(item, 'cancelItem')"><img src="trash.png"/>
+                <span class="tooltip_right">${Cancel Request}</span>
+              </div>
+              <div ng-if="item.acceptButton" class="" ng-click="c.itemAction(item, 'acceptSolution')"><img src="gservice_dashboard_confirm.png"/>
+                <span class="tooltip_bottom">${Accept Solution}</span>
+              </div>
+              <div ng-if="item.reopenButton" class="" ng-click="c.itemAction(item, 'rejectSolution')"><img src="gservice_reopen.png"/>
+                <span class="tooltip_right">${Reopen Request}</span>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td ng-if="item.showDetails" class="content_conversation" colspan='5'>
+              <div class="col-md-5 process_flow">
+                <div class="process_flow_title">Etapas do Atendimento</div>
+                <div class="line_flow"></div>
+                <div ng-repeat="status in item.processFlow" class="items_flow">
+                  <div class="status_flow" ng-class="c.statusColor(status.selected)">{{$index+1}}</div>
+                  <div ng-class="{'status_active' : status.selected == true}">{{status.name}}</div>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<now-message key="Done" value="${Done}"/>]]></template>
+    </sp_ng_template>
+</record_update>

@@ -1,0 +1,1243 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope, $timeout, spUtil, $location) {
+	var c = this;
+	c.approvalComment = '';
+	c.approvalItem = false;
+	c.needComment = false;
+	c.isLoading = true;
+
+	$scope.loadingIndicator = $rootScope.loadingIndicator;
+	//Show widget after loaded
+	$scope.$on('sp_loading_indicator', function(e, value) {
+		if($scope.loadingIndicator && !value){
+			c.isLoading = false;
+		}
+		$scope.loadingIndicator = value;
+	});
+
+	spUtil.recordWatch($scope, "task", c.data.requestsID, function(event) {
+		if(event.data.record.state){
+			c.server.get({
+				action: "stateChangedBackend",
+				itemID: event.data.sys_id,
+				newState: event.data.record.state,
+				requests: c.data.requests
+			}).then(function(response) {
+				c.data.requests = response.data.requests;
+			});
+		}
+	});
+
+	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
+		var changes = event.data.changes;
+		var stateChanged = false;
+		for(i in changes){
+			if(changes[i] == "state"){
+				stateChanged = true;
+			}
+		}
+		if(event.data.record.state.value == "requested" && stateChanged){
+			c.server.get({
+				action: "getNewApproval",
+				approvalID: event.data.sys_id,
+				approvals: c.data.approvals
+			}).then(function(response) {
+				if(response.data.approvals.length > 0){
+					c.data.approvals = response.data.approvals;
+					c.data.showEmptyMessage = false;
+				} else {
+					c.data.showEmptyMessage = true;
+				}
+			});
+		}
+	});
+
+	$scope.$on('refreshNotificationList', function(event, notificationID) {
+		c.server.get({
+			action: "refreshNotificationList",
+			notificationWidget : c.data.notificationWidget,
+			notificationID : notificationID
+		}).then(function(response) {
+			c.data.notificationWidget = response.data.notificationWidget;
+			c.data.showEmptyMessage = true;
+			for(i in c.data.notificationWidget){
+				if(data.notificationWidget[i].show){
+					c.data.showEmptyMessage = false;
+				}
+			}
+			$('#pendingResponse').modal("show");
+		});
+	});
+
+	$scope.$on('applyFilter', function(event, typeFilter, statusFilter) {
+		c.isLoading = true;
+		c.server.get({
+			action: "applyFilter",
+			typeFilter: typeFilter,
+			statusFilter: statusFilter,
+			requests : c.data.requests
+		}).then(function(response) {
+			c.data.requests = response.data.requests;
+			$timeout(function() {
+				scrollTo("list-columns");
+			});
+			c.verifyEmptySearch();
+		});
+	});
+
+	$scope.$on('applyDate', function(event, daysAgo) {
+		c.isLoading = true;
+		c.server.get({
+			action: "applyDate",
+			daysAgo: daysAgo,
+			requests : c.data.requests
+		}).then(function(response) {
+			c.data.requests = response.data.requests;
+			$timeout(function() {
+				scrollTo("list-columns");
+			});
+			c.verifyEmptySearch();
+		});
+	});
+
+	$scope.$on('clearAllFilters', function(event) {
+		c.isLoading = true;
+		c.server.get({
+			action: "clearAllFilters",
+			requests : c.data.requests
+		}).then(function(response) {
+			c.data.requests = response.data.requests;
+			c.verifyEmptySearch();
+		});
+	});
+
+	c.verifyEmptySearch = function(){
+		c.data.showFilterClean = true;
+		for(i in c.data.requests){
+			if(c.data.requests[i].show){
+				c.data.showFilterClean = false;
+			}
+		}
+	}
+
+	c.itemAction = function(item, action){
+		c.server.get({
+			action: 'changeItemState',
+			state: action,
+			item: item
+		}).then(function(response) {
+			item = response.data.item;
+		});
+	}
+
+	c.showDetails = function(item){
+		if(c.data.table == "requestsTab"){
+			for(i in c.data.requests){
+				if(c.data.requests[i].sys_id == item.sys_id){
+					c.data.requests[i].showDetails = !c.data.requests[i].showDetails;
+				}
+				else{
+					c.data.requests[i].showDetails = false;
+				}
+			}
+		} else if(c.data.table == "approvalsTab"){
+			for(i in c.data.approvals){
+				if(c.data.approvals[i].sys_id == item.sys_id){
+					c.data.approvals[i].showDetails = !c.data.approvals[i].showDetails;
+				}
+				else{
+					c.data.approvals[i].showDetails = false;
+				}
+			}
+		}
+		c.server.get({
+			action: 'getTicketConversationWidget',
+			item: item
+		}).then(function(response) {
+			c.data.ticketConversationWidget = response.data.ticketConversationWidget;
+		});
+	}
+
+	//Template 'gservice_my_approvals_table'
+	c.submitApproval = function(item, approval){
+		c.approvalItem = item;
+		if(approval){
+			c.server.get({
+				action : "submitApproval",
+				item : item,
+				approvals : c.data.approvals,
+				approval : approval
+			}).then(function(response) {
+				c.data.approvals = response.data.approvals;
+			});
+		}
+		else{
+			$('#approvalCommentModal').modal("show");
+		}
+	}
+
+	c.submitCommentApproval = function(){
+		if(c.approvalComment){
+			c.needComment = true;
+			c.server.get({
+				action : "submitApproval",
+				item : c.approvalItem,
+				comment : c.approvalComment,
+				approval : false
+			}).then(function(response) {
+				$('#approvalCommentModal').modal("hide");
+				c.data.approvals = response.data.approvals;
+			});
+		}
+		else{
+			c.needComment = true;
+		}
+	}
+
+	//Function created for redirect users to main page and auto-fill the form with informations provided by cart items
+	c.duplicateItem = function(item) {
+		var mostReq_id = item.sys_id;
+		$location.search("id=gservice_index" + "&item_id=" + mostReq_id);
+	}
+
+	c.orderBy = function(order, items){
+		c.server.get({
+			action : "orderBy",
+			items : items,
+			order : order,
+			allColumns : c.data.columns,
+			type : c.data.table
+		}).then(function(response) {
+			c.data.columns = response.data.columns;
+			switch(c.data.table){
+				case "requestsTab":
+					c.data.requests = response.data.requests;
+					break;
+				case "approvalsTab":
+					c.data.approvals = response.data.approvals;
+					break;
+				case "assetsTab":
+					c.data.assets = response.data.assets;
+					break;
+				case "mostRequestedTab":
+					c.data.mostRequested = response.data.mostRequested;
+					break;
+			}
+		});
+	}
+	c.statusColor = function(status){
+		var statusClass = '';
+		if (status == 2){
+			statusClass = 'status_flow_empty';
+		} else if (status == true) {
+			statusClass = 'status_flow_active';
+		} else if (!status) {
+			statusClass = 'status_flow_completed';
+		}
+		return statusClass;
+	}
+
+	$scope.$on("getSearchedItemsFilter", function (event, data, searchSourceID) {
+		c.isLoading = true;
+		c.server.get({
+			action : "searchResult",
+			searchResult : data,
+			requests : c.data.requests
+		}).then(function(response) {
+			c.data.requests = response.data.requests;
+			c.verifyEmptySearch();
+		});
+	});
+
+	$scope.$on("getSearchedItemsFilterClear", function (event) {
+		c.isLoading = true;
+		c.server.get({
+			action: "returnDefaultFilter"
+		}).then(function(response) {
+			c.data.requests = response.data.requests;
+			c.verifyEmptySearch();
+		});
+	});
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.cart-mobile {
+  border: 0;
+  box-shadow: none;
+
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    a {
+      text-align: right;
+      display: block !important;
+    }
+  }
+
+  .cart-item-mobile-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px 20px 10px;
+
+    .item-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .item-image {
+      margin: 0;
+    }
+
+    a {
+      float: none;
+      text-align: center;
+    }
+
+    select {
+      margin-top: 10px;
+      padding: 0px 5px;
+      text-align-last: center;
+    }
+  }  
+}
+
+td {
+  vertical-align: middle !important;
+}
+
+.a-disabled {
+  cursor: default;
+  color: $btn-link-disabled-color;
+}
+
+.media-body {
+  .btn-link {
+    padding-left: 0;
+    padding-right: 0;
+    color: $primary;
+
+    &amp;:hover {
+      color: darken($primary, 10%);
+    }
+
+    &amp;:focus {
+      color: darken($primary, 10%);
+    }
+  }
+}
+
+.btn-remove {
+  font-size: 18px !important;
+}
+
+.action-btn {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+
+  &amp;.btn-link {
+    color: $primary;
+  }
+}
+
+.list-group {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.list-group-item.ng-enter {
+  transition: all 1s;
+  -webkit-transition: all 1s;
+  background-color: #c0dcfa;
+}
+
+.list-group-item.ng-enter-active {
+  background-color: #fff;
+}
+
+.empty-cart {
+  font-style: italic;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 7px;
+}
+
+.view-carts-link {
+  text-align: center;
+  display: block;
+}
+
+.order-details-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 5px 10px 10px 10px;
+
+  .order-details {
+    padding: 5px;
+
+    textarea {
+      resize: none;
+      flex-basis: 100%;
+      flex-shrink: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .requested-for-details {
+    flex: 1 0 auto;
+    max-width: 100%;
+  }
+
+  .special-instructions-details {
+    textarea {
+      height: calc(100% - 25px);
+    }
+  }
+}
+
+.item-image {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.empty-state-content {
+  margin-top: 30px;
+
+  &amp;.small-cart {
+    margin-top: 0px;
+    padding: 10px 20px;
+  }
+
+  .fa-shopping-cart {
+    color: $gray-light;
+    font-size: 80px;
+    display: block;
+    text-align: center;
+
+    &amp;.small-cart {
+      font-size: 40px;
+    }
+  }
+
+  .h3 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  .h4 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    max-width: 100%;
+    margin-bottom: 35px;
+  }
+}
+
+.large-checkout {
+  display: inline-block;
+  float: none !important;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.item-row:hover .btn-clear {
+  background-color: #f5f5f5;
+}
+
+.sc-btn {
+  margin-bottom: 10px;
+}
+.sc-btn-group {
+  clear: right;
+}
+
+.sc-remove-btn {
+  &amp;:hover {
+    background-color: $danger;
+    color: #fff;
+    border-color: darken($danger, 10%);
+  }
+}
+
+.btn-group-justified &gt; .btn-group {
+  padding: 0 5px;
+
+  .btn {
+    border-radius: 4px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.cart-table {
+  th {
+    position: sticky;
+    -webkit-position: sticky;
+    top: -1px;
+    z-index: 10;
+    background-color: $panel-bg;
+    box-shadow: 0px 1px 0px $panel-inner-border;
+  }
+}
+
+@media only screen and (max-width : 992px) {
+  .sc-btn, .sc-btn-group {
+    width: 100%;
+  }
+  .item-image {
+    max-width: 70px;
+  }
+}
+//All pages
+.without_notification {
+  padding: 30px 0;
+  font-size: 30px;
+}
+
+/* Custom Checkout */
+.panel {
+  padding: 30px 100px;
+  box-shadow: 0 0 0 0;
+  -webkit-box-shadow: 0 0 0 0;
+}
+
+/* Table */
+.h3 {
+  font-size: 28px;
+  color: $dodger-blue;
+  margin-top: 20px !important;
+  margin-bottom: 30px;
+}
+.b-b {
+  border-bottom: 2px solid $slate-gray;
+}
+.b-t {
+  border: 0;
+}
+thead {
+  color: $slate-gray;
+  font-family: globorounded_bk;
+  font-size: 13px;
+}
+.table &gt; thead &gt; tr &gt; th {
+  border: 0;
+  vertical-align: middle;
+}
+.table-hover &gt; tbody &gt; tr:hover {
+  background-color: white;
+}
+tbody {
+  img {
+    width: 50px;
+    height: 50px;
+  }
+
+  td:nth-child(1) {
+    width: 20%;
+    padding: 20px;
+  }
+
+  td:nth-child(2) {
+    width: 20%;
+    padding: 20px;
+  }
+
+  td:nth-child(3) {
+    width: 25%;
+  }
+
+  td:nth-child(4) {
+    width: 5%;
+    padding: 20px;
+  }
+
+  td:nth-child(5) {
+    width: 30%;
+    padding: 20px;
+
+    .request_button {
+      margin-right: 50px;
+    }
+  }
+
+}
+
+/* PAGE 1 - My Requests */
+.center-loading{
+  position: relative;
+  left: 50%;
+  .sp-loading-indicator{
+    color: $deep-sky-blue !important;
+  }
+}
+
+.filter-padding{
+  padding: 10px 0 !important;
+}
+
+.thead_myrequests {
+  border-top: 2px solid $slate-gray;
+}
+.column_product {
+  .number_text {
+    text-transform: uppercase;
+  }
+  .item_text {
+    font-family: 'globorounded_bd';
+    font-size: 18px;
+    line-height: 1;
+  }
+  .more_detail {
+    text-decoration: underline;
+    font-size: 12px;
+  }
+}
+.column_status {
+  .service_title {
+    text-transform: uppercase;
+    font-family: 'globorounded_bd';
+    font-size: 12px;
+  }
+  .pending {
+    color: $coral !important;
+  }
+  .inProgress {
+    color: $yellow-green;
+  }
+  .resolved {
+    color: $deep-sky-blue;
+  }
+}
+.column_opened {
+  .item_opened {
+    font-size: 12px;
+  }
+}
+.column_sla {
+  .sla_description {
+    font-size: 12px;
+  }
+}
+.column_buttons {
+  display: flex;
+
+  img {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px !important;
+  }
+  img:last-child {
+    margin-right: 0 !important;
+  }
+}
+.process_flow {
+  position: relative;
+
+  .process_flow_title {
+    text-transform: uppercase;
+    font-family: 'globorounded_bk';
+    margin-bottom: 20px;
+  }
+  .line_flow {
+    background-color: $slate-gray;
+    width: 2px;
+    height: 70%;
+    left: 29px;
+    z-index: 1;
+    position: absolute;
+  } 
+  .items_flow {
+    text-transform: uppercase;
+    font-family: 'globorounded_bk';
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    position: inherit;
+
+    .status_flow {
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      border-radius: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+    }
+    .status_flow_completed {
+      color: white;
+      background-color: $slate-gray;
+    }
+    .status_flow_active {
+      color: white;
+      background-color: $deep-sky-blue;
+    }
+    .status_flow_empty {
+      color: $slate-gray;
+      background-color: white;
+      border: 2px solid $slate-gray;
+    }
+    .status_active {
+      color: $deep-sky-blue;
+    }
+  }
+}
+
+/* PAGE 2 - Notifications */
+.content_notification {
+  .header_message {
+    padding: 20px 0;
+    font-family: 'globorounded_bd';
+    font-size: 18px;
+    line-height: 1;
+    border-bottom: 2px solid $deep-sky-blue;
+  }
+  .widget_notifications {
+    overflow: auto;
+
+    .border-notification {
+      padding: 20px 0;
+      border-bottom: 2px solid $slate-gray;
+    }
+  }
+
+  .close {
+    font-size: 36px;
+    font-family: 'globorounded_lt';
+    margin-right: 20px;
+    margin-top: 15px;
+  }
+  .modal-body {
+    padding: 60px 100px;
+
+    .modal-title {
+      color: $deep-sky-blue;
+      font-size: 30px;
+    }
+    .modal-description {
+      font-size: 24px;
+      font-family: 'globorounded_bd';
+    }
+  }
+  .form-control {
+    width: 329px !important;
+  }
+}
+
+/* PAGE 3 - APPROVALS */
+.approval_content {
+  .approval_column_title{
+    h4 {
+      margin: 4px 0 0 0 !important;
+    }
+    .approval_number{
+      font-size: 16px;
+    }
+    .approval_title{
+      font-family: $text-bold;
+    }
+    .approval_more-details{
+      font-size: 12px;
+      text-decoration: underline;
+      color: $slate-gray;
+      cursor: pointer;
+    }
+  }
+  .approval_column_requester{
+    padding-left: 10px !important;
+    .info-size{
+      height: 20px;
+      width: 20px;
+      margin-left: 10px;
+      margin-top: -5px;
+      cursor: pointer;
+    }
+  }
+  .approval_column_opened{
+    padding-left: 20px !important;
+
+  }
+  .approval_column_forecast{
+    padding-left: 12px !important;
+
+  }
+  .approvals-buttons{
+    .submit-button{
+      margin-left: 20px;
+    }
+    .cancel-button{
+      margin-left: 15%;;
+    }
+  }
+  .modal-body{
+    overflow: hidden !important;
+    border: 20px solid white;
+    .wrapper-xl {
+      padding: 50px 0 0 50px !important;
+      margin-right: -20px;
+    }
+    button{
+      text-align: right;
+      font-size: 42px;
+    }
+    .justify-text{
+      color: $deep-sky-blue;
+      font-size: 36px;
+      padding-bottom: 15px;
+      margin-bottom: 5px;
+    }
+    .no-text-answer{
+      font-size: 16px;
+      color: lightcoral;
+      padding: 2px;
+    }
+    .form-group{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      textarea{
+        margin-top: 5px;
+        margin-right: 10% !important;
+        resize: none;
+        overflow: hidden;
+        height: 140px;
+        width: 90%;
+        overflow-wrap: break-word;
+        border: solid 3px $deep-sky-blue;
+      }
+    }
+    .resize-img{
+      height: 70px;
+      margin-top: 25px;
+      margin-left: -110%;
+    }
+  }
+}
+
+/* PAGE 4 */
+.assets_content {
+  .column_name {
+    .asset_name {
+      font-size: 18px;
+      font-family: 'globorounded_bd';
+    }
+  }
+  .service_title {
+    font-size: 12px;
+    color: $slate-gray;
+  }
+}
+
+/* PAGE 5 */
+.page_description {
+  border-bottom: 2px solid $slate-gray;
+  padding: 20px;
+  font-family: 'globorounded_bd';
+  font-size: 16px;
+  line-height: 1;
+}
+.column_category {
+  text-align: center;
+
+  img {
+    width: 80px;
+    height: 75px;
+  }
+  h4 {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-family: globorounded_bk;
+    color: $dodger-blue;
+    width: 130px;
+    margin: 0 auto;
+    margin-top: 5px;
+  }
+}
+.column_service {
+  color: $dodger-blue;
+
+  .service_title {
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  .service_description {
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+.column_description {
+  .description {
+    font-size: 12px;
+  }
+}
+.column_sla {
+  .sla_text {
+    font-size: 12px;
+  }
+}
+
+
+.footer_checkout {
+
+  .continue_shopping {
+    color: $slate-gray;
+    font-size: 10px;
+    font-weight: bold;
+    text-decoration: underline;
+    text-transform: uppercase;
+    padding: 20px 0 !important;
+  }
+
+  .submit_button {
+    .submit_button_content {
+      display: flex;
+      align-items: center;
+
+      .submit_img {
+        width: 50px;
+        height: 50px;
+        margin-right: 5px;
+      }
+      .submit_title {
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1;
+        color: $dodger-blue;
+        width: 90px;
+      }
+    }
+  }
+}
+
+.empty_content {
+  background-color: white;
+  padding: 30px 100px;
+  padding-bottom: 330px;
+  font-size: 30px;
+
+  .empty_title {
+    color: $dodger-blue;
+    margin-bottom: 30px;
+  }
+}
+
+.column_content {
+  img {
+    height: 10px;
+    position: relative;
+    top: -2px;
+    right: -2px;
+  }
+  .invert-arrow{
+    transform: rotateX(180deg);
+  }
+}
+
+.content_conversation {
+  width: 100%;
+}
+
+.button_erase {
+  span {
+    visibility: hidden;
+    opacity: 0;
+    transition: .2 ease-in-out;
+  }
+}
+
+.button_erase {
+
+  &amp;:hover {
+    span {
+      visibility: visible;
+      opacity: 1;
+      position: absolute;
+      color: white;
+      background-color: $slate-gray;
+    }
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_my_dashboard_content</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService My Dashboard Content</name>
+        <option_schema>[{"hint":"Selects the columns to show on the table","name":"table","section":"Presentation","label":"Table","type":"string"},{"name":"table_template","section":"Behavior","label":"Table Template","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	data.table = options.table;
+	data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
+	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
+	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+	var portalUtils = new global.OCLPortalUtils();
+	data.requestsID = '';
+	data.showEmptyMessage = false;
+
+	data.statusFlow = [];
+	var statusFlow = gs.getProperty("gservice_list_filters_status").split("|");
+	for(i in statusFlow){
+		statusFlow[i].number = i + 1;
+		statusFlow[i].selected = false;
+		data.statusFlow.push(JSON.parse(statusFlow[i]));
+	}
+
+	//Used to get the current user sys_id
+	var userID = gs.getUser().getID();
+	data.user_id = userID;
+
+	data.listFilter_widget = $sp.getWidget('gservice_list_filter');
+
+	data.filter = false;
+	//Get the columns (from property) to show upside the requests
+	data.columns = [];
+
+	if (data.table == "notificationsTab"){
+		var user_id = localInput ? localInput.userID : data.user_id;
+		data.notifications = portalUtils.getNotifications(user_id);
+		data.notificationWidget = [];
+		for(i in data.notifications){
+			var gservice_ticket_notification_options = {table : data.notifications[i].table,
+																									sys_id : data.notifications[i].sys_id,
+																									tab : "gservice_ticket_notifications_tab"};
+			var gservice_ticket_notification = $sp.getWidget('gservice_ticket_conversation', gservice_ticket_notification_options);
+			var jsonWidget = {instance : gservice_ticket_notification, show : true, sys_id : data.notifications[i].sys_id};
+			data.notificationWidget.push(jsonWidget);
+		}
+		if(data.notificationWidget.length == 0){
+			data.showEmptyMessage = true;
+		}
+	}
+
+	if(!localInput){
+		//You need to select the columns name on the property
+		//Using checkout as a test, but it`ll change to a dinamic way when you call the widget you send the option
+		if(data.table != "notificationsTab"){
+			var columns_property = gs.getProperty("gservice_dashboard_columns");
+
+			var parse = JSON.parse(columns_property);
+			var columns = parse[data.table].columns;
+
+			data.columns = columns;
+			for(i in columns){
+				data.columns[i].name = gs.getMessage(columns[i].name);
+			}
+		}
+		switch (data.table){
+			case "requestsTab":
+				data.requests = portalUtils.getRequests(data.user_id, data.filter);
+				if(data.requests.length == 0){
+					data.showEmptyMessage = true;
+				}
+				prepareRecordWatch();
+				break;
+
+			case "approvalsTab":
+				data.approverQuery = "state=requested^source_table=sc_req_item^approver=" + gs.getUserID();
+				data.approvals = portalUtils.getApprovals(data.user_id);
+				if(data.approvals.length == 0){
+					data.showEmptyMessage = true;
+				}
+				break;
+
+			case "assetsTab" :
+				data.assets = portalUtils.getAssets(data.user_id);
+				if(data.assets.length == 0){
+					data.showEmptyMessage = true;
+				}
+				break;
+
+			case "mostRequestedTab":
+				data.mostRequested = portalUtils.getMostRequested(5, data.user_id);
+				//Get the property of the categories images
+				var category_property = gs.getProperty("categories_color");
+				var parse = JSON.parse(category_property);
+				//Get the images of the categories
+				if(data.mostRequested.length == 0){
+					data.showEmptyMessage = true;
+				} else {
+					for(i in data.mostRequested){
+						data.mostRequested[i].color = parse[data.mostRequested[i].categoryID].color;
+						data.mostRequested[i].img = parse[data.mostRequested[i].categoryID].imgcategory;
+						data.mostRequested[i].submitImage = parse[data.mostRequested[i].categoryID].submitImg;
+					}
+				}
+				break;
+		}
+	}
+
+	else{
+		switch(localInput.action){
+			case "applyFilter":
+				data.requests = portalUtils.filterRequests(localInput.requests, localInput.typeFilter, localInput.statusFilter);
+				for(i in data.requests){
+					data.requests[i].showDetails = false; 
+				}
+				break;
+
+			case "changeItemState":
+				data.item = portalUtils.changeItemState(localInput.item, localInput.state);
+				break;
+			case "stateChangedBackend":
+				var state = localInput.newState;
+				var itemID = localInput.itemID;
+				data.requests = localInput.requests;
+				for(i in data.requests){
+					if(data.requests[i].sys_id == itemID){
+						data.requests[i].statusLabel = state.display_value;
+						data.requests[i].statusValue = state.value;
+						data.requests[i] = portalUtils.verifyButtons(data.requests[i]);
+						data.requests[i].colorClass = portalUtils.getColorClass(data.requests[i].statusValue,data.requests[i].table);
+					}
+				}
+				break;
+
+			case "applyDate":
+				data.requests = portalUtils.applyDate(localInput.requests, localInput.daysAgo);
+				break;
+
+			case "clearAllFilters":
+				data.requests = localInput.requests;
+				for (i in data.requests){
+					data.requests[i].show = false;
+				}
+				break;
+
+			case "returnDefaultFilter":
+				data.requests = portalUtils.getRequests(data.user_id, data.filter);
+				prepareRecordWatch();
+				break;
+
+			case "getTicketConversationWidget":
+				var gservice_ticket_conversation_options = {table : localInput.item.table,
+																										sys_id : localInput.item.sys_id,
+																										tab : "gservice_all_conversations_tab",
+																										item_status : localInput.item.colorClass};
+				data.ticketConversationWidget = $sp.getWidget('gservice_ticket_conversation', gservice_ticket_conversation_options);
+				break;
+
+			case "submitApproval":
+				data.approvals = localInput.approvals;
+				var comment = localInput.comment ? localInput.comment : '';
+				var newApprovalID = portalUtils.submitApproval(localInput.item, localInput.approval, comment);
+
+				var newApprovals = [];
+				for(i in data.approvals){
+					if(data.approvals[i].approvalID != newApprovalID){
+						newApprovals.push(data.approvals[i]);
+					}
+				}
+				data.approvals = newApprovals;
+				break;
+
+			case "getNewApproval":
+				data.approvals = [];
+				if(localInput.approvals){
+					data.approvals = localInput.approvals;
+				}
+				data.approvals.push(portalUtils.getNewApproval(localInput.approvalID));
+				break;
+
+			case "orderBy":
+				var order = localInput.order;
+				data.columns = localInput.allColumns;
+				var direction;
+				for(i in data.columns){
+					if(order == data.columns[i].order){
+						data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
+						direction = data.columns[i].direction;
+					}
+					else{
+						data.columns[i].direction = false;
+					}
+				}
+				var items = localInput.items;
+				var itemsSort = portalUtils.sortList(items, localInput.order, direction);
+				switch(localInput.type){
+					case "requestsTab":
+						data.requests = itemsSort;
+						break;
+					case "approvalsTab":
+						data.approvals = itemsSort;
+						break;
+					case "assetsTab":
+						data.assets = itemsSort;
+						break;
+					case "mostRequestedTab":
+						data.mostRequested = itemsSort;
+						break;
+				}
+				if(localInput.type == "requestsTab"){
+
+				}
+				break;
+			case "searchResult":
+				data.requests = localInput.requests;
+				prepareRecordWatch();
+				data.requests = portalUtils.searchMade(data.requests, localInput.searchResult);
+				break;
+			case  "refreshNotificationList":
+				data.notificationWidget = localInput.notificationWidget;
+				for(i in data.notificationWidget){
+					if(data.notificationWidget[i].sys_id == localInput.notificationID){
+						data.notificationWidget[i].show = false;
+					}
+				}
+				break;
+		}
+	}
+
+	function prepareRecordWatch(){
+		data.requestsID = false;
+		for(i in data.requests){
+			if(!data.requestsID){
+				data.requestsID = "sys_id=" + data.requests[i].sys_id;
+			}
+			else{
+				data.requestsID += "^ORsys_id=" + data.requests[i].sys_id;
+			}
+		}
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-18 14:33:21</sys_created_on>
+        <sys_id>123491e2dbf01410fa11cf24149619d9</sys_id>
+        <sys_mod_count>434</sys_mod_count>
+        <sys_name>GService My Dashboard Content</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_123491e2dbf01410fa11cf24149619d9</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-01 12:01:51</sys_updated_on>
+        <template><![CDATA[<div ng-include="options.table_template"></div>]]></template>
+    </sp_widget>
+</record_update>

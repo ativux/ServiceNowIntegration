@@ -123,6 +123,11 @@
 
 	}
 
+	c.goHome = function(page){
+		$location.url('?id=gservice_index');
+		spUtil.scrollTo('.sp-scroll', 300);
+	}
+	
 	// Dropdown
 	c.openDropDown = function(item){
 		if(item == c.data.menuSelected && c.data.menuSelected != 2){
@@ -165,23 +170,22 @@
   transition: 250ms opacity ease-in-out;
   -webkit-transition: 250ms opacity ease-in-out;
   border: 0;
-  border-bottom: 4px solid $sp-navbar-divider-color;
+  border-bottom: 5px solid beige !important;
 
   /* GSERVICE HEADER TEXT */
   padding-left: 10%;
-  padding-top: 5%;
+  padding-top: 30px;
+  //height: 120px;
   font-family: $text-bold;
   transition-property: padding-top;
   transition-duration: .2s;
 }
 
-.navbar.scroll-navbar{
-  padding-top: 30px;
-  border-bottom: 2px solid;
-}
+/* scroll-line */
+.navbar.scroll-navbar {}
 
 .navbar-fade {
-  opacity: 0.4;
+  opacity: .4;
 }
 
 .navbar-inverse .navbar-toggle {
@@ -204,6 +208,7 @@ header[role="banner"],
   max-height: 60px;
   padding: 0;
   padding-bottom: 0.5rem;
+  margin-top: 10px;
 }
 
 .navbar-brand img, .navbar-brand span {
@@ -223,7 +228,6 @@ header[role="banner"],
   /* GSERVICE HEADER TEXT */
   font-size: 50px;
   font-family: $text-light;
-
   text-transform: uppercase;
   color: $deep-sky-blue;
 }
@@ -250,15 +254,11 @@ nav {
   .toggle-dropdown {
     height: 60px;
   }
-
 }
 
 .navbar-right {
   padding: 15px 0 10px 7px;
-//  padding-right: 0px;
-//  padding-left: 7px;
 }
-
 .navbar-nav {
   margin: 0px;
 }
@@ -278,7 +278,6 @@ nav {
   }
 }
 
-
 /* PRB923910: Fix for Service Portal - Header Poorly Aligned in Safari */
 @media screen and (min-width: 768px) {
   .navbar-right {
@@ -293,23 +292,23 @@ nav {
 
 /* SIDEBAR STYLES */
 .icon-bar {
-  width: 90px; /* Set a specific width */
+  width: 90px;
   position: fixed;
   left: 0;
   top: 0;
   z-index: 1;
 
-  a {
-    display: block; /* Make the links appear below each other instead of side-by-side */
-    text-align: center; /* Center-align text */
-    padding: 16px; /* Add some padding */
-    height: 90px;
+  div {
     margin-bottom: 5px;
+    img {
+      transition: .2s ease-in-out;
+      width: 100%;
+    }
+    &amp;:hover { img { width: 100px; } }
   }
-  a:first-child {
-    height: 136px;
+  div:first-child {
+    height: 115px;
     background-color: $deep-sky-blue;
-    padding: 0;
     display: flex;
     align-items: flex-end;
 
@@ -318,43 +317,6 @@ nav {
       height: 90px;
     }
   }
-}
-
-.first-item {
-  background-image: url('GService_StyleGuide_V1_AR_GSERVICE.png');  
-  background-size: 90px 130px;
-  border: 0;
-  background-repeat: no-repeat;
-}
-.second-item {
-  background-image: url('GService_StyleGuide_V1_AR_ERRO.png');  
-  background-size: 90px 90px;
-  background-repeat: no-repeat;
-}
-.third-item {
-  background-image: url('GService_StyleGuide_V1_AR_SERVICO.png');  
-  background-size: 90px 90px;
-  background-repeat: no-repeat;
-}
-.forth-item {
-  background-image: url('GService_StyleGuide_V1_AR_AUTO.png');  
-  background-size: 90px 90px;
-  background-repeat: no-repeat;
-}
-.fifth-item {
-  background-image: url('GService_StyleGuide_V1_AR_DUVIDAS.png');  
-  background-size: 90px 90px;
-  background-repeat: no-repeat;
-}
-.sixth-item {
-  background-image: url('GService_StyleGuide_V1_AR_PORTAL.png');  
-  background-size: 90px 90px;
-  background-repeat: no-repeat;
-}
-.seventh-item {
-  background-image: url('GService_StyleGuide_V1_AR_INDISPONIVEL.png');  
-  background-size: 90px 90px;
-  background-repeat: no-repeat;
 }
 
 // Dropdown
@@ -405,7 +367,6 @@ nav {
         color: $dodger-blue; //OR $deep-sky-blue
         text-transform: uppercase;
         margin-bottom: 5px;
-
       }
     }
     .subcategory {
@@ -413,7 +374,6 @@ nav {
         color: $dodger-blue;
       }
     }
-
     .category-selected {
       color: $dodger-blue;
     }
@@ -483,6 +443,9 @@ nav {
 (function() {
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
+	data.items = [];
+	data.thirdCategories = [];
+	
 
 	data.menuSelected = 0;
 	data.page_id = $sp.getParameter("id");
@@ -523,94 +486,79 @@ nav {
 			query+= "^ORsys_id=" + categories[i];
 		}
 	}
-	data.categories = [];
-	var grCategories = new GlideRecord("sc_category");
-	grCategories.addEncodedQuery(query);
-	grCategories.orderBy('order');
-	grCategories.query();
-	while(grCategories.next()){
-		var jsonCategory = {title : grCategories.getValue("title"),
-												sys_id : grCategories.getUniqueValue(),
-												categories : []};
-		data.categories.push(jsonCategory);
-	}
+	data.categories = portalUtils.lateralMenuCategories(query);
 
-	for(i in data.categories){
-		var grSecondCategories = new GlideRecord("sc_category");
-		grSecondCategories.addQuery("parent", data.categories[i].sys_id);
-		grSecondCategories.query();
-		while(grSecondCategories.next()){
-			var jsonSecondCategories = {title : grSecondCategories.getValue("title"),
-																	sys_id : grSecondCategories.getUniqueValue(),
-																	parent : "",
-																	selected : false};
-			data.categories[i].categories.push(jsonSecondCategories);
+	if(localInput){
+		switch(localInput.action){
+			case "selectedSecondCategory":
+				data.thirdCategories = portalUtils.getSubcategories(localInput.category.sys_id, localInput.category.title);
+
+				if(data.thirdCategories.length != 0){
+					data.showThirdCategories = true;
+					data.showItems = false;
+				}
+				else{
+					data.showThirdCategories = false;
+					data.subcategorySelected = true;
+					data.items = portalUtils.getItems(localInput.category.sys_id);
+					if(data.items.length > 0){
+						data.showItems = true;
+					}
+				}
+				break;
+			case "selectedThirdCategory":
+				data.subcategorySelected = true;
+				data.items = portalUtils.getItems(localInput.category.sys_id);
+				if(data.items.length > 0){
+					data.showItems = true;
+				}
+				break;
+
+
 		}
 	}
-
-	if(localInput && localInput.action == "selectedSecondCategory"){
-		data.thirdCategories = portalUtils.getSubcategories(localInput.category.sys_id, localInput.category.title);
-
-		if(data.thirdCategories.length != 0){
-			data.showThirdCategories = true;
-			data.showItems = false;
-		}
-		else{
-			data.showThirdCategories = false;
-			data.subcategorySelected = true;
-			data.items = portalUtils.getItems(localInput.category.sys_id);
-			if(data.items.length > 0){
-				data.showItems = true;
-			}
-		}
+	
+	if(data.items.length > 0){
+		data.items = portalUtils.sortObject(data.items, "title");
 	}
 
-	if(localInput && localInput.action == "selectedThirdCategory"){
-		data.subcategorySelected = true;
-		data.items = portalUtils.getItems(localInput.category.sys_id);
-		if(data.items.length > 0){
-			data.showItems = true;
-		}
+	if(data.thirdCategories.length > 0){
+		data.thirdCategories = portalUtils.sortObject(data.thirdCategories, "title");
 	}
-	/////////////////////////////////////////////////////////////////////////////////////////////////
 })()]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_header_footer</sys_class_name>
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 18:00:53</sys_created_on>
         <sys_id>578e7263db80dc10fa11cf24149619e7</sys_id>
-        <sys_mod_count>421</sys_mod_count>
+        <sys_mod_count>522</sys_mod_count>
         <sys_name>GService Stock Header</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_header_footer_578e7263db80dc10fa11cf24149619e7</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-16 20:38:27</sys_updated_on>
-        <template><![CDATA[<div>
-  
+        <sys_updated_on>2020-05-29 18:18:32</sys_updated_on>
+        <template><![CDATA[<div class="content">
+
   <!-- SIDE BAR -->
   <div class="icon-bar">   
-    <a href="?id=gservice_index" class="">
-      <img src="GService_StyleGuide_V1_AR_GSERVICE.png" />
-    </a>
-    <a href="#" class="second-item" ng-click="c.openDropDown(2)"></a>
-    <a href="#" class="third-item" ng-click="c.openDropDown(3)"></a>
-    <a href="#" class="forth-item" ng-click="c.openDropDown(4)"></a>
-    <a href="#" class="fifth-item" ng-click="c.openDropDown(5)"></a>
-    <a href="#" class="sixth-item" ng-click="c.openDropDown(6)"></a>
-    <a href="#" class="seventh-item" ng-click="c.openDropDown(7)"></a>    
+    <div ng-click="c.goHome()"><img src="GService_StyleGuide_V1_AR_GSERVICE.png"></div>
+    <div ng-click="c.openDropDown(2)"><img src="GService_StyleGuide_V1_AR_ERRO.png"></div>
+    <div ng-click="c.openDropDown(3)"><img src="GService_StyleGuide_V1_AR_SERVICO.png"></div>
+    <div ng-click="c.openDropDown(4)"><img src="GService_StyleGuide_V1_AR_AUTO.png"></div>
+    <div ng-click="c.openDropDown(5)"><img src="GService_StyleGuide_V1_AR_DUVIDAS.png"></div>
+    <div ng-click="c.openDropDown(6)"><img src="GService_StyleGuide_V1_AR_PORTAL.png"></div>
+    <div ng-click="c.openDropDown(7)"><img src="GService_StyleGuide_V1_AR_INDISPONIVEL.png"></div>
   </div>
-
   <div class="dropdown-bg" ng-click="c.openDropDown(0)"></div>
-  
+
   <!-- Reporte um erro -->
   <div>
     <widget id="gservice_error_modal"></widget>
   </div>
-  
+
   <!-- Solicite um serviço -->
-  
   <div class="dropdown-third-item" ng-if="c.data.menuSelected == 3">
     <div class="dropdown-column">
       <div class="category-subcategory" ng-repeat="category in data.categories">
@@ -626,7 +574,7 @@ nav {
         <div ng-class="thirdCategory.selected ? 'category-selected' : 'subcategory'" ng-click="c.selectedThirdCategory(thirdCategory)">{{thirdCategory.title}}</div>
       </div>
     </div>
-    
+
     <div class="dropdown-column dropdown-column2" ng-if="data.showItems">
       <div ng-repeat="item in data.items">
         <div class="subcategory" ng-click="c.showItem(item.sys_id)">{{item.title}}</div>
@@ -661,7 +609,7 @@ nav {
         <li role="presentation"><a href ng-click="::openLogin()">${Login}</a></li>
       </ul>
       <ul ng-if="user.logged_in" class="nav navbar-nav" role="menubar">
-        
+
         <!-- chat, avatar, and logout -->
         <li ng-if="::(data.connect_support_queue_id && !isAgentChatConfigured)" role="presentation"><a href ng-click="openPopUp()" role="menuitem">${Live Chat}</a></li>
 
@@ -685,7 +633,7 @@ nav {
       </ul>
     </div>
   </nav>
-  
+
 </div>]]></template>
     </sp_header_footer>
 </record_update>

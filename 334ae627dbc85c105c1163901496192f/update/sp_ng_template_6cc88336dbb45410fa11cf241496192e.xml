@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_ng_template">
+    <sp_ng_template action="INSERT_OR_UPDATE">
+        <id>gservice_ticket_notifications_tab</id>
+        <sp_widget display_value="GService Ticket Conversations">420f56b2dbf05410fa11cf24149619ab</sp_widget>
+        <sys_class_name>sp_ng_template</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-19 17:38:20</sys_created_on>
+        <sys_id>6cc88336dbb45410fa11cf241496192e</sys_id>
+        <sys_mod_count>35</sys_mod_count>
+        <sys_name>gservice_ticket_notifications_tab</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_ng_template_6cc88336dbb45410fa11cf241496192e</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-28 21:28:33</sys_updated_on>
+        <template><![CDATA[<div ng-if="data.canRead && !data.isNewRecord && !data.hide">
+
+  <div class="content_conversation"> <!-- -->
+    <div class="panel-heading panel-title-container">
+      <div class="number_title">
+        <div class="ticket_number">{{data.number}}</div>
+        <div class="ticket_title">{{data.ticketTitle}}</div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div ng-if="data.hasReadableJournalField">
+        <div class="row">
+
+          <ul role="list" class="avatar_list" aria-label="${Ticket history}">
+            <li class="" ng-repeat="e in data.mergedEntries | limitTo : 1">
+
+              <sn-avatar ng-if="hasLiveProfile(e.user_sys_id)" primary="getLiveProfileByUserId(e.user_sys_id)" class="avatar-large avatar-custom-size" show-presence="false" enable-context-menu="false">
+              </sn-avatar>
+
+              <div class="history-name-size">{{e.name}}</div>
+              <div class=""> <!-- timeline-body -->
+                <p ng-if="(e.element != 'attachment')" ng-bind-html="e.value"></p>
+                <div ng-if="(e.element == 'attachment')">
+                  <a ng-if="(e.attachment.state == 'available')" target="_blank" href="/sys_attachment.do?view=true&sys_id={{e.attachment.sys_id}}" title="${View}">
+                    <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/>
+                  </a>
+                  <a ng-if="(e.attachment.state == '' || e.attachment.state == 'pending' || e.attachment.state == 'available_conditionally')" ng-click="scanAttachment(e.attachment)" href="javascript:void(0)" title="${View}">
+                    <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/>
+                  </a>
+                  <div>
+                    <div ng-if="(e.attachment.state == 'available')">
+                      <a href="/sys_attachment.do?sys_id={{e.attachment.sys_id}}" target="_blank" title="{{dataViewMsg}}"><strong>{{e.attachment.file_name}}</strong></a><br/>
+                      {{e.attachment.size}}
+                    </div>
+                    <div ng-if="(e.attachment.state == 'not_available')">
+                      <span title="{{dataViewMsg}}" class="not_available">{{e.attachment.file_name}}</span><br/>
+                      <span class="error">{{data.scanFailedMsg}}</span>
+                    </div>
+                    <div ng-if="(e.attachment.state == '' || e.attachment.state == 'pending' || e.attachment.state == 'available_conditionally')">
+                      <a href="javascript:void(0)" ng-click="scanAttachment(e.attachment)" title="{{dataViewMsg}}"><strong>{{e.attachment.file_name}}</strong></a><br/>
+                      {{e.attachment.size}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="time-text">{{e.sys_created_on}}</div>
+
+            </li>
+          </ul>
+        </div>
+
+        <div class="message_user">
+          <img src="gservice_message.png">
+          <span class="user_name">{{data.username}}</span>
+        </div>
+
+        <form ng-submit="postEntry(data.journalEntry)">
+          <div ng-show="data.hasWritableJournalField" class="conversation_form">
+            <textarea ng-keypress="keyPress($event)" sn-resize-height="trim" rows="1" class="form-control no-resize overflow-hidden" ng-model='data.journalEntry' ng-model-options='{debounce: 250}' ng-attr-placeholder="{{getPlaceholder()}}" aria-label="{{getPlaceholder()}}" autocomplete="off" ng-change="userTyping(data.journalEntry)"/>
+            <span class="journal-field-indicator" ng-style="({'background-color': data.useSecondaryJournalField ? data.secondaryJournalField.color : data.primaryJournalField.color})"></span>
+            <input type="image" src="gservice_dashboard_submit.png" ng-disabled="data.isPosting" value="{{data.btnLabel}}" style="cursor: pointer"/>
+          </div>
+        </form>
+        
+        <div ng-if="(!data.hideAttachmentBtn)" class="attach_text">
+          <sp-attachment-button ng-if="data.canWrite && data.canAttach" class="attach_button">
+          </sp-attachment-button>
+          <div class="attach_title">${Add attachments}</div>
+          <now-attachments-list class="attachment-list" template="sp_attachment_single_line" >
+          </now-attachments-list>
+        </div>
+        
+      </div>  
+    </div>
+
+    <div ng-if="!data.hasReadableJournalField">
+      {{options.no_readable_journal_field_message}}
+    </div>
+    
+  </div>
+
+</div>]]></template>
+    </sp_ng_template>
+</record_update>

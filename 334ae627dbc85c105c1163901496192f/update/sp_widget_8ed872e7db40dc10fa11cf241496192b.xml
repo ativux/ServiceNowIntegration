@@ -3,7 +3,30 @@
         <category>standard</category>
         <client_script><![CDATA[function ($scope, spUtil, $rootScope, $timeout, spAriaUtil, spGtd, $window) {
 	var c = this;
-	
+
+	spUtil.recordWatch($scope, "sc_task", c.data.taskQuery, function(event) {
+		c.refreshDashboardcount();
+	});
+
+	spUtil.recordWatch($scope, "incident", c.data.incidentQuery, function(event) {
+		c.refreshDashboardcount();
+	});
+
+	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
+		c.refreshDashboardcount();
+	});
+
+	c.refreshDashboardcount = function(){
+		c.server.get({
+			action: "dashboardCount",
+			taskQuery: c.data.taskQuery,
+			incidentQuery : c.data.incidentQuery,
+			approverQuery : c.data.approverQuery
+		}).then(function(response) {
+			c.data.dashboardCount = response.data.dashboardCount;
+		});
+	}
+
 	$scope.collapse = function() {
 		$rootScope.$emit('sp-navbar-collapse');
 	}
@@ -12,9 +35,6 @@
 	$scope.wishlistItemCount = 0;
 	$scope.itemAddedTooltipOpen = false;
 	$scope.accessibilityEnabled = spAriaUtil.g_accessibility === "true";
-	$scope.$on("$sp.service_catalog.cart.count", function($evt, count) {
-		$scope.cartItemCount = count;
-	});
 
 	$scope.$on("$sp.service_catalog.wishlist.count", function($evt, count) {
 		$scope.wishlistItemCount = count;
@@ -93,7 +113,7 @@
 	$scope.$on('addCartCount', function (event) {
 		c.data.cartItemCount++;
 	});
-	
+
 	$scope.$on('removeCartCount', function (event) {
 		c.data.cartItemCount--;
 	});
@@ -107,10 +127,14 @@
 }
 
 .radio-cart {
-  background: #FF7F50;
+  background: $coral;
   border-radius: 20px;
   color: white;
-  padding: 3px 9px !important;
+  height: 20px;
+  width: 20px;
+  position:absolute;
+  top: 10px;
+  padding: 1px 6.5px !important;
   margin-left: -18px;
 }
 
@@ -138,7 +162,7 @@
     padding: 0;
     margin: 0;
     text-align: center;
-    max-width:100%;
+    max-width: 100%;
     height:auto;
   }
   label, p {
@@ -185,8 +209,6 @@
   }
 }
 
-
-
 .item-added-tooltip, wishlist-item-added-tooltip {
   width: 184px;
   font-size: 14px;
@@ -198,9 +220,7 @@
     margin:40px 20px;
   }
   .dropdown-menu li {
-    a {
-      cursor: pointer;
-    }
+    a { cursor: pointer; }
     min-width: 20em;
   }
   .label-as-badge{
@@ -216,13 +236,12 @@
   }
 }
 
-@media  (max-width: 845px) and (min-width: 768px)  {
+@media (max-width: 845px) and (min-width: 768px)  {
   .header-menu-item ul {
     right: auto;
     left: auto;
   }
-}
-</css>
+}</css>
         <data_table>sp_instance_menu</data_table>
         <demo_data/>
         <description/>
@@ -267,23 +286,20 @@
         <public>true</public>
         <roles/>
         <script><![CDATA[(function(){
-	// build menus
-	data.cartItemCount = 0;
+	var localInput = input;
 	
-	var grCart = new GlideRecord('sc_cart');
-	grCart.addQuery("name", "DEFAULT");
-	grCart.addQuery("user", gs.getUserID());
-	grCart.query();
-	if(grCart.next()){
-		var grCartItems = new GlideAggregate("sc_cart_item");
-		grCartItems.addQuery("cart", grCart.getUniqueValue());
-		grCartItems.addAggregate("COUNT");
-		grCartItems.query();
-		while(grCartItems.next()){
-			data.cartItemCount = grCartItems.getAggregate("COUNT");
-		}
+	data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
+	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
+	data.approverQuery = "state=requested^source_table=sc_req_item^approver=" + gs.getUserID();
+	var portalUtils = new global.OCLPortalUtils();
+	
+	data.dashboardCount = portalUtils.setDashboardCount(data.taskQuery, data.incidentQuery, data.approverQuery);
+	
+	if(localInput && localInput.action == "dashboardCount"){
+		data.dashboardCount = portalUtils.setDashboardCount(localInput.taskQuery, localInput.incidentQuery, localInput.approverQuery);
 	}
 	
+	// build menus
 	var menu_id = $sp.getValue('sys_id'); // instance sys_id
 	var gr = new GlideRecord('sp_instance_menu');
 	gr.get(menu_id);
@@ -292,9 +308,9 @@
 	data.isLoggedIn = GlideSession.get().isLoggedIn();
 	// Show tours only if gtd's sp sys property is set
 	data.showTours = (gs.getProperty('com.snc.guided_tours.sp.enable') === 'true') && data.isLoggedIn;
+
 	var catalogArr = ($sp.getCatalogs().value + "").split(",");
 	
-  
 	catalogArr.forEach(function(catalog) {
 		data.showWishlist = data.showWishlist || new sn_sc.Catalog(catalog).isWishlistEnabled();
 	});
@@ -306,20 +322,23 @@
 		else
 			data.cartWidget = $sp.getWidget("sc-shopping-cart", {cartTemplate: "small_shopping_cart.html", auto_update_cart:options.auto_update_cart});
 	}
-})();]]></script>
+
+	
+})();
+]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 17:35:57</sys_created_on>
         <sys_id>8ed872e7db40dc10fa11cf241496192b</sys_id>
-        <sys_mod_count>136</sys_mod_count>
+        <sys_mod_count>177</sys_mod_count>
         <sys_name>GService Header Menu</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_8ed872e7db40dc10fa11cf241496192b</sys_update_name>
         <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-14 18:01:17</sys_updated_on>
+        <sys_updated_on>2020-05-29 19:13:34</sys_updated_on>
         <template><![CDATA[<ul class="nav navbar-nav" aria-label="TEST" role="menubar">
   <div class="header-loader" ng-class="{'invisible': !loadingIndicator}">
     <div class="hidden-xs sp-loading-indicator la-sm">
@@ -328,6 +347,7 @@
       <div></div>
     </div>
   </div>
+  
   <li ng-repeat="item in visibleItems" ng-class="{dropdown: item.items.length > 0, 'header-menu-item': true}" ng-include="'gserviceMenuTemplate'" role="presentation"></li>
   <!-- Wishlist menu -->
   <li ng-if="options.enable_wishlist && data.isLoggedIn && data.showWishlist" ng-show="!accessibilityEnabled" class="dropdown hidden-xs" role="presentation">
@@ -357,14 +377,13 @@
   <!-- Original comentado para realização de testes -->
   <!--<li ng-if="::options.enable_cart && data.isLoggedIn" class="dropdown header-menu-item" ng-class="::{'visible-xs': !accessibilityEnabled}"  role="presentation">-->
   <li class="header-menu-item" role="presentation">
-    <a ng-href="?id=gservice_sc_cart"
+    <a ng-href="?id=gservice_my_dashboard"
        ng-click="collapse()"
-       title="${CHECKOUT}"
-       role="menuitem"
-       aria-label="${Your shopping cart currently has} {{cartItemCount}} ${items}">
+       title="${GService My Dashboard}"
+       role="menuitem">
       <i class="" aria-hidden="true"></i>
-      <span ng-bind-html="'${CHECKOUT}'" aria-hidden="true"></span>
-      <span ng-if="data.cartItemCount > 0" aria-hidden="true" class="radio-cart">{{data.cartItemCount}}</span>
+      <span ng-bind-html="'${GService My Dashboard}'" aria-hidden="true"></span>
+      <span ng-if="c.data.dashboardCount > 0" aria-hidden="true" class="radio-cart">{{c.data.dashboardCount}}</span>
     </a>
   </li>
   <li ng-if="data.isLoggedIn && data.guidedTours" class="dropdown hidden-xs header-menu-item gtd-dropdown-container" role="presentation">

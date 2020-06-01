@@ -49,6 +49,10 @@
 		c.bdColor = "bd" + categoryColor;
 
 	});
+	
+	$scope.$on(c.data.broadcast_name + "Clear", function (event) {
+		c.data.searchSources = [];
+	});
 
 	//When an article searched by the "GService Typeahead Search" widget is clicked, we send the data to the widget embedded
 	//in this widget and show this widget in a modal.
@@ -118,12 +122,14 @@
       }
     }
     .article_all {
+      transition: .4s ease-in-out;
       font-weight: bold;
       text-decoration: underline;
       margin-top: 10px;
-      
+
       &amp;:hover {
-        
+        opacity: .7;
+        transition: .2s ease-in-out;
       }
     }
     .article_line {
@@ -145,7 +151,19 @@
   }
   .modal-footer {
     margin: 0 50px;
-		border-top: 2px solid $dodger-blue;
+    border-top: 2px solid $dodger-blue;
+
+    .help_like, .help_dislike {
+      transition: .4s ease-in-out;
+      &amp;:hover {
+        transition: .2s ease-in-out;
+        transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        -o-transform: scale(1.1);
+      }
+    }
   }
 }</css>
         <data_table>sp_instance</data_table>
@@ -167,6 +185,7 @@
 	/* populate the 'data' object */
 	/* e.g., data.table = $sp.getValue('table'); */
 	var localInput = input;
+	var portalUtils = new global.OCLPortalUtils();
 	data.broadcast_name = options.broadcast_name;
 	data.articleModalID = data.broadcast_name + "ArticleModal";
 	data.msgs = {};
@@ -176,21 +195,7 @@
 	if(localInput){
 		if(localInput.action == "searchedItem"){
 			data.broadcast_name = localInput.broadcast_name;
-			data.searchSources = [];
-			var grSearchSources = new GlideRecord("sp_search_source")
-			grSearchSources.addEncodedQuery("sys_idIN" + localInput.searchSourceID);
-			grSearchSources.query();
-			while(grSearchSources.next()){
-				if(grSearchSources.getValue("source_table") != "sc_category"){
-					var jsonSearch = {id : grSearchSources.getValue("id"),
-														name : grSearchSources.getValue("name").toUpperCase(),
-														seeAllMsg : data.msgs.seeAll,
-														table : grSearchSources.getValue("source_table"),
-														resultLimit : 2,
-														results : []};
-					data.searchSources.push(jsonSearch);
-				}
-			}
+			data.searchSources = portalUtils.setSearchSources(localInput.searchSourceID, data.msgs.seeAll);
 			data.article_widget_options = {"broadcast_name": (data.broadcast_name + "openArticle")};
 			data.articleWidget = $sp.getWidget("gservice_knowledge_article_content", data.article_widget_options);
 			data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful");
@@ -203,14 +208,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-27 14:21:58</sys_created_on>
         <sys_id>f609c53fdb185010fa11cf24149619a4</sys_id>
-        <sys_mod_count>213</sys_mod_count>
+        <sys_mod_count>227</sys_mod_count>
         <sys_name>GService Search Result</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f609c53fdb185010fa11cf24149619a4</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-14 19:57:12</sys_updated_on>
+        <sys_updated_on>2020-05-28 12:19:20</sys_updated_on>
         <template><![CDATA[<div class="col-lg-12 col-md-12 col-sm-12">
   <div class="articles">
     <div class="article" ng-if="c.showArticles" ng-repeat="searchSource in c.data.searchSources">
@@ -231,7 +236,6 @@
 <div class="modal fade modal_article" id="{{data.articleModalID}}" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-
       <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -240,11 +244,9 @@
           <sp-widget widget="data.articleWidget"></sp-widget>
         </div>
       </div>
-
       <div class="modal-footer {{c.bdColor}}">
         <sp-widget widget="data.helpfulWidget"></sp-widget>
       </div>
-
     </div>
   </div>
 </div>]]></template>
