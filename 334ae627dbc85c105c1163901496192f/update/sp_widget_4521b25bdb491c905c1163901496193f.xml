@@ -1,0 +1,826 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $timeout, spUtil, $rootScope, nowAttachmentHandler) {
+	/* widget controller */
+	var c = this;
+
+	c.postEntry = function(input) {
+		c.server.get({
+			action : "insertComment",
+			comment : input,
+			table : c.data.table,
+			sys_id : c.data.sys_id,
+			tab: c.data.tab
+		}).then(function(response) {
+			c.data.journalEntry = '';
+		});
+	};
+
+	$scope.keyPress = function(event) {
+		if (event.keyCode === 13 && !event.shiftKey) {
+			$timeout(function() {
+				if (c.data.journalEntry)
+					c.postEntry(c.data.journalEntry);
+			}, 250);
+		}
+	}
+	
+	$scope.$watch("data.sys_id", function() {
+		setTimeout(function(){
+			$rootScope.$broadcast('prepareAttachments', c.data.table, c.data.sys_id);
+		}, 500);
+		spUtil.recordWatch($scope, c.data.table, 'sys_id=' + c.data.sys_id, function(event) {
+			c.server.get({
+				action : "newComment",
+				sys_id : c.data.sys_id,
+				table : c.data.table
+			}).then(function(response) {
+				c.data.journalEntry = '';
+				c.data.stream = response.data.stream;
+				c.data.mergedEntries = response.data.mergedEntries;
+			});
+		});
+	});
+	
+	c.showForm = function(){
+		$('#moreDetailsModal').modal("show");
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.content_conversation_all {
+  .conversation_title {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-family: 'globorounded_bk';
+  }
+  .activity_content {
+    height: 260px;
+    overflow: auto;
+    margin-bottom: 20px;
+    margin-left: -4px;
+    padding-left: 4px;
+  }
+  .timeline {
+    padding-top: 0;
+  }
+  .timeline:before {
+    top: 8px;
+    border-right: 2px solid $slate-gray;
+    right: 100%;
+    height: calc(100% - 80px);
+    z-index: 1;
+  }
+  .conversation_entries {
+    padding-left: 30px;
+
+    .conversation_mark {
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      background-color: white;
+      border: 1px solid $deep-sky-blue;
+      position: absolute;
+      top: 5px;
+      left: -4px;
+      z-index: 3;
+    }
+    .hide_timeline_property{
+      background: white;
+      height: 10px;
+      width: 10px;
+      z-index: 4;
+      position: absolute;
+      left: -4px;
+    }
+    .new_radio_mark{
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      background-color: white;
+      border: 1px solid $deep-sky-blue;
+      position: absolute;
+      top: 5px;
+      left: -4px;
+      z-index: 5;
+    }
+  }
+  .conversation_entries:first-child {
+    .conversation_action {
+      text-decoration: underline;
+    }
+  }
+  .conversation_entries:last-child {
+    .conversation_mark {
+      background-color: $deep-sky-blue;
+    }
+  }
+  .conversation_fixed {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+
+    .conversation_fixed_text {
+      background-color: white;
+    }
+  }
+  .content_conversation_dynamic {
+    height: 260px;
+    overflow: auto;
+  }
+
+  .conversation_action {
+    font-size: 12px;
+    color: $deep-sky-blue;
+    font-family: 'globorounded_bd';
+  }
+  .conversation_description {
+    font-size: 12px;
+    color: $slate-gray;
+  }
+  .conversation_date {
+    font-size: 10px;
+  }
+
+  .conversation_form {
+    margin-left: 30px;
+
+    .conversation_user {
+      margin-left: -46px;
+
+      img {
+        width: 36px;
+        height: 36px;
+      }
+      .user_name {
+        margin-left: 7px;
+        font-family: 'globorounded_bd';
+      }
+    }
+
+    .submit_name {
+      text-transform: uppercase;
+      margin-left: 8px;
+      color: $deep-sky-blue;
+      font-size: 18px;
+      font-family: 'globorounded_bd';
+    }
+
+    textarea {
+      min-height: 80px;
+      margin-bottom: 20px;
+      border: 2px solid $deep-sky-blue;
+    }
+  }
+}
+
+.content_conversation {
+  padding-bottom: 50px;
+
+  .number_title {
+    .ticket_number {
+      font-size: 12px;
+    }
+    .ticket_title {
+      font-size: 16px;
+      text-decoration: underline;
+      font-family: 'globorounded_bd';
+    }
+  }
+
+  .avatar_list {
+    padding-left: 15px;
+  }
+  .avatar-custom-size {
+    float: left;
+  }
+
+  .avatar-container {
+    cursor: default;
+  }
+  .avatar {
+    height: 40px !important;
+    width: 40px !important;
+    margin-top: -10px;
+  }
+  .avatar-container.avatar-large .avatar.soloAvatar .sub-avatar{
+    background: white;
+    border: solid 2px $deep-sky-blue;
+    border-radius: 50%;
+    line-height: 4rem;
+
+    span {
+      font-family: 'globorounded_bd';
+      color: $deep-sky-blue;
+    }
+  }
+  .all-avatar {
+    .avatar-container .avatar.soloAvatar {
+      .sub-avatar {
+        color: white !important;
+        background: white !important;
+        border: solid 2px $deep-sky-blue !important;
+        border-radius: 50% !important;
+      }
+    }
+  }
+
+
+  .history-name-size {
+    font-family: 'globorounded_bd';
+  }
+
+
+  .time-text {
+    font-size: 10px;
+    margin-left: 49px;
+    margin-top: -8px;
+  }
+
+  .message_user {
+    img {
+      height: 40px;
+    }
+    .user_name {
+      font-family: 'globorounded_bd';
+      margin-left: 5px;
+    }
+  }
+
+  .form-control {
+    overflow-x: hidden !important;
+    overflow-wrap: break-word !important;
+    height: 120px !important;
+    width: 400px;
+    border: solid 2px #00BFFF;
+    margin: 0 66px !important;
+  }
+
+  .conversation_form {
+
+    input[type="image"] {
+      width: 50px;
+      height: 50px;
+      margin-right: 65px;
+      margin-top: 10px;
+    }
+  }
+
+  .attach_button {
+    float: left;
+    margin-left: 42px;
+    margin-right: -18px;
+    transform: scaleX(-1);
+
+    .glyphicon-paperclip {
+      color: $deep-sky-blue;
+      transform: rotate(135deg);
+      font-size: 22px;
+    }
+  }
+  .attach_title {
+    margin-left: 5px;
+    margin-top: -40px;
+    color: $deep-sky-blue;
+    font-family: 'globorounded_bd';
+    text-transform: uppercase;
+  }
+}
+
+
+.panel-title {
+  display: inline;
+}
+
+.panel-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-title-icons {
+
+  ul {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    padding: 0;
+    margin: 0;
+
+    .panel-button {
+      display: flex;
+      align-items: center;
+      margin: 0 0 0 15px;
+      line-height: initial;
+
+      &amp;:hover, &amp;:focus {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+
+.timeline-heading test {
+  float:right;
+}
+
+.timeline-body &gt; p {
+  white-space: pre-wrap;
+  overflow-x: hidden;
+}
+
+.timeline-body ul &gt; li {
+  float: none;
+}
+
+.no-resize {
+  resize: none;
+}
+
+.journal-field-indicator {
+  width: 5px;
+  left: 5px;
+  top: 5px;
+  bottom: 5px;
+  z-index: 3;
+}
+
+.panel-heading {
+  word-wrap: break-word;
+}
+
+ul {
+  list-style: none;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+
+.timeline-badge-wrap {
+  margin: auto;
+  max-width: 115px;
+}
+
+.timeline-badge.success {
+  background-color: $success;
+}
+
+.timeline-badge {
+  position: relative;
+  left:25%;
+  width:50%;
+  padding-bottom:50%;
+  border-radius:50%;
+}
+
+.timeline-badge span {
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size:13px;
+  color: #fff;
+}
+
+.journal-type {
+  display: inline-flex;
+  display: -ms-inline-flexbox;
+  flex-wrap: wrap;
+  -webkit-justify-content: flex-end;
+}
+
+.fa-circle {
+  font-size: 4px;
+  padding: 7px;
+}
+
+@media (max-width: 768px) {
+  .timeline-badge-wrap {
+    margin: 0;
+  }
+  .timeline-badge {
+    left: 10%;
+  }
+}
+
+.translation-font {
+  font-size: 12px;
+}
+
+.translate-link {
+  cursor: pointer;
+  @extend .translation-font;
+}
+
+.translation-credits {
+  font-style: italic;
+}
+
+.translation-message {
+  padding-top: 10px;
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+.toggle-link-show {
+  display: none;
+}
+
+.translation-credits {
+  font-style: italic;
+}
+
+.translation-icon {
+  width: 12px;
+  height: 12px;
+  padding-right: 4px;
+  @extend .translation-font;
+}
+
+.translation-container {
+  border: 1px solid $well-border;
+  border-radius: 3px;
+  background-color: $well-bg;
+  padding: 10px;
+  color: $text-color;
+  margin-top: 10px;
+  @extend .translation-font;
+}
+
+.translation-delimiter {
+  padding: 7px;
+  @extend .translation-font;
+}
+
+.translate-wrap {
+  white-space: nowrap;
+}
+
+//Changed, not OOTB
+.white-circle{
+  height: 40px !important;
+  width: 40px !important;
+  line-height: 4.8rem;
+  background: white;
+  border: solid 2px $deep-sky-blue;
+  border-radius: 50%;
+  left: 25px !important;
+}
+
+.request-history-title {
+  color: #708090;
+  font-family: 'globorounded_bd';
+  font-size: 24px;
+}
+
+.title-info {
+  color: $deep-sky-blue;
+  font-family: 'globorounded_bd';
+  font-size: 16px;
+}
+
+.modal-body{
+  overflow: hidden !important;
+  border: 20px solid white;
+  .wrapper-xl {
+    padding: 50px 0 50px 80px !important
+      margin-right: -20px;
+  }
+  button{
+    text-align: right;
+    font-size: 42px;
+  }
+  .title_property{
+    font-size: 32px;
+  }
+  .turn_bold{
+    font-weight: bold;
+  }
+  .color_change{
+    color: $deep-sky-blue;
+  }
+}
+
+/* Template Notifications */
+.content_notifications {
+  .content_conversation {
+    .attach_button {
+      margin-left: 60px;
+    }
+    .attach_title {
+      margin-top: 20px;
+    }
+    .submit_button {
+      position: absolute;
+      left: 360px;
+    }
+  }
+}
+
+/* TOOLTIPS */
+.conversation_action:hover {
+  .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+.tooltip_right {
+  top: -1px;
+  left: 170px;
+}
+
+//ATTACHMENT WIDGET
+.content_attach {
+  display: flex;
+  margin-left: 45px;
+
+  .attach_left {
+    width: 47%;
+
+    img {
+      width: 250px;
+      height: 140px;
+      margin-bottom: 10px;
+    }
+    .button_attach {
+      margin-left: -27px;
+
+      .panel-button {
+        float: none;
+      }
+      .btn-link {
+        transform: scaleX(-1);
+
+        .glyphicon-paperclip {
+          color: $deep-sky-blue;
+          transform: rotate(135deg);
+          font-size: 18px;
+        }
+      }
+    }
+    .attach_text {
+      text-transform: uppercase;
+      color: $deep-sky-blue;
+      font-family: 'globorounded_bd';
+      font-size: 12px;
+    }
+  }
+
+  .attach_right {
+    width: 53%;
+
+    .attachment_list {
+      .list-group-item {
+        border: 0;
+      }
+      .view-attachment, time {
+        display: none;
+      }
+      .tools {
+        margin-top: -25px;
+      }
+    }
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_custom_conversation</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService Custom Conversation</name>
+        <option_schema>[{"hint":"Enter key behavior is specified by system property (glide.service_portal.comment.enter_adds_newline) unless overridden here","name":"enter_key_behavior","section":"Behavior","default_value":"System property","label":"Enter key behavior","type":"choice","choices":[{"label":"System property","value":"System property"},{"label":"Submit","value":"Submit"},{"label":"New line","value":"New line"}]},{"hint":"What is the table of the record?","name":"table","section":"Data","label":"Table","type":"string"},{"hint":"What is the sys_id of the record?","name":"sys_id","section":"Data","label":"Sys_ID","type":"string"},{"hint":"Placeholder text shows selected journal field","name":"use_dynamic_placeholder","section":"Behavior","label":"Use dynamic placeholder","type":"boolean"},{"hint":"Message to show when record has no readable journal field","name":"no_readable_journal_field_message","default_value":"","section":"Presentation","label":"No readable journal field message","type":"string"},{"hint":"Get the template based on the tab","name":"tab","section":"Behavior","label":"Tab Template","type":"string"},{"name":"item_status","section":"Behavior","label":"Item Status","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	/* populate the 'data' object */
+	/* e.g., data.table = $sp.getValue('table'); */
+	data.hide = false;
+	var localInput = input;
+	var portalUtils = new global.OCLPortalUtils();
+	//Used to get the current user sys_id
+	data.gservice_ticket_attachment = [];
+
+
+	if(!localInput){
+		data.clear = true;
+		data.mergedEntries = [];
+		var userID = gs.getUser().getID();
+		data.user_id = userID;
+		data.username = gs.getUserDisplayName();
+		data.statusEntries = [];
+		data.sys_id = options.sys_id;
+		data.table = options.table;
+
+		var grItem = new GlideRecord(data.table);
+		grItem.get(data.sys_id);
+		var created_on = grItem.getDisplayValue('sys_created_on');
+		created_on = created_on.split(' ');
+		data.createdDate = created_on[0].replace(/-/g, "/");
+		data.createdTime = created_on[1];
+
+		data.stream = $sp.getStream(data.table, data.sys_id);
+		var entries = data.stream.entries;
+		var statusEntries = portalUtils.getStateChange(data.sys_id);
+		var mergedEntries = portalUtils.joinEntries(entries, statusEntries);
+
+		data.mergedEntries = portalUtils.sortDateTime(mergedEntries, "sys_created_on_adjusted", 1);
+
+		/*var gservice_ticket_attachment_options = {record_table : options.table,
+																								record_id : options.sys_id};*/
+		data.gservice_ticket_attachment = $sp.getWidget('gservice_ticket_attachments');
+		var grVariables = new GlideRecord(data.table);
+		grVariables.get(data.sys_id);
+		data.variables = new global.GlobalServiceCatalogUtil().getVariablesForTask(grVariables, true);
+		data.ticketInfo = portalUtils.getTicketInfo(data.table, data.sys_id);
+	}
+	else{
+		switch(localInput.action){
+			case "insertComment":
+				var grTask = new GlideRecord(localInput.table);
+				grTask.get(localInput.sys_id);
+				grTask.comments = localInput.comment;
+				grTask.update();
+
+				/*if(localInput.table == "sc_req_item"){
+						var grScTask = new GlideRecord("sc_task");
+						grScTask.addQuery("request_item", localInput.sys_id);
+						grScTask.query();
+						if(grScTask.next()){
+							var reqState = grScTask.getValue("state");
+							var pendingReason = grScTask.getValue("u_pending_reason");
+							if(reqState == "-5" && pendingReason == "1"){
+								var item = {table: localInput.table,
+														sys_id: localInput.sys_id
+													 };
+								var state = "addCommentOnNotes";
+								data.item = portalUtils.changeItemState(item, state);
+							}
+						}
+					} else if (localInput.table == "incident"){
+						var incidentState = grTask.getValue("state");
+						var holdReason = grTask.getValue("holdReason");
+						if(incidentState == "3" && holdReason == "1"){
+							var itemJson = {table: localInput.table,
+															sys_id: localInput.sys_id
+														 };
+							var stateChange = "addCommentOnNotes";
+							data.item = portalUtils.changeItemState(itemJson, stateChange);
+						}
+					}*/
+				break;
+			case "newComment":
+				data.stream = $sp.getStream(localInput.table, localInput.sys_id);
+				data.mergedEntries = data.stream.entries;
+				data.statusEntries = portalUtils.getStateChange(localInput.sys_id);
+				var mergedEntries = portalUtils.joinEntries(data.mergedEntries, data.statusEntries);
+				data.mergedEntries = portalUtils.sortDateTime(mergedEntries, "sys_created_on_adjusted", 1);
+				break;
+		}
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-02 15:30:08</sys_created_on>
+        <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
+        <sys_mod_count>116</sys_mod_count>
+        <sys_name>GService Custom Conversation</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-03 18:47:54</sys_updated_on>
+        <template><![CDATA[<div class="content_conversation_all">
+  <div class="conversation_title">Histórico da Solicitação</div>
+
+  <div>
+    <div class="panel-body">
+      <div class="activity_content">
+        <ul role="list" class="timeline" aria-label="${Ticket history}">
+          <li class="conversation_entries conversation_fixed" role="listitem" aria-label="{{data.stream.user_full_name}}">
+            <div class="conversation_mark"></div><span class="hide_timeline_property"></span><span class="new_radio_mark"></span>
+            <div class="conversation_fixed_text">
+              <div class="conversation_action" ng-click="c.showForm()">
+                ${Abertura da Solicitação}
+                <span class="tooltip tooltip_right">
+                  <div class="tooltip_arrow arrow_left"></div>
+                  <div class="tooltip_text">${See summary}</div>
+                </span>
+              </div>
+              <div class="conversation_date">{{data.createdDate}}		{{data.createdTime}}</div>
+            </div>
+          </li>
+          <li class="conversation_entries conversation_dynamic" ng-if="data.mergedEntries.length > 0" ng-repeat="e in data.mergedEntries">
+            <div class="conversation_mark"></div>
+            <div ng-style="{'border-color': getFieldColor(e.element)}">
+              <div class="conversation_action">{{e.name}}</div>
+              <div class="conversation_description">{{e.field_label}}</div>
+              <div class="">
+                <div class="conversation_description" ng-if="(e.element != 'attachment')" ng-bind-html="e.value"></div>
+                <div ng-if="(e.element == 'attachment')">
+                  <a ng-if="(e.attachment.state == 'available')" target="_blank" href="/sys_attachment.do?view=true&sys_id={{e.attachment.sys_id}}" title="${View}">
+                    <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/>
+                  </a>
+                  <a ng-if="(e.attachment.state == '' || e.attachment.state == 'pending' || e.attachment.state == 'available_conditionally')" ng-click="scanAttachment(e.attachment)" href="javascript:void(0)" title="${View}">
+                    <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{::e.attachment.path}}?t=medium" class="img-responsive"/>
+                  </a>
+                  <div>
+                    <div ng-if="(e.attachment.state == 'available')">
+                      <a href="/sys_attachment.do?sys_id={{e.attachment.sys_id}}" target="_blank" title="{{dataViewMsg}}"><strong>{{e.attachment.file_name}}</strong></a><br/>
+                      {{e.attachment.size}}
+                    </div>
+                    <div ng-if="(e.attachment.state == 'not_available')">
+                      <span title="{{dataViewMsg}}" class="not_available">{{e.attachment.file_name}}</span><br/>
+                      <span class="error">{{data.scanFailedMsg}}</span>
+                    </div>
+                    <div ng-if="(e.attachment.state == '' || e.attachment.state == 'pending' || e.attachment.state == 'available_conditionally')">
+                      <a href="javascript:void(0)" ng-click="scanAttachment(e.attachment)" title="{{dataViewMsg}}"><strong>{{e.attachment.file_name}}</strong></a><br/>
+                      {{e.attachment.size}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div ng-if="e.showTranslation" class="translation-container">
+                <div ng-if="e.isTranslationInProgress">
+                  <i class="translation-icon icon-translation"></i>
+                  <span aria-live="polite">{{data.translation.translationProgressMsg}}</span>
+                </div>
+                <div ng-if="e.isTranslationSuccess">
+                  <i class="translation-icon icon-translation"></i>
+                  <a class="translate-link" role="button" href="javascript:void(0)" ng-click="toggleTranslation(e)">{{e.toggleMsg}}</a>
+                  <span class="translation-credits">{{e.credits}}</span>
+                  <div ng-if="e.showDetails" class="translation-message" ng-bind-html="e.translatedText">
+                  </div>
+                </div>
+                <div ng-if="e.isTranslationError">
+                  <i class="translation-icon icon-translation"></i>
+                  {{e.translatedText}}
+                  <a ng-if="e.tryAgain" role="button" href="javascript:void(0)" class="translate-link" ng-click="translateText(e, true)">{{data.translation.tryAgainMsg}}</a>
+                </div>
+              </div>
+            </div>
+            <div class="conversation_date">{{e.createdDate}}		{{e.createdTime}}</div>
+          </li>
+          </div>
+        </ul>
+    </div>
+
+    <div class="conversation_form">
+      <form ng-if="data.item_status != 'resolved'" ng-submit="c.postEntry(data.journalEntry)" id="sand">
+        <div class="conversation_user">
+          <img src="gservice_message.png"/>
+          <span class="user_name">{{data.username}}</span>
+        </div>
+        <div class=""> <!--ng-show="data.hasWritableJournalField"-->
+          <textarea ng-keypress="keyPress($event)" sn-resize-height="trim" rows="1" id="post-input" class="form-control no-resize overflow-hidden" ng-model='data.journalEntry' ng-model-options='{debounce: 250}' ng-attr-placeholder="{{getPlaceholder()}}" aria-label="{{getPlaceholder()}}" autocomplete="off" ng-change="userTyping(data.journalEntry)"/>
+          <span class="journal-field-indicator" ng-style="({'background-color': data.useSecondaryJournalField ? data.secondaryJournalField.color : data.primaryJournalField.color})"></span>
+        </div>
+
+        <div ng-click="c.postEntry(data.journalEntry)">
+          <img src="gservice_dashboard_submit.png"/>
+          <span class="submit_name">Enviar</span>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<widget id="gservice_ticket_attachments"></widget>
+
+<div class="modal fade modal_article" id="moreDetailsModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="panel-body wrapper-xl">
+          <span class="turn_bold color_change title_property">${Solicitação} ${#}{{data.ticketInfo.ticketNumber}}</span>
+          <div class="turn_bold color_change">${Data de Abertura}: {{data.ticketInfo.openedAt}}</div>
+          <div><span class="turn_bold">${Resumo da solicitação}: </span>{{data.ticketInfo.summary}}</div>
+          <div class="turn_bold color_change">${Detalhes da solicitação}:</div>
+          <div ng-repeat="variable in data.variables">
+            <span class="turn_bold">{{variable.label}} : </span>{{variable.display_value}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+]]></template>
+    </sp_widget>
+</record_update>

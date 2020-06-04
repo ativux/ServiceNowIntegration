@@ -282,17 +282,6 @@ ul.dropdown-menu i.ta-icon, i.ta-img {
 
 .input-group-dashboard {
   border-bottom: 2px solid $deep-sky-blue;
-
-  .close_result {
-    position: absolute;
-    z-index: 3;
-    top: 20px !important;
-    right: 60px !important;
-    font-size: 24px;
-    &amp;:hover {
-      opacity: .75;
-    }
-  }
 }
 .margins{
   margin: 32px 30px 40px 50px;
@@ -302,6 +291,15 @@ input[name='q'] {
   border: 0;
   margin-top: 10%;
 }
+
+.content_typeahead_home {
+  input[name='q'] {
+    margin-top: 0;
+    position: absolute;
+    bottom: 4px;
+  }
+}
+
 input[name='q']:focus {
   outline: none;
   box-shadow: none;
@@ -317,28 +315,52 @@ input[type="reset"]{
   background: none;
 }
 
-.close_result-default {
-  position: absolute;
-  z-index: 3;
-  top: 75px;
-  right: 10px;
-  font-size: 24px;
-
-  &amp;:hover {
-    opacity: .75;
+.default_properties{
+  input[type='text'] {
+    width: 90% !important;
+  }
+  .close_result-default {
+    display: block;
+    float: right;
+    z-index: 3;
+    font-size: 24px;
+    margin-top: 10%;
+    margin-right: 2%;
   }
 }
 
 .close_result {
   position: absolute;
   z-index: 3;
-  top: 30px;
-  right: 10px;
+  right: 10px !important;
   font-size: 24px;
+}
 
-  &amp;:hover {
-    opacity: .75;
+/* Template Main Search - Home */
+.content_typeahead_home {
+  .close_result {
+    bottom: 4px;
   }
+}
+
+/* Template Dashboard */
+.content_typeahead_dashboard {
+  .close_result {
+    top: 17px !important;
+    right: 60px !important;
+  }
+}
+
+/* TOOLTIPS */
+.close_result:hover {
+  .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+.tooltip_top {
+  top: -100%;
+  left: -36px;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -450,14 +472,14 @@ input[type="reset"]{
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 15:27:43</sys_created_on>
         <sys_id>d1156733dbc81050fa11cf2414961952</sys_id>
-        <sys_mod_count>194</sys_mod_count>
+        <sys_mod_count>232</sys_mod_count>
         <sys_name>GService Typeahead Search</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_d1156733dbc81050fa11cf2414961952</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-29 18:35:45</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-03 15:22:56</sys_updated_on>
         <template><![CDATA[<div ng-include="data.htmlTemplate"></div>]]></template>
     </sp_widget>
 </record_update>

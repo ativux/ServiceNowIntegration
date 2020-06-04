@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_js_include">
+    <sp_js_include action="INSERT_OR_UPDATE">
+        <display_name>GService Scroll Width</display_name>
+        <source>local</source>
+        <sys_class_name>sp_js_include</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-02 17:12:36</sys_created_on>
+        <sys_id>0b59cf53db0d1c905c116390149619d5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService Scroll Width</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_ui_script display_value="x_gmeps_itsm_servi.GServiceScrollWidth">5bb707dfdbc91c905c11639014961945</sys_ui_script>
+        <sys_update_name>sp_js_include_0b59cf53db0d1c905c116390149619d5</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-02 17:12:36</sys_updated_on>
+        <url/>
+    </sp_js_include>
+</record_update>

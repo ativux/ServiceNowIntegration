@@ -6,45 +6,50 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-27 09:06:45</sys_created_on>
         <sys_id>f970a2d1db491c105c1163901496195f</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>21</sys_mod_count>
         <sys_name>gservice_typeahead_default</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_ng_template_f970a2d1db491c105c1163901496195f</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-29 14:46:30</sys_updated_on>
-        <template><![CDATA[<form ng-submit="c.submitSearch()">
-  <input type="hidden" name="id" value="search"/>
-  <input type="hidden" name="t" value="{{c.searchType}}"/>
-  <div class="input-group input-group-{{::c.options.size}} {{data.categoryBdColor}}">
-    <span class="input-group-btn">
-      <button name="search" type="submit" class="btn btn-{{::c.options.color}}"
-              title="{{::c.data.searchMsg}}" aria-label="{{::c.data.searchMsg}}">
-        <img src="{{data.categorySearchImg}}" class="icon-img"/>
-      </button>
-    </span>
-    <input ng-if="c.showSuggestions"
-           name="q" type="text" ng-model="c.searchTerm"
-           autocomplete="off"
-           uib-typeahead="item as item.term for item in c.getSearchSuggestions($viewValue)"
-           typeahead-wait-ms="250"
-           typeahead-min-length="1"
-           typeahead-focus-first="false"
-           typeahead-on-select="c.onSelect($item, $model, $label)"
-           typeahead-template-url="gservice-typeahead.html"
-           typeahead-popup-template-url="gservice-typeahead-popup.html"
-           class="form-control input-typeahead"
-           role="textbox"
-           aria-label="{{::c.options.title}}" tabindex="0" aria-haspopup="true">    
-    <div ng-class="c.options.color == 'default' ? 'close_result-default' : 'close_result'" ng-click="c.clearResults()" ng-if="c.showClear">
-      x
-      <span class="tooltip_top">${Clean Search}</span>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-03 15:10:40</sys_updated_on>
+        <template><![CDATA[<div class="content_typeahead_home">
+  <form ng-submit="c.submitSearch()">
+    <input type="hidden" name="id" value="search"/>
+    <input type="hidden" name="t" value="{{c.searchType}}"/>
+    <div class="input-group input-group-{{::c.options.size}} {{data.categoryBdColor}} default_properties">
+      <span class="input-group-btn">
+        <button name="search" type="submit" class="btn btn-{{::c.options.color}}"
+                title="{{::c.data.searchMsg}}" aria-label="{{::c.data.searchMsg}}">
+          <img src="{{data.categorySearchImg}}" class="icon-img"/>
+        </button>
+      </span>
+      <input ng-if="c.showSuggestions"
+             name="q" type="text" ng-model="c.searchTerm"
+             autocomplete="off"
+             uib-typeahead="item as item.term for item in c.getSearchSuggestions($viewValue)"
+             typeahead-wait-ms="250"
+             typeahead-min-length="1"
+             typeahead-focus-first="false"
+             typeahead-on-select="c.onSelect($item, $model, $label)"
+             typeahead-template-url="gservice-typeahead.html"
+             typeahead-popup-template-url="gservice-typeahead-popup.html"
+             class="form-control input-typeahead"
+             role="textbox"
+             aria-label="{{::c.options.title}}" tabindex="0" aria-haspopup="true">
+      <div class="close_result" ng-click="c.clearResults()" ng-if="c.showClear"> <!-- ng-class="c.options.color == 'default' ? 'close_result-default' : 'close_result'" -->
+        x
+        <span class="tooltip tooltip_top">
+          <div class="tooltip_text">${Clean Search}</div>
+          <div class="tooltip_arrow arrow_bottom"></div>
+        </span>
+      </div>
     </div>
-  </div>
-  <div class="text-left">
-    {{data.searchMsg}}
-  </div>
-</form>]]></template>
+    <div class="text-left">
+      {{data.searchMsg}}
+    </div>
+  </form>
+</div>]]></template>
     </sp_ng_template>
 </record_update>

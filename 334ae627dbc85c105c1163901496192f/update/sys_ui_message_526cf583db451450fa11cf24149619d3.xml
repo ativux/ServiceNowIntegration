@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_message">
     <sys_ui_message action="INSERT_OR_UPDATE">
         <application/>
-        <key>Reopen Request</key>
+        <key>See summary</key>
         <language>en</language>
-        <message>Request to reopen</message>
+        <message>Watch here the summary of your request.</message>
         <sys_class_name>sys_ui_message</sys_class_name>
-        <sys_created_by>organize.fernando</sys_created_by>
-        <sys_created_on>2020-05-29 14:43:40</sys_created_on>
-        <sys_id>64e00a82db0d1050fa11cf241496198c</sys_id>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-01 16:58:08</sys_created_on>
+        <sys_id>526cf583db451450fa11cf24149619d3</sys_id>
         <sys_mod_count>1</sys_mod_count>
-        <sys_name>Reopen Request</sys_name>
+        <sys_name>See summary</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
-        <sys_update_name>sys_ui_message_64e00a82db0d1050fa11cf241496198c</sys_update_name>
+        <sys_update_name>sys_ui_message_526cf583db451450fa11cf24149619d3</sys_update_name>
         <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-06-02 11:53:12</sys_updated_on>
+        <sys_updated_on>2020-06-01 16:59:40</sys_updated_on>
     </sys_ui_message>
 </record_update>

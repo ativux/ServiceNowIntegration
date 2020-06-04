@@ -127,7 +127,7 @@
 		$location.url('?id=gservice_index');
 		spUtil.scrollTo('.sp-scroll', 300);
 	}
-	
+
 	// Dropdown
 	c.openDropDown = function(item){
 		if(item == c.data.menuSelected && c.data.menuSelected != 2){
@@ -164,9 +164,17 @@
 		c.data.menuSelected = 0;
 		$('.dropdown-bg').css('display', 'none');
 	});
+
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.navbar {
+        <css>/*
+.content_nav {
+  margin-left: 90px;
+  margin-right: 90px;
+}
+*/
+
+.navbar {
   transition: 250ms opacity ease-in-out;
   -webkit-transition: 250ms opacity ease-in-out;
   border: 0;
@@ -175,7 +183,6 @@
   /* GSERVICE HEADER TEXT */
   padding-left: 10%;
   padding-top: 30px;
-  //height: 120px;
   font-family: $text-bold;
   transition-property: padding-top;
   transition-duration: .2s;
@@ -531,14 +538,14 @@ nav {
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 18:00:53</sys_created_on>
         <sys_id>578e7263db80dc10fa11cf24149619e7</sys_id>
-        <sys_mod_count>522</sys_mod_count>
+        <sys_mod_count>530</sys_mod_count>
         <sys_name>GService Stock Header</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_header_footer_578e7263db80dc10fa11cf24149619e7</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-29 18:18:32</sys_updated_on>
+        <sys_updated_on>2020-06-03 12:07:42</sys_updated_on>
         <template><![CDATA[<div class="content">
 
   <!-- SIDE BAR -->
@@ -583,38 +590,39 @@ nav {
   </div>
 
   <!-- NAV -->
-  <nav id="header-navbar" class="navbar-inverse" ng-class="::{'navbar':!isViewNative, 'is-native': isViewNative}"role="navigation">
-    <div ng-show="::!isViewNative" class="navbar-header">
+  <div class="content_nav">
+    <nav id="header-navbar" class="navbar-inverse" ng-class="::{'navbar':!isViewNative, 'is-native': isViewNative}"role="navigation">
+      <div ng-show="::!isViewNative" class="navbar-header">
 
-      <a class="navbar-brand" ng-if="::!portal.logo" href="?id={{::portal.homepage_dv}}">
-        <span ng-bind="portal.title"></span>
-      </a>
+        <a class="navbar-brand" ng-if="::!portal.logo" href="?id={{::portal.homepage_dv}}">
+          <span ng-bind="portal.title"></span>
+        </a>
 
-      <a class="navbar-brand navbar-brand-logo" ng-if="::portal.logo" ng-href="?id={{::portal.homepage_dv}}" ng-click="collapse()" aria-label="${Go to homepage}">
-        <img ng-src="{{::portal.logo}}" title="ServiceNow" role="presentation" alt="${Portal Logo}" />
-      </a>
+        <a class="navbar-brand navbar-brand-logo" ng-if="::portal.logo" ng-href="?id={{::portal.homepage_dv}}" ng-click="collapse()" aria-label="${Go to homepage}">
+          <img ng-src="{{::portal.logo}}" title="ServiceNow" role="presentation" alt="${Portal Logo}" />
+        </a>
 
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sp-nav-bar">
-        <span class="sr-only">${Toggle navigation}</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sp-nav-bar">
+          <span class="sr-only">${Toggle navigation}</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
 
-    <div sp-navbar-toggle="" class="collapse navbar-right" id="sp-nav-bar">
-      <!-- Include The Menu -->
-      <sp-widget widget="::data.menu"></sp-widget>
-      <ul ng-if="(!user.logged_in && page.id != portal.login_page_dv && !data.hasLogin)" class="nav navbar-nav" role="presentation">
-        <li role="presentation"><a href ng-click="::openLogin()">${Login}</a></li>
-      </ul>
-      <ul ng-if="user.logged_in" class="nav navbar-nav" role="menubar">
+      <div sp-navbar-toggle="" class="collapse navbar-right" id="sp-nav-bar">
+        <!-- Include The Menu -->
+        <sp-widget widget="::data.menu"></sp-widget>
+        <ul ng-if="(!user.logged_in && page.id != portal.login_page_dv && !data.hasLogin)" class="nav navbar-nav" role="presentation">
+          <li role="presentation"><a href ng-click="::openLogin()">${Login}</a></li>
+        </ul>
+        <ul ng-if="user.logged_in" class="nav navbar-nav" role="menubar">
 
-        <!-- chat, avatar, and logout -->
-        <li ng-if="::(data.connect_support_queue_id && !isAgentChatConfigured)" role="presentation"><a href ng-click="openPopUp()" role="menuitem">${Live Chat}</a></li>
+          <!-- chat, avatar, and logout -->
+          <li ng-if="::(data.connect_support_queue_id && !isAgentChatConfigured)" role="presentation"><a href ng-click="openPopUp()" role="menuitem">${Live Chat}</a></li>
 
-        <!-- ** THIS SECTION IS HIDDEN SO THAT THE USER AVATAR IS NOT DISPLAYED IN THE HEADER BAR ** -->
-        <!--<li ng-if="showAvatar" class="hidden-xs dropdown" role="presentation">
+          <!-- ** THIS SECTION IS HIDDEN SO THAT THE USER AVATAR IS NOT DISPLAYED IN THE HEADER BAR ** -->
+          <!--<li ng-if="showAvatar" class="hidden-xs dropdown" role="presentation">
 <a href class="toggle-dropdown" data-toggle="dropdown" aria-expanded="false" title="{{::data.profileBtnMsg}}" aria-label="{{::data.profileBtnMsg}}: {{::user.name}}" id="profile-dropdown"  role="menuitem" aria-haspopup="true">
 <span class="navbar-avatar" aria-hidden="true"><sn-avatar class="avatar-small-medium" primary="avatarProfile" /></span>
 <span class="visible-lg-inline">{{::user.name}}</span>
@@ -626,13 +634,14 @@ nav {
 </li>
 -->
 
-        <li ng-if="showXSAvatar" class="visible-xs-block" role="presentation"><a role="menuitem" ng-href="?id=user_profile&sys_id={{::user.sys_id}}" ng-click="collapse()">
-          <span class="navbar-avatar"><sn-avatar class="avatar-small-medium" primary="avatarProfile" /></span>{{::user.name}}</a>
-        </li>
-        <li ng-if="::!(isViewNative || isViewNativeTablet)" class="visible-xs-block" role="presentation"><a role="menuitem" ng-href="{{::portal.logoutUrl}}" ng-click="collapse()">${Logout}</a></li>
-      </ul>
-    </div>
-  </nav>
+          <li ng-if="showXSAvatar" class="visible-xs-block" role="presentation"><a role="menuitem" ng-href="?id=user_profile&sys_id={{::user.sys_id}}" ng-click="collapse()">
+            <span class="navbar-avatar"><sn-avatar class="avatar-small-medium" primary="avatarProfile" /></span>{{::user.name}}</a>
+          </li>
+          <li ng-if="::!(isViewNative || isViewNativeTablet)" class="visible-xs-block" role="presentation"><a role="menuitem" ng-href="{{::portal.logoutUrl}}" ng-click="collapse()">${Logout}</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
 
 </div>]]></template>
     </sp_header_footer>

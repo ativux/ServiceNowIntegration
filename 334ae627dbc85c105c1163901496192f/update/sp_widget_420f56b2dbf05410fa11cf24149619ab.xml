@@ -19,7 +19,6 @@
 	function hideParentJournalFields() {
 		if (!$scope.data.stream)
 			return;
-		f
 		var fields = $scope.data.stream.journal_fields;
 		var g_form = $scope.page.g_form;
 		for (var f in fields)
@@ -522,6 +521,7 @@
     border-right: 2px solid $slate-gray;
     right: 100%;
     height: calc(100% - 80px);
+    z-index: 2;
   }
   .conversation_entries {
     padding-left: 30px;
@@ -535,6 +535,26 @@
       position: absolute;
       top: 5px;
       left: -4px;
+      z-index: 3;
+    }
+    .hide_timeline_property{
+      background: white;
+      height: 100%;
+      width: 10px;
+      z-index: 4;
+      position: absolute;
+      left: -4px;
+    }
+    .new_radio_mark{
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      background-color: white;
+      border: 1px solid $deep-sky-blue;
+      position: absolute;
+      top: 5px;
+      left: -4px;
+      z-index: 5;
     }
   }
   .conversation_entries:first-child {
@@ -547,6 +567,17 @@
       background-color: $deep-sky-blue;
     }
   }
+  .conversation_fixed {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+  }
+  .content_conversation_dynamic {
+    height: 260px;
+    overflow: auto;
+  }
+
   .conversation_action {
     font-size: 12px;
     color: $deep-sky-blue;
@@ -675,9 +706,6 @@
   }
 
   .conversation_form {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
 
     input[type="image"] {
       width: 50px;
@@ -903,6 +931,69 @@ ul {
   color: $deep-sky-blue;
   font-family: 'globorounded_bd';
   font-size: 16px;
+}
+
+.modal-body{
+  overflow: hidden !important;
+  border: 20px solid white;
+  .wrapper-xl {
+    padding: 50px 0 50px 80px !important
+      margin-right: -20px;
+  }
+  button{
+    text-align: right;
+    font-size: 42px;
+  }
+  .title_property{
+    font-size: 32px;
+  }
+  .turn_bold{
+    font-weight: bold;
+  }
+  .color_change{
+    color: $deep-sky-blue;
+  }
+}
+
+/* Template Notifications */
+.content_notifications {
+  .content_conversation {
+    .attach_button {
+      margin-left: 60px;
+    }
+    .attach_title {
+      margin-top: 20px;
+    }
+    .submit_button {
+      position: absolute;
+      left: 360px;
+    }
+  }
+}
+
+/* Tooltips */
+.tooltip {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  transition: .2s ease-in-out;
+  padding: 5px 10px;
+  white-space: nowrap;
+  z-index: 1;
+}
+.tooltip_right {
+  top: calc(50% - 15px);
+  right: 40%;
+}
+
+//Hover
+.conversation_action:hover {
+  .tooltip {
+    visibility: visible;
+    opacity: 1;
+    color: white;
+    background-color: $slate-gray;
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data>{"options": {
@@ -938,10 +1029,7 @@ ul {
 	data.user_id = userID;
 	data.username = gs.getUserDisplayName();
 	data.statusEntries = [];
-	if(!localInput){
-		data.tab = options.tab;
-	}
-
+	
 	if(localInput){
 
 		if(localInput.action == "insertComment"){
@@ -1124,14 +1212,97 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-19 14:34:49</sys_created_on>
         <sys_id>420f56b2dbf05410fa11cf24149619ab</sys_id>
-        <sys_mod_count>316</sys_mod_count>
+        <sys_mod_count>354</sys_mod_count>
         <sys_name>GService Ticket Conversations</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_420f56b2dbf05410fa11cf24149619ab</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-29 18:54:15</sys_updated_on>
-        <template><![CDATA[<div ng-include="data.tab"></div>]]></template>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-06-04 14:37:53</sys_updated_on>
+        <template><![CDATA[<div class="content_notifications" ng-if="data.canRead && !data.isNewRecord && !data.hide">
+
+  <div class="content_conversation"> <!-- -->
+    <div class="panel-heading panel-title-container">
+      <div class="number_title">
+        <div class="ticket_number">{{data.number}}</div>
+        <div class="ticket_title">{{data.ticketTitle}}</div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div ng-if="data.hasReadableJournalField">
+        <div class="row">
+
+          <ul role="list" class="avatar_list" aria-label="${Ticket history}">
+            <li class="" ng-repeat="e in data.mergedEntries | limitTo : 1">
+
+              <sn-avatar ng-if="hasLiveProfile(e.user_sys_id)" primary="getLiveProfileByUserId(e.user_sys_id)" class="avatar-large avatar-custom-size" show-presence="false" enable-context-menu="false">
+              </sn-avatar>
+
+              <div class="history-name-size">{{e.name}}</div>
+              <div class=""> <!-- timeline-body -->
+                <p ng-if="(e.element != 'attachment')" ng-bind-html="e.value"></p>
+                <div ng-if="(e.element == 'attachment')">
+                  <a ng-if="(e.attachment.state == 'available')" target="_blank" href="/sys_attachment.do?view=true&sys_id={{e.attachment.sys_id}}" title="${View}">
+                    <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/>
+                  </a>
+                  <a ng-if="(e.attachment.state == '' || e.attachment.state == 'pending' || e.attachment.state == 'available_conditionally')" ng-click="scanAttachment(e.attachment)" href="javascript:void(0)" title="${View}">
+                    <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/>
+                  </a>
+                  <div>
+                    <div ng-if="(e.attachment.state == 'available')">
+                      <a href="/sys_attachment.do?sys_id={{e.attachment.sys_id}}" target="_blank" title="{{dataViewMsg}}"><strong>{{e.attachment.file_name}}</strong></a><br/>
+                      {{e.attachment.size}}
+                    </div>
+                    <div ng-if="(e.attachment.state == 'not_available')">
+                      <span title="{{dataViewMsg}}" class="not_available">{{e.attachment.file_name}}</span><br/>
+                      <span class="error">{{data.scanFailedMsg}}</span>
+                    </div>
+                    <div ng-if="(e.attachment.state == '' || e.attachment.state == 'pending' || e.attachment.state == 'available_conditionally')">
+                      <a href="javascript:void(0)" ng-click="scanAttachment(e.attachment)" title="{{dataViewMsg}}"><strong>{{e.attachment.file_name}}</strong></a><br/>
+                      {{e.attachment.size}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="time-text">{{e.sys_created_on}}</div>
+
+            </li>
+          </ul>
+        </div>
+
+        <div class="message_user">
+          <img src="gservice_message.png">
+          <span class="user_name">{{data.username}}</span>
+        </div>
+
+        <form ng-submit="postEntry(data.journalEntry)">
+          <div ng-show="data.hasWritableJournalField" class="conversation_form">
+            <textarea ng-keypress="keyPress($event)" sn-resize-height="trim" rows="1" class="form-control no-resize overflow-hidden" ng-model='data.journalEntry' ng-model-options='{debounce: 250}' ng-attr-placeholder="{{getPlaceholder()}}" aria-label="{{getPlaceholder()}}" autocomplete="off" ng-change="userTyping(data.journalEntry)"/>
+            <span class="journal-field-indicator" ng-style="({'background-color': data.useSecondaryJournalField ? data.secondaryJournalField.color : data.primaryJournalField.color})"></span>
+            <input class="submit_button" type="image" src="gservice_dashboard_submit.png" ng-disabled="data.isPosting" value="{{data.btnLabel}}" style="cursor: pointer"/>
+          </div>
+        </form>
+
+        <div ng-if="(!data.hideAttachmentBtn)" class="attach_text">
+          <sp-attachment-button ng-if="data.canWrite && data.canAttach" class="attach_button">
+          </sp-attachment-button>
+          
+          <div class="attach_title">${Add attachments}</div>
+          <now-attachments-list class="attachment-list" template="sp_attachment_single_line" >
+          </now-attachments-list>
+        </div>
+
+      </div>  
+    </div>
+
+    <div ng-if="!data.hasReadableJournalField">
+      {{options.no_readable_journal_field_message}}
+    </div>
+
+  </div>
+
+</div>]]></template>
     </sp_widget>
 </record_update>

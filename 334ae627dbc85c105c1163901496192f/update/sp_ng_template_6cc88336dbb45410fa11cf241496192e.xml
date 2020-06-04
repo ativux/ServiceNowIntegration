@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_ng_template">
     <sp_ng_template action="INSERT_OR_UPDATE">
         <id>gservice_ticket_notifications_tab</id>
-        <sp_widget display_value="GService Ticket Conversations">420f56b2dbf05410fa11cf24149619ab</sp_widget>
+        <sp_widget display_value="GService Custom Conversation">4521b25bdb491c905c1163901496193f</sp_widget>
         <sys_class_name>sp_ng_template</sys_class_name>
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-19 17:38:20</sys_created_on>
         <sys_id>6cc88336dbb45410fa11cf241496192e</sys_id>
-        <sys_mod_count>35</sys_mod_count>
+        <sys_mod_count>43</sys_mod_count>
         <sys_name>gservice_ticket_notifications_tab</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_ng_template_6cc88336dbb45410fa11cf241496192e</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-28 21:28:33</sys_updated_on>
-        <template><![CDATA[<div ng-if="data.canRead && !data.isNewRecord && !data.hide">
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-06-02 16:15:31</sys_updated_on>
+        <template><![CDATA[<div class="content_notifications" ng-if="data.canRead && !data.isNewRecord && !data.hide">
 
   <div class="content_conversation"> <!-- -->
     <div class="panel-heading panel-title-container">
@@ -76,25 +76,26 @@
           <div ng-show="data.hasWritableJournalField" class="conversation_form">
             <textarea ng-keypress="keyPress($event)" sn-resize-height="trim" rows="1" class="form-control no-resize overflow-hidden" ng-model='data.journalEntry' ng-model-options='{debounce: 250}' ng-attr-placeholder="{{getPlaceholder()}}" aria-label="{{getPlaceholder()}}" autocomplete="off" ng-change="userTyping(data.journalEntry)"/>
             <span class="journal-field-indicator" ng-style="({'background-color': data.useSecondaryJournalField ? data.secondaryJournalField.color : data.primaryJournalField.color})"></span>
-            <input type="image" src="gservice_dashboard_submit.png" ng-disabled="data.isPosting" value="{{data.btnLabel}}" style="cursor: pointer"/>
+            <input class="submit_button" type="image" src="gservice_dashboard_submit.png" ng-disabled="data.isPosting" value="{{data.btnLabel}}" style="cursor: pointer"/>
           </div>
         </form>
-        
+
         <div ng-if="(!data.hideAttachmentBtn)" class="attach_text">
           <sp-attachment-button ng-if="data.canWrite && data.canAttach" class="attach_button">
           </sp-attachment-button>
+          
           <div class="attach_title">${Add attachments}</div>
           <now-attachments-list class="attachment-list" template="sp_attachment_single_line" >
           </now-attachments-list>
         </div>
-        
+
       </div>  
     </div>
 
     <div ng-if="!data.hasReadableJournalField">
       {{options.no_readable_journal_field_message}}
     </div>
-    
+
   </div>
 
 </div>]]></template>

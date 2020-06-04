@@ -6,70 +6,6 @@
 	c.approvalComment = '';
 	c.approvalItem = false;
 	c.needComment = false;
-	c.isLoading = true;
-
-	$scope.loadingIndicator = $rootScope.loadingIndicator;
-	//Show widget after loaded
-	$scope.$on('sp_loading_indicator', function(e, value) {
-		if($scope.loadingIndicator && !value){
-			c.isLoading = false;
-		}
-		$scope.loadingIndicator = value;
-	});
-
-	//Will be used when change and problem modules are built
-	/*spUtil.recordWatch($scope, "change_request", c.data.changeID, function(event) {
-		if(event.data.record.state){
-			c.server.get({
-				action: "stateChangedBackend",
-				itemID: event.data.sys_id,
-				newState: event.data.record.state,
-				requests: c.data.requests
-			}).then(function(response) {
-				c.data.requests = response.data.requests;
-			});
-		}
-	});
-
-	spUtil.recordWatch($scope, "problem", c.data.problemID, function(event) {
-		if(event.data.record.state){
-			c.server.get({
-				action: "stateChangedBackend",
-				itemID: event.data.sys_id,
-				newState: event.data.record.state,
-				requests: c.data.requests
-			}).then(function(response) {
-				c.data.requests = response.data.requests;
-			});
-		}
-	});*/
-
-	//Old Record Watch
-	spUtil.recordWatch($scope, "sc_req_item", c.data.requestsID, function(event) {
-		if(event.data.record.state){
-			c.server.get({
-				action: "stateChangedBackend",
-				itemID: event.data.sys_id,
-				newState: event.data.record.state,
-				requests: c.data.requests
-			}).then(function(response) {
-				c.data.requests = response.data.requests;
-			});
-		}
-	});
-	
-	spUtil.recordWatch($scope, "incident", c.data.incidentsID, function(event) {
-		if(event.data.record.state){
-			c.server.get({
-				action: "stateChangedBackend",
-				itemID: event.data.sys_id,
-				newState: event.data.record.state,
-				requests: c.data.requests
-			}).then(function(response) {
-				c.data.requests = response.data.requests;
-			});
-		}
-	});
 
 	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
 		var changes = event.data.changes;
@@ -95,105 +31,15 @@
 		}
 	});
 
-	$scope.$on('refreshNotificationList', function(event, notificationID) {
-		c.server.get({
-			action: "refreshNotificationList",
-			notificationWidget : c.data.notificationWidget,
-			notificationID : notificationID
-		}).then(function(response) {
-			c.data.notificationWidget = response.data.notificationWidget;
-			c.data.showEmptyMessage = true;
-			for(i in c.data.notificationWidget){
-				if(c.data.notificationWidget[i].show){
-					c.data.showEmptyMessage = false;
-				}
-			}
-			$('#pendingResponse').modal("show");
-		});
-	});
-
-	$scope.$on('applyFilter', function(event, typeFilter, statusFilter) {
-		c.isLoading = true;
-		c.server.get({
-			action: "applyFilter",
-			typeFilter: typeFilter,
-			statusFilter: statusFilter,
-			requests : c.data.requests
-		}).then(function(response) {
-			c.data.requests = response.data.requests;
-			$timeout(function() {
-				scrollTo("list-columns");
-			});
-			c.verifyEmptySearch();
-		});
-	});
-
-	$scope.$on('applyDate', function(event, daysAgo) {
-		c.isLoading = true;
-		c.server.get({
-			action: "applyDate",
-			daysAgo: daysAgo,
-			requests : c.data.requests
-		}).then(function(response) {
-			c.data.requests = response.data.requests;
-			$timeout(function() {
-				scrollTo("list-columns");
-			});
-			c.verifyEmptySearch();
-		});
-	});
-
-	$scope.$on('clearAllFilters', function(event) {
-		c.isLoading = true;
-		c.server.get({
-			action: "clearAllFilters",
-			requests : c.data.requests
-		}).then(function(response) {
-			c.data.requests = response.data.requests;
-			c.verifyEmptySearch();
-		});
-	});
-
-	c.verifyEmptySearch = function(){
-		c.data.showFilterClean = true;
-		for(i in c.data.requests){
-			if(c.data.requests[i].show){
-				c.data.showFilterClean = false;
-			}
-		}
-	}
-
-	c.itemAction = function(item, action){
-		c.server.get({
-			action: 'changeItemState',
-			state: action,
-			item: item
-		}).then(function(response) {
-			item = response.data.item;
-		});
-	}
-
 	c.showDetails = function(item){
 		var showDetails = false;
-		if(c.data.table == "requestsTab"){
-			for(i in c.data.requests){
-				if(c.data.requests[i].sys_id == item.sys_id){
-					c.data.requests[i].showDetails = !c.data.requests[i].showDetails;
-					showDetails = c.data.requests[i].showDetails;
-				}
-				else{
-					c.data.requests[i].showDetails = false;
-				}
+		for(i in c.data.approvals){
+			if(c.data.approvals[i].sys_id == item.sys_id){
+				c.data.approvals[i].showDetails = !c.data.approvals[i].showDetails;
+				showDetails = c.data.approvals[i].showDetails;
 			}
-		} else if(c.data.table == "approvalsTab"){
-			for(i in c.data.approvals){
-				if(c.data.approvals[i].sys_id == item.sys_id){
-					c.data.approvals[i].showDetails = !c.data.approvals[i].showDetails;
-					showDetails = c.data.approvals[i].showDetails;
-				}
-				else{
-					c.data.approvals[i].showDetails = false;
-				}
+			else{
+				c.data.approvals[i].showDetails = false;
 			}
 		}
 		if(showDetails){
@@ -207,7 +53,18 @@
 
 	}
 
-	//Template 'gservice_my_approvals_table'
+	c.orderBy = function(order, items){
+		c.server.get({
+			action : "orderBy",
+			items : items,
+			order : order,
+			allColumns : c.data.columns
+		}).then(function(response) {
+			c.data.columns = response.data.columns;
+			c.data.approvals = response.data.approvals;
+		});
+	}
+	
 	c.submitApproval = function(item, approval){
 		c.approvalItem = item;
 		if(approval){
@@ -242,71 +99,6 @@
 			c.needComment = true;
 		}
 	}
-
-	//Function created for redirect users to main page and auto-fill the form with informations provided by cart items
-	c.duplicateItem = function(item) {
-		var mostReq_id = item.sys_id;
-		$location.search("id=gservice_index" + "&item_id=" + mostReq_id);
-	}
-
-	c.orderBy = function(order, items){
-		c.server.get({
-			action : "orderBy",
-			items : items,
-			order : order,
-			allColumns : c.data.columns,
-			type : c.data.table
-		}).then(function(response) {
-			c.data.columns = response.data.columns;
-			switch(c.data.table){
-				case "requestsTab":
-					c.data.requests = response.data.requests;
-					break;
-				case "approvalsTab":
-					c.data.approvals = response.data.approvals;
-					break;
-				case "assetsTab":
-					c.data.assets = response.data.assets;
-					break;
-				case "mostRequestedTab":
-					c.data.mostRequested = response.data.mostRequested;
-					break;
-			}
-		});
-	}
-	c.statusColor = function(status){
-		var statusClass = '';
-		if (status == 2){
-			statusClass = 'status_flow_empty';
-		} else if (status == true) {
-			statusClass = 'status_flow_active';
-		} else if (!status) {
-			statusClass = 'status_flow_completed';
-		}
-		return statusClass;
-	}
-
-	$scope.$on("getSearchedItemsFilter", function (event, data, searchSourceID) {
-		c.isLoading = true;
-		c.server.get({
-			action : "searchResult",
-			searchResult : data,
-			requests : c.data.requests
-		}).then(function(response) {
-			c.data.requests = response.data.requests;
-			c.verifyEmptySearch();
-		});
-	});
-
-	$scope.$on("getSearchedItemsFilterClear", function (event) {
-		c.isLoading = true;
-		c.server.get({
-			action: "returnDefaultFilter"
-		}).then(function(response) {
-			c.data.requests = response.data.requests;
-			c.verifyEmptySearch();
-		});
-	});
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.cart-mobile {
@@ -776,7 +568,7 @@ tbody {
   .header_message {
     padding: 20px 0;
     font-family: 'globorounded_bd';
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1;
     border-bottom: 2px solid $deep-sky-blue;
   }
@@ -1027,158 +819,41 @@ tbody {
         <docs/>
         <field_list/>
         <has_preview>false</has_preview>
-        <id>gservice_my_dashboard_content</id>
+        <id>gservice_my_dashboard_approvals</id>
         <internal>false</internal>
         <link><![CDATA[function link(scope, element, attrs, controller) {
   
 }]]></link>
-        <name>GService My Dashboard Content</name>
+        <name>GService My Dashboard Approvals</name>
         <option_schema>[{"hint":"Selects the columns to show on the table","name":"table","section":"Presentation","label":"Table","type":"string"},{"name":"table_template","section":"Behavior","label":"Table Template","type":"string"}]</option_schema>
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
-	data.table = options.table;
-	data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
-	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
 	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
 	var portalUtils = new global.OCLPortalUtils();
-	data.requestsID = '';
 	data.showEmptyMessage = false;
-
-	data.statusFlow = [];
-	var statusFlow = gs.getProperty("gservice_list_filters_status").split("|");
-	for(i in statusFlow){
-		statusFlow[i].number = i + 1;
-		statusFlow[i].selected = false;
-		data.statusFlow.push(JSON.parse(statusFlow[i]));
-	}
-
-	//Used to get the current user sys_id
-	var userID = gs.getUser().getID();
-	data.user_id = userID;
-
-	data.listFilter_widget = $sp.getWidget('gservice_list_filter');
-
-	data.filter = false;
-	//Get the columns (from property) to show upside the requests
+	data.user_id = gs.getUserID();
 	data.columns = [];
 
-	if (data.table == "notificationsTab"){
-		var user_id = localInput ? localInput.userID : data.user_id;
-		data.notifications = portalUtils.getNotifications(user_id);
-		data.notificationWidget = [];
-		for(i in data.notifications){
-			var gservice_ticket_notification_options = {table : data.notifications[i].table,
-																									sys_id : data.notifications[i].sys_id,
-																									tab : "gservice_ticket_notifications_tab"};
-			var gservice_ticket_notification = $sp.getWidget('gservice_ticket_conversation', gservice_ticket_notification_options);
-			var jsonWidget = {instance : gservice_ticket_notification, show : true, sys_id : data.notifications[i].sys_id};
-			data.notificationWidget.push(jsonWidget);
-		}
-		if(data.notificationWidget.length == 0){
-			data.showEmptyMessage = true;
-		}
-	}
-
 	if(!localInput){
-		//You need to select the columns name on the property
-		//Using checkout as a test, but it`ll change to a dinamic way when you call the widget you send the option
-		if(data.table != "notificationsTab"){
-			var columns_property = gs.getProperty("gservice_dashboard_columns");
+		var columns_property = gs.getProperty("gservice_dashboard_columns");
 
-			var parse = JSON.parse(columns_property);
-			var columns = parse[data.table].columns;
+		var parse = JSON.parse(columns_property);
+		var columns = parse['approvalsTab'].columns;
 
-			data.columns = columns;
-			for(i in columns){
-				data.columns[i].name = gs.getMessage(columns[i].name);
-			}
+		data.columns = columns;
+		for(i in columns){
+			data.columns[i].name = gs.getMessage(columns[i].name);
 		}
-		switch (data.table){
-			case "requestsTab":
-				data.requests = portalUtils.getRequests(data.user_id, data.filter);
-				if(data.requests.length == 0){
-					data.showEmptyMessage = true;
-				}
-				prepareRecordWatch();
-				break;
-
-			case "approvalsTab":
-				data.approverQuery = "state=requested^source_table=sc_req_item^approver=" + gs.getUserID();
-				data.approvals = portalUtils.getApprovals(data.user_id);
-				if(data.approvals.length == 0){
-					data.showEmptyMessage = true;
-				}
-				break;
-
-			case "assetsTab" :
-				data.assets = portalUtils.getAssets(data.user_id);
-				if(data.assets.length == 0){
-					data.showEmptyMessage = true;
-				}
-				break;
-
-			case "mostRequestedTab":
-				data.mostRequested = portalUtils.getMostRequested(5, data.user_id);
-				//Get the property of the categories images
-				var category_property = gs.getProperty("categories_color");
-				var parse = JSON.parse(category_property);
-				//Get the images of the categories
-				if(data.mostRequested.length == 0){
-					data.showEmptyMessage = true;
-				} else {
-					for(i in data.mostRequested){
-						data.mostRequested[i].color = parse[data.mostRequested[i].categoryID].color;
-						data.mostRequested[i].img = parse[data.mostRequested[i].categoryID].imgcategory;
-						data.mostRequested[i].submitImage = parse[data.mostRequested[i].categoryID].submitImg;
-					}
-				}
-				break;
+		data.approverQuery = "state=requested^source_table=sc_req_item^approver=" + gs.getUserID();
+		data.approvals = portalUtils.getApprovals(data.user_id);
+		if(data.approvals.length == 0){
+			data.showEmptyMessage = true;
 		}
 	}
 
 	else{
 		switch(localInput.action){
-			case "applyFilter":
-				data.requests = portalUtils.filterRequests(localInput.requests, localInput.typeFilter, localInput.statusFilter);
-				for(i in data.requests){
-					data.requests[i].showDetails = false; 
-				}
-				break;
-
-			case "changeItemState":
-				data.item = portalUtils.changeItemState(localInput.item, localInput.state);
-				break;
-			case "stateChangedBackend":
-				var state = localInput.newState;
-				var itemID = localInput.itemID;
-				data.requests = localInput.requests;
-				for(i in data.requests){
-					if(data.requests[i].sys_id == itemID){
-						data.requests[i].statusLabel = state.display_value;
-						data.requests[i].statusValue = state.value;
-						data.requests[i] = portalUtils.verifyButtons(data.requests[i]);
-						data.requests[i].colorClass = portalUtils.getColorClass(data.requests[i].statusValue,data.requests[i].table);
-					}
-				}
-				break;
-
-			case "applyDate":
-				data.requests = portalUtils.applyDate(localInput.requests, localInput.daysAgo);
-				break;
-
-			case "clearAllFilters":
-				data.requests = localInput.requests;
-				for (i in data.requests){
-					data.requests[i].show = false;
-				}
-				break;
-
-			case "returnDefaultFilter":
-				data.requests = portalUtils.getRequests(data.user_id, data.filter);
-				prepareRecordWatch();
-				break;
-
 			case "getTicketConversationWidget":
 				var gservice_ticket_conversation_options = {table : localInput.item.table,
 																										sys_id : localInput.item.sys_id,
@@ -1186,6 +861,22 @@ tbody {
 				data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
 				break;
 
+			case "orderBy":
+				var order = localInput.order;
+				data.columns = localInput.allColumns;
+				var direction;
+				for(i in data.columns){
+					if(order == data.columns[i].order){
+						data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
+						direction = data.columns[i].direction;
+					}
+					else{
+						data.columns[i].direction = false;
+					}
+				}
+				var items = localInput.items;
+				var itemsSort = portalUtils.sortList(items, localInput.order, direction);
+				data.approvals = itemsSort;
 			case "submitApproval":
 				data.approvals = localInput.approvals;
 				var comment = localInput.comment ? localInput.comment : '';
@@ -1207,94 +898,136 @@ tbody {
 				}
 				data.approvals.push(portalUtils.getNewApproval(localInput.approvalID));
 				break;
-
-			case "orderBy":
-				var order = localInput.order;
-				data.columns = localInput.allColumns;
-				var direction;
-				for(i in data.columns){
-					if(order == data.columns[i].order){
-						data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
-						direction = data.columns[i].direction;
-					}
-					else{
-						data.columns[i].direction = false;
-					}
-				}
-				var items = localInput.items;
-				var itemsSort = portalUtils.sortList(items, localInput.order, direction);
-				switch(localInput.type){
-					case "requestsTab":
-						data.requests = itemsSort;
-						break;
-					case "approvalsTab":
-						data.approvals = itemsSort;
-						break;
-					case "assetsTab":
-						data.assets = itemsSort;
-						break;
-					case "mostRequestedTab":
-						data.mostRequested = itemsSort;
-						break;
-				}
-				if(localInput.type == "requestsTab"){
-
-				}
-				break;
-			case "searchResult":
-				data.requests = localInput.requests;
-				prepareRecordWatch();
-				data.requests = portalUtils.searchMade(data.requests, localInput.searchResult);
-				break;
-			case  "refreshNotificationList":
-				data.notificationWidget = localInput.notificationWidget;
-				for(i in data.notificationWidget){
-					if(data.notificationWidget[i].sys_id == localInput.notificationID){
-						data.notificationWidget.splice(i, 1);
-					}
-				}
-				break;
-		}
-	}
-
-	function prepareRecordWatch(){
-		data.requestsID = false;
-		data.incidentsID = false;
-		for(i in data.requests){
-			if(data.requests[i].show){
-				if(data.requests[i].table == 'sc_req_item'){
-					if(!data.requestsID){
-						data.requestsID = "sys_id=" + data.requests[i].sys_id;
-					}
-					else{
-						data.requestsID += "^ORsys_id=" + data.requests[i].sys_id;
-					}
-				}
-				else if(data.requests[i].table == 'incident'){
-					if(!data.incidentsID){
-						data.incidentsID = "sys_id=" + data.requests[i].sys_id;
-					}
-					else{
-						data.incidentsID += "^ORsys_id=" + data.requests[i].sys_id;
-					}
-				}
-			}
 		}
 	}
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>organize.henrique</sys_created_by>
-        <sys_created_on>2020-05-18 14:33:21</sys_created_on>
-        <sys_id>123491e2dbf01410fa11cf24149619d9</sys_id>
-        <sys_mod_count>498</sys_mod_count>
-        <sys_name>GService My Dashboard Content</sys_name>
+        <sys_created_on>2020-06-03 19:09:12</sys_created_on>
+        <sys_id>7fad24ffdb419c905c11639014961915</sys_id>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>GService My Dashboard Approvals</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
-        <sys_update_name>sp_widget_123491e2dbf01410fa11cf24149619d9</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-06-04 12:12:29</sys_updated_on>
-        <template><![CDATA[<div ng-include="options.table_template"></div>]]></template>
+        <sys_update_name>sp_widget_7fad24ffdb419c905c11639014961915</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-06-04 14:29:15</sys_updated_on>
+        <template><![CDATA[<div class="approval_content">
+  <div class="page_description">
+    Algumas solicitações de Serviço precisam da sua aprovação.<br>
+    Responda para dar continuidade aos atendimentos.
+  </div>
+  <div>
+    <div ng-if="data.approvals.length == 0" class="without_notification">
+      ${Oba! Não existem aprovações pendentes.}
+    </div>
+    <table ng-if="data.approvals.length > 0" class="table table-hover b-t table-condensed cart-table">
+      <thead>
+        <tr>
+          <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
+            <div ng-click="c.orderBy(column.order, data.approvals)">
+              {{column.name}}
+              <span ng-if="column.order">
+                <span ng-if="!column.direction"><!--VAZIO--></span>
+                <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == -1 ? 'invert-arrow' : ''"}/></span>
+              </span>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody ng-repeat="item in c.data.approvals">
+        <tr class="item-row b-b">
+          <td data-th="Product"> <!-- class="col-lg-2" -->
+            <div class="approval_column_title">
+              <div class=""> <!-- col-sm-2 -->
+                <!--<img src="{{item.categoryImg}}">-->
+                <h4 class="approval_number">#{{item.number}}</h4>
+                <h4 class="approval_title">{{item.title}}</h4>
+                <a class="approval_more-details" ng-click="c.showDetails(item)">${GService Details}</a>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row approval_column_requester">
+              <div>
+                <span class="service_title">{{item.requester}}</span>
+                <img class="info-size" src="requester_information.png"/>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row approval_column_opened">
+              <div> <!-- class="col-lg-1" -->
+                <span class="">{{item.opened}}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row approval_column_forecast">
+              <div> <!-- class="col-lg-1" -->
+                <span class="">SLA: {{item.forecast}}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row approvals-buttons">
+              <!-- Button to request a service again -->
+              <a class="submit-button" style="cursor: pointer;" ng-click="c.submitApproval(item, true)" aria-label="" title="">
+                <img src="gservice_dashboard_confirm.png"/>
+              </a>
+              <a class="cancel-button" style="cursor: pointer;" ng-click="c.submitApproval(item, false)" aria-label="" title="">
+                <img src="GService_DASH_Cancelar.png"/>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <!-- Requests End -->
+          <td ng-if="item.showDetails" class="content_conversation" colspan='5'> <!-- col-md-12 -->
+
+            <!-- Process Flow -->
+            <div class="col-md-3">
+              <div ng-repeat="status in item.processFlow">
+                <div ng-class="status.selected ? 'text-uppercase' : text-lowercase">{{status.name}}</div>
+              </div>
+            </div>
+
+            <!-- Ticket Conversation -->
+            <div class="col-md-9">
+              <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para widget de abertura de formulário, chamado pela função nextModal -->
+  <div class="modal fade" style="z-index: 1041" id="approvalCommentModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="panel-body wrapper-xl wrapper-sc-cat-item">
+            <div class="justify-text">${Justifique sua resposta negativa:}</div>
+            <span class="notification-align no-text-answer" ng-if="c.needComment"> ${Favor preencher o comentário antes de submeter} </span>
+            <div class="form-group">
+              <textarea class="form-control" ng-model="c.approvalComment" maxlength="255"></textarea>
+              <a class="" style="cursor: pointer;" ng-click="c.submitCommentApproval()" aria-label="" title="">
+                <img class="resize-img" src="gservice_dashboard_submit.png"/>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<now-message key="Done" value="${Done}"/>]]></template>
     </sp_widget>
 </record_update>

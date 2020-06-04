@@ -6,14 +6,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-18 19:05:13</sys_created_on>
         <sys_id>7643d66adbb41410fa11cf241496198e</sys_id>
-        <sys_mod_count>55</sys_mod_count>
+        <sys_mod_count>57</sys_mod_count>
         <sys_name>gservice_my_approvals_table</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_ng_template_7643d66adbb41410fa11cf241496198e</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-29 19:41:14</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-06-01 18:49:09</sys_updated_on>
         <template><![CDATA[<!-- Template created for: "MINHAS APROVAÇÕES" -->
 <div class="approval_content">
   <div class="page_description">
@@ -21,10 +21,10 @@
     Responda para dar continuidade aos atendimentos.
   </div>
   <div>
-    <div ng-if="data.showEmptyMessage" class="without_notification">
+    <div ng-if="data.approvals.length == 0" class="without_notification">
       ${Oba! Não existem aprovações pendentes.}
     </div>
-    <table ng-if="!data.showEmptyMessage" class="table table-hover b-t table-condensed cart-table">
+    <table ng-if="data.approvals.length > 0" class="table table-hover b-t table-condensed cart-table">
       <thead>
         <tr>
           <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">

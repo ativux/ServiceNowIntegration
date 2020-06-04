@@ -130,9 +130,7 @@
   background: $coral;
   border-radius: 20px;
   color: white;
-  height: 20px;
-  width: 20px;
-  position:absolute;
+  position: absolute;
   top: 10px;
   padding: 1px 6.5px !important;
   margin-left: -18px;
@@ -331,14 +329,14 @@
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 17:35:57</sys_created_on>
         <sys_id>8ed872e7db40dc10fa11cf241496192b</sys_id>
-        <sys_mod_count>177</sys_mod_count>
+        <sys_mod_count>181</sys_mod_count>
         <sys_name>GService Header Menu</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_8ed872e7db40dc10fa11cf241496192b</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-29 19:13:34</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-02 15:02:48</sys_updated_on>
         <template><![CDATA[<ul class="nav navbar-nav" aria-label="TEST" role="menubar">
   <div class="header-loader" ng-class="{'invisible': !loadingIndicator}">
     <div class="hidden-xs sp-loading-indicator la-sm">

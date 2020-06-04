@@ -1,0 +1,833 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope, $timeout, spUtil, $location) {
+	var c = this
+
+	$scope.$on('refreshNotificationList', function(event, notificationID) {
+		c.server.get({
+			action: "refreshNotificationList",
+			notificationWidget : c.data.notificationWidget,
+			notificationID : notificationID
+		}).then(function(response) {
+			c.data.notificationWidget = response.data.notificationWidget;
+			c.data.showEmptyMessage = true;
+			for(i in c.data.notificationWidget){
+				if(c.data.notificationWidget[i].show){
+					c.data.showEmptyMessage = false;
+				}
+			}
+			$('#pendingResponse').modal("show");
+		});
+	});
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.cart-mobile {
+  border: 0;
+  box-shadow: none;
+
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    a {
+      text-align: right;
+      display: block !important;
+    }
+  }
+
+  .cart-item-mobile-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px 20px 10px;
+
+    .item-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .item-image {
+      margin: 0;
+    }
+
+    a {
+      float: none;
+      text-align: center;
+    }
+
+    select {
+      margin-top: 10px;
+      padding: 0px 5px;
+      text-align-last: center;
+    }
+  }  
+}
+
+td {
+  vertical-align: middle !important;
+}
+
+.a-disabled {
+  cursor: default;
+  color: $btn-link-disabled-color;
+}
+
+.media-body {
+  .btn-link {
+    padding-left: 0;
+    padding-right: 0;
+    color: $primary;
+
+    &amp;:hover {
+      color: darken($primary, 10%);
+    }
+
+    &amp;:focus {
+      color: darken($primary, 10%);
+    }
+  }
+}
+
+.btn-remove {
+  font-size: 18px !important;
+}
+
+.action-btn {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+
+  &amp;.btn-link {
+    color: $primary;
+  }
+}
+
+.list-group {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.list-group-item.ng-enter {
+  transition: all 1s;
+  -webkit-transition: all 1s;
+  background-color: #c0dcfa;
+}
+
+.list-group-item.ng-enter-active {
+  background-color: #fff;
+}
+
+.empty-cart {
+  font-style: italic;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 7px;
+}
+
+.view-carts-link {
+  text-align: center;
+  display: block;
+}
+
+.order-details-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 5px 10px 10px 10px;
+
+  .order-details {
+    padding: 5px;
+
+    textarea {
+      resize: none;
+      flex-basis: 100%;
+      flex-shrink: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .requested-for-details {
+    flex: 1 0 auto;
+    max-width: 100%;
+  }
+
+  .special-instructions-details {
+    textarea {
+      height: calc(100% - 25px);
+    }
+  }
+}
+
+.item-image {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.empty-state-content {
+  margin-top: 30px;
+
+  &amp;.small-cart {
+    margin-top: 0px;
+    padding: 10px 20px;
+  }
+
+  .fa-shopping-cart {
+    color: $gray-light;
+    font-size: 80px;
+    display: block;
+    text-align: center;
+
+    &amp;.small-cart {
+      font-size: 40px;
+    }
+  }
+
+  .h3 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  .h4 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    max-width: 100%;
+    margin-bottom: 35px;
+  }
+}
+
+.large-checkout {
+  display: inline-block;
+  float: none !important;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.item-row:hover .btn-clear {
+  background-color: #f5f5f5;
+}
+
+.sc-btn {
+  margin-bottom: 10px;
+}
+.sc-btn-group {
+  clear: right;
+}
+
+.sc-remove-btn {
+  &amp;:hover {
+    background-color: $danger;
+    color: #fff;
+    border-color: darken($danger, 10%);
+  }
+}
+
+.btn-group-justified &gt; .btn-group {
+  padding: 0 5px;
+
+  .btn {
+    border-radius: 4px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.cart-table {
+  th {
+    position: sticky;
+    -webkit-position: sticky;
+    top: -1px;
+    z-index: 10;
+    background-color: $panel-bg;
+    box-shadow: 0px 1px 0px $panel-inner-border;
+  }
+}
+
+@media only screen and (max-width : 992px) {
+  .sc-btn, .sc-btn-group {
+    width: 100%;
+  }
+  .item-image {
+    max-width: 70px;
+  }
+}
+
+//All pages
+.without_notification {
+  padding: 30px 0;
+  font-size: 30px;
+}
+
+/* Custom Checkout */
+.panel {
+  padding: 30px 100px;
+  box-shadow: 0 0 0 0;
+  -webkit-box-shadow: 0 0 0 0;
+}
+
+/* Table */
+.h3 {
+  font-size: 28px;
+  color: $dodger-blue;
+  margin-top: 20px !important;
+  margin-bottom: 30px;
+}
+.b-b {
+  border-bottom: 2px solid $slate-gray;
+}
+.b-t {
+  border: 0;
+}
+thead {
+  color: $slate-gray;
+  font-family: globorounded_bk;
+  font-size: 13px;
+}
+.table &gt; thead &gt; tr &gt; th {
+  border: 0;
+  vertical-align: middle;
+}
+.table-hover &gt; tbody &gt; tr:hover {
+  background-color: white;
+}
+tbody {
+  img {
+    width: 50px;
+    height: 50px;
+  }
+
+  td:nth-child(1) {
+    width: 20%;
+    padding: 20px;
+  }
+
+  td:nth-child(2) {
+    width: 20%;
+    padding: 20px;
+  }
+
+  td:nth-child(3) {
+    width: 25%;
+  }
+
+  td:nth-child(4) {
+    width: 5%;
+    padding: 20px;
+  }
+
+  td:nth-child(5) {
+    width: 30%;
+    padding: 20px;
+
+    .request_button {
+      margin-right: 50px;
+    }
+  }
+
+}
+
+/* PAGE 1 - My Requests */
+.content_my_requests {
+  .buttons {
+    position: relative;
+
+    &amp;:hover {
+      .tooltip {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    .tooltip_right {
+      top: calc(50% - 15px);
+      left: 60px;
+    }
+    .tooltip_bottom {
+      bottom: -41px;
+      left: -23px;
+    }
+  }
+}
+.center-loading {
+  position: relative;
+  left: 50%;
+  .sp-loading-indicator{
+    color: $deep-sky-blue !important;
+  }
+}
+
+.filter-padding{
+  padding: 10px 0 !important;
+}
+
+.thead_myrequests {
+  border-top: 2px solid $slate-gray;
+}
+.column_product {
+  .number_text {
+    text-transform: uppercase;
+  }
+  .item_text {
+    font-family: 'globorounded_bd';
+    font-size: 18px;
+    line-height: 1;
+  }
+  .more_detail {
+    text-decoration: underline;
+    font-size: 12px;
+  }
+}
+.column_status {
+  .service_title {
+    text-transform: uppercase;
+    font-family: 'globorounded_bd';
+    font-size: 12px;
+  }
+  .pending {
+    color: $coral !important;
+  }
+  .inProgress {
+    color: $yellow-green;
+  }
+  .resolved {
+    color: $deep-sky-blue;
+  }
+}
+.column_opened {
+  .item_opened {
+    font-size: 12px;
+  }
+}
+.column_sla {
+  .sla_description {
+    font-size: 12px;
+  }
+}
+.column_buttons {
+  display: flex;
+  border: 0;
+
+  img {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px !important;
+  }
+  img:last-child {
+    margin-right: 0 !important;
+  }
+}
+.process_flow {
+  position: relative;
+
+  .process_flow_title {
+    text-transform: uppercase;
+    font-family: 'globorounded_bk';
+    margin-bottom: 20px;
+  }
+  .line_flow {
+    background-color: $slate-gray;
+    width: 2px;
+    height: 70%;
+    left: 29px;
+    z-index: 1;
+    position: absolute;
+  } 
+  .items_flow {
+    text-transform: uppercase;
+    font-family: 'globorounded_bk';
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    position: inherit;
+
+    .status_flow {
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      border-radius: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+    }
+    .status_flow_completed {
+      color: white;
+      background-color: $slate-gray;
+    }
+    .status_flow_active {
+      color: white;
+      background-color: $deep-sky-blue;
+    }
+    .status_flow_empty {
+      color: $slate-gray;
+      background-color: white;
+      border: 2px solid $slate-gray;
+    }
+    .status_active {
+      color: $deep-sky-blue;
+    }
+  }
+}
+
+/* PAGE 2 - Notifications */
+.content_notification {
+  .header_message {
+    padding: 20px 0;
+    font-family: 'globorounded_bd';
+    font-size: 16px;
+    line-height: 1;
+    border-bottom: 2px solid $deep-sky-blue;
+  }
+  .widget_notifications {
+    overflow: auto;
+
+    .border-notification {
+      padding: 20px 0;
+      border-bottom: 2px solid $slate-gray;
+    }
+  }
+
+  .close {
+    font-size: 36px;
+    font-family: 'globorounded_lt';
+    margin-right: 20px;
+    margin-top: 15px;
+  }
+  .modal-body {
+    padding: 60px 100px;
+
+    .modal-title {
+      color: $deep-sky-blue;
+      font-size: 30px;
+    }
+    .modal-description {
+      font-size: 24px;
+      font-family: 'globorounded_bd';
+    }
+  }
+  .form-control {
+    width: 329px !important;
+  }
+}
+
+/* PAGE 3 - APPROVALS */
+.approval_content {
+  .approval_column_title{
+    h4 {
+      margin: 4px 0 0 0 !important;
+    }
+    .approval_number{
+      font-size: 16px;
+    }
+    .approval_title{
+      font-family: $text-bold;
+    }
+    .approval_more-details{
+      font-size: 12px;
+      text-decoration: underline;
+      color: $slate-gray;
+      cursor: pointer;
+    }
+  }
+  .approval_column_requester{
+    padding-left: 10px !important;
+    .info-size{
+      height: 20px;
+      width: 20px;
+      margin-left: 10px;
+      margin-top: -5px;
+      cursor: pointer;
+    }
+  }
+  .approval_column_opened{
+    padding-left: 20px !important;
+
+  }
+  .approval_column_forecast{
+    padding-left: 12px !important;
+
+  }
+  .approvals-buttons{
+    .submit-button{
+      margin-left: 20px;
+    }
+    .cancel-button{
+      margin-left: 15%;;
+    }
+  }
+  .modal-body{
+    overflow: hidden !important;
+    border: 20px solid white;
+    padding-left: 50px !important;
+    .wrapper-xl {
+      padding: 50px 0 0 50px !important;
+      margin-right: -20px;
+    }
+    button{
+      text-align: right;
+      font-size: 42px;
+    }
+    .justify-text{
+      color: $deep-sky-blue;
+      font-size: 36px;
+      padding-bottom: 15px;
+      margin-bottom: 5px;
+    }
+    .no-text-answer{
+      font-size: 16px;
+      color: lightcoral;
+      padding: 2px;
+    }
+    .form-group{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      textarea{
+        margin-top: 5px;
+        margin-right: 10% !important;
+        resize: none;
+        overflow: hidden;
+        height: 140px;
+        width: 90%;
+        overflow-wrap: break-word;
+        border: solid 3px $deep-sky-blue;
+      }
+    }
+    .resize-img{
+      height: 70px;
+      margin-top: 25px;
+      margin-left: -110%;
+    }
+  }
+}
+
+/* PAGE 4 */
+.assets_content {
+  .column_name {
+    .asset_name {
+      font-size: 18px;
+      font-family: 'globorounded_bd';
+    }
+  }
+  .service_title {
+    font-size: 12px;
+    color: $slate-gray;
+  }
+}
+
+/* PAGE 5 */
+.page_description {
+  border-bottom: 2px solid $slate-gray;
+  padding: 20px;
+  font-family: 'globorounded_bd';
+  font-size: 16px;
+  line-height: 1;
+}
+.column_category {
+  text-align: center;
+
+  h4 {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-family: globorounded_bk;
+    color: $dodger-blue;
+    width: 130px;
+    margin: 0 auto;
+    margin-top: 5px;
+  }
+}
+.column_service {
+  color: $dodger-blue;
+
+  .service_title {
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  .service_description {
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+.column_description {
+  .description {
+    font-size: 12px;
+  }
+}
+.column_sla {
+  .sla_text {
+    font-size: 12px;
+  }
+}
+
+
+.footer_checkout {
+
+  .continue_shopping {
+    color: $slate-gray;
+    font-size: 10px;
+    font-weight: bold;
+    text-decoration: underline;
+    text-transform: uppercase;
+    padding: 20px 0 !important;
+  }
+
+  .submit_button {
+    .submit_button_content {
+      display: flex;
+      align-items: center;
+
+      .submit_img {
+        width: 50px;
+        height: 50px;
+        margin-right: 5px;
+      }
+      .submit_title {
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1;
+        color: $dodger-blue;
+        width: 90px;
+      }
+    }
+  }
+}
+
+.empty_content {
+  background-color: white;
+  padding: 30px 100px;
+  padding-bottom: 330px;
+  font-size: 30px;
+
+  .empty_title {
+    color: $dodger-blue;
+    margin-bottom: 30px;
+  }
+}
+
+.column_content {
+  img {
+    height: 10px;
+    position: relative;
+    top: -2px;
+    right: -2px;
+  }
+  .invert-arrow{
+    transform: rotateX(180deg);
+  }
+}
+
+.content_conversation {
+  width: 100%;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_my_dashboard_notification</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService My Dashboard Notification</name>
+        <option_schema>[{"hint":"Selects the columns to show on the table","name":"table","section":"Presentation","label":"Table","type":"string"},{"name":"table_template","section":"Behavior","label":"Table Template","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+	var portalUtils = new global.OCLPortalUtils();
+	data.showEmptyMessage = false;
+
+	//Used to get the current user sys_id
+	var userID = gs.getUser().getID();
+	data.user_id = userID;
+
+	var user_id = localInput ? localInput.userID : data.user_id;
+	data.notifications = portalUtils.getNotifications(user_id);
+	data.notificationWidget = [];
+	for(i in data.notifications){
+		var gservice_ticket_notification_options = {table : data.notifications[i].table,
+																								sys_id : data.notifications[i].sys_id,
+																								tab : "gservice_ticket_notifications_tab"};
+		var gservice_ticket_notification = $sp.getWidget('gservice_ticket_conversation', gservice_ticket_notification_options);
+		var jsonWidget = {instance : gservice_ticket_notification, show : true, sys_id : data.notifications[i].sys_id};
+		data.notificationWidget.push(jsonWidget);
+	}
+	if(data.notificationWidget.length == 0){
+		data.showEmptyMessage = true;
+	}
+
+	if(localInput){
+		if(localInput.action == "refreshNotificationList"){
+			data.notificationWidget = localInput.notificationWidget;
+			for(i in data.notificationWidget){
+				if(data.notificationWidget[i].sys_id == localInput.notificationID){
+					data.notificationWidget.splice(i, 1);
+				}
+			}
+		}
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-03 18:51:36</sys_created_on>
+        <sys_id>75a96cb3db419c905c11639014961950</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>GService My Dashboard Notification</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_75a96cb3db419c905c11639014961950</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-04 12:12:08</sys_updated_on>
+        <template><![CDATA[<div class="content_notification">
+
+  <div class="header_message">
+    Aqui estão seus chamados que estão com informações pendentes.<br>
+    Responda para dar continuidade ao seu atendimento.
+  </div>
+  <div ng-if="data.notificationWidget.length == 0" ng-show="!c.isLoading" class="without_notification">
+    ${GService Without Notifications}
+  </div>
+  <div class="widget_notifications" ng-if='data.notificationWidget.length > 0'>
+    <div class="col-md-6 border-notification" ng-repeat="widget in data.notificationWidget" ng-if="widget.show">
+      <sp-widget widget="widget.instance"></sp-widget>
+    </div>
+  </div>
+
+  <!-- Notification modal after comment -->
+  <div class="modal fade" style="z-index: 1041" id="pendingResponse" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-body">
+          <div class="modal-title">${Sua resposta foi enviada com sucesso!}</div>
+          <div class="modal-description">${Acompanhe o andamento no Histórico da Solicitação.}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>]]></template>
+    </sp_widget>
+</record_update>
