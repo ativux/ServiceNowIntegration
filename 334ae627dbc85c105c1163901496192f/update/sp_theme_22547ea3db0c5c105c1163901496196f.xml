@@ -47,67 +47,6 @@ $danger: $brand-danger;&#13;
 &#13;
 //============= Typography Variables =============//&#13;
 &#13;
-@font-face { &#13;
-  font-family: 'globorounded_th'; &#13;
-  src: url('/sys_attachment.do?sys_id=5597311cdb151850fa11cf2414961940');&#13;
-  font-weight: normal;&#13;
-  font-style: normal;&#13;
-}&#13;
-@font-face { &#13;
-  font-family: 'globorounded_th_it'; &#13;
-  src: url('/sys_attachment.do?sys_id=9597311cdb151850fa11cf241496193f');&#13;
-  font-weight: normal;&#13;
-  font-style: normal;&#13;
-}&#13;
-@font-face { &#13;
-  font-family: 'globorounded_rg'; &#13;
-  src: url('/sys_attachment.do?sys_id=d597311cdb151850fa11cf241496193e');&#13;
-  font-weight: normal;&#13;
-  font-style: normal;&#13;
-}&#13;
-@font-face { &#13;
-  font-family: 'globorounded_rg_it'; &#13;
-  src: url('/sys_attachment.do?sys_id=1997311cdb151850fa11cf241496193d');&#13;
-  font-weight: normal;&#13;
-  font-style: normal;&#13;
-}&#13;
-@font-face { &#13;
-  font-family: 'globorounded_lt'; &#13;
-  src: url('/sys_attachment.do?sys_id=5997311cdb151850fa11cf241496193c');&#13;
-  font-weight: normal;&#13;
-  font-style: normal;&#13;
-}&#13;
-@font-face { &#13;
-  font-family: 'globorounded_lt_it'; &#13;
-  src: url('/sys_attachment.do?sys_id=9997311cdb151850fa11cf241496193b');&#13;
-  font-weight: normal;&#13;
-  font-style: normal;&#13;
-}&#13;
-@font-face { &#13;
-  font-family: 'globorounded_bk'; &#13;
-  src: url('/sys_attachment.do?sys_id=d997311cdb151850fa11cf241496193a');&#13;
-  font-weight: normal;&#13;
-  font-style: normal;&#13;
-}&#13;
-@font-face { &#13;
-  font-family: 'globorounded_bk_it'; &#13;
-  src: url('/sys_attachment.do?sys_id=1d97311cdb151850fa11cf2414961939');&#13;
-  font-weight: normal;&#13;
-  font-style: normal;&#13;
-}&#13;
-@font-face { &#13;
-  font-family: 'globorounded_bd'; &#13;
-  src: url('/sys_attachment.do?sys_id=5d97311cdb151850fa11cf2414961938'); &#13;
-  font-weight: normal;&#13;
-  font-style: normal;&#13;
-}&#13;
-@font-face { &#13;
-  font-family: 'globorounded_bd_it'; &#13;
-  src: url('/sys_attachment.do?sys_id=1597311cdb151850fa11cf2414961937');&#13;
-  font-weight: normal;&#13;
-  font-style: normal;&#13;
-}&#13;
-&#13;
 body {&#13;
    font-family: 'globorounded_rg';&#13;
    letter-spacing: 0;&#13;
@@ -775,13 +714,13 @@ iframe {&#13;
         <sys_created_by>organize.matias</sys_created_by>
         <sys_created_on>2020-04-14 17:17:27</sys_created_on>
         <sys_id>22547ea3db0c5c105c1163901496196f</sys_id>
-        <sys_mod_count>241</sys_mod_count>
+        <sys_mod_count>243</sys_mod_count>
         <sys_name>OCL: ITSM Unification</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_theme_22547ea3db0c5c105c1163901496196f</sys_update_name>
-        <sys_updated_by>organize.matias</sys_updated_by>
-        <sys_updated_on>2020-06-05 14:46:40</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-05 15:08:21</sys_updated_on>
     </sp_theme>
 </record_update>
