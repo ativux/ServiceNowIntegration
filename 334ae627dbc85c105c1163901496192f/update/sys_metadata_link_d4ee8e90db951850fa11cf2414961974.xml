@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_metadata_link">
+    <sys_metadata_link action="INSERT_OR_UPDATE">
+        <directory>update</directory>
+        <documentkey>30770e1cdb551850fa11cf241496190b</documentkey>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_attachment">
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color/>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>application/x-font-ttf</content_type>
+        <encryption_context/>
+        <file_name>Globo Rd Th It.ttf</file_name>
+        <hash>6da4bc027ef0e1322bfb28d0a97c3c158f29f61294256f46bde884612e9415cf</hash>
+        <image_height/>
+        <image_width/>
+        <size_bytes>87652</size_bytes>
+        <size_compressed>40797</size_compressed>
+        <state>available</state>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-05 14:58:22</sys_created_on>
+        <sys_id>30770e1cdb551850fa11cf241496190b</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2020-06-05 14:58:22</sys_updated_on>
+        <table_name>sp_css</table_name>
+        <table_sys_id>987ea950db151850fa11cf241496191b</table_sys_id>
+    </sys_attachment>
+</record_update>
+]]></payload>
+        <sys_class_name>sys_metadata_link</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-05 15:30:50</sys_created_on>
+        <sys_id>d4ee8e90db951850fa11cf2414961974</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Globo Rd Th It.ttf</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_metadata_link_d4ee8e90db951850fa11cf2414961974</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-05 15:30:50</sys_updated_on>
+        <tablename>sys_attachment</tablename>
+    </sys_metadata_link>
+</record_update>
