@@ -127,36 +127,39 @@
 	}
 
 	c.itemAction = function(item, action){
-		//if(action != "rejectSolution"){
-		c.server.get({
-			action: 'changeItemState',
-			state: action,
-			item: item
-		}).then(function(response) {
-			item = response.data.item;
-		});
-		/*}
+		if(action == "acceptSolution"){
+			c.server.get({
+				action: 'changeItemState',
+				state: action,
+				item: item
+			}).then(function(response) {
+				item = response.data.item;
+			});
+		}
 		else{
 			$('#requestCommentModal').modal("show");
 			c.requestItem = item;
-		}*/
+			c.state = action;
+		}
 	}
 
-	/*c.submitRequestComment = function(){
+	c.submitRequestComment = function(){
 		if(c.requestComment){
 			c.needComment = false;
 			c.server.get({
 				action : "changeItemState",
-				state: "rejectSolution",
-				item: c.requestItem
+				state: c.state,
+				item: c.requestItem,
+				comment: c.requestComment
 			}).then(function(response) {
 				$('#requestCommentModal').modal("hide");
+				c.requestComment = '';
 			});
 		}
 		else{
 			c.needComment = true;
 		}
-	}*/
+	}
 
 	c.showDetails = function(item){
 		var showDetails = false;
@@ -257,12 +260,10 @@
     .item-image {
       margin: 0;
     }
-
     a {
       float: none;
       text-align: center;
     }
-
     select {
       margin-top: 10px;
       padding: 0px 5px;
@@ -359,7 +360,6 @@ td {
     flex: 1 0 auto;
     max-width: 100%;
   }
-
   .special-instructions-details {
     textarea {
       height: calc(100% - 25px);
@@ -476,6 +476,51 @@ td {
 .without_notification {
   padding: 30px 0;
   font-size: 30px;
+}
+
+.modal-body{
+  overflow: hidden !important;
+  border: 20px solid white;
+  padding-left: 50px !important;
+  .wrapper-xl {
+    padding: 50px 0 0 50px !important;
+    margin-right: -20px;
+  }
+  button{
+    text-align: right;
+    font-size: 42px;
+  }
+  .justify-text{
+    color: $deep-sky-blue;
+    font-size: 36px;
+    padding-bottom: 15px;
+    margin-bottom: 5px;
+  }
+  .no-text-answer{
+    font-size: 16px;
+    color: lightcoral;
+    padding: 2px;
+  }
+  .form-group{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    textarea{
+      margin-top: 5px;
+      margin-right: 10% !important;
+      resize: none;
+      overflow: hidden;
+      height: 140px;
+      width: 90%;
+      overflow-wrap: break-word;
+      border: solid 3px $deep-sky-blue;
+    }
+  }
+  .resize-img{
+    height: 70px;
+    margin-top: 25px;
+    margin-left: -110%;
+  }
 }
 
 /* Custom Checkout */
@@ -938,6 +983,20 @@ tbody {
 
 .content_conversation {
   width: 100%;
+}
+
+.buttons {
+  img { transition: .4s ease-in-out; }
+  &amp;:hover {
+    img {
+      transition: .2s ease-in-out;
+      transform: scale(1.1);
+      -webkit-transform: scale(1.1);
+      -ms-transform: scale(1.1);
+      -moz-transform: scale(1.1);
+      -o-transform: scale(1.1);
+    }
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -1010,7 +1069,7 @@ tbody {
 				data.showFinished = localInput.showFinished;
 				if(!localInput.showFinished){
 					
-						if(statusFilter['Cancelado'] || statusFilter['Finalizado Completo']){
+						if(statusFilter['Cancelado'] || statusFilter['Finalizado']){
 							var newRequests = portalUtils.getRequestsv2(localInput.user_id, data.requests, true);
 							data.requests = newRequests.items;
 							data.showFinished = newRequests.showFinished;
@@ -1024,6 +1083,10 @@ tbody {
 
 			case "changeItemState":
 				data.item = portalUtils.changeItemState(localInput.item, localInput.state);
+				if (localInput.comment && localInput.state == 'rejectSolution') {
+					portalUtils.addRejectionReason(localInput.item, localInput.comment);
+				}
+				
 				break;
 			case "stateChangedBackend":
 				var state = localInput.newState;
@@ -1117,14 +1180,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 18:48:13</sys_created_on>
         <sys_id>88e8a47fdb099450fa11cf2414961937</sys_id>
-        <sys_mod_count>44</sys_mod_count>
+        <sys_mod_count>58</sys_mod_count>
         <sys_name>GService My Dashboard Requests</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_88e8a47fdb099450fa11cf2414961937</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-06-04 14:22:57</sys_updated_on>
+        <sys_updated_by>organize.jefferson</sys_updated_by>
+        <sys_updated_on>2020-06-12 20:18:38</sys_updated_on>
         <template><![CDATA[<div ng-show="data.showEmptyMessage" class="without_notification">
   Você ainda não tem solicitações.
 </div>
@@ -1193,7 +1256,8 @@ tbody {
               <p class="sla_description">SLA: {{item.delivery_time}}</p>
             </td>
             <td class="column_buttons">
-              <div ng-if="item.eraseButton" class="buttons" ng-click="c.itemAction(item, 'cancelItem')"><img src="trash.png"/>
+              <div ng-if="item.eraseButton" class="buttons" ng-click="c.itemAction(item, 'cancelItem')">
+                <img src="trash.png"/>
                 <span class="tooltip tooltip_right">
                   <div class="tooltip_arrow arrow_left"></div>
                   <div class="tooltip_text">${Cancel Request}</div>
@@ -1234,28 +1298,27 @@ tbody {
     </div>
   </div>
 
-<!-- Modal para widget de abertura de formulário, chamado pela função nextModal -->
-<!--<div class="modal fade" style="z-index: 1041" id="requestCommentModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg" role="document">
-<div class="modal-content">
-<div class="modal-body">
-<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-<div class="panel-body wrapper-xl wrapper-sc-cat-item">
-<div class="justify-text">${Justifique sua resposta negativa:}</div>
-<span class="notification-align no-text-answer" ng-if="c.needComment"> ${Favor preencher o comentário antes de submeter} </span>
-<div class="form-group">
-<textarea class="form-control" ng-model="c.requestComment" maxlength="255"></textarea>
-<a class="" style="cursor: pointer;" aria-label="" ng-click="c.submitRequestComment()" title="">
-<img class="resize-img" src="gservice_dashboard_submit.png"/>
-</a>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>-->
+  <div class="modal fade" style="z-index: 1041" id="requestCommentModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="panel-body wrapper-xl wrapper-sc-cat-item">
+            <div class="justify-text">${Justifique sua resposta negativa:}</div>
+            <span class="notification-align no-text-answer" ng-if="c.needComment"> ${Favor preencher o comentário antes de submeter} </span>
+            <div class="form-group">
+              <textarea class="form-control" ng-model="c.requestComment" maxlength="255"></textarea>
+              <a class="" style="cursor: pointer;" aria-label="" ng-click="c.submitRequestComment()" title="">
+                <img class="resize-img" src="gservice_dashboard_submit.png"/>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <now-message key="Done" value="${Done}"/>
