@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function ($scope, $timeout, spUtil, $location) {
+        <client_script><![CDATA[function ($scope, $timeout, spUtil, $location, $rootScope) {
 	var c = this;
 	c.requestComment = '';
 	c.requestItem = '';
 	c.needComment = false;
+	c.needReason = false;
+	c.modalMessage = '';
 	c.isLoading = true;
+	c.reopeningReason = false;
 
 	$scope.loadingIndicator = $rootScope.loadingIndicator;
 	//Show widget after loaded
@@ -17,8 +20,8 @@
 		$scope.loadingIndicator = value;
 	});
 
-	//Will be used when change and problem modules are built
-	/*spUtil.recordWatch($scope, "change_request", c.data.changeID, function(event) {
+
+	spUtil.recordWatch($scope, "task", c.data.requestsID, function(event) {
 		if(event.data.record.state){
 			c.server.get({
 				action: "stateChangedBackend",
@@ -31,112 +34,68 @@
 		}
 	});
 
-	spUtil.recordWatch($scope, "problem", c.data.problemID, function(event) {
-		if(event.data.record.state){
-			c.server.get({
-				action: "stateChangedBackend",
-				itemID: event.data.sys_id,
-				newState: event.data.record.state,
-				requests: c.data.requests
-			}).then(function(response) {
-				c.data.requests = response.data.requests;
-			});
-		}
-	});*/
-
-	//Old Record Watch
-	spUtil.recordWatch($scope, "sc_req_item", c.data.requestsID, function(event) {
-		if(event.data.record.state){
-			c.server.get({
-				action: "stateChangedBackend",
-				itemID: event.data.sys_id,
-				newState: event.data.record.state,
-				requests: c.data.requests
-			}).then(function(response) {
-				c.data.requests = response.data.requests;
-			});
-		}
-	});
-
-	spUtil.recordWatch($scope, "incident", c.data.incidentsID, function(event) {
-		if(event.data.record.state){
-			c.server.get({
-				action: "stateChangedBackend",
-				itemID: event.data.sys_id,
-				newState: event.data.record.state,
-				requests: c.data.requests
-			}).then(function(response) {
-				c.data.requests = response.data.requests;
-			});
-		}
-	});
-
-	$scope.$on('applyFilter', function(event, typeFilter, statusFilter) {
-		c.data.test = statusFilter;
+	$scope.$on('applyFilter', function(event, filters) {
+		c.data.statusFilter = filters.statusFilter;
+		c.data.typeFilter = filters.typeFilter;
 		c.isLoading = true;
-		c.server.get({
-			action: "applyFilter",
-			typeFilter: typeFilter,
-			statusFilter: statusFilter,
-			requests : c.data.requests,
-			showFinished : c.data.showFinished,
-			user_id : c.data.user_id
-		}).then(function(response) {
-			c.data.requests = response.data.requests;
-			c.data.showFinished = response.data.showFinished;
-			$timeout(function() {
-				scrollTo("list-columns");
-			});
+		c.data.action = "applyFilter";
+		c.server.update().then(function(response){
 			c.verifyEmptySearch();
+			c.newRecordWatch();
 		});
 	});
 
 	$scope.$on('applyDate', function(event, daysAgo) {
-		c.isLoading = true;
-		c.server.get({
-			action: "applyDate",
-			daysAgo: daysAgo,
-			requests : c.data.requests
-		}).then(function(response) {
-			c.data.requests = response.data.requests;
+		c.data.dateFilter = daysAgo;
+		c.data.action = "applyDate";
+		c.server.update().then(function(response){
 			$timeout(function() {
 				scrollTo("list-columns");
 			});
 			c.verifyEmptySearch();
+			c.newRecordWatch();
 		});
 	});
 
 	$scope.$on('clearAllFilters', function(event) {
-		c.isLoading = true;
-		c.server.get({
-			action: "clearAllFilters",
-			requests : c.data.requests
-		}).then(function(response) {
-			c.data.requests = response.data.requests;
-			c.verifyEmptySearch();
-		});
+		c.data.requests = [];
+		for(var i in c.data.typeFilter){
+			c.data.typeFilter[i].selected = false;
+		}
+		for(i in c.data.statusFilter){
+			c.data.statusFilter[i].selected = false;
+		}
+		c.verifyEmptySearch();
 	});
 
 	c.verifyEmptySearch = function(){
 		c.data.showFilterClean = true;
-		for(i in c.data.requests){
-			if(c.data.requests[i].show){
-				c.data.showFilterClean = false;
-			}
+		if(c.data.requests.length > 0){
+			c.data.showFilterClean = false;
 		}
 	}
 
 	c.itemAction = function(item, action){
-		if(action == "acceptSolution"){
+		if(action == "acceptSolution" || action == "acceptCancellation"){
 			c.server.get({
 				action: 'changeItemState',
 				state: action,
-				item: item
+				item: item,
+				reopeningReason: false
 			}).then(function(response) {
 				item = response.data.item;
+				c.data.show_survey = response.data.show_survey;
+				c.data.gserviceSurvey = response.data.gserviceSurvey;
 			});
 		}
 		else{
+			if(action == "rejectSolution" || action == "rejectCancellation")
+				c.modalMessage = c.data.msgs.reject;
+			else
+				c.modalMessage = c.data.msgs.cancel;
+			for(var i in c.data.reopeningReason){
+				c.data.reopeningReason[i].selected = false;
+			}
 			$('#requestCommentModal').modal("show");
 			c.requestItem = item;
 			c.state = action;
@@ -144,26 +103,61 @@
 	}
 
 	c.submitRequestComment = function(){
-		if(c.requestComment){
+		if(c.state == "rejectSolution"){
+			var stop = false;
+			if(!c.requestComment){
+				c.needComment = true;
+				stop = true;
+			} else if(c.requestComment.length < 100){
+				c.needComment = true;
+				stop = true;
+			} else{
+				c.needComment = false;
+			}
+			if(!c.reopeningReason){
+				c.needReason = true;
+				stop = true
+			} else
+				c.needReason = false;
+			if(stop){
+				return;
+			}
+		}
+		if(c.state != "rejectSolution"){
+			if(c.requestComment){
+				c.reopeningReason = false;
+				c.needComment = false;
+				c.server.get({
+					action : "changeItemState",
+					state: c.state,
+					item: c.requestItem,
+					comment: c.requestComment,
+					reopeningReason: c.reopeningReason
+				}).then(function(response) {
+					$('#requestCommentModal').modal("hide");
+					c.requestComment = '';
+				});
+			} else
+				c.needComment = true;
+		} else{
+			c.needReason = false;
 			c.needComment = false;
 			c.server.get({
 				action : "changeItemState",
 				state: c.state,
 				item: c.requestItem,
-				comment: c.requestComment
+				comment: c.requestComment,
+				reopeningReason: c.reopeningReason
 			}).then(function(response) {
 				$('#requestCommentModal').modal("hide");
 				c.requestComment = '';
 			});
 		}
-		else{
-			c.needComment = true;
-		}
 	}
 
 	c.showDetails = function(item){
 		var showDetails = false;
-		for(i in c.data.requests){
+		for(var i in c.data.requests){
 			if(c.data.requests[i].sys_id == item.sys_id){
 				c.data.requests[i].showDetails = !c.data.requests[i].showDetails;
 				showDetails = c.data.requests[i].showDetails;
@@ -184,14 +178,10 @@
 	}
 
 	c.orderBy = function(order, items){
-		c.server.get({
-			action : "orderBy",
-			items : items,
-			order : order,
-			allColumns : c.data.columns
-		}).then(function(response) {
-			c.data.columns = response.data.columns;
-			c.data.requests = response.data.requests;
+		c.data.action = "orderBy";
+		c.data.order = order;
+		c.server.update().then(function(response){
+			c.newRecordWatch();
 		});
 	}
 
@@ -207,30 +197,102 @@
 		return statusClass;
 	}
 
-	$scope.$on("getSearchedItemsFilter", function (event, data, searchSourceID) {
-		c.isLoading = true;
-		c.server.get({
-			action : "searchResult",
-			searchResult : data,
-			requests : c.data.requests
-		}).then(function(response) {
-			c.data.requests = response.data.requests;
+	$scope.$on("getSearchedItemsFilter", function (event, searchTerm) {
+		c.data.searchTerm = searchTerm;
+		c.data.action = "searchResult";
+		c.server.update().then(function(response){
 			c.verifyEmptySearch();
+			c.newRecordWatch();
 		});
 	});
 
 	$scope.$on("getSearchedItemsFilterClear", function (event) {
-		c.isLoading = true;
-		c.server.get({
-			action: "returnDefaultFilter"
-		}).then(function(response) {
-			c.data.requests = response.data.requests;
+		c.data.action = "applyDefaultFilter";
+		c.server.update().then(function(response){
 			c.verifyEmptySearch();
+			c.newRecordWatch();
 		});
+	});
+
+	$scope.$on('selectRequest', function(event, item_id) {
+		c.data.item_id = item_id;
+		c.data.action = "selectRequest";
+		c.server.update().then(function(response){
+			$timeout(function() {
+				scrollTo("list-columns");
+			});
+			c.verifyEmptySearch();
+			c.newRecordWatch();
+		});
+	});
+
+	$('#requestCommentModal').on('hide.bs.modal', function () {
+		c.requestComment = "";
+		c.reopeningReason = false;
+		c.needComment = "";
+		c.needReason = false;
+	});
+
+	c.previousPage = function(){
+		c.data.actualPage--;
+		c.updatePageCount();
+
+	}
+	c.nextPage = function(){
+		c.data.actualPage++;
+		c.updatePageCount();
+	}
+
+	c.updatePageCount = function(){
+		c.data.window_start = c.data.actualPage * c.data.items_per_page;
+		c.data.window_end = c.data.window_start + c.data.items_per_page;
+		c.data.action = "changePage";
+		c.server.update().then(function(response){
+			c.newRecordWatch();
+		});
+
+	}
+
+	c.newRecordWatch = function(){
+		spUtil.recordWatch($scope, "task", c.data.requestsID, function(event) {
+			if(event.data.record.state){
+				c.server.get({
+					action: "stateChangedBackend",
+					itemID: event.data.sys_id,
+					newState: event.data.record.state,
+					requests: c.data.requests
+				}).then(function(response) {
+					c.data.requests = response.data.requests;
+				});
+			}
+		});
+	}
+
+	if(c.data.urlItem && c.data.first_load){
+		$timeout(function() {
+			scrollTo("items-content");
+		});
+	}
+
+	c.selectedChoice = function(index){
+		for(var i in c.data.reopeningReason){
+			c.data.reopeningReason[i].selected = false;
+		}
+		c.data.reopeningReason[index].selected = c.data.reopeningReason[index].label;
+		c.reopeningReason = c.data.reopeningReason[index].value;
+	}
+
+	$scope.$on('surveyClosed', function(event) {
+		c.data.show_survey = false;
+
 	});
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.cart-mobile {
+        <css>.content_request {
+  margin-bottom: 10px;
+}
+
+.cart-mobile {
   border: 0;
   box-shadow: none;
 
@@ -478,48 +540,51 @@ td {
   font-size: 30px;
 }
 
-.modal-body{
-  overflow: hidden !important;
-  border: 20px solid white;
-  padding-left: 50px !important;
-  .wrapper-xl {
-    padding: 50px 0 0 50px !important;
-    margin-right: -20px;
-  }
-  button{
-    text-align: right;
-    font-size: 42px;
-  }
-  .justify-text{
-    color: $deep-sky-blue;
-    font-size: 36px;
-    padding-bottom: 15px;
-    margin-bottom: 5px;
-  }
-  .no-text-answer{
-    font-size: 16px;
-    color: lightcoral;
-    padding: 2px;
-  }
-  .form-group{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    textarea{
-      margin-top: 5px;
-      margin-right: 10% !important;
-      resize: none;
-      overflow: hidden;
-      height: 140px;
-      width: 90%;
-      overflow-wrap: break-word;
-      border: solid 3px $deep-sky-blue;
+.content_modal_requests {
+  .modal-body{
+    overflow: auto !important;
+    border: 20px solid white;
+    padding-left: 50px !important;
+    .wrapper-xl {
+      padding: 50px 0 0 50px !important;
+      margin-right: -20px;
     }
-  }
-  .resize-img{
-    height: 70px;
-    margin-top: 25px;
-    margin-left: -110%;
+    button{
+      text-align: right;
+      font-size: 42px;
+    }
+    .justify-text{
+      color: $deep-sky-blue;
+      font-size: 36px;
+      padding-bottom: 15px;
+      margin-bottom: 5px;
+    }
+    .no-text-answer{
+      font-size: 16px;
+      color: lightcoral;
+      padding: 2px;
+    }
+    .form-group{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+
+      textarea{
+        margin-top: 5px;
+        margin-right: 10% !important;
+        resize: none;
+        overflow: hidden;
+        height: 140px;
+        width: 90%;
+        overflow-wrap: break-word;
+        border: solid 3px $deep-sky-blue;
+      }
+    }
+    .resize-img{
+      height: 70px;
+      margin-top: 25px;
+      margin-left: -110%;
+    }
   }
 }
 
@@ -528,6 +593,12 @@ td {
   padding: 30px 100px;
   box-shadow: 0 0 0 0;
   -webkit-box-shadow: 0 0 0 0;
+}
+
+.survey_accept {
+  .panel {
+    padding: 0 !important;
+  }
 }
 
 /* Table */
@@ -608,7 +679,11 @@ tbody {
     }
     .tooltip_bottom {
       bottom: -41px;
-      left: -23px;
+      left: -34px;
+    }
+    .arrow_bottom {
+      position: absolute !important;
+      top: 27px !important;
     }
   }
 }
@@ -635,6 +710,12 @@ tbody {
     font-family: 'globorounded_bd';
     font-size: 18px;
     line-height: 1;
+  }
+  .follow_up_properties{
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: $deep-sky-blue;
   }
   .more_detail {
     text-decoration: underline;
@@ -924,6 +1005,31 @@ tbody {
   }
 }
 
+.content_pagination {
+  .pag_arrow_left {
+    img {
+      transform: rotate(90deg);
+    }
+  }
+  .pag_arrow_right {
+    img {
+      margin-left: 25px;
+      transform: rotate(-90deg);
+    }
+  }
+  .pag_arrow_left, .pag_arrow_right {
+    img {
+      height: 14px;
+      margin-top: -4px;
+    }
+  }
+  .pag_text {
+    font-family: 'globorounded_bd';
+    text-transform: uppercase;
+    margin-left: 25px;
+  }
+}
+
 
 .footer_checkout {
 
@@ -997,6 +1103,43 @@ tbody {
       -o-transform: scale(1.1);
     }
   }
+}
+
+.modal_reopen {
+  .modal_title {
+    font-size: 32px;
+    color: #00BFFF;
+    font-family: 'globorounded_bd';
+  }
+  .reason {
+    color: $slate-gray;
+    margin-bottom: 15px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-family: 'globorounded_bd';
+  }
+  .mandatory_message {
+    color: $coral;
+    font-family: 'globorounded_bd';
+  }
+  label {
+    margin-bottom: 10px;
+    color: gray;
+    font-family: 'globorounded_rg';
+  }
+  textarea {
+    border: 2px solid $deep-sky-blue;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    min-height: 100px;
+  }
+  .btn_submit {
+    display: flex;
+    justify-content: flex-end;
+  }
+  img {
+    width: 60px;
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -1021,72 +1164,65 @@ tbody {
 	data.requestsID = '';
 	data.showEmptyMessage = false;
 
+	data.show_survey = false;
+
+	data.msgs = {};
+	data.msgs.reject = gs.getMessage("Justifique sua resposta negativa");
+	data.msgs.cancel = gs.getMessage("Justifique o cancelamento");
+
 	data.statusFlow = [];
 	var statusFlow = gs.getProperty("gservice_list_filters_status").split("|");
-	for(i in statusFlow){
+	for(var i in statusFlow){
 		statusFlow[i].number = i + 1;
 		statusFlow[i].selected = false;
 		data.statusFlow.push(JSON.parse(statusFlow[i]));
+	}
+
+	data.reopeningReason = [];
+
+	var grReopening = new GlideRecord("sys_choice");
+	grReopening.addEncodedQuery("nameSTARTSWITHsc_req_item^elementSTARTSWITHu_reopening_reason^language=pb");
+	grReopening.query();
+	while(grReopening.next()){
+		data.reopeningReason.push({label : grReopening.getDisplayValue("label"), value : grReopening.getDisplayValue("value"),
+															 selected: false});
 	}
 
 	//Used to get the current user sys_id
 	var userID = gs.getUser().getID();
 	data.user_id = userID;
 
-	data.listFilter_widget = $sp.getWidget('gservice_list_filter');
-
 	data.filter = false;
 	//Get the columns (from property) to show upside the requests
 	data.columns = [];
 
 	if(!localInput){
-		//You need to select the columns name on the property
-		//Using checkout as a test, but it`ll change to a dinamic way when you call the widget you send the option
-		var columns_property = gs.getProperty("gservice_dashboard_columns");
-
-		var parse = JSON.parse(columns_property);
-		var columns = parse["requestsTab"].columns;
-
-		data.columns = columns;
-		for(i in columns){
-			data.columns[i].name = gs.getMessage(columns[i].name);
-		}
-		var requests = portalUtils.getRequestsv2(data.user_id, '', false);
-		data.requests = requests.items;
-		data.showFinished = requests.showFinished;
-		if(data.requests.length == 0){
-			data.showEmptyMessage = true;
-		}
-		prepareRecordWatch();
-
+		data.listFilter_widget = $sp.getWidget('gservice_list_filter');
+		prepareDefaultList(true);
 	}
-
 	else{
 		switch(localInput.action){
 			case "applyFilter":
-				data.requests = localInput.requests;
-				var statusFilter = localInput.statusFilter;
-				data.showFinished = localInput.showFinished;
-				if(!localInput.showFinished){
-					
-						if(statusFilter['Cancelado'] || statusFilter['Finalizado']){
-							var newRequests = portalUtils.getRequestsv2(localInput.user_id, data.requests, true);
-							data.requests = newRequests.items;
-							data.showFinished = newRequests.showFinished;
-						}
-				}
-				data.requests = portalUtils.filterRequests(data.requests, localInput.typeFilter, localInput.statusFilter);
-				for(i in data.requests){
-					data.requests[i].showDetails = false; 
-				}
+				preparePages();
+				data.typeFilter = localInput.typeFilter;
+				data.statusFilter = localInput.statusFilter;
+				data.query = portalUtils.mountQuery(data.typeFilter, data.statusFilter, "", "");
+				var requests = portalUtils.getRequests("", "", data.query, data.window_start, data.window_end);
+				data.requests = requests.items;
+				prepareColumns();
+				prepareRecordWatch();
 				break;
 
 			case "changeItemState":
-				data.item = portalUtils.changeItemState(localInput.item, localInput.state);
-				if (localInput.comment && localInput.state == 'rejectSolution') {
-					portalUtils.addRejectionReason(localInput.item, localInput.comment);
+				var comment = localInput.comment ? localInput.comment : false;
+				data.item = portalUtils.changeItemState(localInput.item, localInput.state, comment, localInput.reopeningReason);
+				if(localInput.state == "acceptSolution"){
+					var surveyUtils = new global.OCLPortalSurveyUtils();
+					var survey_id = surveyUtils.createSurvey("277e93a2dbbd1410fa11cf241496194a");
+					data.show_survey = true;
+					var survey_options = {"survey_id": survey_id};
+					data.gserviceSurvey = $sp.getWidget('gservice_survey_modal', survey_options);
 				}
-				
 				break;
 			case "stateChangedBackend":
 				var state = localInput.newState;
@@ -1098,26 +1234,22 @@ tbody {
 						data.requests[i].statusValue = state.value;
 						data.requests[i] = portalUtils.verifyButtons(data.requests[i]);
 						data.requests[i].colorClass = portalUtils.getColorClass(data.requests[i].statusValue,data.requests[i].table);
+						data.requests[i].processFlow = portalUtils.getProcessFlow(data.requests[i].table, data.requests[i].statusValue);
 					}
 				}
 				break;
 
 			case "applyDate":
-				data.requests = portalUtils.applyDate(localInput.requests, localInput.daysAgo);
-				break;
-
-			case "clearAllFilters":
-				data.requests = localInput.requests;
-				for (i in data.requests){
-					data.requests[i].show = false;
-				}
-				break;
-
-			case "returnDefaultFilter":
-				data.requests = portalUtils.getRequests(data.user_id, data.filter);
+				preparePages();
+				data.dateFilter = localInput.dateFilter;
+				data.typeFilter = localInput.typeFilter;
+				data.statusFilter = localInput.statusFilter;
+				data.query = portalUtils.mountQuery(data.typeFilter, data.statusFilter, data.dateFilter, "");
+				var requests = portalUtils.getRequests("", "", data.query, data.window_start, data.window_end);
+				data.requests = requests.items;
+				prepareColumns();
 				prepareRecordWatch();
 				break;
-
 			case "getTicketConversationWidget":
 				var gservice_ticket_conversation_options = {table : localInput.item.table,
 																										sys_id : localInput.item.sys_id,
@@ -1126,51 +1258,143 @@ tbody {
 				break;
 
 			case "orderBy":
-				var order = localInput.order;
-				data.columns = localInput.allColumns;
-				var direction;
-				for(i in data.columns){
-					if(order == data.columns[i].order){
-						data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
-						direction = data.columns[i].direction;
-					}
-					else{
-						data.columns[i].direction = false;
-					}
-				}
-				var items = localInput.items;
-				var itemsSort = portalUtils.sortList(items, localInput.order, direction);
-				data.requests = itemsSort;
+				preparePages();
+				data.order = localInput.order;
+				data.columns = localInput.columns;
+				prepareOrderBy();
+
+				data.query = localInput.query;
+				var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
+				data.requests = requests.items;
+				prepareRecordWatch();
 				break;
 			case "searchResult":
-				data.requests = localInput.requests;
+				data.searchTerm = localInput.searchTerm;
+				prepareColumns();
+				data.query = portalUtils.mountQuery("", "", "", data.searchTerm);
+				preparePages();
+				var requests = portalUtils.getRequests("", "", data.query, data.window_start, data.window_end);
+				data.requests = requests.items;
+				preparePages();
 				prepareRecordWatch();
-				data.requests = portalUtils.searchMade(data.requests, localInput.searchResult);
+				break;
+			case "changePage":
+				//
+				data.items_per_page = localInput.items_per_page;
+				data.actualPage = localInput.actualPage;
+				data.window_start = localInput.window_start;
+				data.window_end = localInput.window_end;
+				//
+				data.query = localInput.query;
+				data.columns = localInput.columns;
+				data.order = localInput.order;
+				data.direction = localInput.direction;
+				var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
+				data.requests = requests.items;
+				prepareRecordWatch();
+				break;
+			case "applyDefaultFilter":
+				prepareDefaultList();
+				break;
+			case "selectRequest":
+				prepareDefaultList("", localInput.item_id);
 				break;
 		}
 	}
 
+	function prepareDefaultList(first_load, item_id){
+		preparePages();
+		prepareColumns();
+		data.statusFilter = [];
+		var statusFilter = gs.getProperty("gservice_list_filters_status").split("|");
+		for(var i in statusFilter){
+			data.statusFilter.push(JSON.parse(statusFilter[i]));
+		}
+		if(first_load){
+			data.first_load = true;
+			data.urlItem = $sp.getParameter("item_id");
+			if(data.urlItem){
+				var grTask = new GlideRecord("task");
+				grTask.get(data.urlItem);
+				if(data.user_id == grTask.getValue('opened_by')){
+					data.query = portalUtils.mountQuery("", data.statusFilter, "", "", data.urlItem);
+				} else{
+					data.showFilterClean = true;
+					data.query = portalUtils.mountQuery("", data.statusFilter);
+				}
+			} else{
+				data.query = portalUtils.mountQuery("", data.statusFilter);
+			}
+		}
+		else if(item_id){
+			data.query = portalUtils.mountQuery("", data.statusFilter, "", "", item_id);
+		}
+		else{
+			data.query = portalUtils.mountQuery("", data.statusFilter);
+		}
+		var requests = portalUtils.getRequests("opened_at", "-1", data.query, data.window_start, data.window_end);
+		if(data.urlItem && first_load){
+			requests.items[0].showDetails = true;
+			var gservice_ticket_conversation_options = {table : "task",
+																									sys_id : requests.items[0].sys_id,
+																									item_status : requests.items[0].colorClass};
+			data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
+
+		}
+		data.requests = requests.items;
+		if(data.requests.length == 0){
+			data.showEmptyMessage = true;
+		}
+		prepareRecordWatch();
+	}
+
 	function prepareRecordWatch(){
-		data.requestsID = false;
-		data.incidentsID = false;
-		for(i in data.requests){
-			if(data.requests[i].show){
-				if(data.requests[i].table == 'sc_req_item'){
-					if(!data.requestsID){
-						data.requestsID = "sys_id=" + data.requests[i].sys_id;
-					}
-					else{
-						data.requestsID += "^ORsys_id=" + data.requests[i].sys_id;
-					}
-				}
-				else if(data.requests[i].table == 'incident'){
-					if(!data.incidentsID){
-						data.incidentsID = "sys_id=" + data.requests[i].sys_id;
-					}
-					else{
-						data.incidentsID += "^ORsys_id=" + data.requests[i].sys_id;
-					}
-				}
+		data.actualPageCount = data.actualPage + 1;
+		data.actualItemsCount = data.items_per_page * data.actualPageCount;
+		data.requestsID = 'sys_idIN';
+		var reqIDs = [];
+		for(var i in data.requests){
+			reqIDs.push(data.requests[i].sys_id);
+		}
+		data.requestsID += reqIDs.join();
+		data.totalItems = portalUtils.getTotalRequests(data.query);
+		data.actualItemsCount = data.items_per_page * data.actualPageCount;
+		if(data.actualItemsCount > data.totalItems){
+			data.actualItemsCount = data.totalItems;
+		}
+	}
+
+	function preparePages(){
+		data.items_per_page = 6;
+		data.actualPage = 0;
+
+
+		data.window_start = 0;
+		data.window_end = 6;
+	}
+
+	function prepareColumns(){
+		//You need to select the columns name on the property
+		//Using checkout as a test, but it`ll change to a dinamic way when you call the widget you send the option
+		var columns_property = gs.getProperty("gservice_dashboard_columns");
+
+		var parse = JSON.parse(columns_property);
+		var columns = parse["requestsTab"].columns;
+
+		data.columns = columns;
+		for(i in columns){
+			data.columns[i].name = gs.getMessage(columns[i].name);
+		}
+	}
+
+	function prepareOrderBy(){
+		for(i in data.columns){
+			if(data.order == data.columns[i].order){
+				data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
+				data.direction = data.columns[i].direction;
+			}
+			else{
+				data.columns[i].direction = false;
 			}
 		}
 	}
@@ -1180,18 +1404,15 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 18:48:13</sys_created_on>
         <sys_id>88e8a47fdb099450fa11cf2414961937</sys_id>
-        <sys_mod_count>58</sys_mod_count>
+        <sys_mod_count>459</sys_mod_count>
         <sys_name>GService My Dashboard Requests</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_88e8a47fdb099450fa11cf2414961937</sys_update_name>
-        <sys_updated_by>organize.jefferson</sys_updated_by>
-        <sys_updated_on>2020-06-12 20:18:38</sys_updated_on>
-        <template><![CDATA[<div ng-show="data.showEmptyMessage" class="without_notification">
-  Você ainda não tem solicitações.
-</div>
-<div ng-show="!data.showEmptyMessage">
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-17 18:34:37</sys_updated_on>
+        <template><![CDATA[<div class="content_request">
   <div class="col-md-12 filter-padding">
     <sp-widget widget="data.listFilter_widget"></sp-widget>
   </div>
@@ -1221,23 +1442,23 @@ tbody {
                 {{column.name}}
                 <span ng-if="column.order">
                   <span ng-if="!column.direction"></span>
-                  <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == -1 ? 'invert-arrow' : ''"}/></span>
+                  <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
                 </span>
               </div>
             </th>
           </tr>
         </thead>
 
-        <tbody ng-show="!c.isLoading" ng-repeat="item in c.data.requests">
+        <tbody id="items-content" ng-show="!c.isLoading" ng-repeat="item in data.requests">
           <!-- Requests Init -->
-          <tr class="item-row b-b" ng-show="item.show">
+          <tr class="item-row b-b">
             <td data-th="Product" class="column_product">
               <div>
                 <div>
                   <!-- Necessário realizar query para buscar a imagem da categoria e categoria do parent-->
                   <div class="number_text">#{{item.number}}</div>
                   <div class="item_text">{{item.title}}</div>
-                  <div ng-if="item.watch">${GService FollowUp} {{item.watch}}</div>
+                  <div ng-if="item.watch" class="follow_up_properties">${GService FollowUp}: {{item.watch}}</div>
                   <div class="more_detail" ng-click="c.showDetails(item)">${GService Details}</div>
                 </div>
               </div>
@@ -1253,7 +1474,8 @@ tbody {
               <div class="item_opened">{{item.opened}}</div>
             </td>
             <td class="column_sla">
-              <p class="sla_description">SLA: {{item.delivery_time}}</p>
+              <p class="sla_description" ng-if="item.forecast">{{item.forecast}}</p>
+              <span class="" ng-if="!item.forecast">${Não há SLA para esse item}</span>
             </td>
             <td class="column_buttons">
               <div ng-if="item.eraseButton" class="buttons" ng-click="c.itemAction(item, 'cancelItem')">
@@ -1275,13 +1497,25 @@ tbody {
                   <div class="tooltip_text">${Reopen Request}</div>
                 </span>
               </div>
+              <div ng-if="item.cancelButton" class="buttons" ng-click="c.itemAction(item, 'acceptCancellation')"><img src="gservice_dashboard_confirm.png"/>
+                <span class="tooltip tooltip_bottom">
+                  <div class="tooltip_arrow arrow_top"></div>
+                  <div class="tooltip_text">${Accept Cancellation}</div>
+                </span>
+              </div>
+              <div ng-if="item.rejectButton" class="buttons" ng-click="c.itemAction(item, 'rejectCancellation')"><img src="gservice_reopen.png"/>
+                <span class="tooltip tooltip_right">
+                  <div class="tooltip_arrow arrow_left"></div>
+                  <div class="tooltip_text">${Reopen Request}</div>
+                </span>
+              </div>
             </td>
           </tr>
 
           <tr>
             <td ng-if="item.showDetails" class="content_conversation" colspan='5'>
               <div class="col-md-5 process_flow">
-                <div class="process_flow_title">Etapas do Atendimento</div>
+                <div class="process_flow_title">${Etapas do Atendimento}</div>
                 <div class="line_flow"></div>
                 <div ng-repeat="status in item.processFlow" class="items_flow">
                   <div class="status_flow" ng-class="c.statusColor(status.selected)">{{$index+1}}</div>
@@ -1295,10 +1529,16 @@ tbody {
           </tr>
         </tbody>
       </table>
+
+      <div class="content_pagination">
+        <span class="pag_arrow_left" ng-click="c.previousPage()" ng-if="data.actualPage > 0"><img src="gservice_column_dashboard_arrow.png"/></span>
+        <span class="pag_arrow_right" ng-click="c.nextPage()" ng-if="data.actualItemsCount < data.totalItems"><img src="gservice_column_dashboard_arrow.png"/></span>
+        <span class="pag_text">Página {{data.actualPageCount}} - {{data.actualItemsCount}} de {{data.totalItems}} RESULTADOS</span>
+      </div>
     </div>
   </div>
 
-  <div class="modal fade" style="z-index: 1041" id="requestCommentModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+  <div class="modal_reopen modal fade" style="z-index: 1041" id="requestCommentModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-body">
@@ -1306,13 +1546,35 @@ tbody {
             <span aria-hidden="true">&times;</span>
           </button>
           <div class="panel-body wrapper-xl wrapper-sc-cat-item">
-            <div class="justify-text">${Justifique sua resposta negativa:}</div>
-            <span class="notification-align no-text-answer" ng-if="c.needComment"> ${Favor preencher o comentário antes de submeter} </span>
-            <div class="form-group">
+            <div class="modal_title">{{c.modalMessage}}:</div>
+
+            <div class="">
+              <div ng-if="c.state == 'rejectSolution'">
+
+                <div class="reason">${Reject Reason}</div>
+
+                <span class="mandatory_message" ng-if="c.needReason"> ${Favor preencher a razão da rejeição} </span>
+                <div class="radio_content" ng-repeat="reopeningReason in data.reopeningReason track by $index">
+                  <span method="get" class="radio-properties">
+                    <label for="{{reopeningReason.label}}">
+                      <input type="radio"
+                             id="{{reopeningReason.label}}"
+                             name="selectedChoice"
+                             value="{{reopeningReason.label}}"
+                             ng-model="reopeningReason.selected"
+                             ng-click="c.selectedChoice($index)">
+                      {{reopeningReason.label}}
+                      <span class="new-radio"></span>
+                    </label>
+                  </span>
+                </div>
+              </div>
+
+              <span class="mandatory_message" ng-if="c.needComment"> ${Favor preencher o comentário com mais de 100 caracteres antes de submeter} </span>
               <textarea class="form-control" ng-model="c.requestComment" maxlength="255"></textarea>
-              <a class="" style="cursor: pointer;" aria-label="" ng-click="c.submitRequestComment()" title="">
+              <div class="btn_submit" style="cursor: pointer;" aria-label="" ng-click="c.submitRequestComment()" title="">
                 <img class="resize-img" src="gservice_dashboard_submit.png"/>
-              </a>
+              </div>
             </div>
           </div>
         </div>
@@ -1322,6 +1584,10 @@ tbody {
 
 
   <now-message key="Done" value="${Done}"/>
+</div>
+
+<div ng-if="data.show_survey" class="survey_accept">
+  <sp-widget widget="data.gserviceSurvey"></sp-widget>
 </div>]]></template>
     </sp_widget>
 </record_update>
