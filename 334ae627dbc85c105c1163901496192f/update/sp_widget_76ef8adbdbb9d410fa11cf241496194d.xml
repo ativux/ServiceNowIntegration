@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope) {
+	var c = this;
+
+	c.applyFilter = function(filter, type){
+		if(type == "areaFilter"){
+			for(var i in c.data.filters.areaFilter){
+				if(c.data.filters.areaFilter[i].name == filter.name){
+					c.data.filters.areaFilter[i].selected	= c.data.filters.areaFilter[i].name;
+				}	else{
+					c.data.filters.areaFilter[i].selected = false;
+				}
+			}
+		} else{
+			for(var i in c.data.filters.locationFilter){
+				if(c.data.filters.locationFilter[i].name == filter.name){
+					c.data.filters.locationFilter[i].selected	= c.data.filters.locationFilter[i].name;
+				}	else{
+					c.data.filters.locationFilter[i].selected = false;
+				}
+			}
+		}
+		$rootScope.$broadcast('applyEquipmentFilter', c.data.filters);
+	}
+
+	c.areaFilterState = function(){
+		c.data.showAreaFilter = !c.data.showAreaFilter;
+	}
+
+	c.locationFilterState = function(){
+		c.data.showLocationFilter = !c.data.showLocationFilter;
+	}
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.content_list {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-left: 0 !important;
+
+  .filter-click-size {
+    transition: .4s ease-in-out;
+    width: 120px;
+    height: 30px;
+    margin-bottom: 20px;
+  }
+
+  .title {
+    color: $deep-sky-blue;
+    font-size: 14px;
+    font-family: $text-bolder;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 15px !important;
+
+    .break-line-other {
+      transition: .4s ease-in-out;
+      width: 60px;
+    }
+  }
+
+  .break-line-filter {
+    width: 80px;
+  }
+  .filter_location {
+    .break-line-filter {
+      width: 100px;
+    }
+  }
+
+  .mask_filter {
+    overflow: hidden;
+
+    .content_filters {
+      transition: .5s ease-in-out;
+    }
+    .filter_open {
+      margin-top: 0;
+    }
+    .filter_close {
+      margin-top: -260px;
+    }
+  }
+
+  .area_filter {
+    display: flex;
+
+    input[type="checkbox"]{
+      display: none;
+    }
+
+    .new-radio {
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      border: 2px solid #737373;
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 4px;
+    }
+    .radio-after {
+      content: "";
+      height: 10px;
+      width: 10px;
+      display: block;
+      position: absolute;
+      left: 1px;
+      top: 1px;
+      border-radius: 50%;
+      background-color: $deep-sky-blue;
+    }
+    .filter_name {
+      margin-left: 30px;
+      margin-top: 2px;
+      font-family: $text-bold;
+    }
+  }
+
+  .arrow-size {
+    transition: .4s ease-in-out;
+    height: 10px;
+    position: relative;
+    top: -34px;
+    left: 100px;
+  }
+  .invert-arrow {
+    transform: rotate(180deg);
+  }
+  .filter_location {
+    .arrow-size {
+      left: 120px;
+    }
+  }
+
+  .confirm_button {
+    transition: .4s ease-in-out;
+    font-size: 12px;
+    color: $deep-sky-blue;
+    font-family: $text-bolder;
+    text-decoration: underline;
+    text-transform: uppercase;
+    margin-left: 30px;
+    padding-top: 10px !important;
+  }
+
+  .radio-properties {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px;
+  }
+
+  .list-properties {
+    padding-left: 0 !important;
+    margin-bottom: -8px;
+  }
+
+  .detail_search {
+    margin-top: -30px;
+    margin-right: 60px;
+  }
+
+  .filter-click-size, .break-line-other {
+    &amp;:hover {
+      transition: .2s ease-in-out;
+      transform: scale(1.1);
+      -webkit-transform: scale(1.1);
+      -ms-transform: scale(1.1);
+      -moz-transform: scale(1.1);
+      -o-transform: scale(1.1);
+    }
+  }
+
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_equipment_filter</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService Equipment Filter</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var localInput = input;
+	var portalUtils = new global.OCLPortalEquipmentsUtil();
+
+	data.filters = {areaFilter : [], locationFilter : []};
+	data.showAreaFilter = true;
+	data.showLocationFilter = true;
+
+	data.locationFilterTitle = gs.getMessage("Filtrar por localidade").toUpperCase();
+	data.filters.locationFilter = portalUtils.getLocationFilter();
+	data.areaFilterTitle = gs.getMessage("Filtrar por área").toUpperCase();
+	data.filters.areaFilter = portalUtils.getAreaFilter();
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-09 19:48:31</sys_created_on>
+        <sys_id>76ef8adbdbb9d410fa11cf241496194d</sys_id>
+        <sys_mod_count>40</sys_mod_count>
+        <sys_name>GService Equipment Filter</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_76ef8adbdbb9d410fa11cf241496194d</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-20 14:55:44</sys_updated_on>
+        <template><![CDATA[<div class="content_list col-md-12">
+
+  <div class="col-md-3 filter-padding">
+    <div ng-click="c.areaFilterState()" class="filter-click-size">
+      <div class="title break-line-filter">{{data.areaFilterTitle}}
+      </div>
+      <img class="arrow-size" src="gservice_filter_dashboard_arrow.png" ng-class="c.data.showAreaFilter ? '' : 'invert-arrow'"/>
+    </div>
+    <div class="mask_filter">
+      <div class="content_filters" ng-class="c.data.showAreaFilter ? 'filter_open' : 'filter_close'">
+        <div class="list-properties" ng-repeat="areaFilter in data.filters.areaFilter">
+          <div method="get" class="radio-properties">
+            <label for="{{areaFilter.name}}" class="area_filter">
+              <input type="checkbox"
+                     id="{{areaFilter.name}}"
+                     name="selectedItem"
+                     value="{{areaFilter.name}}"
+                     ng-model="areaFilter.selected"
+                     ng-click="c.applyFilter(areaFilter, 'areaFilter')">
+              <div class="new-radio">
+                <span ng-class="areaFilter.selected ? 'radio-after' : ''"></span>
+              </div>
+              <div class="filter_name">{{areaFilter.name}}</div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-9 filter-padding filter_location">
+    <div ng-click="c.locationFilterState()" class="filter-click-size">
+      <div class="title break-line-filter">{{data.locationFilterTitle}}
+      </div>
+      <img class="arrow-size" src="gservice_filter_dashboard_arrow.png" ng-class="c.data.showLocationFilter ? '' : 'invert-arrow'"/>
+    </div>
+    <div class="mask_filter">
+      <div class="content_filters" ng-class="c.data.showLocationFilter ? 'filter_open' : 'filter_close'">
+        <div class="list-properties" ng-repeat="locationFilter in data.filters.locationFilter">
+          <div method="get" class="radio-properties">
+            <label for="{{locationFilter.name}}" class="area_filter">
+              <input type="checkbox"
+                     id="{{locationFilter.name}}"
+                     name="selectedItem"
+                     value="{{locationFilter.name}}"
+                     ng-model="locationFilter.selected"
+                     ng-click="c.applyFilter(locationFilter, '')">
+              <div class="new-radio">
+                <span ng-class="locationFilter.selected ? 'radio-after' : ''"></span>
+              </div>
+              <div class="filter_name">{{locationFilter.name}}</div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>]]></template>
+    </sp_widget>
+</record_update>

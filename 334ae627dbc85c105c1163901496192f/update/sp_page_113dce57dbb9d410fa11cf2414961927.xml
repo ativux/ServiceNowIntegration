@@ -1,75 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_page">
     <sp_page action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <css>body .padding-top { padding-top: 0; }
+        <css>body .padding-top { padding-top: 0 !important; }
 
-.col-md-12 {
-  //padding-left: 0;
-  //padding-right: 0;
-}
-
-#uiNotificationContainer {
-  z-index: 1050;
-}</css>
+.ng-scope &gt; .content { overflow: visible !important; }</css>
         <draft>false</draft>
         <dynamic_title_structure/>
-        <id>globoservice_my_dashboard</id>
+        <id>globoservice_equipments</id>
         <internal>false</internal>
         <public>false</public>
         <roles/>
         <short_description/>
         <sys_class_name>sp_page</sys_class_name>
-        <sys_created_by>organize.henrique</sys_created_by>
-        <sys_created_on>2020-04-15 11:28:45</sys_created_on>
-        <sys_id>0d6e2a7fdbc01050fa11cf24149619d3</sys_id>
-        <sys_mod_count>11</sys_mod_count>
-        <sys_name>globoservice_my_dashboard</sys_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-09 19:38:06</sys_created_on>
+        <sys_id>113dce57dbb9d410fa11cf2414961927</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>globoservice_equipments</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
-        <sys_update_name>sp_page_0d6e2a7fdbc01050fa11cf24149619d3</sys_update_name>
+        <sys_update_name>sp_page_113dce57dbb9d410fa11cf2414961927</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-07-20 14:48:43</sys_updated_on>
-        <title>GloboService Meu Dashboard</title>
+        <sys_updated_on>2020-07-20 14:49:01</sys_updated_on>
+        <title>GloboService Equipamentos</title>
     </sp_page>
-    <sys_translated_text action="delete_multiple" query="documentkey=0d6e2a7fdbc01050fa11cf24149619d3"/>
+    <sys_translated_text action="delete_multiple" query="documentkey=113dce57dbb9d410fa11cf2414961927"/>
     <sys_translated_text action="INSERT_OR_UPDATE">
-        <documentkey>0d6e2a7fdbc01050fa11cf24149619d3</documentkey>
+        <documentkey>113dce57dbb9d410fa11cf2414961927</documentkey>
         <fieldname>dynamic_title_structure</fieldname>
         <language>pb</language>
         <sys_created_by>organize.jorge.garcia</sys_created_by>
-        <sys_created_on>2020-05-21 12:13:30</sys_created_on>
-        <sys_id>23d11c2fdb38d410fa11cf2414961957</sys_id>
+        <sys_created_on>2020-07-10 14:52:34</sys_created_on>
+        <sys_id>d9c516a3dbbd18105c11639014961959</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-21 12:13:30</sys_updated_on>
+        <sys_updated_on>2020-07-10 14:52:34</sys_updated_on>
         <tablename>sp_page</tablename>
         <value/>
     </sys_translated_text>
     <sys_translated_text action="INSERT_OR_UPDATE">
-        <documentkey>0d6e2a7fdbc01050fa11cf24149619d3</documentkey>
+        <documentkey>113dce57dbb9d410fa11cf2414961927</documentkey>
         <fieldname>short_description</fieldname>
         <language>pb</language>
         <sys_created_by>organize.jorge.garcia</sys_created_by>
-        <sys_created_on>2020-05-21 12:13:30</sys_created_on>
-        <sys_id>dfd1d82fdb38d410fa11cf24149619ee</sys_id>
+        <sys_created_on>2020-07-10 14:52:34</sys_created_on>
+        <sys_id>1dc552a3dbbd18105c11639014961951</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-21 12:13:30</sys_updated_on>
+        <sys_updated_on>2020-07-10 14:52:34</sys_updated_on>
         <tablename>sp_page</tablename>
         <value/>
     </sys_translated_text>
     <sys_translated_text action="INSERT_OR_UPDATE">
-        <documentkey>0d6e2a7fdbc01050fa11cf24149619d3</documentkey>
+        <documentkey>113dce57dbb9d410fa11cf2414961927</documentkey>
         <fieldname>title</fieldname>
         <language>pb</language>
         <sys_created_by>organize.jorge.garcia</sys_created_by>
-        <sys_created_on>2020-05-21 12:13:30</sys_created_on>
-        <sys_id>57d1d82fdb38d410fa11cf24149619f1</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_created_on>2020-07-10 14:52:34</sys_created_on>
+        <sys_id>19c516a3dbbd18105c11639014961957</sys_id>
+        <sys_mod_count>2</sys_mod_count>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-10 15:47:33</sys_updated_on>
+        <sys_updated_on>2020-07-10 15:47:02</sys_updated_on>
         <tablename>sp_page</tablename>
-        <value>My Dashboard</value>
+        <value>Equipamentos</value>
     </sys_translated_text>
 </record_update>

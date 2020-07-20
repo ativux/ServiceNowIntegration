@@ -1,75 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_page">
     <sp_page action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <css>body .padding-top { padding-top: 0; }
+        <css>body .padding-top { padding-top: 0 !important; }
 
-.col-md-12 {
-  //padding-left: 0;
-  //padding-right: 0;
+@media print {
+  .container {
+    margin-left: 0;
+    width: 100% !important;
+  }
+  .content {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .icon-bar, .content_tabs, .btn_back, .btn_print {
+    display: none;
+  }
+  body {
+    overflow: hidden;
+  }
 }
 
 #uiNotificationContainer {
-  z-index: 1050;
+  z-index: 9999 !important;
 }</css>
         <draft>false</draft>
         <dynamic_title_structure/>
-        <id>globoservice_my_dashboard</id>
+        <id>globoservice_manager</id>
         <internal>false</internal>
         <public>false</public>
         <roles/>
-        <short_description/>
+        <short_description>Page for "Área do Gestor"</short_description>
         <sys_class_name>sp_page</sys_class_name>
         <sys_created_by>organize.henrique</sys_created_by>
-        <sys_created_on>2020-04-15 11:28:45</sys_created_on>
-        <sys_id>0d6e2a7fdbc01050fa11cf24149619d3</sys_id>
-        <sys_mod_count>11</sys_mod_count>
-        <sys_name>globoservice_my_dashboard</sys_name>
+        <sys_created_on>2020-06-22 01:08:00</sys_created_on>
+        <sys_id>161c2665db2954105c1163901496195d</sys_id>
+        <sys_mod_count>22</sys_mod_count>
+        <sys_name>globoservice_manager</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
-        <sys_update_name>sp_page_0d6e2a7fdbc01050fa11cf24149619d3</sys_update_name>
+        <sys_update_name>sp_page_161c2665db2954105c1163901496195d</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-07-20 14:48:43</sys_updated_on>
-        <title>GloboService Meu Dashboard</title>
+        <sys_updated_on>2020-07-20 14:49:09</sys_updated_on>
+        <title>GloboService Gestor</title>
     </sp_page>
-    <sys_translated_text action="delete_multiple" query="documentkey=0d6e2a7fdbc01050fa11cf24149619d3"/>
+    <sys_translated_text action="delete_multiple" query="documentkey=161c2665db2954105c1163901496195d"/>
     <sys_translated_text action="INSERT_OR_UPDATE">
-        <documentkey>0d6e2a7fdbc01050fa11cf24149619d3</documentkey>
+        <documentkey>161c2665db2954105c1163901496195d</documentkey>
         <fieldname>dynamic_title_structure</fieldname>
         <language>pb</language>
         <sys_created_by>organize.jorge.garcia</sys_created_by>
-        <sys_created_on>2020-05-21 12:13:30</sys_created_on>
-        <sys_id>23d11c2fdb38d410fa11cf2414961957</sys_id>
+        <sys_created_on>2020-07-10 15:45:51</sys_created_on>
+        <sys_id>35f1e2abdbfd18105c1163901496191a</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-21 12:13:30</sys_updated_on>
+        <sys_updated_on>2020-07-10 15:45:51</sys_updated_on>
         <tablename>sp_page</tablename>
         <value/>
     </sys_translated_text>
     <sys_translated_text action="INSERT_OR_UPDATE">
-        <documentkey>0d6e2a7fdbc01050fa11cf24149619d3</documentkey>
+        <documentkey>161c2665db2954105c1163901496195d</documentkey>
         <fieldname>short_description</fieldname>
         <language>pb</language>
         <sys_created_by>organize.jorge.garcia</sys_created_by>
-        <sys_created_on>2020-05-21 12:13:30</sys_created_on>
-        <sys_id>dfd1d82fdb38d410fa11cf24149619ee</sys_id>
+        <sys_created_on>2020-07-10 15:45:51</sys_created_on>
+        <sys_id>3df1e2abdbfd18105c11639014961915</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-21 12:13:30</sys_updated_on>
+        <sys_updated_on>2020-07-10 15:45:51</sys_updated_on>
         <tablename>sp_page</tablename>
-        <value/>
+        <value>Page for "Área do Gestor"</value>
     </sys_translated_text>
     <sys_translated_text action="INSERT_OR_UPDATE">
-        <documentkey>0d6e2a7fdbc01050fa11cf24149619d3</documentkey>
+        <documentkey>161c2665db2954105c1163901496195d</documentkey>
         <fieldname>title</fieldname>
         <language>pb</language>
         <sys_created_by>organize.jorge.garcia</sys_created_by>
-        <sys_created_on>2020-05-21 12:13:30</sys_created_on>
-        <sys_id>57d1d82fdb38d410fa11cf24149619f1</sys_id>
+        <sys_created_on>2020-07-10 15:45:51</sys_created_on>
+        <sys_id>71f1e2abdbfd18105c11639014961918</sys_id>
         <sys_mod_count>1</sys_mod_count>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-10 15:47:33</sys_updated_on>
+        <sys_updated_on>2020-07-10 15:47:05</sys_updated_on>
         <tablename>sp_page</tablename>
-        <value>My Dashboard</value>
+        <value>Área do Gerente</value>
     </sys_translated_text>
 </record_update>
