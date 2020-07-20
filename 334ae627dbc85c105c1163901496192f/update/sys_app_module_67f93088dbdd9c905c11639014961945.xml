@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_module">
     <sys_app_module action="INSERT_OR_UPDATE">
         <active>true</active>
-        <application display_value="System Properties">d546447bc0a8016900046469895b557a</application>
+        <application display_value="Portal Manager">4759bdbedbca1010fa11cf24149619ea</application>
         <assessment/>
         <device_type/>
         <filter table="sys_properties">sys_created_by=organize.fernando^ORsys_created_by=organize.jorge.garcia^ORsys_created_by=organize.henrique^EQ<item endquery="false" field="sys_created_by" goto="false" newquery="false" operator="=" or="false" value="organize.fernando"/>
@@ -17,7 +17,7 @@
         <mobile_title>Portal Properties</mobile_title>
         <mobile_view_name>Mobile</mobile_view_name>
         <name>sys_properties</name>
-        <order>1250</order>
+        <order>600</order>
         <override_menu_roles>false</override_menu_roles>
         <query>system_properties_ui.do?sysparm_title=Portal Properties&amp;sysparm_category=Portal Category Properties</query>
         <report/>
@@ -28,7 +28,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>67f93088dbdd9c905c11639014961945</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>Portal Properties</sys_name>
         <sys_overrides/>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
@@ -36,7 +36,7 @@
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sys_app_module_67f93088dbdd9c905c11639014961945</sys_update_name>
         <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-06-04 14:52:29</sys_updated_on>
+        <sys_updated_on>2020-07-20 15:12:58</sys_updated_on>
         <timeline_page/>
         <title>Portal Properties</title>
         <uncancelable>false</uncancelable>

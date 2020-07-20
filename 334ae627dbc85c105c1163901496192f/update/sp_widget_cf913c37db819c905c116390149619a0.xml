@@ -4,10 +4,10 @@
         <client_script><![CDATA[function ($scope, $timeout, spUtil, $location) {
 	var c = this;
 
-	c.orderBy = function(order, items){
+	c.orderBy = function(order){
 		c.server.get({
 			action : "orderBy",
-			items : items,
+			assets : c.data.assets,
 			order : order,
 			allColumns : c.data.columns
 		}).then(function(response) {
@@ -728,6 +728,20 @@ tbody {
 
 .content_conversation {
   width: 100%;
+}
+
+.buttons {
+  img { transition: .4s ease-in-out; }
+  &amp;:hover {
+    img {
+      transition: .2s ease-in-out;
+      transform: scale(1.1);
+      -webkit-transform: scale(1.1);
+      -ms-transform: scale(1.1);
+      -moz-transform: scale(1.1);
+      -o-transform: scale(1.1);
+    }
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -790,8 +804,8 @@ tbody {
 					data.columns[i].direction = false;
 				}
 			}
-			var items = localInput.items;
-			var itemsSort = portalUtils.sortList(items, localInput.order, direction);
+			var assets = localInput.assets;
+			var itemsSort = portalUtils.sortList(assets, localInput.order, direction);
 			data.assets = itemsSort;
 		}
 	}
@@ -801,14 +815,14 @@ tbody {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-03 19:26:22</sys_created_on>
         <sys_id>cf913c37db819c905c116390149619a0</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>GService My Dashboard Assets</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_cf913c37db819c905c116390149619a0</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-06-03 19:48:40</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-20 15:03:51</sys_updated_on>
         <template><![CDATA[<div>
   <div>
     <div ng-if="data.showEmptyMessage" class="without_notification">
@@ -818,11 +832,11 @@ tbody {
       <thead>
         <tr>
           <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
-            <div ng-click="c.orderBy(column.order, data.assetsTab)">
+            <div ng-click="c.orderBy(column.order)">
               {{column.name}}
               <span ng-if="column.order">
                 <span ng-if="!column.direction"><!--VAZIO--></span>
-                <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == -1 ? 'invert-arrow' : ''"}/></span>
+                <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
               </span>
             </div>
           </th>
@@ -838,12 +852,12 @@ tbody {
             <div class="service_title">{{item.description}}</div>
           </td>
           <td>
-            <div class="service_title">${GService View More}</div>
+            <!-- <div class="service_title">${GService View More}</div> -->
           </td>
           <td>
-            <div ng-click="">
+            <!-- <div class="buttons" ng-click="">
               <img src="GService_DASH_ReportarErro.png"/>
-            </div>
+            </div> -->
           </td>
         </tr>
       </tbody>
