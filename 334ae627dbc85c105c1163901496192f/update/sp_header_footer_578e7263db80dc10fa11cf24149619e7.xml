@@ -2,8 +2,20 @@
     <sp_header_footer action="INSERT_OR_UPDATE">
         <category>standard</category>
         <client_script><![CDATA[function ($rootScope, $scope, snRecordWatcher, spUtil, $location, $uibModal, cabrillo, $timeout, $window) {
-
 	var c = this;
+	c.sendKBCategories = true;
+
+	//Redirect users that aren`t managers
+	if(c.data.redirect){
+		$window.location = "?id=globoservice_index";
+	}
+
+	if(c.data.sendKBCategories){
+		$timeout(function(){
+			$rootScope.$broadcast("getKBCategoriesInfo", c.data.kb_categories);
+			c.data.sendKBCategories = false;
+		}, 500);
+	}
 	$scope.collapse = function() {
 		$rootScope.$emit('sp-navbar-collapse');
 	}
@@ -76,15 +88,13 @@
 		return false;
 	};
 
-	c.selectedSecondCategory = function(category){
+	c.selectedSecondCategory = function(category, index){
 		c.server.get({
 			action: "selectedSecondCategory",
 			category: category
 		}).then(function(response) {
-			for(i in c.data.categories){
-				for(j in c.data.categories[i].categories){
-					c.data.categories[i].categories[j].selected = false;
-				}
+			for(i in c.data.categories[index].secondCategories){
+				c.data.categories[index].secondCategories[i].selected = false;
 			}
 			category.selected = true;
 			c.data.thirdCategories = response.data.thirdCategories;
@@ -101,9 +111,7 @@
 			action: "selectedThirdCategory",
 			category: category
 		}).then(function(response) {
-			for(i in c.data.thirdCategories){
-				c.data.thirdCategories[i].selected = false;
-			}
+			cleanSelection("clearThird");
 			category.selected = true;
 			c.data.subcategorySelected = response.data.subcategorySelected;
 			c.data.items = response.data.items;
@@ -112,69 +120,138 @@
 	}
 
 	c.showItem = function(itemID){
-		if(c.data.page_id == null || c.data.page_id == "gservice_index"){
+		if(c.data.page_id == null || c.data.page_id == "globoservice_index"){
 			c.data.menuSelected = 0;
-			$('.dropdown-bg').css('display', 'none');
 			$rootScope.$broadcast('openSelectedCategoryItem', false, itemID);
+			cleanSelection("clearCatalog");
 		}
 		else{
-			$location.search("id=gservice_index&item_id=" + itemID);
+			$location.search("id=globoservice_index&item_id=" + itemID);
 		}
 
 	}
 
 	c.goHome = function(page){
-		$location.url('?id=gservice_index');
+		$location.url('?id=globoservice_index');
 		spUtil.scrollTo('.sp-scroll', 300);
 	}
 
-	// Dropdown
 	c.openDropDown = function(item){
+		cleanSelection("clearAll");
 		if(item == c.data.menuSelected && c.data.menuSelected != 2){
 			c.data.menuSelected = 0;
-			$('.dropdown-bg').css('display', 'none');
 		}
 		else{
 			c.data.menuSelected = item;
-			if(item == 0){
-				$('.dropdown-bg').css('display', 'none');
-			}
-			else{
-				$('.dropdown-bg').css('display', 'block');
-				if(item == 2){
-					$('.dropdown-bg').css('display', 'none');
-					$rootScope.$broadcast('showHideWidget', "error");
-				}
-				else if(item == 3){
-					c.data.showItems = false;
-					c.data.thirdCategories = false;
 
-					for(i in c.data.categories){
-						for(j in c.data.categories[i].categories){
-							c.data.categories[i].categories[j].selected = false;
-						}
+			if(item == 2){
+				$rootScope.$broadcast('showHideWidget', "error");
+			}
+			else if(item == 3){
+				c.data.showItems = false;
+				c.data.thirdCategories = false;
+
+				for(var i in c.data.categories){
+					for(var j in c.data.categories[i].categories){
+						c.data.categories[i].categories[j].selected = false;
 					}
 				}
 			}
 		}
 	}
 
+	c.showAll = function(category){
+		for(var i in c.data.categories){
+			if(c.data.categories[i].sys_id == category.sys_id){
+				c.data.categories[i].showAll = !c.data.categories[i].showAll;
+			}
+			else{
+				c.data.categories[i].showAll = false;
+			}
+			for(var j in c.data.categories[i].secondCategories){
+				c.data.categories[i].secondCategories[j].selected = false;
+			}
+		}
+		c.data.thirdCategories = false;
+		c.data.showItems = false;
+	}
+
+	c.showAllKB = function(category){
+		for(var i in c.data.kb_categories){
+			if(c.data.kb_categories[i].sys_id == category.sys_id){
+				c.data.kb_categories[i].showAll = !c.data.kb_categories[i].showAll;
+			}
+			else{
+				c.data.kb_categories[i].showAll = false;
+			}
+		}
+		c.data.thirdCategories = false;
+		c.data.showItems = false;
+	}
 
 	$scope.$on('hideSideMenu', function (event) {
 		c.data.menuSelected = 0;
-		$('.dropdown-bg').css('display', 'none');
 	});
+
+	cleanSelection = function(type){
+		if(type == "clearAll" || "clearCatalog"){
+			//Clean catalog categories and subcategories selected
+			for(var i in c.data.categories){
+				c.data.categories[i].showAll = false;
+				for(var j in c.data.categories[i].secondCategories){
+					c.data.categories[i].secondCategories[j].selected = false;
+				}
+			}
+		} 
+		if(type == "clearAll" || "clearKB"){
+			for(i in c.data.kb_categories){
+				c.data.kb_categories[i].showAll = false;
+			}
+		}
+		if(type == "clearThird"){
+			for(i in c.data.thirdCategories){
+				c.data.thirdCategories[i].selected = false;
+			}
+		}
+	}
+
+	c.doYourself = function(){
+		if(c.data.page_id == null || c.data.page_id == "globoservice_index"){
+			$rootScope.$broadcast('showHideWidget', "do_yourself");
+			c.data.menuSelected = 0;
+		}
+		else{
+			$location.search("id=globoservice_index&do_yourself=true");
+		}
+	}
+
+	c.toKnowledge = function(knowledge_id){
+		if(c.data.page_id == null || c.data.page_id == "globoservice_index"){
+			$rootScope.$broadcast("kb_category", knowledge_id);
+			c.data.menuSelected = 0;
+		}
+		else{
+			$location.search("id=globoservice_index&knowledge_id=" + knowledge_id);
+		}
+	}
+
+	c.openServices = function(){
+		$location.url('?id=globoservice_services');
+	}
+
+	c.goBackend = function(){
+		$window.open(c.data.instance_url,'_blank');
+	}
+	if(c.data.kb_selected){
+		setTimeout(function(){
+			$rootScope.$broadcast("kb_category", c.data.knowledge_id);
+		}, 500);
+	}
+
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>/*
-.content_nav {
-  margin-left: 90px;
-  margin-right: 90px;
-}
-*/
-
-.navbar {
+        <css>.navbar {
   transition: 250ms opacity ease-in-out;
   -webkit-transition: 250ms opacity ease-in-out;
   border: 0;
@@ -303,7 +380,7 @@ nav {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 1;
+  z-index: 13;
 
   div {
     margin-bottom: 5px;
@@ -328,7 +405,6 @@ nav {
 
 // Dropdown
 .dropdown-bg {
-  display: none;
   position: fixed;
   z-index: 11;
   left: 90px;
@@ -339,6 +415,7 @@ nav {
   cursor: default;
 }
 .dropdown-third-item {
+  transition: .4s ease-in-out;
   padding: 40px 40px 40px 30px;
   background-color: rgba(255,255,255,.95);
   position: fixed;
@@ -371,9 +448,23 @@ nav {
 
       .category {
         font-size: 16px;
-        color: $dodger-blue; //OR $deep-sky-blue
+        color: $dodger-blue;
         text-transform: uppercase;
         margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+
+        .arrow-size {
+          transition: .6s ease-in-out;
+          width: 20px;
+          margin-left: 5px;
+        }
+        .invert-arrow {
+          transform: rotate(180deg);
+        }
+      }
+      .category_kb {
+        color: $turquoise;
       }
     }
     .subcategory {
@@ -381,11 +472,25 @@ nav {
         color: $dodger-blue;
       }
     }
+    .subcategory_kb {
+      &amp;:hover {
+        color: $turquoise;
+      }
+    }
     .category-selected {
       color: $dodger-blue;
     }
 
   }
+}
+
+.dropdown_close {
+  left: -382px !important;
+  opacity: 0;
+}
+.dropdown_open {
+  left: 90px !important;
+  opacity: 1;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -450,52 +555,87 @@ nav {
 (function() {
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
+	data.showBackend = gs.hasRole();
 	data.items = [];
 	data.thirdCategories = [];
-	
+	data.show_survey = false;
+	data.kb_selected = false;
+	data.knowledge_id = $sp.getParameter("knowledge_id");
+	data.instance_url = gs.getProperty('glide.servlet.uri');
+	if(data.knowledge_id){
+		data.kb_selected = true;
+	}
+	var surveyUtils = new global.OCLPortalSurveyUtils();
+	var survey_id = surveyUtils.getSurveyId();
+	if(survey_id){
+		data.show_survey = true;
+		var survey_options = {"survey_id": survey_id};
+		data.gserviceSurvey = $sp.getWidget('gservice_survey_modal', survey_options);
+	}
 
-	data.menuSelected = 0;
-	data.page_id = $sp.getParameter("id");
+	if(!localInput){
+		var page_id = $sp.getParameter("id");
+		data.sendKBCategories = !page_id || page_id == "globoservice_index";
 
-	data.connect_support_queue_id = $sp.getValue('sp_chat_queue');
-	data.login_page = $sp.getValue('login_page');
-	data.profileBtnMsg = gs.getMessage("User options");
-	var menu = $sp.getValue("sp_rectangle_menu");
-	data.menu = $sp.getWidgetFromInstance(menu);
-	if (data.menu && data.menu.data) {
-		data.menu.data.replace = true;
-		// Hide login if menu already has link to login
-		data.hasLogin = false;
-		if (data.menu.data.menu.items) {
-			for(var i in data.menu.data.menu.items) {
-				var item = data.menu.data.menu.items[i];
-				if (item.type == 'page' && item.sp_page == data.login_page)
-					data.hasLogin = true;
+		data.menuSelected = 0;
+		data.page_id = $sp.getParameter("id");
+
+		data.isManager = gs.getUser().isMemberOf('Gestor');
+		data.isAdmin = gs.getUser().hasRole('admin');
+		if(data.page_id == 'globoservice_manager'){
+			if(!data.isManager){
+				if(!data.isAdmin){
+					data.redirect = true;
+				}
 			}
 		}
-	}
 
-	data.loginWidget = $sp.getWidgetFromInstance('login-modal');
-
-	//Menu "Reporte um erro"
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-
-	//Menu "Solicite um serviço"
-
-	var categories = gs.getProperty("gservice_categories").split(",");
-	var query = "";
-	for (i in categories){
-		if(query == ""){
-			query = "sys_id=" + categories[i];
+		data.connect_support_queue_id = $sp.getValue('sp_chat_queue');
+		data.login_page = $sp.getValue('login_page');
+		data.profileBtnMsg = gs.getMessage("User options");
+		var menu = $sp.getValue("sp_rectangle_menu");
+		data.menu = $sp.getWidgetFromInstance(menu);
+		if (data.menu && data.menu.data) {
+			data.menu.data.replace = true;
+			// Hide login if menu already has link to login
+			data.hasLogin = false;
+			if (data.menu.data.menu.items) {
+				for(var i in data.menu.data.menu.items) {
+					var item = data.menu.data.menu.items[i];
+					if (item.type == 'page' && item.sp_page == data.login_page)
+						data.hasLogin = true;
+				}
+			}
 		}
-		else{
-			query+= "^ORsys_id=" + categories[i];
-		}
-	}
-	data.categories = portalUtils.lateralMenuCategories(query);
 
-	if(localInput){
+		data.loginWidget = $sp.getWidgetFromInstance('login-modal');
+
+		//Menu "Reporte um erro"
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+
+		//Menu "Solicite um serviço"
+
+		var categories = gs.getProperty("gservice_categories").split(",");
+		var query = "";
+		for (i in categories){
+			if(query == ""){
+				query = "sys_id=" + categories[i];
+			}
+			else{
+				query+= "^ORsys_id=" + categories[i];
+			}
+		}
+		data.categories = portalUtils.lateralMenuCategories(query);
+
+		var portalKB = gs.getProperty("gservice_portal_kb");
+		var catalogCategories = gs.getProperty("gservice_categories");
+		catalogCategories = catalogCategories.split(",");
+
+		data.kb_categories = portalUtils.getCategoriesKB(portalKB, catalogCategories);
+
+	}
+	else{
 		switch(localInput.action){
 			case "selectedSecondCategory":
 				data.thirdCategories = portalUtils.getSubcategories(localInput.category.sys_id, localInput.category.title);
@@ -520,17 +660,7 @@ nav {
 					data.showItems = true;
 				}
 				break;
-
-
 		}
-	}
-	
-	if(data.items.length > 0){
-		data.items = portalUtils.sortObject(data.items, "title");
-	}
-
-	if(data.thirdCategories.length > 0){
-		data.thirdCategories = portalUtils.sortObject(data.thirdCategories, "title");
 	}
 })()]]></script>
         <servicenow>false</servicenow>
@@ -538,40 +668,44 @@ nav {
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 18:00:53</sys_created_on>
         <sys_id>578e7263db80dc10fa11cf24149619e7</sys_id>
-        <sys_mod_count>530</sys_mod_count>
+        <sys_mod_count>758</sys_mod_count>
         <sys_name>GService Stock Header</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_header_footer_578e7263db80dc10fa11cf24149619e7</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-06-03 12:07:42</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-20 14:27:55</sys_updated_on>
         <template><![CDATA[<div class="content">
 
   <!-- SIDE BAR -->
   <div class="icon-bar">   
-    <div ng-click="c.goHome()"><img src="GService_StyleGuide_V1_AR_GSERVICE.png"></div>
+    <div ng-click="c.goHome()"><img src="GloboService Index.png"></div>
     <div ng-click="c.openDropDown(2)"><img src="GService_StyleGuide_V1_AR_ERRO.png"></div>
     <div ng-click="c.openDropDown(3)"><img src="GService_StyleGuide_V1_AR_SERVICO.png"></div>
-    <div ng-click="c.openDropDown(4)"><img src="GService_StyleGuide_V1_AR_AUTO.png"></div>
+    <div ng-click="c.doYourself()"><img src="GService_StyleGuide_V1_AR_AUTO.png"></div>
     <div ng-click="c.openDropDown(5)"><img src="GService_StyleGuide_V1_AR_DUVIDAS.png"></div>
-    <div ng-click="c.openDropDown(6)"><img src="GService_StyleGuide_V1_AR_PORTAL.png"></div>
-    <div ng-click="c.openDropDown(7)"><img src="GService_StyleGuide_V1_AR_INDISPONIVEL.png"></div>
+    <div ng-click="c.goBackend()" ng-if="data.showBackend"><img src="GService_StyleGuide_V1_AR_PORTAL.png"></div>
+    <div ng-click="c.openServices()"><img src="GService_StyleGuide_V1_AR_INDISPONIVEL.png"></div>
   </div>
-  <div class="dropdown-bg" ng-click="c.openDropDown(0)"></div>
+
+  <div ng-click="c.openDropDown(0)" class="dropdown-bg" ng-show="c.data.menuSelected != 0 && c.data.menuSelected != 2"></div>
 
   <!-- Reporte um erro -->
   <div>
     <widget id="gservice_error_modal"></widget>
   </div>
 
-  <!-- Solicite um serviço -->
-  <div class="dropdown-third-item" ng-if="c.data.menuSelected == 3">
+  <!-- Solicite um Serviço -->
+  <div class="dropdown-third-item dropdown_services" ng-class="c.data.menuSelected == 3 ? 'dropdown_open' : 'dropdown_close'" ng-show="c.data.menuSelected == 3">
     <div class="dropdown-column">
-      <div class="category-subcategory" ng-repeat="category in data.categories">
-        <div class="category">{{category.title}}</div>
-        <div ng-repeat="secCategory in category.categories">
-          <div ng-class="secCategory.selected ? 'category-selected' : 'subcategory'" ng-click="c.selectedSecondCategory(secCategory)">{{secCategory.title}}</div>
+      <div class="category-subcategory" ng-repeat="category in data.categories" ng-init="parentIndex = $index">
+        <div class="category" ng-click="c.showAll(category)">
+          {{category.title}}
+          <img class="arrow-size" src="GService_Seta_PD.png" ng-class="category.showAll ? '' : 'invert-arrow'"/>
+        </div>
+        <div ng-repeat="secCategory in category.secondCategories" ng-if="category.showAll">
+          <div ng-class="secCategory.selected ? 'category-selected' : 'subcategory'" ng-click="c.selectedSecondCategory(secCategory, parentIndex)">{{secCategory.title}}</div>
         </div>
       </div>
     </div>
@@ -585,6 +719,21 @@ nav {
     <div class="dropdown-column dropdown-column2" ng-if="data.showItems">
       <div ng-repeat="item in data.items">
         <div class="subcategory" ng-click="c.showItem(item.sys_id)">{{item.title}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tire Dúvidas -->
+  <div class="dropdown-third-item" ng-class="c.data.menuSelected == 5 ? 'dropdown_open' : 'dropdown_close'" ng-show="c.data.menuSelected == 5">
+    <div class="dropdown-column">
+      <div class="category-subcategory" ng-repeat="category in data.kb_categories">
+        <div class="category category_kb" ng-click="c.showAllKB(category)">
+          {{category.title}}
+          <img class="arrow-size" src="GService_Seta_IS.png" ng-class="category.showAll ? '' : 'invert-arrow'"/>
+        </div>
+        <div ng-repeat="secCategory in category.secondCategories | filter:{hasArticles : true}" ng-if="category.showAll">
+          <div class="subcategory_kb" ng-click="c.toKnowledge(secCategory.sys_id)">{{secCategory.title}}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -621,19 +770,6 @@ nav {
           <!-- chat, avatar, and logout -->
           <li ng-if="::(data.connect_support_queue_id && !isAgentChatConfigured)" role="presentation"><a href ng-click="openPopUp()" role="menuitem">${Live Chat}</a></li>
 
-          <!-- ** THIS SECTION IS HIDDEN SO THAT THE USER AVATAR IS NOT DISPLAYED IN THE HEADER BAR ** -->
-          <!--<li ng-if="showAvatar" class="hidden-xs dropdown" role="presentation">
-<a href class="toggle-dropdown" data-toggle="dropdown" aria-expanded="false" title="{{::data.profileBtnMsg}}" aria-label="{{::data.profileBtnMsg}}: {{::user.name}}" id="profile-dropdown"  role="menuitem" aria-haspopup="true">
-<span class="navbar-avatar" aria-hidden="true"><sn-avatar class="avatar-small-medium" primary="avatarProfile" /></span>
-<span class="visible-lg-inline">{{::user.name}}</span>
-</a>
-<ul class="dropdown-menu" role="menu" aria-label="{{::data.profileBtnMsg}}">
-<li role="presentation"><a tabindex="-1" ng-href="?id=user_profile&sys_id={{::user.sys_id}}" role="menuitem">${Profile}</a></li>
-<li ng-if="::!(isViewNative || isViewNativeTablet)" role="presentation"><a tabindex="-1" href="{{::portal.logoutUrl}}" role="menuitem">${Logout}</a></li>
-</ul>
-</li>
--->
-
           <li ng-if="showXSAvatar" class="visible-xs-block" role="presentation"><a role="menuitem" ng-href="?id=user_profile&sys_id={{::user.sys_id}}" ng-click="collapse()">
             <span class="navbar-avatar"><sn-avatar class="avatar-small-medium" primary="avatarProfile" /></span>{{::user.name}}</a>
           </li>
@@ -642,7 +778,10 @@ nav {
       </div>
     </nav>
   </div>
+</div>
 
+<div ng-if="data.show_survey">
+  <sp-widget widget="data.gserviceSurvey"></sp-widget>
 </div>]]></template>
     </sp_header_footer>
 </record_update>

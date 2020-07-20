@@ -7,7 +7,7 @@
 	//Function created for redirect users to main page and auto-fill the form with informations provided by cart items
 	c.duplicateItem = function(item) {
 		var mostReq_id = item.sys_id;
-		$location.search("id=gservice_index" + "&item_id=" + mostReq_id);
+		$location.search("id=globoservice_index" + "&item_id=" + mostReq_id);
 	}
 
 	c.orderBy = function(order, items){
@@ -734,6 +734,20 @@ tbody {
 
 .content_conversation {
   width: 100%;
+}
+
+.buttons {
+  img { transition: .4s ease-in-out; }
+  &amp;:hover {
+    img {
+      transition: .2s ease-in-out;
+      transform: scale(1.1);
+      -webkit-transform: scale(1.1);
+      -ms-transform: scale(1.1);
+      -moz-transform: scale(1.1);
+      -o-transform: scale(1.1);
+    }
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -781,9 +795,11 @@ tbody {
 			data.showEmptyMessage = true;
 		} else {
 			for(i in data.mostRequested){
-				data.mostRequested[i].color = parse[data.mostRequested[i].categoryID].color;
-				data.mostRequested[i].img = parse[data.mostRequested[i].categoryID].imgcategory;
-				data.mostRequested[i].submitImage = parse[data.mostRequested[i].categoryID].submitImg;
+				if(parse[data.mostRequested[i].categoryID]){
+					data.mostRequested[i].color = parse[data.mostRequested[i].categoryID].color;
+					data.mostRequested[i].img = parse[data.mostRequested[i].categoryID].imgcategory;
+					data.mostRequested[i].submitImage = parse[data.mostRequested[i].categoryID].submitImg;
+				}
 			}
 		}
 	}
@@ -812,18 +828,18 @@ tbody {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-03 19:35:30</sys_created_on>
         <sys_id>c1b3bcb7db819c905c11639014961986</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>10</sys_mod_count>
         <sys_name>GService My Dashboard Most Req</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_c1b3bcb7db819c905c11639014961986</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-06-03 19:48:34</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-20 14:12:46</sys_updated_on>
         <template><![CDATA[<div>
   <div class="page_description">
-    Aqui você encontra a listagem dos seus serviços mais frequentes.<br>
-    Você pode navegar e solicitar novamente os serviços por aqui.
+    ${My Dashboard Most Req 1}<br>
+    ${My Dashboard Most Req 2}
   </div>
   <div>
     <div ng-if="data.showEmptyMessage" class="without_notification">
@@ -837,7 +853,7 @@ tbody {
               {{column.name}}
               <span ng-if="column.order">
                 <span ng-if="!column.direction"><!--VAZIO--></span>
-                <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == -1 ? 'invert-arrow' : ''"}/></span>
+                <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
               </span>
             </div>
           </th>
@@ -876,14 +892,14 @@ tbody {
               <div class="row column_sla">
                 <div> <!-- class="col-lg-1" -->
                   <!-- Necessário realizar query para buscar sla-->
-                  <div class="sla_text">SLA: {{item.delivery_time}}</div>
+                  <div class="sla_text">{{item.delivery_time}}</div>
                 </div>
               </div>
             </td>
             <td>
               <div class="row">
                 <!-- Button to request a service again -->
-                <a class="request_button" style="cursor: pointer;" ng-click="c.duplicateItem(item)" aria-label="" title="">
+                <a class="request_button buttons" style="cursor: pointer;" ng-click="c.duplicateItem(item)" aria-label="" title="">
                   <img src="{{item.submitImage}}"/>
                 </a>
               </div>

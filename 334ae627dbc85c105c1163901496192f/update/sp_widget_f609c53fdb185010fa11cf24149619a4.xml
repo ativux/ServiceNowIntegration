@@ -1,55 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function($scope, $rootScope, $timeout) {
+        <client_script><![CDATA[function($scope, $rootScope, $timeout, $window) {
 	/* widget controller */
 	var c = this;
 	c.title = "";
 	c.categoryColor = "";
 	c.bdColor = "";
 
-	$scope.$on(c.data.broadcast_name, function (event, data, searchSourceID) {
-		//		c.data.test = data;
-		//		c.data.test2 = searchSourceID;
-		c.data.action = "searchedItem";
-		c.data.searchSourceID = searchSourceID;
-		c.server.update().then(function() {
-			if(data.length > 0){
-				for(i in data){
-					var jsonArticle = {"title": replaceHtml(data[i].primary), 
-														 "id": data[i].sys_id,
-														 "description" : data[i].fields[0].display_value,
-														 "table" : data[i].table};
-					if(jsonArticle.description == '(empty)'){
-						jsonArticle.description = '';
-					}
-					var sourceTable = data[i].table;
-					if(sourceTable == "sc_category"){
-						sourceTable = "sc_cat_item";
-					}
-					for (i in c.data.searchSources){
-						if(c.data.searchSources[i].table == sourceTable){
-							c.data.searchSources[i].results.push(jsonArticle);
-						}
+	$scope.$on(c.data.broadcast_name, function (event, data, searchSourceID, categorySearch) {
+		if(categorySearch){
+			c.data.searchSources = data.results[0].items;
+			c.showArticles = true;
+			for(var i in c.data.searchSources){
+				c.data.searchSources[i].resultLimit = 2;
+				if(c.data.searchSources[i].results.length > c.data.searchSources[i].resultLimit){
+					c.data.searchSources[i].seeAllMsg = c.data.msgs.seeAll;
+				}else{
+					c.data.searchSources[i].seeAllMsg = c.data.msgs.seeLess;
+				}
+			}
+		}
+		else{
+			c.data.action = "searchedItem";
+			c.data.searchSourceID = searchSourceID;
+			c.data.searchResult = data;
+			c.server.update().then(function() {
+				c.showArticles = c.data.showArticles;
+				for(var i in c.data.searchSources){
+					for(var j in c.data.searchSources[i].results){
+						c.data.searchSources[i].results[j].title = replaceHtml(c.data.searchSources[i].results[j].title);
 					}
 				}
-				c.showArticles = true;
-			}
-			else{
-				c.showArticles = false;
-			}
-		});
+			});
+		}
 	});
 
 	$scope.$on((c.data.broadcast_name + "Title"), function (event, categoryTitle, categoryColor) {
-//		c.data.test = categoryTitle;
-//		c.data.test2 = categoryColor;
 		c.title = categoryTitle;
 		c.categoryColor = categoryColor;
 		c.bdColor = "bd" + categoryColor;
 
 	});
-	
+
 	$scope.$on(c.data.broadcast_name + "Clear", function (event) {
 		c.data.searchSources = [];
 	});
@@ -64,14 +57,15 @@
 				showCategory = true;
 			}
 			$rootScope.$broadcast((c.data.broadcast_name + "openArticle"), jsonArticle, showCategory);
+			c.isLoading = true;
 			var modalID = "#" + c.data.articleModalID;
 			$(modalID).modal("show");
 		}
 		else if(table == "sc_cat_item"){
 			$rootScope.$broadcast('openSelectedCategoryItem', false, resultID);
 		}
-		else if(table == "sc_req_item"){
-
+		else if(table == "task"){
+			$window.location = "?id=globoservice_my_dashboard&item_id=" + resultID;
 		}
 		else if(table == "sc_category"){
 			$rootScope.$broadcast('openSelectedCategoryItem', resultID, false);
@@ -191,14 +185,39 @@
 	data.msgs = {};
 	data.msgs.seeAll = gs.getMessage("See all").toLowerCase();
 	data.msgs.seeLess = gs.getMessage("See less").toLowerCase();
-	
+	data.article_widget_options = {"broadcast_name": (data.broadcast_name + "openArticle")};
+	data.articleWidget = $sp.getWidget("gservice_knowledge_article_content", data.article_widget_options);
+	data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful_v2");
+
 	if(localInput){
 		if(localInput.action == "searchedItem"){
 			data.broadcast_name = localInput.broadcast_name;
 			data.searchSources = portalUtils.setSearchSources(localInput.searchSourceID, data.msgs.seeAll);
-			data.article_widget_options = {"broadcast_name": (data.broadcast_name + "openArticle")};
-			data.articleWidget = $sp.getWidget("gservice_knowledge_article_content", data.article_widget_options);
-			data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful");
+
+			var searchResults = localInput.searchResult;
+
+			if(searchResults.results.length > 0){
+				data.showArticles = true;
+				var results = searchResults.results;
+				for(i in results){
+					var jsonArticle = {"title": results[i].primary, 
+														 "id": results[i].sys_id,
+														 "description" : results[i].fields[0].display_value,
+														 "table" : results[i].table};
+					if(jsonArticle.description == '(empty)'){
+						jsonArticle.description = '';
+					}
+					var searchID = results[i].__search_source_id__;
+					for(var j in data.searchSources){
+						if(data.searchSources[j].id == searchID){
+							data.searchSources[j].results.push(jsonArticle);
+						}
+					}
+				}
+			}
+			else{
+				data.showArticles = false;
+			}
 		}
 	}
 
@@ -208,17 +227,17 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-27 14:21:58</sys_created_on>
         <sys_id>f609c53fdb185010fa11cf24149619a4</sys_id>
-        <sys_mod_count>227</sys_mod_count>
+        <sys_mod_count>295</sys_mod_count>
         <sys_name>GService Search Result</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f609c53fdb185010fa11cf24149619a4</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-28 12:19:20</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-20 14:14:23</sys_updated_on>
         <template><![CDATA[<div class="col-lg-12 col-md-12 col-sm-12">
   <div class="articles">
-    <div class="article" ng-if="c.showArticles" ng-repeat="searchSource in c.data.searchSources">
+    <div class="article" ng-if="c.showArticles" ng-repeat="searchSource in data.searchSources">
       <div ng-if="searchSource.results.length > 0">
         <div class="article_title">{{searchSource.name}} <span>({{searchSource.results.length}})</span></div>
         <div  ng-repeat="results in searchSource.results | limitTo: searchSource.resultLimit">

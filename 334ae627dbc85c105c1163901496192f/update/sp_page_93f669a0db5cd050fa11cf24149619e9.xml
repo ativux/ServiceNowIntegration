@@ -1,71 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_page">
     <sp_page action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <css>.container_checkout {
-  padding: 0;
-}
-.col-md-12 {
-  padding: 0;
-}</css>
+        <css/>
         <draft>false</draft>
         <dynamic_title_structure/>
-        <id>globoservice_sc_cart</id>
+        <id>globoservice_fonts</id>
         <internal>false</internal>
         <public>false</public>
         <roles/>
         <short_description/>
         <sys_class_name>sp_page</sys_class_name>
-        <sys_created_by>organize.henrique</sys_created_by>
-        <sys_created_on>2020-04-27 13:13:01</sys_created_on>
-        <sys_id>9959b07fdbd45010fa11cf24149619f4</sys_id>
-        <sys_mod_count>3</sys_mod_count>
-        <sys_name>globoservice_sc_cart</sys_name>
+        <sys_created_by>organize.vinicius.oliveira</sys_created_by>
+        <sys_created_on>2020-04-17 14:12:35</sys_created_on>
+        <sys_id>93f669a0db5cd050fa11cf24149619e9</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>globoservice_fonts</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
-        <sys_update_name>sp_page_9959b07fdbd45010fa11cf24149619f4</sys_update_name>
+        <sys_update_name>sp_page_93f669a0db5cd050fa11cf24149619e9</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-07-20 14:03:55</sys_updated_on>
-        <title>GService SC Cart</title>
+        <sys_updated_on>2020-07-20 14:03:43</sys_updated_on>
+        <title>GService Portal Fonts</title>
     </sp_page>
-    <sys_translated_text action="delete_multiple" query="documentkey=9959b07fdbd45010fa11cf24149619f4"/>
+    <sys_translated_text action="delete_multiple" query="documentkey=93f669a0db5cd050fa11cf24149619e9"/>
     <sys_translated_text action="INSERT_OR_UPDATE">
-        <documentkey>9959b07fdbd45010fa11cf24149619f4</documentkey>
+        <documentkey>93f669a0db5cd050fa11cf24149619e9</documentkey>
         <fieldname>dynamic_title_structure</fieldname>
         <language>pb</language>
         <sys_created_by>organize.jorge.garcia</sys_created_by>
-        <sys_created_on>2020-05-08 17:14:40</sys_created_on>
-        <sys_id>2c2ad657db6cd010fa11cf241496199d</sys_id>
+        <sys_created_on>2020-07-10 15:47:43</sys_created_on>
+        <sys_id>096262ebdbfd18105c116390149619c6</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-08 17:14:40</sys_updated_on>
+        <sys_updated_on>2020-07-10 15:47:43</sys_updated_on>
         <tablename>sp_page</tablename>
         <value/>
     </sys_translated_text>
     <sys_translated_text action="INSERT_OR_UPDATE">
-        <documentkey>9959b07fdbd45010fa11cf24149619f4</documentkey>
+        <documentkey>93f669a0db5cd050fa11cf24149619e9</documentkey>
         <fieldname>short_description</fieldname>
         <language>pb</language>
         <sys_created_by>organize.jorge.garcia</sys_created_by>
-        <sys_created_on>2020-05-08 17:14:40</sys_created_on>
-        <sys_id>ac2a9657db6cd010fa11cf24149619f7</sys_id>
+        <sys_created_on>2020-07-10 15:47:43</sys_created_on>
+        <sys_id>456262ebdbfd18105c116390149619c2</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-08 17:14:40</sys_updated_on>
+        <sys_updated_on>2020-07-10 15:47:43</sys_updated_on>
         <tablename>sp_page</tablename>
         <value/>
     </sys_translated_text>
     <sys_translated_text action="INSERT_OR_UPDATE">
-        <documentkey>9959b07fdbd45010fa11cf24149619f4</documentkey>
+        <documentkey>93f669a0db5cd050fa11cf24149619e9</documentkey>
         <fieldname>title</fieldname>
         <language>pb</language>
         <sys_created_by>organize.jorge.garcia</sys_created_by>
-        <sys_created_on>2020-05-08 17:14:40</sys_created_on>
-        <sys_id>682ad657db6cd010fa11cf241496199b</sys_id>
+        <sys_created_on>2020-07-10 15:47:43</sys_created_on>
+        <sys_id>456262ebdbfd18105c116390149619c4</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-08 17:14:40</sys_updated_on>
+        <sys_updated_on>2020-07-10 15:47:43</sys_updated_on>
         <tablename>sp_page</tablename>
-        <value>GService SC Cart</value>
+        <value>Portal Fonts</value>
     </sys_translated_text>
 </record_update>

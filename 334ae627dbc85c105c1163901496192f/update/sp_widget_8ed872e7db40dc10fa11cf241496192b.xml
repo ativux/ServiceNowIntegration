@@ -27,6 +27,14 @@
 		});
 	}
 
+	spUtil.recordWatch($scope, "wm_order", c.data.equipment_query, function(event) {
+		c.server.get({
+			action: "equipmentsCount"
+		}).then(function(response) {
+			c.data.equipmentsCount = response.data.equipmentsCount;
+		});
+	});
+
 	$scope.collapse = function() {
 		$rootScope.$emit('sp-navbar-collapse');
 	}
@@ -89,6 +97,7 @@
 			});
 		}
 	});
+
 	// Get list of record watchers
 	var record_watchers = [];
 	if ($scope.data.menu.items) {
@@ -134,6 +143,7 @@
   top: 10px;
   padding: 1px 6.5px !important;
   margin-left: -18px;
+  font-family: $text-bolder;
 }
 
 .navbar-nav span{
@@ -285,18 +295,32 @@
         <roles/>
         <script><![CDATA[(function(){
 	var localInput = input;
-	
+
 	data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
 	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
-	data.approverQuery = "state=requested^source_table=sc_req_item^approver=" + gs.getUserID();
+	data.equipment_query = gs.getProperty("gservice_equipments_query");
+	data.approverQuery = "state=requested^source_table=sc_req_item^ORsource_table=change_request^approver=" + gs.getUserID();
 	var portalUtils = new global.OCLPortalUtils();
-	
+	var equipmentsUtils = new global.OCLPortalEquipmentsUtil();
+
 	data.dashboardCount = portalUtils.setDashboardCount(data.taskQuery, data.incidentQuery, data.approverQuery);
-	
-	if(localInput && localInput.action == "dashboardCount"){
-		data.dashboardCount = portalUtils.setDashboardCount(localInput.taskQuery, localInput.incidentQuery, localInput.approverQuery);
+	data.equipmentsCount = equipmentsUtils.getEquipmentsCount();
+	if(localInput){
+		if(localInput.action == "dashboardCount"){
+			data.dashboardCount = portalUtils.setDashboardCount(localInput.taskQuery, localInput.incidentQuery, localInput.approverQuery);
+		}
+		else if(localInput.action == "equipmentsCount"){
+			data.equipmentsCount = equipmentsUtils.getEquipmentsCount();
+		}
 	}
-	
+
+	data.isManager = gs.getUser().isMemberOf('Gestor');
+	data.isAdmin = gs.getUser().hasRole('admin');
+	data.showEquipments = false;
+	if(data.isAdmin || gs.getUser().hasRole('wm_initiator') || gs.getUser().hasRole('wm_initiator_qualifier')){
+		data.showEquipments = true;
+	}
+
 	// build menus
 	var menu_id = $sp.getValue('sys_id'); // instance sys_id
 	var gr = new GlideRecord('sp_instance_menu');
@@ -308,7 +332,7 @@
 	data.showTours = (gs.getProperty('com.snc.guided_tours.sp.enable') === 'true') && data.isLoggedIn;
 
 	var catalogArr = ($sp.getCatalogs().value + "").split(",");
-	
+
 	catalogArr.forEach(function(catalog) {
 		data.showWishlist = data.showWishlist || new sn_sc.Catalog(catalog).isWishlistEnabled();
 	});
@@ -321,7 +345,7 @@
 			data.cartWidget = $sp.getWidget("sc-shopping-cart", {cartTemplate: "small_shopping_cart.html", auto_update_cart:options.auto_update_cart});
 	}
 
-	
+
 })();
 ]]></script>
         <servicenow>false</servicenow>
@@ -329,15 +353,15 @@
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 17:35:57</sys_created_on>
         <sys_id>8ed872e7db40dc10fa11cf241496192b</sys_id>
-        <sys_mod_count>181</sys_mod_count>
+        <sys_mod_count>218</sys_mod_count>
         <sys_name>GService Header Menu</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_8ed872e7db40dc10fa11cf241496192b</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-06-02 15:02:48</sys_updated_on>
-        <template><![CDATA[<ul class="nav navbar-nav" aria-label="TEST" role="menubar">
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-20 14:28:32</sys_updated_on>
+        <template><![CDATA[<ul class="nav navbar-nav" role="menubar">
   <div class="header-loader" ng-class="{'invisible': !loadingIndicator}">
     <div class="hidden-xs sp-loading-indicator la-sm">
       <div></div>
@@ -345,7 +369,7 @@
       <div></div>
     </div>
   </div>
-  
+
   <li ng-repeat="item in visibleItems" ng-class="{dropdown: item.items.length > 0, 'header-menu-item': true}" ng-include="'gserviceMenuTemplate'" role="presentation"></li>
   <!-- Wishlist menu -->
   <li ng-if="options.enable_wishlist && data.isLoggedIn && data.showWishlist" ng-show="!accessibilityEnabled" class="dropdown hidden-xs" role="presentation">
@@ -374,8 +398,28 @@
   <!-- Shopping cart stuff -->
   <!-- Original comentado para realização de testes -->
   <!--<li ng-if="::options.enable_cart && data.isLoggedIn" class="dropdown header-menu-item" ng-class="::{'visible-xs': !accessibilityEnabled}"  role="presentation">-->
+  <li class="header-menu-item" role="presentation" ng-if="data.showEquipments">
+    <a ng-href="?id=globoservice_equipments"
+       ng-click="collapse()"
+       title="${Manager s Area}"
+       role="menuitem">
+      <i class="" aria-hidden="true"></i>
+      <span ng-bind-html="'${GService Equipments}'" aria-hidden="true"></span>
+      <span ng-if="c.data.equipmentsCount > 0" aria-hidden="true" class="radio-cart">{{c.data.equipmentsCount}}</span>
+    </a>
+  </li>
+  <li class="header-menu-item" role="presentation" ng-if="data.isManager || data.isAdmin">
+    <a ng-href="?id=globoservice_manager"
+       ng-click="collapse()"
+       title="${Manager s Area}"
+       role="menuitem">
+      <i class="" aria-hidden="true"></i>
+      <span ng-bind-html="'${GService Manager}'" aria-hidden="true"></span>
+    </a>
+  </li>
+
   <li class="header-menu-item" role="presentation">
-    <a ng-href="?id=gservice_my_dashboard"
+    <a ng-href="?id=globoservice_my_dashboard"
        ng-click="collapse()"
        title="${GService My Dashboard}"
        role="menuitem">

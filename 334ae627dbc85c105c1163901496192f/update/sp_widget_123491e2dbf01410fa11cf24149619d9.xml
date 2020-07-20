@@ -246,7 +246,7 @@
 	//Function created for redirect users to main page and auto-fill the form with informations provided by cart items
 	c.duplicateItem = function(item) {
 		var mostReq_id = item.sys_id;
-		$location.search("id=gservice_index" + "&item_id=" + mostReq_id);
+		$location.search("id=globoservice_index" + "&item_id=" + mostReq_id);
 	}
 
 	c.orderBy = function(order, items){
@@ -630,15 +630,20 @@ tbody {
 
 /* PAGE 1 - My Requests */
 .content_my_requests {
+
   .buttons {
+    transition: .4s ease-in-out;
     position: relative;
 
+    /*
     &amp;:hover {
+
       .tooltip {
         visibility: visible;
         opacity: 1;
       }
     }
+    */
     .tooltip_right {
       top: calc(50% - 15px);
       left: 60px;
@@ -814,24 +819,24 @@ tbody {
 
 /* PAGE 3 - APPROVALS */
 .approval_content {
-  .approval_column_title{
+  .approval_column_title {
     h4 {
       margin: 4px 0 0 0 !important;
     }
-    .approval_number{
+    .approval_number {
       font-size: 16px;
     }
-    .approval_title{
+    .approval_title {
       font-family: $text-bold;
     }
-    .approval_more-details{
+    .approval_more-details {
       font-size: 12px;
       text-decoration: underline;
       color: $slate-gray;
       cursor: pointer;
     }
   }
-  .approval_column_requester{
+  .approval_column_requester {
     padding-left: 10px !important;
     .info-size{
       height: 20px;
@@ -841,23 +846,23 @@ tbody {
       cursor: pointer;
     }
   }
-  .approval_column_opened{
+  .approval_column_opened {
     padding-left: 20px !important;
 
   }
-  .approval_column_forecast{
+  .approval_column_forecast {
     padding-left: 12px !important;
 
   }
-  .approvals-buttons{
-    .submit-button{
+  .approvals-buttons {
+    .submit-button {
       margin-left: 20px;
     }
-    .cancel-button{
+    .cancel-button {
       margin-left: 15%;;
     }
   }
-  .modal-body{
+  .modal-body {
     overflow: hidden !important;
     border: 20px solid white;
     padding-left: 50px !important;
@@ -865,22 +870,22 @@ tbody {
       padding: 50px 0 0 50px !important;
       margin-right: -20px;
     }
-    button{
+    button {
       text-align: right;
       font-size: 42px;
     }
-    .justify-text{
+    .justify-text {
       color: $deep-sky-blue;
       font-size: 36px;
       padding-bottom: 15px;
       margin-bottom: 5px;
     }
-    .no-text-answer{
+    .no-text-answer {
       font-size: 16px;
       color: lightcoral;
       padding: 2px;
     }
-    .form-group{
+    .form-group {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -895,7 +900,7 @@ tbody {
         border: solid 3px $deep-sky-blue;
       }
     }
-    .resize-img{
+    .resize-img {
       height: 70px;
       margin-top: 25px;
       margin-left: -110%;
@@ -961,7 +966,6 @@ tbody {
   }
 }
 
-
 .footer_checkout {
 
   .continue_shopping {
@@ -1020,6 +1024,20 @@ tbody {
 
 .content_conversation {
   width: 100%;
+}
+
+.buttons_list {
+  &amp;:hover {
+    opacity: .5;
+    /*
+    transition: .2s ease-in-out;
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    */
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -1287,14 +1305,14 @@ tbody {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-18 14:33:21</sys_created_on>
         <sys_id>123491e2dbf01410fa11cf24149619d9</sys_id>
-        <sys_mod_count>498</sys_mod_count>
+        <sys_mod_count>512</sys_mod_count>
         <sys_name>GService My Dashboard Content</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_123491e2dbf01410fa11cf24149619d9</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-06-04 12:12:29</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-20 14:14:49</sys_updated_on>
         <template><![CDATA[<div ng-include="options.table_template"></div>]]></template>
     </sp_widget>
 </record_update>
