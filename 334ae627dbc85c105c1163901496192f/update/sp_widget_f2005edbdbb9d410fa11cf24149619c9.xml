@@ -1,0 +1,1279 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope, $timeout, spUtil, $location, $rootScope) {
+	var c = this;
+	c.requestComment = '';
+	c.requestItem = '';
+	c.needComment = false;
+	c.needReason = false;
+	c.modalMessage = '';
+	c.isLoading = true;
+	c.reopeningReason = false;
+	c.focus = true;
+
+	$scope.loadingIndicator = $rootScope.loadingIndicator;
+	//Show widget after loaded
+	$scope.$on('sp_loading_indicator', function(e, value) {
+		if($scope.loadingIndicator && !value){
+			c.isLoading = false;
+		}
+		$scope.loadingIndicator = value;
+	});
+
+	$scope.$on('applyEquipmentFilter', function(event, filters) {
+		c.data.filters = filters;
+		c.isLoading = true;
+		c.data.action = "applyFilter";
+		c.server.update().then(function(response){
+			c.verifyEmptySearch();
+		});
+	});
+
+	c.verifyEmptySearch = function(){
+		c.data.showFilterClean = true;
+		if(c.data.orders.length > 0){
+			c.data.showFilterClean = false;
+		}
+	}
+
+	c.accept = function(index){
+		c.data.acceptedOrder = c.data.orders[index];
+		if(c.data.acceptedOrder.assigned_to.value == false){
+			spUtil.addErrorMessage(c.data.msgs.needAssigned);
+		}
+		else{
+			c.data.action = "changeItemState";
+			c.server.update().then(function(response){
+				c.verifyEmptySearch();
+			});
+		}
+	}
+
+	c.showDetails = function(index){
+		var showDetails = false;
+		for(var i in c.data.orders){
+			if(i == index){
+				c.data.orders[index].showDetails = !c.data.orders[index].showDetails ;
+				showDetails = c.data.orders[index].showDetails;
+			}
+			else
+				c.data.orders[i].showDetails = false;
+		}
+		if(showDetails){
+			c.server.get({
+				action: 'getTicketConversationWidget',
+				order_id: c.data.orders[index].sys_id
+			}).then(function(response) {
+				c.data.ticketConversationWidget = response.data.ticketConversationWidget;
+			});
+		}
+
+	}
+
+	c.orderBy = function(order, items){
+		c.data.action = "orderBy";
+		c.data.order = order;
+		c.server.update();
+	}
+
+	c.statusColor = function(status){
+		var statusClass = '';
+		if (status == 2){
+			statusClass = 'status_flow_empty';
+		} else if (status == true) {
+			statusClass = 'status_flow_active';
+		} else if (!status) {
+			statusClass = 'status_flow_completed';
+		}
+		return statusClass;
+	}
+
+	c.previousPage = function(){
+		c.data.actualPage--;
+		c.updatePageCount();
+	}
+	c.nextPage = function(){
+		c.data.actualPage++;
+		c.updatePageCount();
+	}
+
+	c.updatePageCount = function(){
+		c.data.window_start = c.data.actualPage * c.data.items_per_page;
+		c.data.window_end = c.data.window_start + c.data.items_per_page;
+		c.data.action = "changePage";
+		c.server.update();
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.transform_title{
+  text-transform: uppercase;
+}
+
+.content_request {
+  margin-bottom: 10px;
+}
+
+.cart-mobile {
+  border: 0;
+  box-shadow: none;
+
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    a {
+      text-align: right;
+      display: block !important;
+    }
+  }
+  .cart-item-mobile-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px 20px 10px;
+
+    .item-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .item-image {
+      margin: 0;
+    }
+    a {
+      float: none;
+      text-align: center;
+    }
+    select {
+      margin-top: 10px;
+      padding: 0px 5px;
+      text-align-last: center;
+    }
+  }  
+}
+
+td {
+  vertical-align: middle !important;
+}
+
+.a-disabled {
+  cursor: default;
+  color: $btn-link-disabled-color;
+}
+
+.media-body {
+  .btn-link {
+    padding-left: 0;
+    padding-right: 0;
+    color: $primary;
+
+    &amp;:hover {
+      color: darken($primary, 10%);
+    }
+
+    &amp;:focus {
+      color: darken($primary, 10%);
+    }
+  }
+}
+
+.btn-remove {
+  font-size: 18px !important;
+}
+
+.action-btn {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+
+  &amp;.btn-link {
+    color: $primary;
+  }
+}
+
+.list-group {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.list-group-item.ng-enter-active {
+  background-color: #fff;
+}
+
+.empty-cart {
+  font-style: italic;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 7px;
+}
+
+.view-carts-link {
+  text-align: center;
+  display: block;
+}
+
+.order-details-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 5px 10px 10px 10px;
+
+  .order-details {
+    padding: 5px;
+
+    textarea {
+      resize: none;
+      flex-basis: 100%;
+      flex-shrink: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .requested-for-details {
+    flex: 1 0 auto;
+    max-width: 100%;
+  }
+  .special-instructions-details {
+    textarea {
+      height: calc(100% - 25px);
+    }
+  }
+}
+
+.item-image {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.empty-state-content {
+  margin-top: 30px;
+
+  &amp;.small-cart {
+    margin-top: 0px;
+    padding: 10px 20px;
+  }
+
+  .fa-shopping-cart {
+    color: $gray-light;
+    font-size: 80px;
+    display: block;
+    text-align: center;
+
+    &amp;.small-cart {
+      font-size: 40px;
+    }
+  }
+
+  .h3 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  .h4 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    max-width: 100%;
+    margin-bottom: 35px;
+  }
+}
+
+.large-checkout {
+  display: inline-block;
+  float: none !important;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.item-row:hover .btn-clear {
+  background-color: #f5f5f5;
+}
+
+.sc-btn {
+  margin-bottom: 10px;
+}
+.sc-btn-group {
+  clear: right;
+}
+
+.sc-remove-btn {
+  &amp;:hover {
+    background-color: $danger;
+    color: #fff;
+    border-color: darken($danger, 10%);
+  }
+}
+
+.btn-group-justified &gt; .btn-group {
+  padding: 0 5px;
+
+  .btn {
+    border-radius: 4px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.cart-table {
+  th {
+    position: sticky;
+    -webkit-position: sticky;
+    top: -1px;
+    z-index: 10;
+    background-color: $panel-bg;
+    box-shadow: 0px 1px 0px $panel-inner-border;
+  }
+}
+
+@media only screen and (max-width : 992px) {
+  .sc-btn, .sc-btn-group {
+    width: 100%;
+  }
+  .item-image {
+    max-width: 70px;
+  }
+}
+
+//All pages
+.without_notification {
+  padding: 30px 0;
+  font-size: 30px;
+}
+
+.content_modal_requests {
+  .modal-body{
+    overflow: auto !important;
+    border: 20px solid white;
+    padding-left: 50px !important;
+    .wrapper-xl {
+      padding: 50px 0 0 50px !important;
+      margin-right: -20px;
+    }
+    button{
+      text-align: right;
+      font-size: 42px;
+    }
+    .justify-text{
+      color: $deep-sky-blue;
+      font-size: 36px;
+      padding-bottom: 15px;
+      margin-bottom: 5px;
+    }
+    .no-text-answer{
+      font-size: 16px;
+      color: lightcoral;
+      padding: 2px;
+    }
+    .form-group{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      textarea{
+        margin-top: 5px;
+        margin-right: 10% !important;
+        resize: none;
+        overflow: hidden;
+        height: 140px;
+        width: 90%;
+        overflow-wrap: break-word;
+        border: solid 3px $deep-sky-blue;
+      }
+    }
+    .resize-img{
+      height: 70px;
+      margin-top: 25px;
+      margin-left: -110%;
+    }
+  }
+}
+
+/* Custom Checkout */
+.panel {
+  padding: 30px 100px;
+  box-shadow: 0 0 0 0;
+  -webkit-box-shadow: 0 0 0 0;
+}
+
+.survey_accept {
+  .panel {
+    padding: 0 !important;
+  }
+}
+
+/* Table */
+.h3 {
+  font-size: 28px;
+  color: $dodger-blue;
+  margin-top: 20px !important;
+  margin-bottom: 30px;
+}
+.b-b {
+  border-bottom: 2px solid $slate-gray;
+}
+.b-t {
+  border: 0;
+}
+thead {
+  color: $slate-gray;
+  font-family: globorounded_bk;
+  font-size: 13px;
+}
+.table &gt; thead &gt; tr &gt; th {
+  border: 0;
+  vertical-align: middle;
+}
+.table-hover &gt; tbody &gt; tr:hover {
+  background-color: white;
+}
+tbody {
+  img {
+    width: 50px;
+    height: 50px;
+  }
+
+  td:nth-child(1) {
+    width: 20%;
+    padding: 20px;
+  }
+
+  td:nth-child(2) {
+    width: 20%;
+    padding: 20px;
+  }
+
+  td:nth-child(3) {
+    width: 25%;
+  }
+
+  td:nth-child(4) {
+    width: 5%;
+    padding: 20px;
+  }
+
+  td:nth-child(5) {
+    width: 30%;
+    padding: 20px;
+
+    .request_button {
+      margin-right: 50px;
+    }
+  }
+
+}
+
+/* PAGE 1 - My Requests */
+.content_my_requests {
+  .buttons {
+    position: relative;
+
+    &amp;:hover {
+      .tooltip {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    .tooltip_right {
+      top: calc(50% - 15px);
+      left: 60px;
+    }
+    .tooltip_bottom {
+      bottom: -41px;
+      left: -2px;
+    }
+    .arrow_bottom {
+      position: absolute !important;
+      top: 27px !important;
+    }
+  }
+}
+.center-loading {
+  position: relative;
+  left: 50%;
+  .sp-loading-indicator{
+    color: $deep-sky-blue !important;
+  }
+}
+
+.filter-padding{
+  padding: 10px 0 !important;
+}
+
+.thead_myrequests {
+  border-top: 2px solid $slate-gray;
+}
+.column_product {
+  .number_text {
+    text-transform: uppercase;
+  }
+  .item_text {
+    font-family: 'globorounded_bd';
+    font-size: 18px;
+    line-height: 1;
+  }
+  .follow_up_properties{
+    font-size: 10px;
+    font-weight: bold;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: $deep-sky-blue;
+  }
+  .more_detail {
+    text-decoration: underline;
+    text-transform: lowercase;
+    font-size: 12px;
+  }
+}
+.column_status {
+  .service_title {
+    text-transform: uppercase;
+    font-family: 'globorounded_bd';
+    font-size: 12px;
+  }
+  .state_orange {
+    color: $coral !important;
+  }
+  .state_blue {
+    color: $deep-sky-blue;
+  }
+}
+.column_opened {
+  .item_opened {
+    font-size: 12px;
+  }
+}
+.column_sla {
+  .sla_description {
+    font-size: 12px;
+  }
+  .assigned_to_filter{
+    .select2-container .select2-choice{
+      border: 0;
+      text-align: center;
+      border-bottom: 2px solid $slate-gray;
+    }
+    .select2-container .select2-choice .select2-arrow{
+      border-left: 0;
+    }
+    .select2-container .select2-choice .select2-arrow b {
+      background-size: 15px !important;
+      position: absolute;
+      top: 10px;
+      background: url(gservice_column_dashboard_arrow.png) no-repeat 6px 4px;
+    }
+    select {
+      border: 0;
+      width: 100%;
+      border-bottom: 2px solid $deep-sky-blue;
+      padding: 5px 0;
+    }
+  }
+}
+.column_buttons {
+  display: flex;
+  border: 0;
+
+  img {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px !important;
+  }
+  img:last-child {
+    margin-right: 0 !important;
+  }
+}
+.process_flow {
+  position: relative;
+
+  .process_flow_title {
+    text-transform: uppercase;
+    font-family: 'globorounded_bk';
+    margin-bottom: 20px;
+  }
+  .line_flow {
+    background-color: $slate-gray;
+    width: 2px;
+    height: 70%;
+    left: 29px;
+    z-index: 1;
+    position: absolute;
+  } 
+  .items_flow {
+    text-transform: uppercase;
+    font-family: 'globorounded_bk';
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    position: inherit;
+
+    .status_flow {
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      border-radius: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+    }
+    .status_flow_completed {
+      color: white;
+      background-color: $slate-gray;
+    }
+    .status_flow_active {
+      color: white;
+      background-color: $deep-sky-blue;
+    }
+    .status_flow_empty {
+      color: $slate-gray;
+      background-color: white;
+      border: 2px solid $slate-gray;
+    }
+    .status_active {
+      color: $deep-sky-blue;
+    }
+  }
+}
+
+/* PAGE 2 - Notifications */
+.content_notification {
+  .header_message {
+    padding: 20px 0;
+    font-family: 'globorounded_bd';
+    font-size: 18px;
+    line-height: 1;
+    border-bottom: 2px solid $deep-sky-blue;
+  }
+  .widget_notifications {
+    overflow: auto;
+
+    .border-notification {
+      padding: 20px 0;
+      border-bottom: 2px solid $slate-gray;
+    }
+  }
+
+  .close {
+    font-size: 36px;
+    font-family: 'globorounded_lt';
+    margin-right: 20px;
+    margin-top: 15px;
+  }
+  .modal-body {
+    padding: 60px 100px;
+
+    .modal-title {
+      color: $deep-sky-blue;
+      font-size: 30px;
+    }
+    .modal-description {
+      font-size: 24px;
+      font-family: 'globorounded_bd';
+    }
+  }
+  .form-control {
+    width: 329px !important;
+  }
+}
+
+/* PAGE 3 - APPROVALS */
+.approval_content {
+  .approval_column_title{
+    h4 {
+      margin: 4px 0 0 0 !important;
+    }
+    .approval_number{
+      font-size: 16px;
+    }
+    .approval_title{
+      font-family: $text-bold;
+    }
+    .approval_more-details{
+      font-size: 12px;
+      text-decoration: underline;
+      color: $slate-gray;
+      cursor: pointer;
+    }
+  }
+  .approval_column_requester{
+    padding-left: 10px !important;
+    .info-size{
+      height: 20px;
+      width: 20px;
+      margin-left: 10px;
+      margin-top: -5px;
+      cursor: pointer;
+    }
+  }
+  .approval_column_opened{
+    padding-left: 20px !important;
+
+  }
+  .approval_column_forecast{
+    padding-left: 12px !important;
+
+  }
+  .approvals-buttons{
+    .submit-button{
+      margin-left: 20px;
+    }
+    .cancel-button{
+      margin-left: 15%;;
+    }
+  }
+  .modal-body{
+    overflow: hidden !important;
+    border: 20px solid white;
+    padding-left: 50px !important;
+    .wrapper-xl {
+      padding: 50px 0 0 50px !important;
+      margin-right: -20px;
+    }
+    button{
+      text-align: right;
+      font-size: 42px;
+    }
+    .justify-text{
+      color: $deep-sky-blue;
+      font-size: 36px;
+      padding-bottom: 15px;
+      margin-bottom: 5px;
+    }
+    .no-text-answer{
+      font-size: 16px;
+      color: lightcoral;
+      padding: 2px;
+    }
+    .form-group{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      textarea{
+        margin-top: 5px;
+        margin-right: 10% !important;
+        resize: none;
+        overflow: hidden;
+        height: 140px;
+        width: 90%;
+        overflow-wrap: break-word;
+        border: solid 3px $deep-sky-blue;
+      }
+    }
+    .resize-img{
+      height: 70px;
+      margin-top: 25px;
+      margin-left: -110%;
+    }
+  }
+}
+
+/* PAGE 4 */
+.assets_content {
+  .column_name {
+    .asset_name {
+      font-size: 18px;
+      font-family: 'globorounded_bd';
+    }
+  }
+  .service_title {
+    font-size: 12px;
+    color: $slate-gray;
+  }
+}
+
+/* PAGE 5 */
+.page_description {
+  border-bottom: 2px solid $slate-gray;
+  padding: 20px;
+  font-family: 'globorounded_bd';
+  font-size: 16px;
+  line-height: 1;
+}
+.column_category {
+  text-align: center;
+
+  h4 {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-family: globorounded_bk;
+    color: $dodger-blue;
+    width: 130px;
+    margin: 0 auto;
+    margin-top: 5px;
+  }
+}
+.column_service {
+  color: $dodger-blue;
+
+  .service_title {
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  .service_description {
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+.column_description {
+  .description {
+    font-size: 12px;
+  }
+}
+.column_sla {
+  .sla_text {
+    font-size: 12px;
+  }
+}
+
+.content_pagination {
+  .pag_arrow_left {
+    img {
+      transform: rotate(90deg);
+    }
+  }
+  .pag_arrow_right {
+    img {
+      margin-left: 25px;
+      transform: rotate(-90deg);
+    }
+  }
+  .pag_arrow_left, .pag_arrow_right {
+    img {
+      height: 14px;
+      margin-top: -4px;
+    }
+  }
+  .pag_text {
+    font-family: 'globorounded_bd';
+    text-transform: uppercase;
+    margin-left: 25px;
+  }
+}
+
+
+.footer_checkout {
+
+  .continue_shopping {
+    color: $slate-gray;
+    font-size: 10px;
+    font-weight: bold;
+    text-decoration: underline;
+    text-transform: uppercase;
+    padding: 20px 0 !important;
+  }
+
+  .submit_button {
+    .submit_button_content {
+      display: flex;
+      align-items: center;
+
+      .submit_img {
+        width: 50px;
+        height: 50px;
+        margin-right: 5px;
+      }
+      .submit_title {
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1;
+        color: $dodger-blue;
+        width: 90px;
+      }
+    }
+  }
+}
+
+.empty_content {
+  background-color: white;
+  padding: 30px 100px;
+  padding-bottom: 330px;
+  font-size: 30px;
+
+  .empty_title {
+    color: $dodger-blue;
+    margin-bottom: 30px;
+  }
+}
+
+.column_content {
+  img {
+    height: 10px;
+    position: relative;
+    top: -2px;
+    right: -2px;
+  }
+  .invert-arrow{
+    transform: rotateX(180deg);
+  }
+}
+
+.content_conversation {
+  width: 100%;
+}
+
+
+
+.activity_content {
+  overflow: scroll !important;
+  border-bottom: 1px solid $light-steel-blue;
+}
+
+
+/* Custom Select box */
+.custom_select_box {
+  position: relative;
+  text-align: center;
+  font-family: 'globorounded_bd';
+
+
+  img {
+    width: 16px;
+    height: 10px;
+    position: absolute;
+    top: 11px;
+    right: 8px;
+  }
+
+  .item {
+    background-color: white;
+    padding: 5px 10px;
+    text-transform: uppercase;
+
+    &amp;:hover {
+      color: white;
+      background-color: $slate-gray;
+    }
+  }
+  .selected_item {
+    padding: 5px 25px;
+    border-bottom: 2px solid $slate-gray;
+    text-transform: uppercase;
+
+    img {
+      top: calc(50% - 5px);
+    }
+  }
+
+  .select_content {
+    position: absolute;
+    top: 28px;
+    z-index: 2;
+    width: 100%;
+    box-shadow: 0 2px 5px $light-steel-blue;
+    margin-left: 0 !important;
+
+    .dropdown-style {
+      input {
+        width: 100%;
+        border-radius: 0;
+        border: 0;
+        border: 1px solid $slate-gray;
+        text-align: center;
+        text-transform: uppercase;
+        padding: 5px;
+      }
+    }
+    .content_items {
+      max-height: 200px;
+      overflow: auto;
+    }
+  }
+
+  .select_close {
+    opacity: 0;
+  }
+  .select_open {
+    opacity: 1;
+  }
+}
+
+input:focus::placeholder{
+  color: transparent;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_equipment_list</id>
+        <internal>false</internal>
+        <link/>
+        <name>GService Equipment List</name>
+        <option_schema>[{"hint":"Selects the columns to show on the table","name":"table","section":"Presentation","label":"Table","type":"string"},{"name":"table_template","section":"Behavior","label":"Table Template","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
+	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
+	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+	var equipmentsUtils = new global.OCLPortalEquipmentsUtil();
+	data.requestsID = '';
+	data.showEmptyMessage = false;
+
+	data.show_survey = false;
+
+	data.msgs = {};
+	data.msgs.needAssigned = gs.getMessage("Necessário selecionar um responsável antes de aceitar movimentação.");
+
+	data.user_query = gs.getProperty("gservice_order_user_query");
+
+	data.statusFlow = [];
+	var statusFlow = gs.getProperty("gservice_list_filters_status").split("|");
+	for(var i in statusFlow){
+		statusFlow[i].number = i + 1;
+		statusFlow[i].selected = false;
+		data.statusFlow.push(JSON.parse(statusFlow[i]));
+	}
+
+	//Used to get the current user sys_id
+	var userID = gs.getUser().getID();
+	data.user_id = userID;
+	//Get the columns (from property) to show upside the requests
+	data.columns = [];
+
+	if(!localInput){
+		data.equipmentFilter_widget = $sp.getWidget('gservice_equipment_filter');
+		data.filters = {};
+		data.filters.locationFilter = equipmentsUtils.getLocationFilter();
+		data.filters.areaFilter = equipmentsUtils.getAreaFilter();
+		data.orders = [];
+		prepareDefaultList();
+		data.showEmptyMessage = true;
+	}
+	else{
+		switch(localInput.action){
+			case "applyFilter":
+				preparePages();
+				data.filters = localInput.filters;
+				prepareDefaultList();
+				break;
+
+			case "changeItemState":
+				equipmentsUtils.acceptOrder(localInput.acceptedOrder);
+				preparePages();
+				data.items_per_page = localInput.items_per_page;
+				data.actualPage = localInput.actualPage;
+				data.window_start = localInput.window_start;
+				data.window_end = localInput.window_end;
+				data.query = localInput.query;
+				data.columns = localInput.columns;
+				data.order = localInput.order;
+				data.direction = localInput.direction;
+				data.orders = equipmentsUtils.getOrders(data.query, data.window_start, data.window_end, data.order, data.direction);
+				prepareCount();
+				break;
+			case "getTicketConversationWidget":
+				var gservice_ticket_conversation_options = {table : "wm_order",
+																										sys_id : localInput.order_id,
+																										item_status : "",
+																										hide_new_comments : true};
+				data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
+				break;
+			case "orderBy":
+				preparePages();
+				data.order = localInput.order;
+				data.columns = localInput.columns;
+				prepareOrderBy();
+
+				data.query = localInput.query;
+				data.orders = equipmentsUtils.getOrders(data.query, data.window_start, data.window_end, data.order, data.direction);
+				prepareCount();
+				break;
+			case "changePage":
+				data.items_per_page = localInput.items_per_page;
+				data.actualPage = localInput.actualPage;
+				data.window_start = localInput.window_start;
+				data.window_end = localInput.window_end;
+				data.query = localInput.query;
+				data.columns = localInput.columns;
+				data.order = localInput.order;
+				data.direction = localInput.direction;
+				data.orders = equipmentsUtils.getOrders(data.query, data.window_start, data.window_end, data.order, data.direction);
+				prepareCount();
+				break;
+		}
+	}
+
+	function prepareDefaultList(){
+		preparePages();
+		prepareColumns();
+
+		data.query = equipmentsUtils.mountQuery(data.filters.locationFilter, data.filters.areaFilter);
+		data.orders = equipmentsUtils.getOrders(data.query, data.window_start, data.window_end);
+		if(data.orders.length == 0){
+			data.showEmptyMessage = true;
+		}
+		prepareCount();
+	}
+
+	function preparePages(){
+		data.items_per_page = 6;
+		data.actualPage = 0;
+
+		data.window_start = 0;
+		data.window_end = 6;
+	}
+
+	function prepareColumns(){
+		//You need to select the columns name on the property
+		//Using checkout as a test, but it`ll change to a dinamic way when you call the widget you send the option
+		var columns_property = gs.getProperty("gservice_equipments_columns");
+
+		var columns = JSON.parse(columns_property);
+
+		data.columns = columns;
+		for(var i in columns){
+			data.columns[i].name = gs.getMessage(columns[i].name);
+		}
+	}
+
+	function prepareOrderBy(){
+		for(var i in data.columns){
+			if(data.order == data.columns[i].order){
+				data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
+				data.direction = data.columns[i].direction;
+			}
+			else{
+				data.columns[i].direction = false;
+			}
+		}
+	}
+
+	function prepareCount(){
+		data.actualPageCount = data.actualPage + 1;
+		data.actualItemsCount = data.items_per_page * data.actualPageCount;
+		data.requestsID = 'sys_idIN';
+		data.totalItems = equipmentsUtils.getTotalOrders(data.query);
+		data.actualItemsCount = data.items_per_page * data.actualPageCount;
+		if(data.actualItemsCount > data.totalItems){
+			data.actualItemsCount = data.totalItems;
+		}
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-09 19:49:04</sys_created_on>
+        <sys_id>f2005edbdbb9d410fa11cf24149619c9</sys_id>
+        <sys_mod_count>376</sys_mod_count>
+        <sys_name>GService Equipment List</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_f2005edbdbb9d410fa11cf24149619c9</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-20 12:11:08</sys_updated_on>
+        <template><![CDATA[<div class="content_request">
+  <div class="col-md-12 filter-padding">
+    <sp-widget widget="data.equipmentFilter_widget"></sp-widget>
+  </div>
+
+  <div ng-if="data.showFilterClean" class="without_notification">
+    ${Ops! Não encontramos resultados para essa busca.}
+  </div>
+
+  <div ng-if="!data.showFilterClean" class="content_my_requests">
+    <div>
+      <table class="table table-hover b-t table-condensed cart-table">
+
+        <div class="center-loading">
+          <div class="col-md-12" ng-show="c.isLoading">
+            <div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+
+        <thead ng-show="!c.isLoading" class="thead_myrequests" id="list-columns">
+          <tr>
+            <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
+              <div class="transform_title" ng-click="c.orderBy(column.order, data.requests)">
+                {{column.name}}
+                <span ng-if="column.order">
+                  <span ng-if="!column.direction"></span>
+                  <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
+                </span>
+              </div>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody id="items-content" ng-show="!c.isLoading" ng-repeat="order in data.orders">
+          <!-- Requests Init -->
+          <tr class="item-row b-b">
+            <td data-th="Product" class="column_product">
+              <div>
+                <div>
+                  <!-- Necessário realizar query para buscar a imagem da categoria e categoria do parent-->
+                  <div class="number_text">#{{order.number}}</div>
+                  <div class="item_text">{{order.description}}</div>
+                  <!--<div class="more_detail" ng-click="c.showDetails($index)">${Ver histórico}</div>-->
+                </div>
+              </div>
+            </td>
+            <td class="column_status">
+              <div class="row">
+                <div>
+                  <div class="service_title {{order.colorClass}}">{{order.state}}</div>
+                </div>
+              </div>
+            </td>
+            <td class="column_opened">
+              <div class="item_opened">{{order.ci}}</div>
+            </td>
+            <td class="column_sla">
+              <div class="assigned_to_filter">
+                <sn-record-picker field="order.assigned_to" table="'sys_user'" display-field="'name'" value-field="'sys_id'" default-query="data.user_query" search-fields="'name'" page-size="50"></sn-record-picker>
+              </div>
+            </td>
+            <td class="column_buttons">
+              <div class="buttons" ng-click="c.accept($index)">
+                <img src="gservice_dashboard_confirm.png"/>
+                <span class="tooltip tooltip_bottom">
+                  <div class="tooltip_arrow arrow_top"></div>
+                  <div class="tooltip_text">${Aceitar}</div>
+                </span>
+              </div>
+            </td>
+          </tr>
+
+          <!--<tr>
+            <td ng-if="order.showDetails" class="content_conversation" colspan='5'>
+              <div class="col-md-7">
+                <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
+              </div>
+            </td>
+          </tr>-->
+        </tbody>
+      </table>
+
+      <div class="content_pagination">
+        <span class="pag_arrow_left" ng-click="c.previousPage()" ng-if="data.actualPage > 0"><img src="gservice_column_dashboard_arrow.png"/></span>
+        <span class="pag_arrow_right" ng-click="c.nextPage()" ng-if="data.actualItemsCount < data.totalItems"><img src="gservice_column_dashboard_arrow.png"/></span>
+        <span class="pag_text">Página {{data.actualPageCount}} - {{data.actualItemsCount}} de {{data.totalItems}} RESULTADOS</span>
+      </div>
+    </div>
+  </div>
+
+  <now-message key="Done" value="${Done}"/>
+]]></template>
+    </sp_widget>
+</record_update>
