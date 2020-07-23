@@ -668,19 +668,19 @@ nav {
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 18:00:53</sys_created_on>
         <sys_id>578e7263db80dc10fa11cf24149619e7</sys_id>
-        <sys_mod_count>758</sys_mod_count>
+        <sys_mod_count>759</sys_mod_count>
         <sys_name>GService Stock Header</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_header_footer_578e7263db80dc10fa11cf24149619e7</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-07-20 14:27:55</sys_updated_on>
+        <sys_updated_on>2020-07-22 18:08:33</sys_updated_on>
         <template><![CDATA[<div class="content">
 
   <!-- SIDE BAR -->
   <div class="icon-bar">   
-    <div ng-click="c.goHome()"><img src="GloboService Index.png"></div>
+    <div ng-click="c.goHome()"><img src="GloboService_Index.png"></div>
     <div ng-click="c.openDropDown(2)"><img src="GService_StyleGuide_V1_AR_ERRO.png"></div>
     <div ng-click="c.openDropDown(3)"><img src="GService_StyleGuide_V1_AR_SERVICO.png"></div>
     <div ng-click="c.doYourself()"><img src="GService_StyleGuide_V1_AR_AUTO.png"></div>
