@@ -1,0 +1,936 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $sce, $location, $rootScope, $timeout, spModal, $window) {
+	var c = this;
+	c.isLoading = true;
+	c.messageClicked = false;
+	c.showRelated = false;
+	c.submited = false;
+	c.itemInfo = false;
+
+	$('#catalogQuestionModal').on('hide.bs.modal', function () {
+		c.messageClicked = false;
+		c.submited = false;
+		c.itemInfo = false;
+	});
+
+	$scope.$on('sp_loading_indicator', function(e, value) {
+		if($scope.loadingIndicator && !value){
+				c.isLoading = false;
+		}
+		$scope.loadingIndicator = value;
+	});
+
+	$scope.$on("submitModalItem", function(event){
+		c.submited = true;
+	});
+
+	$scope.$on("sendModalItem", function(event, number, name, itemID){
+		c.name = name;
+		c.number = number;
+		c.itemID = itemID;
+		c.itemInfo = true;
+	});
+
+	$scope.$on("categoriesKBContent", function(event, category){
+		c.data.category = [];
+		c.isLoading = true;
+		c.data.action = "showCategory";
+		c.data.category = category;
+		c.server.update().then(function(response){
+			c.data.showWidget = true;
+			$timeout(function() {
+				scrollTo("widgetKBcategory");
+			});
+			$rootScope.$broadcast("getSecCategory", c.data.category.secondCategories);
+			$rootScope.$broadcast("categorySelectedMargin");
+			c.clearSelectedKBs();
+		});
+	});
+
+	$scope.$on("getSearchKB", function(event, result, searchSourceID, category_id){
+		c.data.kb_categories = result.results[0].search;
+	});
+
+	$scope.$on("clearAllBeforeSearch", function(event){
+		c.clearSelectedKBs();
+	});
+
+	$scope.$on("getSearchKBClear", function(event, result, searchSourceID, category_id){
+		c.data.kb_categories = [];
+		c.data.thirdCategories = [];
+		c.data.breadcrumb.second = [];
+		c.data.mostArticles = [];
+		for(var i in c.data.category.secondCategories){
+			c.data.category.secondCategories[i].selected = false;
+		}
+	});
+
+	c.selectedSecondCategory = function(secondCategoryID){
+		var secondCategories = c.data.category.secondCategories;
+		var selectedSecondCategory;
+		for(var i in secondCategories){
+			if(secondCategories[i].sys_id == secondCategoryID){
+				selectedSecondCategory = secondCategories[i];
+				c.data.category.secondCategories[i].selected = true;
+				c.data.kb_categories = secondCategories[i].kbCategories;
+				c.data.thirdCategories = secondCategories[i].thirdCat;
+				c.data.breadcrumb.second = secondCategories[i].title;
+			}
+			else
+				c.data.category.secondCategories[i].selected = false;
+		}
+		if(c.data.breadcrumb.third)
+			c.data.breadcrumb.third = "";
+		$rootScope.$broadcast("changeSelectedCat", secondCategoryID);
+		c.server.get({
+			action : "openMostArticles",
+			selectedCategory : selectedSecondCategory
+		}).then(function(response){
+			c.data.mostArticles = response.data.mostArticles;
+			prepareMostArticles();
+		});
+		if(c.data.thirdCategories){
+			for(var i in c.data.thirdCategories){
+				c.data.thirdCategories[i].selected = false;
+			}
+		}
+		c.clearSelectedKBs();
+	}
+
+	c.selectedThirdCategory = function(thirdCategoryID){
+		var selectedThirdCategory;
+		for(i in c.data.thirdCategories){
+			if(c.data.thirdCategories[i].sys_id == thirdCategoryID){
+				selectedThirdCategory = c.data.thirdCategories[i]
+				c.data.thirdCategories[i].selected = true;
+				c.data.kb_categories = c.data.thirdCategories[i].kbCategories;
+				c.data.breadcrumb.third = c.data.thirdCategories[i].title;
+			}
+			else
+				c.data.thirdCategories[i].selected = false;
+		}
+		c.server.get({
+			action : "openMostArticles",
+			selectedCategory : selectedThirdCategory
+		}).then(function(response){
+			c.data.mostArticles = response.data.mostArticles;
+			relatedArticles();
+		});
+		c.clearSelectedKBs();
+	}
+
+	c.clearSelectedKBs = function(){
+		c.data.showArticleWidget = false;
+		c.data.showArticles = false;
+		if(c.data.kb_categories){
+			for(i in c.data.kb_categories){
+				c.data.kb_categories[i].selected = false;
+				c.data.kb_categories[i].show = true;
+			}
+		}
+		if(c.data.articles){
+			for(i in c.data.articles){
+				c.data.articles[i].selected = false;
+			}
+		}
+		c.closeArticle();
+	}
+
+	c.showArticles = function(kbCategoryID, selectedCat){
+		for(i in c.data.kb_categories){
+			if(c.data.kb_categories[i].sys_id == kbCategoryID){
+				c.data.articles = c.data.kb_categories[i].articles;
+			}
+			else
+				c.data.kb_categories[i].show = false
+			if(selectedCat){
+				c.data.kb_categories[i].show = true;
+			}
+			c.data.kb_categories[i].selected = !c.data.kb_categories[i].selected;
+		}
+		c.data.showArticles = !c.data.showArticles;
+		c.data.showArticleWidget = false;
+		prepareArticles();
+	}
+
+	c.openArticle = function(articleID){
+		for(i in c.data.articles){
+			if(c.data.articles[i].sys_id == articleID){
+				c.data.articles[i].selected = true;
+			}
+			else{
+				c.data.articles[i].selected = false;
+				c.data.articles[i].show = false;
+			}
+		}
+		c.data.showArticleWidget = true;
+		c.server.get({
+			action : "openArticle",
+			articleID : articleID
+		}).then(function(response){
+			c.data.relatedArticles = response.data.relatedArticles;
+			c.data.articleWidget = response.data.articleWidget;
+			c.data.helpfulWidget = response.data.helpfulWidget;
+			var jsonArticle = {articleID : articleID, categoryTitle : c.data.category.title, categoryColor: c.data.color.categoryColor};
+			$rootScope.$broadcast('openArticle', jsonArticle, true);
+		});
+
+	}
+
+	c.closeArticle = function(){
+		for(i in c.data.articles){
+			c.data.articles[i].selected = false;
+			c.data.articles[i].show = true;
+		}
+		c.data.showArticleWidget = false;
+	}
+
+	c.showRelatedArticles = function(){
+		c.showRelated = !c.showRelated;
+	}
+
+	c.openRelatedArticle = function(selectedArticle){
+		for(i in c.data.relatedArticles){
+			if(c.data.relatedArticles[i].sys_id == selectedArticle)
+				c.data.relatedArticles[i].selected = !c.data.relatedArticles[i].selected;
+			else
+				c.data.relatedArticles[i].selected = false;
+		}
+	}
+
+	c.openMostArticle = function(selectedArticle){
+		for(i in c.data.mostArticles.articles){
+			if(c.data.mostArticles.articles[i].sys_id == selectedArticle)
+				c.data.mostArticles.articles[i].selected = !c.data.mostArticles.articles[i].selected;
+			else
+				c.data.mostArticles.articles[i].selected = false;
+		}
+	}
+
+
+
+	c.seeAll = function(){
+		if(c.data.mostArticles.resultLimit != null){
+			c.data.mostArticles.resultLimit = null;
+			c.data.mostArticles.seeAllMsg = c.data.msgs.seeLess;
+		} else{
+			c.data.mostArticles.resultLimit = 5;
+			c.data.mostArticles.seeAllMsg = c.data.msgs.seeAll;
+		}
+	}
+
+
+	c.buttonClicked = function(type){
+		if (type == "write"){
+			c.messageClicked = !c.messageClicked;
+			var jsonItem = {itemID: c.data.write_your_doubts, breadcrumb : "", table: "sc_cat_item", duplicatedItemID : false};
+			$rootScope.$broadcast('openModalItem', jsonItem, 'openModalItem', "Tirar Dúvida");
+			$('#catalogQuestionModal').modal("show");
+		}
+	}
+
+	prepareArticles = function(){
+		for(var i in c.data.articles){
+			var description = c.data.articles[i].description.slice(0, c.data.text_size);
+			description = $sce.trustAsHtml(description);
+			c.data.articles[i].description = description + "...";
+		}
+	}
+
+	prepareMostArticles = function(){
+		for(var i in c.data.mostArticles.articles){
+
+			var description = c.data.mostArticles.articles[i].description;
+			c.data.mostArticles.articles[i].description = $sce.trustAsHtml(description);
+		}
+	}
+
+	relatedArticles = function(){
+		for(var i in c.data.relatedArticles.articles){
+
+			var description = c.data.relatedArticles.articles[i].description;
+			c.data.relatedArticles.articles[i].description = $sce.trustAsHtml(description);
+		}
+	}
+	
+	c.closeModal = function(){
+				$('#catalogQuestionModal').modal("hide");
+	}
+	
+	c.goToItem = function(){
+		$window.location = "?id=globoservice_my_dashboard&item_id=" + c.itemID;
+	}
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.content {
+  text-align: center;
+  background-color: white;
+  padding-bottom: 60px;
+  margin-top: 30px;
+  margin-bottom: 60px;
+
+  .header-loader {
+    padding-top: 40px;
+  }
+
+  .content_header {
+    display: flex;
+
+    img { width: 30%; }
+    .content_center {
+      width: 40%;
+
+      .title {
+        font-size: 54px;
+        line-height: 1;
+        margin-top: 50px;
+      }
+    }
+  }
+
+  .content_body {
+    margin: 0 90px;
+    margin-top: -100px;
+
+    .content-form-group {
+      width: 40%;
+      margin: 0 auto;
+
+      .icon-img {
+        height: 50px;
+      }
+    }
+
+    .content_categories {
+      margin-bottom: 30px;
+    }
+
+    .subtitle {
+      font-family: 'globorounded_bd';
+      margin-bottom: 15px;
+    }
+    .category_items {
+      transition: .2s ease-in-out;
+      color: $slate-gray;
+      font-size: 24px;
+      font-family: 'globorounded_bd';
+      margin-top: -4px;
+
+      &amp;:hover {
+        text-decoration: underline;
+      }
+    }
+    .category_items_current {
+      text-decoration: underline;
+    }
+
+    .section_title {
+      border-top: 2px solid $slate-gray;
+      border-bottom: 2px solid $slate-gray;
+      padding: 8px 0;
+      font-size: 12px;
+      font-family: 'globorounded_bk';
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .line {
+      width: 100%;
+      height: 2px;
+      margin-bottom: 20px;
+    }
+
+    .content_services {
+      text-align: left;
+      margin-bottom: 50px;
+
+      .service_title {
+        font-size: 22px;
+        margin-bottom: 15px;
+
+        .arrow_articles {
+          img {
+            transition: .4s ease-in-out;
+            transform: rotate(-90deg);
+            margin-top: -5px;
+            width: 20px;
+          }
+        }
+        .arrow_articles_down {
+          img {
+            transform: rotate(0deg);
+            width: 20px;
+          }
+        }
+        .articles_length {
+          font-size: 16px;
+          font-family: 'globorounded_bd';
+          color: $slate-gray;
+        }
+      }
+
+      .article_content {
+        padding: 10px 0;
+        height: 450px;
+        overflow-y: auto;
+
+        .kb-title-bold {
+          margin-top: 0;
+        }
+      }
+
+      .article_color_category1 { .kb-title-bold { color: $dodger-blue; } }
+      .article_color_category2 { .kb-title-bold { color: $dark-orchid; } }
+      .article_color_category3 { .kb-title-bold { color: $tan; } }
+      .article_color_category4 { .kb-title-bold { color: $orange; } }
+      .article_color_category5 { .kb-title-bold { color: $turquoise; } }
+      .article_color_category6 { .kb-title-bold { color: $deep-sky-blue; } }
+
+      .article_helpful {
+        margin-top: 20px;
+      }
+
+      .titledesc_article {
+
+        .title_article {
+          transition: .1s ease-in-out;
+          text-decoration: underline;
+
+          &amp;:hover {
+            transition: .2s ease-in-out;
+          }
+        }
+        .description_article {
+          font-size: 12px;
+        }
+      }
+      .kb-desktop.kb-wrapper {
+        padding: 0;
+      }
+    }
+
+    .article_breadcrumb {
+      font-size: 16px;
+
+      .breadcrumb_second {
+        font-family: 'globorounded_bd';
+      }
+    }
+
+    .hover_color_category1, .hover_color_category2, .hover_color_category3, .hover_color_category4, .hover_color_category5, .hover_color_category6 {
+      &amp;:hover { transition: .2s ease-in-out; }
+    }
+    .hover_color_category1 { &amp;:hover { color: $dodger-blue; } }
+    .hover_color_category2 { &amp;:hover { color: $dark-orchid; } }
+    .hover_color_category3 { &amp;:hover { color: $tan; } }
+    .hover_color_category4 { &amp;:hover { color: $orange; } }
+    .hover_color_category5 { &amp;:hover { color: $turquoise; } }
+    .hover_color_category6 { &amp;:hover { color: $deep-sky-blue; } }
+
+    .content_relatedarticles {
+      position: absolute;
+      width: calc(100% - 30px);
+      left: 15px;
+      bottom: 60px;
+      background-color: white;
+
+      &amp;:hover {
+        .relatedarticles {
+          transition: .2s ease-in-out;
+          padding: 20px 90px;
+        }
+      }
+
+      .relatedarticles {
+        transition: .4s ease-in-out;
+        width: 100%;
+        padding: 16px 90px;
+        color: white;
+        background-color: $slate-gray;
+        text-transform: uppercase;
+        font-size: 12px;
+        font-family: "globorounded_bk";
+        display: flex;
+        justify-content: space-between;
+
+        img {
+          transition: .4s ease-in-out;
+          transform: rotate(-90deg);
+          width: 26px;
+          height: 14px;
+        }
+        .arrow-right {
+          transform: rotate(0deg);
+        }
+      }
+      .relatedarticles_list {
+        padding: 0 90px;
+        padding-top: 30px;
+        padding-bottom: 70px;
+
+        .relatedarticles_title {
+          font-size: 16px;
+          font-family: "globorounded_bd";
+
+          &amp;:hover {
+            color: $slate-gray;
+            text-decoration: underline;
+          }
+        }
+        .relatedarticles_description {
+          font-size: 12px;
+          margin-bottom: 12px;
+        }
+      }
+    }
+
+    .content_mostarticles {
+      text-align: left;
+      margin-bottom: 50px;
+
+      .article_title {
+        transition: .4s ease-in-out;
+        font-family: 'globorounded_bd';
+      }
+      .article_desc {
+        font-size: 12px;
+        margin-bottom: 15px;
+      }
+      .seeall_button {
+        font-size: 12px;
+        font-family: 'globorounded_bd';
+        text-decoration: underline;
+      }
+    }
+
+    .content_otherchannels {
+
+      .otherchannel_title {
+        font-size: 22px;
+      }
+      .otherchannel_desc {
+        font-size: 15px;
+        font-family: 'globorounded_bd';
+        margin-top: -4px;
+      }
+      .otherchannel_buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+
+        .item_button {
+          transition: .4s ease-in-out;
+          width: 90px;
+          margin: 0 10px;
+
+          img {
+            margin: 0 auto;
+            width: 50px;
+          }
+          .button_text {
+            text-transform: uppercase;
+            font-size: 12px;
+            font-family: 'globorounded_bd';
+            line-height: 1;
+            margin-top: 10px;
+          }
+        }
+        .item_button:last-child {
+          
+          &amp;:hover {
+            transition: .2s ease-in-out;
+            transform: scale(1.1);
+            -webkit-transform: scale(1.1);
+            -ms-transform: scale(1.1);
+            -moz-transform: scale(1.1);
+            -o-transform: scale(1.1);
+          }
+          
+          .button_text {
+            padding: 0 10px;
+          }
+        }
+      }
+    }
+  }
+
+  .modal_sc_catalog_kb {
+    .wrapper-xl {
+      padding: 0 50px 50px 50px !important;
+    }
+    div:not(.input-group-btn) .btn:not(.btn-link):not(.lookup):not(.btn-clear) {
+      padding: 0;
+    }
+  }
+}
+.modal-body {
+  min-height: 130px;
+}
+.checkout_modal_request {
+  z-index: 12;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 320px;
+  padding: 100px;
+  padding-bottom: 250px !important;
+  background-color: white;
+  font-size: 12px;
+
+  .close_modal {
+    text-align: right;
+    font-size: 42px;
+    margin-top: -100px;
+    margin-right: -80px;
+  }
+  .modal_title {
+    font-size: 30px;
+    color: $coral;
+    margin-top: 20px;
+    line-height: 1;
+  }
+  .modal_category {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1;
+    margin: 10px 0;
+    letter-spacing: 1px;
+  }
+  .modal_summary {
+    margin: 10px 0;
+    font-size: 12px;
+  }
+  .modal_deadline {
+    margin-top: 25px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+
+.go_item {
+  transition: .2s ease-in-out;
+  color: $turquoise;
+  text-decoration: underline;
+
+  &amp;:hover {
+    transition: .2s ease-in-out;
+    opacity: .6;
+  }
+}
+
+.custom_loading{
+  color: $turquoise !important;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_categories_knowledge_content</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService Categories Knowledge Content</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var localInput = input;
+	var portalUtils = new global.OCLPortalUtils();
+	data.username = gs.getUserDisplayName();
+	data.showWidget = false;
+	data.showArticles = false;
+	data.showArticleWidget = false;
+	data.breadcrumb = {};
+	data.msgs = {};
+	data.msgs.seeAll = gs.getMessage("See all").toLowerCase();
+	data.msgs.seeLess = gs.getMessage("See less").toLowerCase();
+	data.text_size = gs.getProperty("gservice_comment_size");
+	data.write_your_doubts = gs.getProperty("gservice_write_your_doubts");
+	// NEED TO CREATE A SEARCH SOURCE
+
+	data.typeahead_search_options = {"contextual_search_sources": gs.getProperty("gservice_kb_search_source"), "limit": 5,
+																	 "broadcast_name" : "getSearchKB"};
+
+	if(localInput){
+		if(localInput.action == "showCategory"){
+			data.category = localInput.category;
+			var categoryID = data.category.sys_id;
+			data.category_id = categoryID;
+
+			data.kb_categories = [];
+			data.thirdCategories = [];
+			data.breadcrumb.second = [];
+
+			var secondCategories = data.category.secondCategories;
+			for(var i in secondCategories){
+				if(secondCategories[i].selected){
+					data.kb_categories = secondCategories[i].kbCategories;
+					data.thirdCategories = secondCategories[i].thirdCat;
+					data.breadcrumb.second = secondCategories[i].title;
+					if(secondCategories[i].mostArticlesCatID)
+						getMostArticles(secondCategories[i].mostArticlesCatID);
+					else
+						data.mostArticles = [];
+				}
+			}
+			if(data.breadcrumb.third)
+				data.breadcrumb.third = "";
+			createCategoryWidgets();
+		}
+		if(localInput.action == "openMostArticles"){
+			var selectedCategory = localInput.selectedCategory;
+			if(selectedCategory.mostArticlesCatID)
+				getMostArticles(selectedCategory.mostArticlesCatID);
+			else
+				data.mostArticles = [];
+		}
+		if(localInput.action == "openArticle"){
+			data.relatedArticles = portalUtils.getRelatedArticles(localInput.articleID)
+			var article_widget_options = {"broadcast_name": "openArticle"};
+			data.articleWidget = $sp.getWidget("gservice_knowledge_article_content", article_widget_options);
+			data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful_v2");
+
+		}
+	}
+
+
+	function getMostArticles(categoryID){
+		var mostArticles = {};
+		mostArticles.articles = portalUtils.getArticles(categoryID);
+		mostArticles.resultLimit = 5;
+		if(mostArticles.articles.length > mostArticles.resultLimit)
+			mostArticles.seeAllMsg = data.msgs.seeAll;
+		else
+			mostArticles.seeAllMsg = data.msgs.seeLess;	
+		data.mostArticles = mostArticles;
+	}
+
+	function createCategoryWidgets(){
+		var article_widget_options = {"broadcast_name": "openArticle"};
+		data.articleWidget = $sp.getWidget("gservice_knowledge_article_content", article_widget_options);
+
+		var category_property = gs.getProperty("categories_color_doubts");
+		var parse = JSON.parse(category_property);
+		data.color = {categoryColor : parse[categoryID].color,
+									categoryImgLeft : parse[categoryID].imgleft,
+									categoryImgRight : parse[categoryID].imgright,
+									categoryBdColor : parse[categoryID].bdcolor,
+									categoryBgColor : parse[categoryID].bgcolor,
+									categorySearchImg : parse[categoryID].searchImg,
+									categorySubmitImg : parse[categoryID].submitImg,
+									categoryArrow : parse[categoryID].arrowImg};
+
+		data.typeahead_search_options = {"contextual_search_sources": gs.getProperty("gservice_kb_search_source"), "limit": 5,
+																		 "broadcast_name" : "getSearchKB",
+																		 "category_color" : data.color.categoryColor,
+																		 "category_bg_color" : data.color.categoryBgColor,
+																		 "category_bd_color" : data.color.categoryBdColor,
+																		 "category_search_img" : data.color.categorySearchImg,
+																		 "kb_category_id" : data.category_id};
+
+		sc_catalog_item_options = {"show_add_cart_button": "true",
+															 "show_field_validation_messages": "false",
+															 "show_add_to_wishlist_button": "false",
+															 "display_cart_on_right": "false",
+															 "show_less_description": "false",
+															 "hide_delivery_time": "false",
+															 "category_color": "color_category5",
+															 "category_bd_color": "bdcolor_category5",
+															 "category_submit_img": "GService_SS_IS.png",
+															 "broadcast_name" : "openModalItem"};
+		data.gserviceCatalogItem = $sp.getWidget('gservice_custom_catalog_item', sc_catalog_item_options);
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-05 12:59:42</sys_created_on>
+        <sys_id>2e4ca118db9ddc905c1163901496194f</sys_id>
+        <sys_mod_count>746</sys_mod_count>
+        <sys_name>GService Categories Knowledge Content</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_2e4ca118db9ddc905c1163901496194f</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-25 16:37:37</sys_updated_on>
+        <template><![CDATA[<div id="widgetKBcategory" class="content" ng-show="data.showWidget">
+
+  <div class="header-loader" ng-show="c.isLoading">
+    <div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+
+  <div ng-show="!c.isLoading">
+    <div class="content_header">
+      <img src="{{data.color.categoryImgLeft}}"/>
+      <div class="content_center">
+        <div class="title {{data.color.categoryColor}}">{{data.category.title}}</div>
+      </div>
+      <img src="{{data.color.categoryImgRight}}"/>
+    </div>
+
+    <div class="content_body">
+      <div class="content-form-group">
+        <div class="form-group">
+          <widget id="gservice_typeahead_search" options='data.typeahead_search_options'></widget>
+        </div>
+      </div>
+
+      <div class="content_categories">
+        <div class="subtitle">${Em qual tema gostaria de tirar suas dúvidas?}</div>
+        <div class="category_items" ng-if="secondCategory.hasArticles" ng-repeat="secondCategory in data.category.secondCategories" ng-click="c.selectedSecondCategory(secondCategory.sys_id)" ng-class="secondCategory.selected ? '{{data.color.categoryColor}} category_items_current' : ''">
+          {{secondCategory.title}}
+        </div>
+      </div>
+
+      <div class="content_categories" ng-if="data.thirdCategories.length > 0">
+        <div class="line {{data.color.categoryBgColor}}"></div>
+        <div class="category_items" ng-if="thirdCategory.hasArticles" ng-repeat="thirdCategory in data.thirdCategories" ng-click="c.selectedThirdCategory(thirdCategory.sys_id)" ng-class="thirdCategory.selected ? '{{data.color.categoryColor}} category_items_current' : ''">
+          {{thirdCategory.title}}
+        </div>
+      </div>
+
+      <div class="content_services" ng-if="data.kb_categories.length > 0">
+        <div class="section_title">Sobre Serviços</div>
+
+        <div>
+          <div ng-if="kbCategory.show" ng-repeat="kbCategory in data.kb_categories">
+            <div ng-if="kbCategory.articles.length > 0" class="service_title">
+              <div ng-click="c.showArticles(kbCategory.sys_id, kbCategory.selected)">
+                <div class="{{data.color.categoryColor}}" ng-show="!data.showArticleWidget">
+                  <span class="arrow_articles" ng-class="kbCategory.selected ? 'arrow_articles_down' : ''"><img src="{{data.color.categoryArrow}}"/></span>
+                  {{kbCategory.title}} <span class="articles_length">({{kbCategory.articles.length}} 
+                  <span ng-if="kbCategory.articles.length > 1">${resultados})</span>
+                  <span ng-if="kbCategory.articles.length == 1">${resultado})</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="data.showArticles">
+          <div ng-if="article.show" ng-repeat="article in data.articles">
+            <div ng-if="!c.data.showArticleWidget" class="titledesc_article">
+              <div ng-click="c.openArticle(article.sys_id)" class="title_article hover_{{data.color.categoryColor}}">
+                {{article.title}}
+              </div>
+              <p class="description_article" ng-bind-html="article.description"></p>
+            </div>
+
+            <div ng-if="c.data.showArticleWidget">
+              <span class="article_breadcrumb {{data.color.categoryColor}}">
+                <div>
+                  <span>{{data.category.title}}</span>
+                  <span> > </span><span class="breadcrumb_second" ng-click="c.closeArticle()">{{data.breadcrumb.second}}</span>
+                  <span ng-if="c.data.breadcrumb.third"> > </span><span class="breadcrumb_second" ng-if="c.data.breadcrumb.third" ng-click="c.closeArticle()">{{data.breadcrumb.third}}</span>
+                </div>
+              </span>
+              <div class="article_content article_{{data.color.categoryColor}}">
+                <sp-widget widget="data.articleWidget"></sp-widget>
+              </div>
+              <div class="article_helpful">
+                <div class="line {{data.color.categoryBgColor}}"></div>
+                <sp-widget widget="data.helpfulWidget"></sp-widget>
+              </div>
+
+              <div class="content_relatedarticles" ng-if="data.relatedArticles.length > 0">
+                <div class="relatedarticles" ng-click="c.showRelatedArticles()">
+                  ${Dúvidas Relacionadas}
+                  <img src="arrow-down-white.png" ng-class="c.showRelated ? 'arrow-right' : ''"/>
+                </div>
+                <div class="relatedarticles_list" ng-if="c.showRelated">
+                  <div ng-repeat="relatedArticle in data.relatedArticles | limitTo: 5">
+                    <div class="relatedarticles_title" ng-click="c.openRelatedArticle(relatedArticle.sys_id)" ng-class="relatedArticle.selected ? '{{data.color.categoryColor}}' : ''">{{relatedArticle.title}}</div>
+                    <div class="relatedarticles_description" ng-if="relatedArticle.selected" ng-bind-html="relatedArticle.description"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content_mostarticles" ng-if="!data.showArticleWidget">
+        <div class="section_title">${Dúvidas Frequentes}</div>
+        <div>
+          <span ng-show="data.mostArticles.length == 0">${Não existem artigos frequentes relacionados a essa categoria.}</span>
+          <div ng-repeat="article in data.mostArticles.articles | limitTo: data.mostArticles.resultLimit">
+            <div class="article_title hover_{{data.color.categoryColor}}" ng-class="article.selected ? '{{data.color.categoryColor}}' : ''"ng-click="c.openMostArticle(article.sys_id)"><p>{{article.title}}</p></div>
+            <div class="article_desc" ng-if="article.selected" ng-bind-html="article.description"></div>
+          </div>
+          <div class="seeall_button" ng-if="data.mostArticles.articles.length > data.mostArticles.resultLimit" ng-click="c.seeAll()">{{data.mostArticles.seeAllMsg}}</div>
+        </div>
+      </div>
+
+      <div ng-if="!c.data.showArticleWidget">
+        <div class="content_otherchannels">
+          <div class="otherchannel_title">${Não encontrou o que procurava?}</div>
+          <div class="otherchannel_desc">${Temos outros canais de atendimento.}</div>
+          <!--<a ng-click="c.buttonClicked('call')">ng-if="!c.callClicked"-->
+          <!--<img ng-if="c.callClicked" src="gservice_call_after.png"></a>-->
+          <div class="otherchannel_buttons">
+            <div class="item_button">
+              <img src="gservice_call.png">
+              <div class="button_text">${Ligue 3911 0800 000000}</div>
+            </div>
+            <div class="item_button" ng-click="c.buttonClicked('write')">
+              <img ng-if="!c.messageClicked" src="gservice_write_doubt.png">
+              <img ng-if="c.messageClicked" src="gservice_write_doubt_after.png">
+              <div class="button_text">${Escreva sua dúvida}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal to show "Escreva sua dúvida" -->
+    <div class="modal fade modal_sc_catalog_kb" style="z-index: 1041" id="catalogQuestionModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+
+            <div class="close_modal" ng-click="c.closeModal()">x</div>
+
+            <div ng-if="!c.submited" class="panel-body wrapper-xl wrapper-sc-cat-item">
+              <div class="form-group">
+                <sp-widget widget="data.gserviceCatalogItem"></sp-widget>
+              </div>
+            </div>
+
+            <div class="header-loader" ng-show="c.submited && !c.itemInfo">
+              <div class="hidden-xs sp-loading-indicator custom_loading">
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+
+            <div ng-if="c.submited && c.itemInfo" class="checkout_modal_request">
+              <div class="close_modal" ng-click="c.closeModal()">x</div>
+              <div class="modal_title color_category5">{{data.username}},<br>Sua solicitação foi enviada com sucesso!</div>
+              <div class="modal_category">${Você solicitou um serviço de} {{c.name}}.</div>
+              <div class="modal_category">${GService Request Number} <span class="go_item" ng-click="c.goToItem()">#{{c.number}}</span>.</div>
+              <div class="modal_summary">${Acompanhe suas solicitações pelo Dashboard ou pelas notificações que chegarão por email}.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>]]></template>
+    </sp_widget>
+</record_update>

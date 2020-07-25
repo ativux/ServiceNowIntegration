@@ -84,7 +84,7 @@
 
 	c.submitCommentApproval = function(){
 		if(c.approvalComment){
-			c.needComment = true;
+			c.needComment = false;
 			c.server.get({
 				action : "submitApproval",
 				item : c.approvalItem,
@@ -93,12 +93,17 @@
 			}).then(function(response) {
 				$('#approvalCommentModal').modal("hide");
 				c.data.approvals = response.data.approvals;
+				c.approvalComment = '';
 			});
 		}
 		else{
 			c.needComment = true;
 		}
 	}
+	
+	$('#approvalCommentModal').on('hide.bs.modal', function () {
+		c.needComment = "";
+	});
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.cart-mobile {
@@ -812,6 +817,20 @@ tbody {
 
 .content_conversation {
   width: 100%;
+}
+
+.buttons {
+  img { transition: .4s ease-in-out; }
+  &amp;:hover {
+    img {
+      transition: .2s ease-in-out;
+      transform: scale(1.1);
+      -webkit-transform: scale(1.1);
+      -ms-transform: scale(1.1);
+      -moz-transform: scale(1.1);
+      -o-transform: scale(1.1);
+    }
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -843,9 +862,9 @@ tbody {
 
 		data.columns = columns;
 		for(i in columns){
-			data.columns[i].name = gs.getMessage(columns[i].name);
+			data.columns[i].name = gs.getMessage(columns[i].name).toUpperCase();
 		}
-		data.approverQuery = "state=requested^source_table=sc_req_item^approver=" + gs.getUserID();
+		data.approverQuery = "state=requested^source_tableINsc_req_item,change_request^approver=" + gs.getUserID();
 		data.approvals = portalUtils.getApprovals(data.user_id);
 		if(data.approvals.length == 0){
 			data.showEmptyMessage = true;
@@ -877,6 +896,7 @@ tbody {
 				var items = localInput.items;
 				var itemsSort = portalUtils.sortList(items, localInput.order, direction);
 				data.approvals = itemsSort;
+				break;
 			case "submitApproval":
 				data.approvals = localInput.approvals;
 				var comment = localInput.comment ? localInput.comment : '';
@@ -906,18 +926,18 @@ tbody {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-03 19:09:12</sys_created_on>
         <sys_id>7fad24ffdb419c905c11639014961915</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>37</sys_mod_count>
         <sys_name>GService My Dashboard Approvals</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7fad24ffdb419c905c11639014961915</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-06-04 14:29:15</sys_updated_on>
+        <sys_updated_on>2020-07-24 18:19:02</sys_updated_on>
         <template><![CDATA[<div class="approval_content">
   <div class="page_description">
-    Algumas solicitações de Serviço precisam da sua aprovação.<br>
-    Responda para dar continuidade aos atendimentos.
+    ${My Dashboard Approvals 1}<br>
+    ${My Dashboard Approvals 2}
   </div>
   <div>
     <div ng-if="data.approvals.length == 0" class="without_notification">
@@ -931,13 +951,13 @@ tbody {
               {{column.name}}
               <span ng-if="column.order">
                 <span ng-if="!column.direction"><!--VAZIO--></span>
-                <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == -1 ? 'invert-arrow' : ''"}/></span>
+                <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
               </span>
             </div>
           </th>
         </tr>
       </thead>
-      <tbody ng-repeat="item in c.data.approvals">
+      <tbody ng-repeat="item in data.approvals">
         <tr class="item-row b-b">
           <td data-th="Product"> <!-- class="col-lg-2" -->
             <div class="approval_column_title">
@@ -953,7 +973,15 @@ tbody {
             <div class="row approval_column_requester">
               <div>
                 <span class="service_title">{{item.requester}}</span>
-                <img class="info-size" src="requester_information.png"/>
+                <!-- <img class="info-size" src="requester_information.png"/>-->
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row approval_column_requester">
+              <div>
+                <span class="service_title">{{item.price}}</span>
+                <!-- <img class="info-size" src="requester_information.png"/>-->
               </div>
             </div>
           </td>
@@ -967,17 +995,18 @@ tbody {
           <td>
             <div class="row approval_column_forecast">
               <div> <!-- class="col-lg-1" -->
-                <span class="">SLA: {{item.forecast}}</span>
+                <span class="" ng-if="item.forecast">{{item.forecast}}</span>
+                <span class="" ng-if="!item.forecast">${Não há SLA para esse item}</span>
               </div>
             </div>
           </td>
           <td>
             <div class="row approvals-buttons">
               <!-- Button to request a service again -->
-              <a class="submit-button" style="cursor: pointer;" ng-click="c.submitApproval(item, true)" aria-label="" title="">
+              <a class="submit-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, true)" aria-label="" title="">
                 <img src="gservice_dashboard_confirm.png"/>
               </a>
-              <a class="cancel-button" style="cursor: pointer;" ng-click="c.submitApproval(item, false)" aria-label="" title="">
+              <a class="cancel-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, false)" aria-label="" title="">
                 <img src="GService_DASH_Cancelar.png"/>
               </a>
             </div>
@@ -985,7 +1014,7 @@ tbody {
         </tr>
         <tr>
           <!-- Requests End -->
-          <td ng-if="item.showDetails" class="content_conversation" colspan='5'> <!-- col-md-12 -->
+          <td ng-if="item.showDetails" class="content_conversation" colspan='6'> <!-- col-md-12 -->
 
             <!-- Process Flow -->
             <div class="col-md-3">
@@ -1004,7 +1033,6 @@ tbody {
     </table>
   </div>
 
-  <!-- Modal para widget de abertura de formulário, chamado pela função nextModal -->
   <div class="modal fade" style="z-index: 1041" id="approvalCommentModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">

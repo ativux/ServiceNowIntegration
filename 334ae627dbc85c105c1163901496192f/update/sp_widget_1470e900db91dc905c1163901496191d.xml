@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($rootScope, $scope, $timeout) {
+	var c = this;
+
+	c.categorySelected = false;
+	$scope.$on('categorySelectedMargin', function(event) {
+		c.categorySelected = true;
+	});
+
+	$scope.$on('getKBCategoriesInfo', function(event, data) {
+		c.data.categories = data;
+		c.server.update();
+	});
+
+	$scope.$on('showHideWidget', function(event, data) {
+		if(data == "categoriesKB"){
+			$timeout(function() {
+				scrollTo("categoriesKnowledge");
+			});
+		}
+	});
+
+	c.selectedCategory = function(secCatID, onlyCategory){
+		var category = c.changeSelectedCat(secCatID);
+		$rootScope.$broadcast("categoriesKBContent", category);
+	}
+
+	c.openCategory = function(category){
+		c.clearAll();
+		$rootScope.$broadcast("categoriesKBContent", category);
+	}
+
+	c.seeAll = function(category){
+		for(var i in c.data.categories){
+			if(c.data.categories[i].sys_id == category.sys_id){
+				if(category.resultLimit != null){
+					category.resultLimit = null;
+					category.seeAllMsg = c.data.msgs.seeLess;
+				} else{
+					category.resultLimit = 5;
+					category.seeAllMsg = c.data.msgs.seeAll;
+				}
+			}
+		}
+	}
+
+	$scope.$on('kb_category', function (event, categoryID) {
+		c.selectedCategory(categoryID);
+	});
+
+	$scope.$on('changeSelectedCat', function (event, categoryID) {
+		c.changeSelectedCat(categoryID);
+	});
+
+	c.changeSelectedCat = function(selectedID){
+		var category;
+		for(var i in c.data.categories){
+			for(var j in c.data.categories[i].secondCategories){
+				if(c.data.categories[i].secondCategories[j].sys_id == selectedID){
+					c.data.categories[i].secondCategories[j].selected = true;
+					category = c.data.categories[i];
+				}
+				else
+					c.data.categories[i].secondCategories[j].selected = false;
+			}
+		}
+		return category;
+	}
+
+	c.clearAll = function(){
+		for(var i in c.data.categories){
+			for(var j in c.data.categories[i].secondCategories){
+				c.data.categories[i].secondCategories[j].selected = false;
+			}
+		}
+	}
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.content_margin {
+  margin-bottom: 0;
+}
+.content_margin_bottom {
+  margin-bottom: 440px;
+}
+.content_categories_knowledge {
+  background-color: white;
+  overflow: auto;
+  padding: 50px;
+  text-align: center;
+
+  .content {
+    width: 50%;
+    margin: 0 auto;
+
+    .title {
+      color: $turquoise;
+      font-size: 32px;
+      font-family: 'globorounded_bd';
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      line-height: 1;
+    }
+    .content_category_items {
+      display: flex;
+      flex-wrap: wrap;
+
+      .category_items {
+        width: 33.33%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .categories {
+          font-family: 'globorounded_bk';
+          font-size: 18px;
+          line-height: 1;
+          margin-bottom: 13px;
+          width: 160px;
+        }
+        a {
+          color: $slate-gray;
+          font-size: 12px;
+        }
+        .category {
+          font-size: 14px;
+          margin-top: -1px;
+
+          &amp;:hover {
+            text-decoration: underline;
+          }
+        }
+        .category_current {
+          text-decoration: underline;
+        }
+        .category:last-child {
+          margin-bottom: 20px;
+        }
+        .view_more {
+          margin-bottom: 20px;
+          text-decoration: underline;
+        }
+      }
+      .category_items:nth-child(1), .category_items:nth-child(3) {
+        .categories {
+          width: 110px;
+        }
+      }
+
+    }
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_categories_knowledge</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService Categories Knowledge</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+
+	if(input){
+		data.msgs = {};
+		data.msgs.seeAll = gs.getMessage("See all").toLowerCase();
+		data.msgs.seeLess = gs.getMessage("See less").toLowerCase();
+
+		var category_property = gs.getProperty("categories_color_doubts");
+		var parse = JSON.parse(category_property);
+		
+		var categories = input.categories;
+		for(var i in categories){
+			var count = 0;
+			categories[i].catColor = parse[categories[i].sys_id].color;
+			
+			for(var j in categories[i].secondCategories){
+				if(categories[i].secondCategories[j].hasArticles){
+					count++;
+				}
+			}
+			if(count > categories[i].resultLimit)
+				categories[i].seeAllMsg = data.msgs.seeAll;
+			categories[i].count = count;
+		}
+		data.categories = categories;
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-04 17:30:49</sys_created_on>
+        <sys_id>1470e900db91dc905c1163901496191d</sys_id>
+        <sys_mod_count>402</sys_mod_count>
+        <sys_name>GService Categories Knowledge</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_1470e900db91dc905c1163901496191d</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-25 16:40:43</sys_updated_on>
+        <template><![CDATA[<div class="content_categories_knowledge" id="categoriesKnowledge" ng-class="c.categorySelected ? 'content_margin' : 'content_margin_bottom'">
+  <div class="content">
+    <div class="title">${Tire Duvidas Category}</div>
+    <div class="content_category_items">
+      <div ng-repeat="category in data.categories" class="category_items">
+        <div class="categories {{category.catColor}}" ng-click="c.openCategory(category)">{{category.title}}</div>
+        <div class="category" ng-repeat="secCategory in category.secondCategories | filter:{hasArticles: true} | limitTo: category.resultLimit" ng-click="c.selectedCategory(secCategory.sys_id)" ng-class="secCategory.selected ? '{{category.catColor}} category_current' : ''">
+          {{secCategory.title}}
+        </div>        
+        <a class="view_more" ng-if="category.count > category.resultLimit" ng-click="c.seeAll(category)">{{category.seeAllMsg}}</a>
+      </div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

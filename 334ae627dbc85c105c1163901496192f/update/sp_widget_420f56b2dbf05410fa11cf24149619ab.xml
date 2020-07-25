@@ -9,6 +9,9 @@
 	var existingEntries = {};
 	var c = this;
 	c.comment = '';
+	c.submitting = false;
+	c.needComment = false;
+
 	var skipNextRecordWatchUpdate = false;
 	$scope.typing = [];
 	if (!$scope.data.hasReadableJournalField && !$scope.data.isNewRecord)
@@ -188,25 +191,6 @@
 		}, 50);
 	});
 
-	function prepareDate(){
-		var mergedEntries = [];
-		for(i in c.data.mergedEntries){
-			var entry = c.data.mergedEntries[i];
-			var createdOn = entry.sys_created_on_adjusted.split(" ");
-			entry["createdDate"] = createdOn[0].replace(/-/g, "/");;
-			entry["createdTime"] = createdOn[1];
-			mergedEntries.push(entry);
-		}
-		for(i in c.data.statusEntries){
-			var entry = c.data.statusEntries[i];
-			var createdOn = entry.sys_created_on_adjusted.split(" ");
-			entry["createdDate"] = createdOn[0].replace(/-/g, "/");;
-			entry["createdTime"] = createdOn[1];
-			mergedEntries.push(entry);
-		}
-		c.data.mergedEntries = mergedEntries;
-	}
-
 	function mergeStreamEntries() {
 		$scope.placeholder = $scope.data.placeholderNoEntries;
 		if (!$scope.data.stream || !$scope.data.stream.entries)
@@ -216,7 +200,6 @@
 		var entries = $scope.data.stream.entries;
 		if (!$scope.data.mergedEntries) {
 			$scope.data.mergedEntries = $scope.data.stream.entries.slice();
-			prepareDate();
 			for (var i = 0; i < entries.length; i++) {
 				existingEntries[entries[i].sys_id] = true;
 			}
@@ -232,7 +215,6 @@
 				existingEntries[curEntry.sys_id] = true;
 			}
 		}
-		prepareDate();
 	}
 
 	function isNewEntry(mergedEntries, item) {
@@ -302,44 +284,41 @@
 	$scope.data.isPosting = false;
 
 	$scope.postEntry = function(input) {
-		post(input);
+		c.submitting = true;
+		if(input){
+			c.needComment = false;	
+			post(input);
+		} else{
+			c.needComment = true;
+		}
 	};
 
 	function post(input) {
-		//Code not OOTB
-		c.server.get({
-			action : "insertComment",
-			comment : input,
-			table : c.data.table,
-			sys_id : c.data.sys_id,
-			tab: c.data.tab
-		}).then(function(response) {
-			$rootScope.$broadcast("refreshNotificationList", c.data.sys_id);
-			if ($scope.data.isPosting)
-				return;
+		$rootScope.$broadcast("refreshNotificationList", c.data.sys_id);
+		if ($scope.data.isPosting)
+			return;
 
-			if (!input)
-				return;
+		if (!input)
+			return;
 
-			input = input.trim();
-			$scope.data.journalEntry = input;
+		input = input.trim();
+		$scope.data.journalEntry = input;
 
-			if ($scope.data.useSecondaryJournalField)
-				$scope.data.journalEntryField = $scope.data.secondaryJournalField.name;
-			else
-				$scope.data.journalEntryField = $scope.data.primaryJournalField.name;
-			$scope.data.isPosting = true;
-			spUtil.update($scope).then(function(){
-				$scope.data.isPosting = false;
-				reset();
-				spAriaUtil.sendLiveMessage($scope.data.messagePostedMsg);
-				$timeout(function() {
-					$scope.setFocus(); // sets focus back on input, defined in "link"
-				});
+		if ($scope.data.useSecondaryJournalField)
+			$scope.data.journalEntryField = $scope.data.secondaryJournalField.name;
+		else
+			$scope.data.journalEntryField = $scope.data.primaryJournalField.name;
+		$scope.data.isPosting = true;
+		spUtil.update($scope).then(function(){
+			$scope.data.isPosting = false;
+			reset();
+			spAriaUtil.sendLiveMessage($scope.data.messagePostedMsg);
+			$timeout(function() {
+				$scope.setFocus(); // sets focus back on input, defined in "link"
 			});
-			skipNextRecordWatchUpdate = true;
-			$scope.setFocus(); // sets focus back on input, defined in "link"
 		});
+		skipNextRecordWatchUpdate = true;
+		$scope.setFocus(); // sets focus back on input, defined in "link"
 	}
 
 	var reset = function(){
@@ -497,6 +476,10 @@
 
 	c.showForm = function(){
 		$('#moreDetailsModal').modal("show");
+	}
+
+	c.goToItem = function(){
+		$scope.$emit("selectTabRequest", c.data.item_id);
 	}
 }]]></client_script>
         <controller_as>c</controller_as>
@@ -994,6 +977,27 @@ ul {
     color: white;
     background-color: $slate-gray;
   }
+}
+
+.submit_button {
+  transition: .4s ease-in-out;
+  &amp;:hover {
+    transition: .2s ease-in-out;
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+  }
+}
+
+.sub-avatar {
+  background-size: contain !important;
+}
+
+.mandatory_message {
+  color: $coral;
+  font-family: 'globorounded_bd';
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data>{"options": {
@@ -1029,24 +1033,6 @@ ul {
 	data.user_id = userID;
 	data.username = gs.getUserDisplayName();
 	data.statusEntries = [];
-	
-	if(localInput){
-
-		if(localInput.action == "insertComment"){
-			if(localInput.tab == "gservice_ticket_notifications_tab"){
-				var item = {table: localInput.table,
-										sys_id: localInput.sys_id
-									 };
-				var state = "addCommentOnNotes";
-				data.item = portalUtils.changeItemState(item, state);
-			}
-			else if(data.tab == "gservice_all_conversations_tab"){
-
-			}
-		}
-	}
-	//End here and some editions made below, with comments
-
 
 	data.currentUserID = gs.getUserID();
 	data.maxAttachmentSize = parseInt(gs.getProperty("com.glide.attachment.max_size", 1024));
@@ -1118,13 +1104,22 @@ ul {
 	gr.get(data.sys_id);
 	if (!gr.canRead())
 		return;
-
+	
 	data.variables = new global.GlobalServiceCatalogUtil().getVariablesForTask(gr, true);
 
 	data.isNewRecord = data.sys_id == -1 || gr.isNewRecord();
 	data.table = gr.getRecordClassName(); // use actual table for the record
 	options.no_readable_journal_field_message = options.no_readable_journal_field_message || gs.getMessage("No readable comment field");
-	data.number = gr.getDisplayValue('number');
+	if(data.table == "sc_task"){
+		data.number = gr.getDisplayValue("request_item");
+		data.ticketTitle = gr.request_item.getRefRecord().getDisplayValue("cat_item");
+		data.item_id = gr.getValue("request_item");
+	}
+	else{
+		data.number = gr.getDisplayValue('number');
+		data.item_id = gr.getUniqueValue();
+	}
+
 	var created_on = gr.getDisplayValue('sys_created_on');
 	created_on = created_on.split(' ');
 	data.createdDate = created_on[0].replace(/-/g, "/");
@@ -1149,6 +1144,7 @@ ul {
 				data.ticketTitle = gr.getDisplayValue("short_description");
 			if (!data.ticketTitle)
 				data.ticketTitle = data.number;
+			
 		}
 
 		$sp.logStat('Task View', data.table, data.sys_id);
@@ -1159,7 +1155,7 @@ ul {
 	data.canRead = gr.canRead();
 	data.hasWritableJournalField = false;
 	data.hasReadableJournalField = false;
-	
+
 	if (data.canRead && !data.isNewRecord) {
 		data.stream = $sp.getStream(data.table, data.sys_id);
 		// Journal fields come in correct order already
@@ -1212,19 +1208,19 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-19 14:34:49</sys_created_on>
         <sys_id>420f56b2dbf05410fa11cf24149619ab</sys_id>
-        <sys_mod_count>354</sys_mod_count>
+        <sys_mod_count>408</sys_mod_count>
         <sys_name>GService Ticket Conversations</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_420f56b2dbf05410fa11cf24149619ab</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-06-04 14:37:53</sys_updated_on>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-24 19:12:21</sys_updated_on>
         <template><![CDATA[<div class="content_notifications" ng-if="data.canRead && !data.isNewRecord && !data.hide">
 
   <div class="content_conversation"> <!-- -->
     <div class="panel-heading panel-title-container">
-      <div class="number_title">
+      <div class="number_title" ng-click="c.goToItem()">
         <div class="ticket_number">{{data.number}}</div>
         <div class="ticket_title">{{data.ticketTitle}}</div>
       </div>
@@ -1266,8 +1262,7 @@ ul {
                   </div>
                 </div>
               </div>
-              <div class="time-text">{{e.sys_created_on}}</div>
-
+              <div class="time-text">{{e.sys_created_on_adjusted}}</div>
             </li>
           </ul>
         </div>
@@ -1279,16 +1274,17 @@ ul {
 
         <form ng-submit="postEntry(data.journalEntry)">
           <div ng-show="data.hasWritableJournalField" class="conversation_form">
+            <span ng-if="c.needComment" class="mandatory_message">${É necessário um comentário para responder a essa pendência}</span>
             <textarea ng-keypress="keyPress($event)" sn-resize-height="trim" rows="1" class="form-control no-resize overflow-hidden" ng-model='data.journalEntry' ng-model-options='{debounce: 250}' ng-attr-placeholder="{{getPlaceholder()}}" aria-label="{{getPlaceholder()}}" autocomplete="off" ng-change="userTyping(data.journalEntry)"/>
             <span class="journal-field-indicator" ng-style="({'background-color': data.useSecondaryJournalField ? data.secondaryJournalField.color : data.primaryJournalField.color})"></span>
-            <input class="submit_button" type="image" src="gservice_dashboard_submit.png" ng-disabled="data.isPosting" value="{{data.btnLabel}}" style="cursor: pointer"/>
+            <input class="submit_button" ng-disabled="c.submitting" type="image" src="gservice_dashboard_submit.png" ng-disabled="data.isPosting" value="{{data.btnLabel}}" style="cursor: pointer"/>
           </div>
         </form>
 
         <div ng-if="(!data.hideAttachmentBtn)" class="attach_text">
           <sp-attachment-button ng-if="data.canWrite && data.canAttach" class="attach_button">
           </sp-attachment-button>
-          
+
           <div class="attach_title">${Add attachments}</div>
           <now-attachments-list class="attachment-list" template="sp_attachment_single_line" >
           </now-attachments-list>
@@ -1301,6 +1297,27 @@ ul {
       {{options.no_readable_journal_field_message}}
     </div>
 
+  </div>
+
+  <div class="modal fade modal_article" id="moreDetailsApprovalsModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="panel-body wrapper-xl">
+            <span class="turn_bold color_change title_property">${Solicitação} ${#}{{data.ticketInfo.ticketNumber}}</span>
+            <div class="turn_bold color_change">${Data de Abertura}: {{data.ticketInfo.openedAt}}</div>
+            <div><span class="turn_bold">${Resumo da solicitação}: </span>{{data.ticketInfo.summary}}</div>
+            <div class="turn_bold color_change">${Detalhes da solicitação}:</div>
+            <div ng-repeat="variable in data.variables">
+              <span class="turn_bold">{{variable.label}} : </span>{{variable.display_value}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>]]></template>
