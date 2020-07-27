@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function($scope, $location, $rootScope, $timeout, spModal, categorySubscribe) {
+        <client_script><![CDATA[function($scope, $location, $rootScope, $timeout, $sce, spModal, categorySubscribe) {
 	/* widget controller */
 	var c = this;
 
@@ -22,10 +22,6 @@
 	$scope.$on('selectedCategory', function (event) {
 		selectedCategory(categorySubscribe.getCategoryID());
 	});
-
-	function replaceHtml(string) {
-		return string.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g,'"');
-	}
 
 	//When a second category is clicked
 	c.selectedSecondCategory = function(category){
@@ -68,15 +64,24 @@
 					c.data.showSelectedItem = false;
 				}
 				else{
-					c.data.showSelectedItem = true;
-					c.data.itemDescription = item.description;
+					if(item.table == "sc_cat_item"){
+						c.data.showSelectedItem = true;
+						c.data.showSelectedOrder = false;
+					}
+					else{
+						c.data.showSelectedOrder = true;
+						c.data.showSelectedItem = false;
+						$rootScope.$broadcast("selectedOrder", itemID);
+					}
+					
+					c.data.itemDescription = item.short_description || item.description;
 				}
 			}
 			else{
 				c.data.arrayItems[i].selected = false;
 			}
 		}
-		
+
 		var jsonItem = {itemID: itemID, breadcrumb: c.data.breadcrumb, table: "sc_cat_item", duplicatedItemID : false};
 		$rootScope.$broadcast('openItem', jsonItem, "openItem");
 	}
@@ -282,7 +287,7 @@
 				c.selected_item = c.data.arrayItems[i];
 				c.data.arrayItems[i].selected = c.data.arrayItems[i].title;
 				c.data.showSelectedItem = true;
-				c.data.itemDescription = c.data.arrayItems[i].description;
+				c.data.itemDescription = c.data.arrayItems[i].short_description || c.data.arrayItems[i].description;
 			}
 		}
 		var duplicatedItemID = false;
@@ -327,11 +332,14 @@
 		});
 	});
 
+	function replaceHtml(string) {
+		return string.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g,'"');
+	}
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.content {
   background-color: white;
-  margin: 50px 0;
+  margin-bottom: 30px;
   padding-bottom: 40px;
   margin-top: 0;
 
@@ -476,12 +484,40 @@
           padding: 6px 0 2px 10px;
         }
 
-        label:hover{
+        label:hover {
           padding: 6px 0 2px 10px;
           font-size: 18px;
           font-family: $text-bold;
         }
 
+        .icon_yourself {
+          
+          img {
+            height: 25px;
+            margin-left: 5px;
+            margin-top: -4px;
+          }
+
+          .tooltip {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 8px;
+            margin-top: -3px;
+          }
+
+          &amp;:hover {
+            .tooltip {
+              visibility: visible;
+              opacity: 1;
+            }
+            /*
+            .tooltip_right {
+            top: calc(50% - 15px);
+            left: 60px;
+          }
+            */
+          }
+        }
       }
 
       .content_mostviewed_articles {
@@ -618,6 +654,7 @@
 
 	data.showWidget = false;
 
+
 	data.categoryColor = '';
 	data.categoryBgColor = '';
 	data.categoryBdColor = '';
@@ -629,18 +666,12 @@
 
 	data.title = "";
 	data.subTitle = "";
-	data.selectedCategory = null;
 	data.secCategories = [];
 	data.arrayItems = [];
 	data.showItems = false;
 	data.showSelectedItem = false;
+	data.showSelectedOrder = false;
 	data.showSecondCategories = false;
-	data.typeahead_search_options = {"contextual_search_sources": data.search_property, "limit": 5, 
-																	 "broadcast_name" : "getSearchedItemsCategory",
-																	 "category_color" : "",
-																	 "category_bg_color" : "",
-																	 "category_bd_color" : ""
-																	};
 
 	var sc_catalog_item_options = {"show_add_cart_button": "true",
 																 "show_field_validation_messages": "false",
@@ -653,13 +684,27 @@
 																 "category_submit_img": "",
 																 "broadcast_name" : "openItem"};
 
-	data.gserviceCatalogItem = $sp.getWidget('gservice_sc_catalog_item', sc_catalog_item_options);
+	var order_guide_options = {"category_color": "",
+														 "category_bd_color": "",
+														 "category_submit_img": ""};
+
+	data.gserviceCatalogItem = $sp.getWidget('gservice_custom_catalog_item', sc_catalog_item_options);
+	data.gserviceOrderGuide = $sp.getWidget('gservice_order_guide', order_guide_options);
 
 	data.kb_most_viewed_options = {"max_number": "4", "title" : gs.getMessage("Artigos mais visitados"),
 																 "category_bg_color" : ""};
 
-	data.search_result_options = {"broadcast_name" : "getSearchedItemsCategory",
-																"class_color" : "asdf"}
+	var search_result_options = {"broadcast_name" : "getSearchedItemsCategory",
+															 "class_color" : ""};
+
+	data.searchResultWidget = $sp.getWidget('gservice_search_result', search_result_options);
+
+	var typeahead_search_options = {"contextual_search_sources": gs.getProperty("gservice_category_search_source"), "limit": 5, 
+																	"broadcast_name" : "getSearchedItemsCategory",
+																	"category_color" : "",
+																	"category_bg_color" : "",
+																	"category_bd_color" : ""};
+	data.typeaheadWidget = $sp.getWidget('gservice_typeahead_search', typeahead_search_options);
 
 	data.articleWidget = $sp.getWidget("gservice_knowledge_article_content");
 	data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful");
@@ -667,10 +712,13 @@
 
 	data.itemSelectMessage = gs.getMessage("Item Select Message");
 
+
+
 	if(localInput){
 		//When selected the category in the previous widget
 		//In this case we get the categories above the first category and others values to show in the widget (Title, subtitle, etc)
 		if(localInput.action == "selectedCategory") {
+
 			selectedCategory();
 		}
 
@@ -695,8 +743,8 @@
 
 
 	function selectedCategory(){
+		data.category_id = localInput.selectedCategory;
 		var jsonCategory = portalUtils.selectedCategory(localInput.selectedCategory);
-		data.selectedCategory = jsonCategory.selectedCategory;
 		data.title = jsonCategory.title;
 		data.subTitle = jsonCategory.subTitle;
 		data.subcategoriesTitle = jsonCategory.subcategoriesTitle;
@@ -714,12 +762,23 @@
 		data.categorySearchImg = parse[localInput.selectedCategory].searchImg;
 		data.categorySubmitImg = parse[localInput.selectedCategory].submitImg;
 
-		data.typeahead_search_options = {"contextual_search_sources": data.search_property, "limit": 5, 
-																		 "broadcast_name" : "getSearchedItemsCategory",
-																		 "category_color" : data.categoryColor,
-																		 "category_bg_color" : data.categoryBgColor,
-																		 "category_bd_color" : data.categoryBdColor,
-																		 "category_search_img" : data.categorySearchImg};
+		if(data.categorySearchImg == localInput.typeaheadWidget.options.category_search_img){
+			data.typeaheadWidget = localInput.typeaheadWidget;
+			data.searchResultWidget = localInput.searchResultWidget;
+		}
+		else{
+			var typeahead_search_options = {"contextual_search_sources": gs.getProperty("gservice_category_search_source"), "limit": 5, 
+																			"broadcast_name" : "getSearchedItemsCategory",
+																			"category_color" : data.categoryColor,
+																			"category_bg_color" : data.categoryBgColor,
+																			"category_bd_color" : data.categoryBdColor,
+																			"category_search_img" : data.categorySearchImg,
+																			"category_id" : data.category_id};
+
+			data.typeaheadWidget = $sp.getWidget('gservice_typeahead_search', typeahead_search_options);
+		}
+
+
 
 		sc_catalog_item_options = {"show_add_cart_button": "true",
 															 "show_field_validation_messages": "false",
@@ -732,8 +791,12 @@
 															 "category_submit_img": data.categorySubmitImg,
 															 "broadcast_name" : "openItem"};
 
-		data.gserviceCatalogItem = $sp.getWidget('gservice_sc_catalog_item', sc_catalog_item_options);
+		order_guide_options = {"category_color": data.categoryColor,
+													 "category_bd_color": data.categoryBdColor,
+													 "category_submit_img": data.categorySubmitImg};
 
+		data.gserviceCatalogItem = $sp.getWidget('gservice_custom_catalog_item', sc_catalog_item_options);
+		data.gserviceOrderGuide = $sp.getWidget('gservice_order_guide', order_guide_options);
 		data.kb_most_viewed_options = {"max_number": "4", "title" : gs.getMessage("Artigos mais visitados"),
 																	 "category_bg_color" : data.categoryBgColor};
 
@@ -743,9 +806,6 @@
 
 	function selectedSecondCategory(){
 		data.thirdCategories = portalUtils.getSubcategories(localInput.secCategory.sys_id, localInput.secCategory.title);
-
-		//Utilizado para deixar as subcategorias em ordem alfabética
-		data.thirdCategories = portalUtils.sortObject(data.thirdCategories, "title");
 
 		if(data.thirdCategories.length != 0){
 			data.showThirdCategories = true;
@@ -770,12 +830,6 @@
 			data.showItems = true;
 		}
 	}
-
-	//Utilizado para deixar as categorias em ordem alfabética
-	data.secCategories = portalUtils.sortObject(data.secCategories, "title");
-
-	//Utilizado para deixar os itens em ordem alfabética
-	data.arrayItems = portalUtils.sortObject(data.arrayItems, "title");
 
 	var half = Math.ceil(data.arrayItems.length/2);
 	var minor = [];
@@ -805,14 +859,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 13:30:17</sys_created_on>
         <sys_id>832ac777dbc41050fa11cf2414961944</sys_id>
-        <sys_mod_count>1555</sys_mod_count>
+        <sys_mod_count>1652</sys_mod_count>
         <sys_name>GService Categories</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_832ac777dbc41050fa11cf2414961944</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-28 11:06:57</sys_updated_on>
+        <sys_updated_on>2020-07-27 13:59:15</sys_updated_on>
         <template><![CDATA[<div id="widget-category" class="content" ng-show="data.showWidget">
   <div>
 
@@ -829,12 +883,12 @@
 
       <div class="content-form-group">
         <div class="form-group">
-          <widget id="gservice_typeahead_search" options='data.typeahead_search_options'></widget>
+          <sp-widget widget="data.typeaheadWidget"></sp-widget>
         </div>
       </div>
 
       <div>
-        <widget id="gservice_search_result" options="data.search_result_options"></widget>
+        <sp-widget widget="data.searchResultWidget"></sp-widget>
       </div>
 
       <div class="categories_title">{{data.subcategoriesTitle}}</div>
@@ -862,7 +916,7 @@
           <div class="breadcrumb_item">{{data.breadcrumb}}</div>
           <h3 class="request_title {{data.categoryColor}}">{{data.itemSelectMessage}} {{data.categoryTitle}}?</h3>
 
-          <div class="m-b-s col-md-6 content_cat_items hover_{{data.categoryColor}}" ng-repeat="item in c.data.arrayItems">
+          <div class="m-b-s col-md-6 content_cat_items hover_{{data.categoryColor}}" ng-repeat="item in data.arrayItems">
             <div class="text-left ">
               <span method="get" class="radio-properties">
                 <label for="{{item.title}}" class="cat_item">
@@ -872,7 +926,17 @@
                          value="{{item.title}}"
                          ng-model="item.selected"
                          ng-click="c.selectItem(item.sys_id, item)">
-                  <div class="item_title" ng-class="{'item_title_current':item==c.selected_item}">{{item.title}}</div>
+                  <div class="item_title" ng-class="{'item_title_current':item == c.selected_item}">{{item.title}}
+
+                    <span class="icon_yourself" ng-if="item.do_yourself != 0">
+                      <img src="Do_Yourself_icon.png"/>
+                      <span class="tooltip">
+                        <div class="tooltip_arrow arrow_left"></div>
+                        <div class="tooltip_text">${Do it yourself}</div>
+                      </span>
+                    </span>
+
+                  </div>
                   <div class="new-radio">
                     <span ng-class="item.selected ? '{{data.radioColor}} radio-after' : ''"></span>
                   </div>
@@ -883,12 +947,16 @@
         </div>
       </div>
 
-      <div class="description_item" ng-show="c.data.showSelectedItem">{{c.data.itemDescription}}</div>
+      <div class="description_item" ng-show="c.data.showSelectedItem" ng-bind-html="c.data.itemDescription"></div>
 
       <div class="line {{data.categoryBgColor}}" ng-show="c.data.showSelectedItem"></div>
 
       <div id="show-selected-item" ng-show="c.data.showSelectedItem">
         <sp-widget widget="data.gserviceCatalogItem"></sp-widget>
+      </div>
+      
+      <div id="show-selected-item" ng-show="c.data.showSelectedOrder">
+        <sp-widget widget="data.gserviceOrderGuide"></sp-widget>
       </div>
 
       <div class="line {{data.categoryBgColor}}" ng-show="data.showItems"></div>
