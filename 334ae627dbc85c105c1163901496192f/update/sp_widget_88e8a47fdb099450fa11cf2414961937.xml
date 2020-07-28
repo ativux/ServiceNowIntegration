@@ -34,6 +34,19 @@
 		}
 	});
 
+	spUtil.recordWatch($scope, "sc_req_item", c.data.ritmID, function(event) {
+		if(event.data.record.state){
+			c.server.get({
+				action: "ritmStateChangedBackend",
+				itemID: event.data.sys_id,
+				newState: event.data.record.state,
+				requests: c.data.requests
+			}).then(function(response) {
+				c.data.requests = response.data.requests;
+			});
+		}
+	});
+
 	$scope.$on('applyFilter', function(event, filters) {
 		c.data.statusFilter = filters.statusFilter;
 		c.data.typeFilter = filters.typeFilter;
@@ -76,7 +89,8 @@
 	}
 
 	c.itemAction = function(item, action){
-		if(action == "acceptSolution" || action == "acceptCancellation"){
+		if(action == "acceptSolution" || action == "acceptCancellation" ||
+			 action == "cancelItem" && item.table == "u_question"){
 			c.server.get({
 				action: 'changeItemState',
 				state: action,
@@ -157,8 +171,10 @@
 
 	c.showDetails = function(item){
 		var showDetails = false;
+		var index = 0;
 		for(var i in c.data.requests){
 			if(c.data.requests[i].sys_id == item.sys_id){
+				index = i;
 				c.data.requests[i].showDetails = !c.data.requests[i].showDetails;
 				showDetails = c.data.requests[i].showDetails;
 			}
@@ -172,6 +188,10 @@
 				item: item
 			}).then(function(response) {
 				c.data.ticketConversationWidget = response.data.ticketConversationWidget;
+				if(item.table == "sc_request"){
+					c.data.requests[index] = response.data.newItem;
+					c.data.ritm_fields = response.data.ritm_fields;
+				}
 			});
 		}
 
@@ -282,6 +302,16 @@
 		c.reopeningReason = c.data.reopeningReason[index].value;
 	}
 
+	c.openItem = function(ritm){
+		c.server.get({
+			action : "openRITM",
+			ritm : ritm
+		}).then(function(response) {
+			c.data.recordDetailsWidget = response.data.recordDetailsWidget;
+			$('#ritmDetails').modal("show");
+		});
+	}
+
 	$scope.$on('surveyClosed', function(event) {
 		c.data.show_survey = false;
 
@@ -291,7 +321,6 @@
         <css>.content_request {
   margin-bottom: 10px;
 }
-
 .cart-mobile {
   border: 0;
   box-shadow: none;
@@ -727,6 +756,34 @@ tbody {
     text-transform: uppercase;
     font-family: 'globorounded_bd';
     font-size: 12px;
+
+    .tooltip, .tooltip_{
+      position: relative !important;
+      margin-right: 50% !important;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    &amp;:hover {
+      .tooltip, .tooltip_ {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    .tooltip_right {
+      top: calc(50% - 15px);
+      left: 60px;
+    }
+    .tooltip_bottom {
+      bottom: -41px;
+      left: -34px;
+    }
+    .arrow_bottom {
+      position: absolute !important;
+      top: 27px !important;
+    }
   }
   .pending {
     color: $coral !important;
@@ -1089,6 +1146,20 @@ tbody {
 
 .content_conversation {
   width: 100%;
+
+  .turn_bold{
+    font-weight: bold;
+  }
+
+  .pending {
+    color: $coral !important;
+  }
+  .inProgress {
+    color: $yellow-green;
+  }
+  .resolved {
+    color: $deep-sky-blue;
+  }
 }
 
 .buttons {
@@ -1140,6 +1211,21 @@ tbody {
   img {
     width: 60px;
   }
+}
+
+.modal_ritm_details{
+  .modal-dialog{
+    overflow-y: initial !important
+  }
+  .modal-body{
+    overflow-y: auto;
+  }
+}
+
+.pack_title {
+  font-size: 16px;
+  text-transform: uppercase;
+  font-family: 'globorounded_bk';
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -1195,7 +1281,8 @@ tbody {
 	data.filter = false;
 	//Get the columns (from property) to show upside the requests
 	data.columns = [];
-
+	data.order = "opened_at";
+	data.direction = -1;
 	if(!localInput){
 		data.listFilter_widget = $sp.getWidget('gservice_list_filter');
 		prepareDefaultList(true);
@@ -1204,10 +1291,12 @@ tbody {
 		switch(localInput.action){
 			case "applyFilter":
 				preparePages();
+				data.order = "opened_at";
+				data.direction = -1;
 				data.typeFilter = localInput.typeFilter;
 				data.statusFilter = localInput.statusFilter;
 				data.query = portalUtils.mountQuery(data.typeFilter, data.statusFilter, "", "");
-				var requests = portalUtils.getRequests("", "", data.query, data.window_start, data.window_end);
+				var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
 				data.requests = requests.items;
 				prepareColumns();
 				prepareRecordWatch();
@@ -1230,8 +1319,22 @@ tbody {
 				data.requests = localInput.requests;
 				for(i in data.requests){
 					if(data.requests[i].sys_id == itemID){
-						data.requests[i].statusLabel = state.display_value;
 						data.requests[i].statusValue = state.value;
+						if(state.value == "-5" || state.value == "3"){
+							var objHold = portalUtils.getHoldReason(data.requests[i].table, data.requests[i].sys_id);
+							data.requests[i].hold_reason = objHold.hold_reason;
+							data.requests[i].forecast = objHold.forecast;
+						}
+						if(data.requests[i].table == 'sn_si_incident'){
+							//10,16,18,19,20,100
+							if(state.value == "10")
+								data.requests[i].statusLabel = "Aguardando Atendimento";
+							else if(state.value == "16" || state.value == "18"  ||
+											state.value == "19"  || state.value == "20")
+								data.requests[i].statusLabel = "Em Atendimento";
+							else if(state.value == "100")
+								data.requests[i].statusLabel = "Solucionado";
+						}
 						data.requests[i] = portalUtils.verifyButtons(data.requests[i]);
 						data.requests[i].colorClass = portalUtils.getColorClass(data.requests[i].statusValue,data.requests[i].table);
 						data.requests[i].processFlow = portalUtils.getProcessFlow(data.requests[i].table, data.requests[i].statusValue);
@@ -1239,21 +1342,64 @@ tbody {
 				}
 				break;
 
+			case "ritmStateChangedBackend":
+				var state = localInput.newState;
+				var itemID = localInput.itemID;
+				data.newItem = localInput.requests;
+				for(i in data.newItem){
+					if(data.newItem[i].table == "sc_request"){
+						for(var j in data.newItem[i].ritms){
+							if(data.newItem[i].ritms[j].sys_id == itemID){
+								data.newItem[i].ritms[j].state = state.display_value;
+								data.newItem[i].ritms[j].colorClass = portalUtils.getColorClass(state.value,"sc_req_item");
+							}
+						}
+					}
+				}
+				data.requests = data.newItem;
+				break;
+
 			case "applyDate":
 				preparePages();
+				data.order = "opened_at";
+				data.direction = -1;
 				data.dateFilter = localInput.dateFilter;
 				data.typeFilter = localInput.typeFilter;
 				data.statusFilter = localInput.statusFilter;
 				data.query = portalUtils.mountQuery(data.typeFilter, data.statusFilter, data.dateFilter, "");
-				var requests = portalUtils.getRequests("", "", data.query, data.window_start, data.window_end);
+				var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
 				data.requests = requests.items;
 				prepareColumns();
 				prepareRecordWatch();
 				break;
 			case "getTicketConversationWidget":
+				var hide_new_comments = false;
+				var item = localInput.item;
+				if(item.table == "sc_req_item"){
+					if(item.statusValue == "3" || item.statusValue == "4" || item.statusValue == "7" || item.statusValue == "10"){
+						hide_new_comments = true;
+					}
+				} else if(item.table == "incident"){
+					if(item.statusValue == "7" || item.statusValue == "8" || item.statusValue == "10"){
+						hide_new_comments = true;
+					}
+				}else if(localInput.item.table == "sc_request"){
+					hide_new_comments = true;
+					data.newItem = item;
+					data.newItem.ritms = portalUtils.getRITMs(localInput.item.sys_id);
+					prepareRitmWatch(data.newItem.ritms);
+				}else if(localInput.item.table == "u_question"){
+					hide_new_comments = true;
+				}else if(localInput.item.table == "sn_si_incident"){
+					if(item.statusValue == "3"){
+						hide_new_comments = true;
+					}
+				}
 				var gservice_ticket_conversation_options = {table : localInput.item.table,
 																										sys_id : localInput.item.sys_id,
-																										item_status : localInput.item.colorClass};
+																										item_status : localInput.item.colorClass,
+																										hide_new_comments : hide_new_comments
+																									 };
 				data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
 				break;
 
@@ -1299,6 +1445,12 @@ tbody {
 			case "selectRequest":
 				prepareDefaultList("", localInput.item_id);
 				break;
+			case "openRITM":
+				var ritm = localInput.ritm;
+				var gservice_record_details_options = {table : ritm.table,
+																							 sys_id : ritm.sys_id};
+				data.recordDetailsWidget = $sp.getWidget('gservice_record_details', gservice_record_details_options);
+				break;
 		}
 	}
 
@@ -1314,9 +1466,16 @@ tbody {
 			data.first_load = true;
 			data.urlItem = $sp.getParameter("item_id");
 			if(data.urlItem){
+				var request_for = "";
 				var grTask = new GlideRecord("task");
 				grTask.get(data.urlItem);
-				if(data.user_id == grTask.getValue('opened_by')){
+				if(grTask.getValue("sys_class_name") == "sc_req_item"){
+					var grRitm = new GlideRecord("sc_req_item");
+					grRitm.get(data.urlItem);
+					request_for = grRitm.request.requested_for;
+				}
+
+				if(data.user_id == grTask.getValue('opened_by') || data.user_id == request_for || data.user_id == grTask.getValue('watch_list')){
 					data.query = portalUtils.mountQuery("", data.statusFilter, "", "", data.urlItem);
 				} else{
 					data.showFilterClean = true;
@@ -1335,11 +1494,30 @@ tbody {
 		var requests = portalUtils.getRequests("opened_at", "-1", data.query, data.window_start, data.window_end);
 		if(data.urlItem && first_load){
 			requests.items[0].showDetails = true;
-			var gservice_ticket_conversation_options = {table : "task",
-																									sys_id : requests.items[0].sys_id,
-																									item_status : requests.items[0].colorClass};
+			var item = requests.items[0];
+			var hide_new_comments = false;
+			if(item.table == "sc_req_item"){
+				if(item.statusValue == "3" || item.statusValue == "4" || item.statusValue == "7" || item.statusValue == "10"){
+					hide_new_comments = true;
+				}
+			} else if(item.table == "incident"){
+				if(item.statusValue == "7" || item.statusValue == "8" || item.statusValue == "10"){
+					hide_new_comments = true;
+				}
+			}else if(item.table == "sc_request"){
+				hide_new_comments = true;
+				data.newItem = item;
+				data.newItem.ritms = portalUtils.getRITMs(item.sys_id);
+				prepareRitmWatch(data.newItem.ritms);
+			}else if(item.table == "u_question"){
+				hide_new_comments = true;
+			}
+			var gservice_ticket_conversation_options = {table : item.table,
+																									sys_id : item.sys_id,
+																									item_status : item.colorClass,
+																									hide_new_comments : hide_new_comments
+																								 };
 			data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
-
 		}
 		data.requests = requests.items;
 		if(data.requests.length == 0){
@@ -1398,21 +1576,32 @@ tbody {
 			}
 		}
 	}
+
+	function prepareRitmWatch(ritms){
+		data.ritmID = 'sys_idIN';
+		var ritmIDs = [];
+		for(var i in ritms){
+			ritmIDs.push(ritms[i].sys_id);
+		}
+		data.ritmID += ritmIDs.join();
+	}
+
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 18:48:13</sys_created_on>
         <sys_id>88e8a47fdb099450fa11cf2414961937</sys_id>
-        <sys_mod_count>459</sys_mod_count>
+        <sys_mod_count>558</sys_mod_count>
         <sys_name>GService My Dashboard Requests</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_88e8a47fdb099450fa11cf2414961937</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-07-17 18:34:37</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-07-28 13:11:49</sys_updated_on>
         <template><![CDATA[<div class="content_request">
+  
   <div class="col-md-12 filter-padding">
     <sp-widget widget="data.listFilter_widget"></sp-widget>
   </div>
@@ -1466,7 +1655,12 @@ tbody {
             <td class="column_status">
               <div class="row">
                 <div>
-                  <div class="service_title {{item.colorClass}}">{{item.statusLabel}}</div>
+                  <div class="service_title {{item.colorClass}}">{{item.statusLabel}}
+                    <span class="tooltip tooltip_bottom" ng-if="item.hold_reason">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">{{item.hold_reason}}</div>
+                    </span>
+                  </div>
                 </div>
               </div>
             </td>
@@ -1475,7 +1669,8 @@ tbody {
             </td>
             <td class="column_sla">
               <p class="sla_description" ng-if="item.forecast">{{item.forecast}}</p>
-              <span class="" ng-if="!item.forecast">${Não há SLA para esse item}</span>
+              <!--<span class="" ng-if="!item.forecast && item.table != 'sc_request' || item.table != 'u_question'">${SLA pausado}</span>
+<span class="" ng-if="item.forecast && item.table == 'sc_request' || item.table != 'u_question'">${Não possui SLA}</span>-->
             </td>
             <td class="column_buttons">
               <div ng-if="item.eraseButton" class="buttons" ng-click="c.itemAction(item, 'cancelItem')">
@@ -1512,9 +1707,32 @@ tbody {
             </td>
           </tr>
 
+          
+          <tr>
+            <td ng-if="item.showDetails && item.table == 'sc_request'" class="content_conversation" colspan='5'>
+              
+              <div class="col-md-12 pack_title">${Serviços do Pacote}</div>
+              
+              <div ng-repeat="ritm in item.ritms" class="col-md-12">
+                <div class="col-md-3">
+                  
+                  <div>#{{ritm.number}}</div>
+                  <div ng-click="c.openItem(ritm)">{{ritm.title}}</div>
+                  
+                </div>
+                <div class="col-md-3 service_title turn_bold {{ritm.colorClass}}">{{ritm.state}}</div>
+                <span class="tooltip tooltip_bottom" ng-if="ritm.hold_reason">
+                  <div class="tooltip_arrow arrow_top"></div>
+                  <div class="tooltip_text">{{ritm.hold_reason}}</div>
+                </span>
+              </div>
+            </td>
+          </tr>
+          
+          
           <tr>
             <td ng-if="item.showDetails" class="content_conversation" colspan='5'>
-              <div class="col-md-5 process_flow">
+              <div ng-if="item.table != 'sc_request' && item.table != 'u_question'" class="col-md-5 process_flow">
                 <div class="process_flow_title">${Etapas do Atendimento}</div>
                 <div class="line_flow"></div>
                 <div ng-repeat="status in item.processFlow" class="items_flow">
@@ -1535,6 +1753,7 @@ tbody {
         <span class="pag_arrow_right" ng-click="c.nextPage()" ng-if="data.actualItemsCount < data.totalItems"><img src="gservice_column_dashboard_arrow.png"/></span>
         <span class="pag_text">Página {{data.actualPageCount}} - {{data.actualItemsCount}} de {{data.totalItems}} RESULTADOS</span>
       </div>
+      
     </div>
   </div>
 
@@ -1581,9 +1800,21 @@ tbody {
       </div>
     </div>
   </div>
-
-
+  
   <now-message key="Done" value="${Done}"/>
+</div>
+
+<div class="modal_ritm_details modal fade" id="ritmDetails" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <sp-widget widget="data.recordDetailsWidget"></sp-widget>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div ng-if="data.show_survey" class="survey_accept">

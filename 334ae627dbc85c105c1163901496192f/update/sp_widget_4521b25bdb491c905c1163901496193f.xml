@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function($scope, $timeout, spUtil, $rootScope, nowAttachmentHandler) {
+        <client_script><![CDATA[function($scope, $timeout, spUtil, $rootScope, nowAttachmentHandler, $sce) {
 	/* widget controller */
 	var c = this;
+	c.conversation_open = false;
 
 	c.postEntry = function(input) {
 		c.server.get({
@@ -25,7 +26,7 @@
 			}, 250);
 		}
 	}
-	
+
 	$scope.$watch("data.sys_id", function() {
 		setTimeout(function(){
 			$rootScope.$broadcast('prepareAttachments', c.data.table, c.data.sys_id);
@@ -39,12 +40,71 @@
 				c.data.journalEntry = '';
 				c.data.stream = response.data.stream;
 				c.data.mergedEntries = response.data.mergedEntries;
+				c.data.mergedEntriesAll = c.data.mergedEntries;
 			});
 		});
 	});
-	
-	c.showForm = function(){
-		$('#moreDetailsModal').modal("show");
+
+	c.showConversation = function(entry){
+		//$('#conversation_modal' + c.data.sys_id).modal("show");
+		c.conversation_open = true;
+		c.showAllModal(entry);
+		$timeout(function() {
+			scrollToModal('comment_' + entry.id);
+		}, 200);
+	}
+
+	c.showAllModal = function(entry){
+		for(i in c.data.mergedEntriesAll){
+			if(entry.id == c.data.mergedEntriesAll[i].id){
+				c.data.mergedEntriesAll[i].showingAll = true;
+			}
+			else{
+				c.data.mergedEntriesAll[i].showingAll = false;
+			}
+		}
+	}
+
+	c.hideModal = function(id){
+		$(id).modal("hide");
+	}
+	c.hideConversation = function(){
+		c.conversation_open = false;
+	}
+
+	$('#ritmDetails').on('hide.bs.modal', function (e) {
+		if(c.conversation_open){
+			return false;
+		}
+	});
+
+	openKB = function(kb_id){
+		var jsonArticle = {articleID : kb_id};
+		$rootScope.$broadcast('openKbModal', jsonArticle, true);
+		$('#openKbModal').modal("show");
+	}
+
+	if(c.data.mergedEntries){
+		for(var i in c.data.mergedEntries){
+			if(c.data.mergedEntries[i].has_link){
+				var display_value = c.data.mergedEntries[i].display_value + "";
+				var value = c.data.mergedEntries[i].value + "";
+				do{
+					display_value = display_value.replace("&lt;","<");
+					display_value = display_value.replace("&gt;", ">");
+				}while(display_value.includes("&lt;") || display_value.includes("&gt;"));
+				do{
+					value = value.replace("&lt;","<");
+					value = value.replace("&gt;", ">");
+				}while(value.includes("&lt;") || value.includes("&gt;"));
+
+				display_value = $sce.trustAsHtml(display_value);
+				value = $sce.trustAsHtml(value);
+				c.data.mergedEntries[i].display_value = display_value;
+				c.data.mergedEntries[i].value = value;
+			}
+
+		}
 	}
 }]]></client_script>
         <controller_as>c</controller_as>
@@ -134,6 +194,11 @@
     color: $deep-sky-blue;
     font-family: 'globorounded_bd';
   }
+  .simple_conversation_title{
+    font-size: 12px;
+    color: $deep-sky-blue;
+    font-family: 'globorounded_bd';
+  }
   .conversation_description {
     font-size: 12px;
     color: $slate-gray;
@@ -171,6 +236,11 @@
       margin-bottom: 20px;
       border: 2px solid $deep-sky-blue;
     }
+  }
+  .view_more_color{
+    font-size: 12px;
+    color: $deep-sky-blue;
+    font-family: 'globorounded_bd';
   }
 }
 
@@ -484,25 +554,38 @@ ul {
   font-size: 16px;
 }
 
+.modal-body .wrapper-xl {
+  padding: 0 !important;
+}
 .modal-body{
-  overflow: hidden !important;
-  border: 20px solid white;
+  border: 0 20px solid white;
+  padding: 40px 50px !important;
   .wrapper-xl {
-    padding: 50px 0 50px 80px !important
-      margin-right: -20px;
+    margin-right: -20px;
   }
-  button{
-    text-align: right;
+  //close
+  button {
+    z-index: 5;
+    position: absolute;
+    right: -1px;
+    top: -8px;
     font-size: 42px;
+    font-family: 'globorounded_lt';
   }
   .title_property{
     font-size: 32px;
+    text-transform: capitalize;
   }
   .turn_bold{
     font-weight: bold;
+    margin-top: 20px;
   }
   .color_change{
     color: $deep-sky-blue;
+  }
+
+  .activity_content {
+    height: 350px;
   }
 }
 
@@ -586,6 +669,89 @@ ul {
       }
     }
   }
+}
+
+.conversation_fixed_text {
+  .fixed_title { transition: .4s ease-in-out; }
+  &amp;:hover {
+    .fixed_title {
+      transition: .2s ease-in-out;
+      transform: scale(1.02);
+      -webkit-transform: scale(1.02);
+      -ms-transform: scale(1.02);
+      -moz-transform: scale(1.02);
+      -o-transform: scale(1.02);
+    }
+  }
+}
+.buttons {
+  transition: .4s ease-in-out;
+  &amp;:hover {
+    transition: .2s ease-in-out;
+    transform: scale(1.02);
+    -webkit-transform: scale(1.02);
+    -ms-transform: scale(1.02);
+    -moz-transform: scale(1.02);
+    -o-transform: scale(1.02);
+  }
+}
+.button_size{
+  img{
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.bg_content_feedback {
+  position: fixed;
+  top: -100vh;
+  left: -100vw;
+  width: 200vw;
+  height: 200vh;
+  z-index: 2000;
+  background: rgba(0,0,0,.5);
+  border: 1px solid #7e7e7e;
+  cursor: default;
+}
+
+.content_feedback_ {
+  position: fixed;
+  top: 50px;
+  left: calc(50% - 350px);
+  z-index: 2001;
+}
+.content_feedback {
+  width: 700px;
+  padding: 50px;
+  background: white;
+  text-align: left;
+  position: relative;
+
+  .close_feedback {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    font-size: 18px;
+  }
+  .feedback_title {
+    font-size: 24px;
+    color: $dodger-blue;
+    margin-bottom: 20px;
+  }
+  .send_message {
+    color: $coral;
+    margin-bottom: 15px;
+  }
+  .notification_feedback {
+    color: $coral;
+  }
+  .feedback_send {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    img {width: 50px;}
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -599,7 +765,7 @@ ul {
   
 }]]></link>
         <name>GService Custom Conversation</name>
-        <option_schema>[{"hint":"Enter key behavior is specified by system property (glide.service_portal.comment.enter_adds_newline) unless overridden here","name":"enter_key_behavior","section":"Behavior","default_value":"System property","label":"Enter key behavior","type":"choice","choices":[{"label":"System property","value":"System property"},{"label":"Submit","value":"Submit"},{"label":"New line","value":"New line"}]},{"hint":"What is the table of the record?","name":"table","section":"Data","label":"Table","type":"string"},{"hint":"What is the sys_id of the record?","name":"sys_id","section":"Data","label":"Sys_ID","type":"string"},{"hint":"Placeholder text shows selected journal field","name":"use_dynamic_placeholder","section":"Behavior","label":"Use dynamic placeholder","type":"boolean"},{"hint":"Message to show when record has no readable journal field","name":"no_readable_journal_field_message","default_value":"","section":"Presentation","label":"No readable journal field message","type":"string"},{"hint":"Get the template based on the tab","name":"tab","section":"Behavior","label":"Tab Template","type":"string"},{"name":"item_status","section":"Behavior","label":"Item Status","type":"string"}]</option_schema>
+        <option_schema>[{"hint":"Enter key behavior is specified by system property (glide.service_portal.comment.enter_adds_newline) unless overridden here","name":"enter_key_behavior","section":"Behavior","default_value":"System property","label":"Enter key behavior","type":"choice","choices":[{"label":"System property","value":"System property"},{"label":"Submit","value":"Submit"},{"label":"New line","value":"New line"}]},{"hint":"What is the table of the record?","name":"table","section":"Data","label":"Table","type":"string"},{"hint":"What is the sys_id of the record?","name":"sys_id","section":"Data","label":"Sys_ID","type":"string"},{"hint":"Placeholder text shows selected journal field","name":"use_dynamic_placeholder","section":"Behavior","label":"Use dynamic placeholder","type":"boolean"},{"hint":"Message to show when record has no readable journal field","name":"no_readable_journal_field_message","default_value":"","section":"Presentation","label":"No readable journal field message","type":"string"},{"hint":"Get the template based on the tab","name":"tab","section":"Behavior","label":"Tab Template","type":"string"},{"name":"item_status","section":"Behavior","label":"Item Status","type":"string"},{"hint":"Used to allow the user to add new comments or attachments","name":"hide_new_comments","section":"Behavior","default_value":"","label":"Hide new comments","type":"boolean"},{"hint":"Check this to hide the title","name":"hide_title","section":"Presentation","label":"Hide Title","type":"boolean"}]</option_schema>
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
@@ -610,7 +776,15 @@ ul {
 	var portalUtils = new global.OCLPortalUtils();
 	//Used to get the current user sys_id
 	data.gservice_ticket_attachment = [];
+	data.showAll = gs.getMessage("GService View More").toLowerCase();
+	data.showLess = gs.getMessage("GService See Less").toLowerCase();
+	data.hide_new_comments = options.hide_new_comments || false;
+	data.hide_title = options.hide_title || false;
+	data.moreDetails = false;
 
+	data.article_widget_options = {"broadcast_name": "openKbModal"};
+	data.articleWidget = $sp.getWidget("gservice_knowledge_article_content", data.article_widget_options);
+	data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful_v2");
 
 	if(!localInput){
 		data.clear = true;
@@ -631,17 +805,47 @@ ul {
 
 		data.stream = $sp.getStream(data.table, data.sys_id);
 		var entries = data.stream.entries;
-		var statusEntries = portalUtils.getStateChange(data.sys_id);
+		var statusEntries = portalUtils.getStateChange(data.sys_id, data.table);
 		var mergedEntries = portalUtils.joinEntries(entries, statusEntries);
 
 		data.mergedEntries = portalUtils.sortDateTime(mergedEntries, "sys_created_on_adjusted", 1);
+		data.mergedEntriesAll = data.mergedEntries;
 
-		/*var gservice_ticket_attachment_options = {record_table : options.table,
-																								record_id : options.sys_id};*/
+		for(var i in data.mergedEntries){
+			var value = data.mergedEntries[i].display_value;
+			if(value){
+				if(value.includes("sys_kb_id") || value.includes("href")){
+					var kb_id = value.split("sys_kb_id")[1];
+					kb_id = kb_id.split("=")[1];
+					kb_id = kb_id.split('"')[0];
+					var secondString = value.split(' href="');
+					var thirdString = secondString[1].split('"')[1];
+					var lastString = secondString[0] + ' onclick="openKB(' + "'" + kb_id + "'"  + ')"' + thirdString;
+					data.mergedEntries[i].display_value = lastString;
+					data.mergedEntries[i].value = lastString;
+					data.mergedEntries[i].has_link = true;
+				}
+				else{
+					data.mergedEntries[i].has_link = false;
+				}
+			}
+		}
+
 		data.gservice_ticket_attachment = $sp.getWidget('gservice_ticket_attachments');
 		var grVariables = new GlideRecord(data.table);
 		grVariables.get(data.sys_id);
-		data.variables = new global.GlobalServiceCatalogUtil().getVariablesForTask(grVariables, true);
+		if(data.table != 'change_request'){
+			if(data.table != 'wm_order'){
+				data.variables = new global.GlobalServiceCatalogUtil().getVariablesForTask(grVariables, true);
+			} else{
+				var wmFields = gs.getProperty('gservice_modal_wm_fields');
+				data.variables = $sp.getFields(grVariables, wmFields);
+			}
+
+		} else {
+			var fields = gs.getProperty('gservice_modal_change_fields');
+			data.variables = $sp.getFields(grVariables, fields);
+		}
 		data.ticketInfo = portalUtils.getTicketInfo(data.table, data.sys_id);
 	}
 	else{
@@ -651,33 +855,6 @@ ul {
 				grTask.get(localInput.sys_id);
 				grTask.comments = localInput.comment;
 				grTask.update();
-
-				/*if(localInput.table == "sc_req_item"){
-						var grScTask = new GlideRecord("sc_task");
-						grScTask.addQuery("request_item", localInput.sys_id);
-						grScTask.query();
-						if(grScTask.next()){
-							var reqState = grScTask.getValue("state");
-							var pendingReason = grScTask.getValue("u_pending_reason");
-							if(reqState == "-5" && pendingReason == "1"){
-								var item = {table: localInput.table,
-														sys_id: localInput.sys_id
-													 };
-								var state = "addCommentOnNotes";
-								data.item = portalUtils.changeItemState(item, state);
-							}
-						}
-					} else if (localInput.table == "incident"){
-						var incidentState = grTask.getValue("state");
-						var holdReason = grTask.getValue("holdReason");
-						if(incidentState == "3" && holdReason == "1"){
-							var itemJson = {table: localInput.table,
-															sys_id: localInput.sys_id
-														 };
-							var stateChange = "addCommentOnNotes";
-							data.item = portalUtils.changeItemState(itemJson, stateChange);
-						}
-					}*/
 				break;
 			case "newComment":
 				data.stream = $sp.getStream(localInput.table, localInput.sys_id);
@@ -694,16 +871,16 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-02 15:30:08</sys_created_on>
         <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
-        <sys_mod_count>116</sys_mod_count>
+        <sys_mod_count>343</sys_mod_count>
         <sys_name>GService Custom Conversation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
         <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-06-03 18:47:54</sys_updated_on>
+        <sys_updated_on>2020-07-27 19:19:02</sys_updated_on>
         <template><![CDATA[<div class="content_conversation_all">
-  <div class="conversation_title">Histórico da Solicitação</div>
+  <div ng-if="data.hide_title == false" class="conversation_title">${GService Conversation Request History}</div>
 
   <div>
     <div class="panel-body">
@@ -712,12 +889,15 @@ ul {
           <li class="conversation_entries conversation_fixed" role="listitem" aria-label="{{data.stream.user_full_name}}">
             <div class="conversation_mark"></div><span class="hide_timeline_property"></span><span class="new_radio_mark"></span>
             <div class="conversation_fixed_text">
-              <div class="conversation_action" ng-click="c.showForm()">
-                ${Abertura da Solicitação}
+              <div ng-if="data.table != 'sc_request' && !data.hide_title" class="conversation_action" data-toggle="modal" data-target="#moreDetails{{data.sys_id}}">
+                <div class="fixed_title">${Abertura da Solicitação}</div>
                 <span class="tooltip tooltip_right">
                   <div class="tooltip_arrow arrow_left"></div>
                   <div class="tooltip_text">${See summary}</div>
                 </span>
+              </div>
+              <div ng-if="data.table == 'sc_request' || data.hide_title">
+                <div class="simple_conversation_title">${Abertura da Solicitação}</div>
               </div>
               <div class="conversation_date">{{data.createdDate}}		{{data.createdTime}}</div>
             </div>
@@ -728,7 +908,7 @@ ul {
               <div class="conversation_action">{{e.name}}</div>
               <div class="conversation_description">{{e.field_label}}</div>
               <div class="">
-                <div class="conversation_description" ng-if="(e.element != 'attachment')" ng-bind-html="e.value"></div>
+                <div class="conversation_description" ng-if="(e.element != 'attachment')" ng-bind-html=e.display_value><span ng-if="e.showAll">...</span></div>
                 <div ng-if="(e.element == 'attachment')">
                   <a ng-if="(e.attachment.state == 'available')" target="_blank" href="/sys_attachment.do?view=true&sys_id={{e.attachment.sys_id}}" title="${View}">
                     <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/>
@@ -771,49 +951,139 @@ ul {
                 </div>
               </div>
             </div>
+            <div ng-if="e.showAll" ng-click="c.showConversation(e)" class="view_more_color">{{data.showAll}}</div>
             <div class="conversation_date">{{e.createdDate}}		{{e.createdTime}}</div>
           </li>
-          </div>
         </ul>
+      </div>
+
+      <div class="conversation_form" ng-if="!data.hide_new_comments">
+        <form ng-if="data.item_status != 'resolved'" ng-submit="c.postEntry(data.journalEntry)" id="sand">
+          <div class="conversation_user">
+            <img src="gservice_message.png"/>
+            <span class="user_name">{{data.username}}</span>
+          </div>
+          <div class=""> <!--ng-show="data.hasWritableJournalField"-->
+            <textarea ng-keypress="keyPress($event)" sn-resize-height="trim" rows="1" id="post-input" class="form-control no-resize overflow-hidden" ng-model='data.journalEntry' ng-model-options='{debounce: 250}' ng-attr-placeholder="{{getPlaceholder()}}" aria-label="{{getPlaceholder()}}" autocomplete="off" ng-change="userTyping(data.journalEntry)"/>
+            <span class="journal-field-indicator" ng-style="({'background-color': data.useSecondaryJournalField ? data.secondaryJournalField.color : data.primaryJournalField.color})"></span>
+          </div>
+
+          <div class="buttons button_size" ng-click="c.postEntry(data.journalEntry)">
+            <img src="gservice_dashboard_submit.png"/>
+            <span class="submit_name">Enviar</span>
+          </div>
+        </form>
+      </div>
+
     </div>
-
-    <div class="conversation_form">
-      <form ng-if="data.item_status != 'resolved'" ng-submit="c.postEntry(data.journalEntry)" id="sand">
-        <div class="conversation_user">
-          <img src="gservice_message.png"/>
-          <span class="user_name">{{data.username}}</span>
-        </div>
-        <div class=""> <!--ng-show="data.hasWritableJournalField"-->
-          <textarea ng-keypress="keyPress($event)" sn-resize-height="trim" rows="1" id="post-input" class="form-control no-resize overflow-hidden" ng-model='data.journalEntry' ng-model-options='{debounce: 250}' ng-attr-placeholder="{{getPlaceholder()}}" aria-label="{{getPlaceholder()}}" autocomplete="off" ng-change="userTyping(data.journalEntry)"/>
-          <span class="journal-field-indicator" ng-style="({'background-color': data.useSecondaryJournalField ? data.secondaryJournalField.color : data.primaryJournalField.color})"></span>
-        </div>
-
-        <div ng-click="c.postEntry(data.journalEntry)">
-          <img src="gservice_dashboard_submit.png"/>
-          <span class="submit_name">Enviar</span>
-        </div>
-      </form>
-    </div>
-
   </div>
-</div>
 
-<widget id="gservice_ticket_attachments"></widget>
+  <div ng-if="!data.hide_new_comments">
+    <widget id="gservice_ticket_attachments"></widget>  
+  </div>
 
-<div class="modal fade modal_article" id="moreDetailsModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <div class="panel-body wrapper-xl">
-          <span class="turn_bold color_change title_property">${Solicitação} ${#}{{data.ticketInfo.ticketNumber}}</span>
-          <div class="turn_bold color_change">${Data de Abertura}: {{data.ticketInfo.openedAt}}</div>
-          <div><span class="turn_bold">${Resumo da solicitação}: </span>{{data.ticketInfo.summary}}</div>
-          <div class="turn_bold color_change">${Detalhes da solicitação}:</div>
-          <div ng-repeat="variable in data.variables">
-            <span class="turn_bold">{{variable.label}} : </span>{{variable.display_value}}
+
+  <div class="modal fade modal_article" id="moreDetails{{data.sys_id}}" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" ng-click="c.hideModal('#moreDetails' + c.data.sys_id)" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div> 
+            <span class="turn_bold color_change title_property">${Solicitação} ${#}{{data.ticketInfo.ticketNumber}}</span>
+            <div class="turn_bold color_change">${Data de Abertura}: {{data.ticketInfo.openedAt}}</div>
+            <div><span class="turn_bold">${Resumo da solicitação}: </span>{{data.ticketInfo.summary}}</div>
+            <div class="turn_bold color_change">${Detalhes da solicitação}:</div>
+            <div ng-repeat="variable in data.variables">
+              <span class="turn_bold">{{variable.label}} : </span>{{variable.display_value}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="bg_content_feedback" id="conversationModalBG" ng-if="c.conversation_open" ng-click="c.hideConversation()"></div>
+  
+  <div class="content_feedback_" ng-if="c.conversation_open" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+    <div class="content_feedback" role="document">
+      <div class="">
+        <div class="">
+
+          <button class="close_feedback" type="button" class="close" ng-click="c.hideConversation()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="wrapper-xl wrapper-sc-cat-item">
+            <div class="panel-body">
+              <div class="activity_content">
+                <ul role="list" class="timeline" aria-label="${Ticket history}">
+                  <li class="conversation_entries conversation_fixed" role="listitem" aria-label="{{data.stream.user_full_name}}">
+                    <div class="conversation_mark"></div><span class="hide_timeline_property"></span><span class="new_radio_mark"></span>
+                    <div class="conversation_fixed_text">
+                      <div>
+                        <div class="simple_conversation_title">${Abertura da Solicitação}</div>
+                      </div>
+                      <div class="conversation_date">{{data.createdDate}}		{{data.createdTime}}</div>
+                    </div>
+                  </li>
+                  <li id="comment_{{e.id}}" class="conversation_entries conversation_dynamic" ng-if="data.mergedEntries.length > 0" ng-repeat="e in data.mergedEntriesAll">
+                    <div class="conversation_mark"></div>
+                    <div ng-style="{'border-color': getFieldColor(e.element)}">
+                      <div class="conversation_action">{{e.name}}</div>
+                      <div class="conversation_description">{{e.field_label}}</div>
+                      <div class="">
+                        <div class="conversation_description" ng-if="(e.element != 'attachment') && (!e.showingAll && e.showAll)" ng-bind-html="e.display_value"><span ng-if="!e.showingAll">...</span></div>
+                        <div class="conversation_description" ng-if="(e.element != 'attachment') && (e.showingAll || !e.showAll)" ng-bind-html="e.value"></div>
+                        <div ng-if="(e.element == 'attachment')">
+                          <a ng-if="(e.attachment.state == 'available')" target="_blank" href="/sys_attachment.do?view=true&sys_id={{e.attachment.sys_id}}" title="${View}">
+                            <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/>
+                          </a>
+                          <a ng-if="(e.attachment.state == '' || e.attachment.state == 'pending' || e.attachment.state == 'available_conditionally')" ng-click="scanAttachment(e.attachment)" href="javascript:void(0)" title="${View}">
+                            <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{::e.attachment.path}}?t=medium" class="img-responsive"/>
+                          </a>
+                          <div>
+                            <div ng-if="(e.attachment.state == 'available')">
+                              <a href="/sys_attachment.do?sys_id={{e.attachment.sys_id}}" target="_blank" title="{{dataViewMsg}}"><strong>{{e.attachment.file_name}}</strong></a><br/>
+                              {{e.attachment.size}}
+                            </div>
+                            <div ng-if="(e.attachment.state == 'not_available')">
+                              <span title="{{dataViewMsg}}" class="not_available">{{e.attachment.file_name}}</span><br/>
+                              <span class="error">{{data.scanFailedMsg}}</span>
+                            </div>
+                            <div ng-if="(e.attachment.state == '' || e.attachment.state == 'pending' || e.attachment.state == 'available_conditionally')">
+                              <a href="javascript:void(0)" ng-click="scanAttachment(e.attachment)" title="{{dataViewMsg}}"><strong>{{e.attachment.file_name}}</strong></a><br/>
+                              {{e.attachment.size}}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div ng-if="e.showTranslation" class="translation-container">
+                        <div ng-if="e.isTranslationInProgress">
+                          <i class="translation-icon icon-translation"></i>
+                          <span aria-live="polite">{{data.translation.translationProgressMsg}}</span>
+                        </div>
+                        <div ng-if="e.isTranslationSuccess">
+                          <i class="translation-icon icon-translation"></i>
+                          <a class="translate-link" role="button" href="javascript:void(0)" ng-click="toggleTranslation(e)">{{e.toggleMsg}}</a>
+                          <span class="translation-credits">{{e.credits}}</span>
+                          <div ng-if="e.showDetails" class="translation-message" ng-bind-html="e.translatedText">
+                          </div>
+                        </div>
+                        <div ng-if="e.isTranslationError">
+                          <i class="translation-icon icon-translation"></i>
+                          {{e.translatedText}}
+                          <a ng-if="e.tryAgain" role="button" href="javascript:void(0)" class="translate-link" ng-click="translateText(e, true)">{{data.translation.tryAgainMsg}}</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div ng-if="!e.showingAll && e.showAll" ng-click="c.showAllModal(e)" class="view_more_color">{{data.showAll}}</div>
+                    <div class="conversation_date">{{e.createdDate}}		{{e.createdTime}}</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -821,6 +1091,23 @@ ul {
   </div>
 </div>
 
+<div class="modal fade modal_article" id="openKbModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div>
+          <sp-widget widget="data.articleWidget"></sp-widget>
+        </div>
+        <div class="modal-footer">
+          <sp-widget widget="data.helpfulWidget"></sp-widget>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 ]]></template>
     </sp_widget>
 </record_update>

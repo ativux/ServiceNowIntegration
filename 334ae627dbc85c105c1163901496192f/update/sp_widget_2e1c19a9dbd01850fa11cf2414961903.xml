@@ -56,6 +56,10 @@ input[type="radio"]{
   display: none;
 }
 
+.wrapper-xl {
+  padding: 20px 50px !important;
+}
+
 .radio-properties {
   position: relative;
   display: inline-block;
@@ -93,6 +97,8 @@ input[type="radio"]:checked + .new-radio:after {
 }
 
 .categories {
+  margin-bottom: -10px;
+
   label {
     font-size: 18px;
     font-family: $text-bold;
@@ -205,11 +211,13 @@ input[type="radio"]:checked + .new-radio:after {
 																 "category_submit_img": "",
 																 "broadcast_name" : "openIncident"};
 	data.gserviceCatalogItem = $sp.getWidget('gservice_sc_catalog_item', sc_catalog_item_options);
-	//		data.gserviceCatalogItem = $sp.getWidget('widget-sc-cat-item-v2', sc_catalog_item_options);
 
 	var gr = new GlideRecord("sc_cat_item_producer");
 	gr.addActiveQuery();
-	gr.addQuery("table_name", "incident");
+	var qc = gr.addQuery('table_name','incident'); 
+	qc.addOrCondition('table_name','sn_si_incident');
+	var qcCat = gr.addQuery("category", "!=", "NULL");
+	qcCat.addOrCondition("category", "!=", "");
 	gr.query();
 	//Query para coletar informações de Record Producers da table de incidents
 	while(gr.next()){
@@ -217,6 +225,7 @@ input[type="radio"]:checked + .new-radio:after {
 												"sys_id" : gr.getUniqueValue(),
 												"name" : gr.getValue("name"),
 												"description" : gr.getValue("short_description"),
+												"delivery_time" : gr.getDisplayValue("delivery_time"),
 												"selected" : false};
 		data.categories.push(categoryJSON);
 	}
@@ -227,14 +236,14 @@ input[type="radio"]:checked + .new-radio:after {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-20 15:58:36</sys_created_on>
         <sys_id>2e1c19a9dbd01850fa11cf2414961903</sys_id>
-        <sys_mod_count>655</sys_mod_count>
+        <sys_mod_count>668</sys_mod_count>
         <sys_name>GService Error Modal</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2e1c19a9dbd01850fa11cf2414961903</sys_update_name>
         <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-21 15:19:40</sys_updated_on>
+        <sys_updated_on>2020-07-27 19:31:46</sys_updated_on>
         <template><![CDATA[<!--<div ng-if="showWidget == c.data.parentid">	Se quiser adicionar algo além do modal, ativar isso-->
 <div class="modal fade" style="z-index: 1041" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
