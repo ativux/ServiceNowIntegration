@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_css">
+    <sp_css action="INSERT_OR_UPDATE">
+        <css>@font-face {&#13;
+   font-family:'globorounded_th_ie';&#13;
+   src: url('/sys_attachment.do?sys_id=f68751021b129c1094962170f54bcb5e');&#13;
+   font-weight: normal;&#13;
+   font-style: normal;&#13;
+}&#13;
+@font-face {&#13;
+   font-family:'globorounded_th_it_ie';&#13;
+   src: url('/sys_attachment.do?sys_id=f68751021b129c1094962170f54bcb5d');&#13;
+   font-weight: normal;&#13;
+   font-style: normal;&#13;
+}&#13;
+@font-face {&#13;
+   font-family:'globorounded_rg_ie';&#13;
+   src: url('/sys_attachment.do?sys_id=f68751021b129c1094962170f54bcb5c');&#13;
+   font-weight: normal;&#13;
+   font-style: normal;&#13;
+}&#13;
+@font-face {&#13;
+   font-family:'globorounded_rg_it_ie';&#13;
+   src: url('/sys_attachment.do?sys_id=f68751021b129c1094962170f54bcb5b');&#13;
+   font-weight: normal;&#13;
+   font-style: normal;&#13;
+}&#13;
+@font-face {&#13;
+   font-family:'globorounded_lt_ie';&#13;
+   src: url('/sys_attachment.do?sys_id=f68751021b129c1094962170f54bcb5a');&#13;
+   font-weight: normal;&#13;
+   font-style: normal;&#13;
+}&#13;
+@font-face {&#13;
+   font-family:'globorounded_lt_it_ie';&#13;
+   src: url('/sys_attachment.do?sys_id=f68751021b129c1094962170f54bcb59');&#13;
+   font-weight: normal;&#13;
+   font-style: normal;&#13;
+}&#13;
+@font-face {&#13;
+   font-family:'globorounded_bk_ie';&#13;
+   src: url('/sys_attachment.do?sys_id=f68751021b129c1094962170f54bcb58');&#13;
+   font-weight: normal;&#13;
+   font-style: normal;&#13;
+}&#13;
+@font-face {&#13;
+   font-family:'globorounded_bk_it_ie';&#13;
+   src: url('/sys_attachment.do?sys_id=f68751021b129c1094962170f54bcb57');&#13;
+   font-weight: normal;&#13;
+   font-style: normal;&#13;
+}&#13;
+@font-face {&#13;
+   font-family:'globorounded_bd_ie';&#13;
+   src: url('/sys_attachment.do?sys_id=e68751021b129c1094962170f54bcb56');&#13;
+   font-weight: normal;&#13;
+   font-style: normal;&#13;
+}&#13;
+@font-face {&#13;
+   font-family:'globorounded_bd_it_ie';&#13;
+   src: url('/sys_attachment.do?sys_id=a28751021b129c1094962170f54bcb55');&#13;
+   font-weight: normal;&#13;
+   font-style: normal;&#13;
+}</css>
+        <name>OCL Globo Fonts IE</name>
+        <sys_class_name>sp_css</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-07-30 13:07:55</sys_created_on>
+        <sys_id>de2d78021b5e5c1094962170f54bcba1</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>OCL Globo Fonts IE</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_css_de2d78021b5e5c1094962170f54bcba1</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-07-30 15:04:06</sys_updated_on>
+    </sp_css>
+</record_update>

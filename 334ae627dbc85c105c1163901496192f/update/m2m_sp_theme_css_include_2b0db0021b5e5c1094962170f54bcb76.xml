@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_theme_css_include">
+    <m2m_sp_theme_css_include action="INSERT_OR_UPDATE">
+        <order>10</order>
+        <sp_css_include display_value="OCL: Globo Fonts IE">280db8ce1b1e5c1094962170f54bcbad</sp_css_include>
+        <sp_theme display_value="OCL: ITSM Unification">22547ea3db0c5c105c1163901496196f</sp_theme>
+        <sys_class_name>m2m_sp_theme_css_include</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-07-30 13:05:30</sys_created_on>
+        <sys_id>2b0db0021b5e5c1094962170f54bcb76</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>OCL: Globo Fonts IE.OCL: ITSM Unification</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_theme_css_include_2b0db0021b5e5c1094962170f54bcb76</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-07-30 13:28:04</sys_updated_on>
+    </m2m_sp_theme_css_include>
+</record_update>
