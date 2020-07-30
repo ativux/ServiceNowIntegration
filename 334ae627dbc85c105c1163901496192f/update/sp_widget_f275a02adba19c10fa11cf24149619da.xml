@@ -1,0 +1,699 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>standard</category>
+        <client_script><![CDATA[function ($scope, $location, $window, spUtil, amb, $http, spAriaUtil, $timeout, spNavStateManager) {
+	var c = this;
+
+	var eventNames = {
+		setFilter: 'data_table.setFilter',
+		setKeywords: 'data_table.setKeywords'
+	};
+
+	$scope.mathMin = function(v1,v2) {
+		return Math.min(v1,v2);
+	}
+
+	function getData(updateUrl) {
+		var f = $scope.data;
+		spUtil.update($scope).then(function(data) {
+			f.view = data.view;
+
+			initRecordWatcher(f.table, f.filter);
+		});
+	}
+
+	var watcher;
+	function initRecordWatcher(table, filter){
+		if (watcher)
+			watcher.unsubscribe();
+
+		if (table && filter) {
+			var watcherChannel = amb.getChannelRW(table, filter);
+			amb.connect();
+			watcher = watcherChannel.subscribe(function(message) {
+				if (!message.data)
+					return;
+				switch(message.data.action) {
+					case "change":
+						updateRowFromRW(message);
+						break;
+					case "exit":
+						// A record was removed
+					case "enter":
+						// A record was added
+					default:
+						spUtil.update($scope);
+						break;
+				}
+			});
+		}
+	}
+
+	function updateRowFromRW(message) {
+		if (message.data && message.data.sys_id && $scope.data.list) {
+			var row, field;
+			for(var i=0;i<$scope.data.list.length; i++) {
+				row = $scope.data.list[i];
+				if (row.sys_id == message.data.sys_id) {
+					var fields = Object.getOwnPropertyNames(message.data.record);
+					for(var f in fields) {
+						field = fields[f];
+						if(typeof row[field] !== 'undefined') {
+							row[field].display_value = message.data.record[field].display_value;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	$scope.$on('$destroy', function() {
+		if (watcher)
+			watcher.unsubscribe();
+	});
+
+	$scope.setPageNum = function(num) {
+		$scope.data.p = num;
+		getData(true);
+		$timeout(function() {
+			$scope.focusOnTableHeader();
+		});
+	}
+
+	$scope.setOrderBy = function(field) {
+		var d = "asc";
+		if ($scope.data.o == field) {
+			if ($scope.data.d == "asc")
+				d = "desc";
+			else
+				d = "asc";
+		}
+
+		if (d === "asc") {
+			spAriaUtil.sendLiveMessage($scope.data.msg.sortingByAsc);
+		} else if (d === "desc") {
+			spAriaUtil.sendLiveMessage($scope.data.msg.sortingByDesc);
+		}
+
+		$scope.data.o = field;
+		$scope.data.d = d;
+		$scope.setSearch(true);
+	}
+
+	$scope.setSearch = function(updateUrl) {
+		$scope.data.p = 1;
+		if ($scope.data.keywords) {
+			var previousSearchTerm = $scope.previousSearchTerm;
+			if (previousSearchTerm) {
+				previousSearchTerm = '123TEXTQUERY321=' + previousSearchTerm;
+				var previousSearchTermStartIndex = $scope.data.filter.indexOf(previousSearchTerm);
+				var previousSearchTermEndIndex = previousSearchTermStartIndex + previousSearchTerm.length;
+				if (previousSearchTermStartIndex >= 0)
+					$scope.data.filter = $scope.data.filter.substr(0, previousSearchTermStartIndex) + $scope.data.filter.substr(previousSearchTermEndIndex + 1, $scope.data.filter.length);
+			}
+			$scope.previousSearchTerm = $scope.data.keywords;
+		}
+		getData(updateUrl);
+	}
+
+	$scope.$on(eventNames.setFilter, function(e, newFilter){
+		if(newFilter != ""){
+			$scope.data.filter = newFilter;
+			$scope.setSearch(false);
+		}
+		else{
+			c.data.list = [];
+			/*$('.content-table').css('margin-top', '-500px');
+			$timeout(function(){
+				c.data.list = [];
+				$timeout(function(){
+					$('.content-table').css('margin-top', '0');
+				}, 500);
+				$timeout(function(){
+					$('.content-header').css('margin-top', '0');
+				}, 100);
+			}, 200);*/
+
+		}
+	});
+
+	$scope.$on(eventNames.setKeywords, function(e, keywords){
+		$scope.data.keywords = keywords;
+		$scope.setSearch(false);
+	});
+
+	// Makes Widget Async
+	$scope.data = $scope.options;
+	$scope.loadingData = true;
+	$scope.server.update().then(function() {
+		$scope.loadingData = false;
+		initRecordWatcher($scope.data.table, $scope.data.filter);
+	});
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.content-table{&#13;
+  transition: .5s ease-in-out;&#13;
+}&#13;
+.content-header{&#13;
+  margin-top: -200px;&#13;
+  transition: .1s ease-in-out;&#13;
+}&#13;
+.mask{&#13;
+  overflow: hidden;&#13;
+}&#13;
+.alert-info {&#13;
+  font-size: 18px;&#13;
+  color: $slate-gray;&#13;
+  background-color: white;&#13;
+  border: 0;&#13;
+  border-top: 2px solid $slate-gray;&#13;
+  border-bottom: 2px solid $slate-gray;&#13;
+}&#13;
+.panel-heading {&#13;
+  padding-left: 8px;&#13;
+}&#13;
+&#13;
+table {&#13;
+  margin-bottom: 0;&#13;
+  table-layout: fixed;&#13;
+&#13;
+  thead {&#13;
+    border-top: 2px solid $slate-gray;&#13;
+    border-bottom: 2px solid $slate-gray;&#13;
+&#13;
+    .text-properties{&#13;
+      padding: 20px 5px 20px 0;&#13;
+    }&#13;
+&#13;
+    th {&#13;
+      padding: 8px 0;&#13;
+      border-bottom: 0;&#13;
+      cursor: pointer;&#13;
+      vertical-align: middle;&#13;
+      font-size: 12px;&#13;
+      font-family: $text-bolder;&#13;
+&#13;
+      .th-title {&#13;
+        display: inline-block;&#13;
+        color: $slate-gray;&#13;
+        text-transform: uppercase;&#13;
+      }&#13;
+    }&#13;
+    /*.number {&#13;
+      width: 10%;&#13;
+    }&#13;
+    .priority {&#13;
+      width: 10%;&#13;
+    }&#13;
+    .sla_due {&#13;
+      width: 10%;&#13;
+    }&#13;
+    .short_description {&#13;
+      width: 10%;&#13;
+    }&#13;
+    .state {&#13;
+      width: 10%;&#13;
+    }&#13;
+    .assignment_group {&#13;
+      width: 10%;&#13;
+    }&#13;
+    .assigment_to {&#13;
+      width: 10%;&#13;
+    }&#13;
+    .opened_by {&#13;
+      width: 10%;&#13;
+    }*/&#13;
+    th i {&#13;
+      display: inline-block;&#13;
+      margin-left: 5px;&#13;
+      color: $deep-sky-blue;&#13;
+    }&#13;
+    th .disabled {&#13;
+      color:#ddd;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  tbody {&#13;
+    tr {&#13;
+      border-top: 2px solid $slate-gray;&#13;
+      border-bottom: 2px solid $slate-gray;&#13;
+&#13;
+      td {&#13;
+        padding: 20px 10px 20px 0;&#13;
+        font-size: 12px;&#13;
+        vertical-align: middle;&#13;
+        position: relative;&#13;
+&#13;
+        &amp;:hover {&#13;
+          .tooltip {&#13;
+            visibility: visible;&#13;
+            opacity: 1;&#13;
+          }&#13;
+        }&#13;
+        .tooltip_bottom {&#13;
+          left: 0;&#13;
+          top: 45px;&#13;
+        }&#13;
+        .arrow_top{&#13;
+          position: absolute;&#13;
+          left: 30px;&#13;
+          top: -10px;&#13;
+        }&#13;
+        .tooltip_text {&#13;
+          white-space: normal;&#13;
+        }&#13;
+      }&#13;
+      td:nth-child(1) {&#13;
+        text-decoration: underline;&#13;
+      }&#13;
+      td:nth-child(5) {&#13;
+        font-family: $text-bold;&#13;
+      }&#13;
+      .pending {&#13;
+        color: $coral;&#13;
+      }&#13;
+      .inProgress {&#13;
+        color: $yellow-green;&#13;
+      }&#13;
+      .resolved {&#13;
+        color: $deep-sky-blue;&#13;
+      }&#13;
+      .draft {&#13;
+        color: $light-steel-blue;&#13;
+      }&#13;
+    }&#13;
+    tr:nth-of-type(odd) {&#13;
+      background-color: white;&#13;
+    }&#13;
+  }&#13;
+  tbody tr:last-child {&#13;
+    border-bottom: none;&#13;
+  }&#13;
+}&#13;
+.panel-footer {&#13;
+  padding: 0;&#13;
+  border-top: 2px solid $slate-gray;&#13;
+&#13;
+  .content_pagination {&#13;
+    padding-top: 20px;&#13;
+&#13;
+&#13;
+    .pag_arrow_left {&#13;
+      img {&#13;
+        transform: rotate(90deg);&#13;
+      }&#13;
+    }&#13;
+    .pag_arrow_right {&#13;
+      img {&#13;
+        margin-left: 25px;&#13;
+        transform: rotate(-90deg);&#13;
+      }&#13;
+    }&#13;
+    .pag_arrow_left, .pag_arrow_right {&#13;
+      img {&#13;
+        height: 14px;&#13;
+        margin-top: -4px;&#13;
+      }&#13;
+    }&#13;
+    .pag_text {&#13;
+      font-family: $text-bold;&#13;
+      text-transform: uppercase;&#13;
+      margin-left: 25px;&#13;
+    }&#13;
+  }&#13;
+}</css>
+        <data_table>sp_instance_table</data_table>
+        <demo_data>{"data":
+	{
+		"table": "incident",
+		"view": "default",
+		"o": "opened_at",
+		"d": "desc",
+		"filter": "activeEQtrue",
+		"p": 1,
+		"fields": "number,short_description"
+	}
+}</demo_data>
+        <description/>
+        <docs/>
+        <field_list>table,filter,field_list,maximum_entries,order,order_by,order_direction,title,color,glyph,sp_page</field_list>
+        <has_preview>false</has_preview>
+        <id>gservice_data_table</id>
+        <internal>false</internal>
+        <link><![CDATA[function(scope, element, attrs, ctrl){
+	var $ul, $contextMenu;
+
+	scope.focusOnTableHeader = function() {
+		element.find(".data-table-title").attr("tabindex", "-1").focus();
+	}
+
+
+	function renderContextMenu(items){
+		var scrollHeight = $('body').get(0).scrollHeight;
+		$contextMenu = angular.element('<div>', {'class': 'dropdown clearfix context-dropdown open'});
+
+		$contextMenu.on('click', function (e) {
+			if ($(e.target).hasClass('dropdown')) {
+				_clearContextMenus(event);
+			}
+		});
+		$contextMenu.on('contextmenu', function (event) {
+			event.preventDefault();
+			_clearContextMenus(event);
+		});
+
+		$contextMenu.css({
+			position: 'absolute',
+			top: 0,
+			height: scrollHeight,
+			left: 0,
+			right: 0,
+			zIndex: 9999
+		});
+
+		$('body').append($contextMenu);
+
+		$ul = angular.element('<ul>', {
+			'class': 'dropdown-menu',
+			'role': 'menu'
+		});
+		renderItems();
+		$contextMenu.append($ul);
+
+		function renderItems(){
+			angular.forEach(items, function (item) {
+				var $li = angular.element('<li>');
+
+				if (item === null) {
+					$li.addClass('divider');
+				} else {
+					var $a = angular.element('<a>');
+					$a.attr({tabindex: '-1', href:'#'});
+					$a.text(item[0]);
+					$li.append($a);
+					$li.on('click', function (e) {
+						e.preventDefault();
+						scope.$apply(function () {
+							_clearContextMenus(e);
+							item[1].call(item, item);
+						});
+					});
+				}
+
+				$ul.append($li);
+			});
+		}
+	}
+
+	function _clearContextMenus(event){
+		if (!event){
+			return;
+		}
+
+		angular.element(event.currentTarget).removeClass('context');
+
+		var els = angular.element(".context-dropdown");
+		angular.forEach(els, function(el){
+			angular.element(el).remove();
+		});
+	}
+
+	var contextMenuItemHeight = 0;
+	function setContextMenuPosition(event){
+		if (contextMenuItemHeight === 0)
+			contextMenuItemHeight = $ul.children(0).height();
+
+		// Why not just call .width() and .height() on the container? Because those calculations cause browsers to reflow
+		// that can cause IE10 to take 200ms to render a context menu.
+		var cmWidth = 150;
+		var cmHeight = contextMenuItemHeight * $ul.children().length;
+		var startX = event.pageX + cmWidth >= window.innerWidth ? event.pageX - cmWidth : event.pageX;
+		var startY = event.pageY + cmHeight >= window.innerHeight ? event.pageY - cmHeight : event.pageY;
+
+		$ul.css({
+			display: 'block',
+			position: 'absolute',
+			left: startX,
+			top: startY,
+			'min-width': cmWidth
+		});
+	}
+}]]></link>
+        <name>GService Data Table</name>
+        <option_schema>[{"hint":"If enabled, show the list filter in the breadcrumbs of the data table","name":"enable_filter","default_value":"false","section":"Behavior","label":"Enable Filter","type":"boolean"}]</option_schema>
+        <public>false</public>
+        <roles>snc_external,snc_internal</roles>
+        <script><![CDATA[(function() {
+	if (!input) // asynch load list
+		return;
+	var portalUtils = new global.OCLPortalUtils_GServiceManager();
+
+	data.msg = {};
+	data.msg.sortingByAsc = gs.getMessage("Sorting by ascending");
+	data.msg.sortingByDesc = gs.getMessage("Sorting by descending");
+
+	optCopy(['table', 'p', 'o', 'd', 'filter', 'filterACLs', 'fields', 'keywords', 'view']);
+	optCopy(['relationship_id', 'apply_to', 'apply_to_sys_id', 'window_size']);
+	if (!data.table) {
+		data.invalid_table = true;
+		data.table_label = "";
+		return;
+	}
+
+	/*if (!data.fields) {
+		if (data.view)
+			data.fields = $sp.getListColumns(data.table, data.view);
+		else
+			data.fields = $sp.getListColumns(data.table);
+	}*/
+	data.fields = "number,priority,sla_due,short_description,state,assignment_group,assigned_to,opened_by";
+
+	data.title = input.headerTitle;
+	data.view = data.view || 'mobile';
+	data.table = data.table || $sp.getValue('table');
+	data.filter = data.filter || $sp.getValue('filter');
+	data.keywords = data.keywords || $sp.getValue('keywords');
+	data.p = data.p || $sp.getValue('p') || 1;
+	data.p = parseInt(data.p);
+	data.o = data.o || $sp.getValue('o') || $sp.getValue('order_by');
+	data.d = data.d || $sp.getValue('d') || $sp.getValue('order_direction');
+	data.page_index = data.p - 1;
+	data.show_new = data.show_new || options.show_new;
+	var windowSize = data.window_size || $sp.getValue('maximum_entries') || 6;
+	windowSize = parseInt(windowSize);
+	if (isNaN(windowSize) || windowSize < 1)
+		windowSize = 20;
+	data.window_size = windowSize;
+
+	var grForMetaData = new GlideRecord(data.table);
+	var gr;
+	// FilteredGlideRecord is not supported in scoped apps, so GlideRecordSecure will always be used in an application scope
+	if (typeof FilteredGlideRecord != "undefined" && (gs.getProperty("glide.security.ui.filter") == "true" || grForMetaData.getAttribute("glide.security.ui.filter") != null)) {
+		gr = new FilteredGlideRecord(data.table);
+		gr.applyRowSecurity();
+	} else
+		gr = new GlideRecordSecure(data.table);
+	if (!gr.isValid()) {
+		data.invalid_table = true;
+		data.table_label = data.table;
+		return;
+	}
+
+	data.canCreate = gr.canCreate();
+	data.newButtonUnsupported = data.table == "sys_attachment";
+	data.table_label = gr.getLabel();
+	data.table_plural = gr.getED().getPlural();
+	data.hasTextIndex = $sp.hasTextIndex(data.table);
+	if (data.filter) {
+		if (data.filterACLs)
+			gr = $sp.addQueryString(gr, data.filter);
+		else
+			gr.addEncodedQuery(data.filter);
+	}
+	if (data.keywords) {
+		gr.addQuery('123TEXTQUERY321', data.keywords);
+		data.keywords = null;
+	}
+
+	data.filter = gr.getEncodedQuery();
+
+	if (data.relationship_id) {
+		var rel = GlideRelationship.get(data.relationship_id);
+		var target = new GlideRecord(data.table);
+		var applyTo = new GlideRecord(data.apply_to);
+		applyTo.get("sys_id", data.apply_to_sys_id);
+		rel.queryWith(applyTo, target); // put the relationship query into target
+		data.exportQuery = target.getEncodedQuery();
+		gr.addEncodedQuery(data.exportQuery); // get the query the relationship made for us
+	}
+	if (data.exportQuery)
+		data.exportQuery += '^' + data.filter;
+	else
+		data.exportQuery = data.filter;
+	data.exportQueryEncoded = encodeURIComponent(data.exportQuery);
+	if (data.o){
+		if (data.d == "asc")
+			gr.orderBy(data.o);
+		else
+			gr.orderByDesc(data.o);
+		if (gs.getProperty("glide.secondary.query.sysid") == "true")
+			gr.orderBy("sys_id");
+	}
+
+	data.window_start = data.page_index * data.window_size;
+	data.window_end = (data.page_index + 1) * data.window_size;
+	gr.chooseWindow(data.window_start, data.window_end);
+	gr._query();
+
+	data.row_count = gr.getRowCount();
+	data.num_pages = Math.ceil(data.row_count / data.window_size);
+	data.column_labels = {};
+	data.fields_array = data.fields.split(',');
+
+	// use GlideRecord to get field labels vs. GlideRecordSecure
+	for (var i in data.fields_array) {
+		var field = data.fields_array[i];
+		var ge = grForMetaData.getElement(field);
+		if (ge == null)
+			continue;
+
+		
+		var columnName = ge.getLabel();
+		switch(field){
+			case "short_description":
+				columnName = "Motivo da abertura";
+				break;
+			case "assignment_group":
+				columnName = "Fila responsável";
+				break;
+			case "opened_by":
+				columnName = "Solicitante";
+				break;
+			case "sla_due":
+				columnName = "Tempo Restante";
+				break;
+			case "assigned_to":
+				columnName = "Responsável pela tarefa";
+				break;
+			default:
+				break;
+		}
+		data.column_labels[field] = columnName.toUpperCase();
+	}
+
+	data.list = [];
+	while (gr._next()) {
+		var record = {};
+		$sp.getRecordElements(record, gr, data.fields);
+		if (typeof FilteredGlideRecord != "undefined" && gr instanceof FilteredGlideRecord) {
+			// FilteredGlideRecord doesn't do field-level
+			// security, so take care of that here
+			for (var f in data.fields_array) {
+				var fld = data.fields_array[f];
+				if (!gr.isValidField(fld))
+					continue;
+
+				if (!gr[fld].canRead()) {
+					record[fld].value = null;
+					record[fld].display_value = null;
+				}
+			}
+		}
+		record.sys_id = gr.getValue('sys_id');
+		record.targetTable = gr.getRecordClassName();
+		for(var key in record){
+			if(key == "sla_due"){
+				var grTask = new GlideRecord("task_sla");
+				grTask.addEncodedQuery("task="+ record.sys_id + "^stage=in_progress^sla.type=SLA^sla.target=resolution");
+				grTask.query();
+				while(grTask.next()){
+					record[key].value = grTask.getValue("planned_end_time");
+					record[key].display_value = grTask.getDisplayValue("business_time_left");
+					record[key].display_value = record[key].display_value.replaceAll("-", "/");
+				}
+			}
+		}
+		data.list.push(record);
+	}
+
+	data.enable_filter = (input.enable_filter == true || input.enable_filter == "true" ||
+												options.enable_filter == true || options.enable_filter == "true");
+
+	// copy to data from input or options
+	function optCopy(names) {
+		names.forEach(function(name) {
+			data[name] = input[name] || options[name];
+		})
+	}
+
+	if(data.list.length > 0){
+		for(i in data.list){
+			data.list[i].colorClass = portalUtils.getColorClass(data.list[i].state.value, data.list[i].targetTable);
+			for(var j in data.fields_array){
+				if(data.list[i][data.fields_array[j]].type != 'reference'){
+					data.list[i][data.fields_array[j]].limit = 30;
+				} else {
+					data.list[i][data.fields_array[j]].limit = 35;
+				}
+
+				if(data.list[i][data.fields_array[j]].display_value.length > 20){
+					data.list[i][data.fields_array[j]].display_value = portalUtils.getCharacterLength(data.list[i][data.fields_array[j]].display_value);
+				}
+			}
+		}
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-06-24 17:52:22</sys_created_on>
+        <sys_id>f275a02adba19c10fa11cf24149619da</sys_id>
+        <sys_mod_count>455</sys_mod_count>
+        <sys_name>GService Data Table</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_f275a02adba19c10fa11cf24149619da</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-07-30 17:08:12</sys_updated_on>
+        <template><![CDATA[<div class="clearfix"/>
+<div>
+  <div class="panel-heading form-inline"></div>
+  <div class="alert alert-info" ng-if="data.list.length == 0">
+    ${Ops! Não encontramos resultados para essa busca.}
+  </div>
+  <div ng-if="data.list.length > 0">
+    <table class="table">
+      <thead>
+        <tr>
+          <th ng-repeat="field in data.fields_array track by $index" class="text-properties {{field}}" ng-click="setOrderBy(field)"
+              scope="col" role="columnheader" aria-sort="{{field == data.o ? (data.d == 'asc'? 'ascending': 'descending') : 'none'}}">
+            <div class="th-title" title="${Sort by} {{field == data.o ? (data.d == 'asc' ?  '${Descending}': '${Ascending}') : '${Ascending}'}}" role="button" tabindex="0" aria-label="{{data.column_labels[field]}}">{{data.column_labels[field]}}</div>
+            <i class="fa" ng-if="field == data.o" ng-class="{'asc': 'fa-chevron-up', 'desc': 'fa-chevron-down'}[data.d]"></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in data.list track by item.sys_id">
+          <td ng-class="field == 'state' ? item.colorClass : ''" ng-repeat="field in ::data.fields_array">
+            <span tabindex="0">{{item[field].display_value | limitTo : item[field].limit}}{{item[field].display_value.length > item[field].limit ? '...' : ''}}</span>
+            <span class="tooltip tooltip_bottom" ng-show="item[field].value.length > item[field].limit">
+              <div class="tooltip_arrow arrow_top"></div>
+              <div class="tooltip_text">{{item[field].value}}</div>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="panel-footer">
+      <div class="content_pagination">
+        <span class="pag_arrow_left" ng-click="setPageNum(data.p - 1)" ng-if="data.p > 1"><img src="gservice_column_dashboard_arrow.png"/></span>
+        <span class="pag_arrow_right" ng-click="setPageNum(data.p + 1)" ng-if="data.p != data.num_pages"><img src="gservice_column_dashboard_arrow.png"/></span>
+        <span class="pag_text">Página {{data.p}} - {{ mathMin(data.window_end,data.row_count) }} de {{data.row_count}} RESULTADOS</span>
+      </div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>
