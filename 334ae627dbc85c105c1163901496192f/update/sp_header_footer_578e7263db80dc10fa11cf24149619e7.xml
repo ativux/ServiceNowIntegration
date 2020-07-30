@@ -491,6 +491,45 @@ nav {
 .dropdown_open {
   left: 90px !important;
   opacity: 1;
+}
+
+.mobile_message {
+  background-color: rgba(255, 255, 255, .95);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 21;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: $slate-gray;
+  padding: 20px;
+
+  .mobile_service_icon {
+    width: 50px;
+    margin-bottom: 10px;
+  }
+  .mobile_service_logos {
+    width: 200px;
+  }
+  .message_title, .message {
+    font-size: 14px;
+  }
+  .message_title {
+    padding: 0 40px;
+    font-family: $text-bold;
+    color: $dodger-blue;
+  }
+  .message {
+    margin: 18px 0;
+  }
+  .no_margin {
+    margin-bottom: 0;
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -555,6 +594,8 @@ nav {
 (function() {
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
+	data.device = portalUtils.getDeviceType();
+	
 	data.showBackend = gs.hasRole();
 	data.items = [];
 	data.thirdCategories = [];
@@ -668,14 +709,14 @@ nav {
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 18:00:53</sys_created_on>
         <sys_id>578e7263db80dc10fa11cf24149619e7</sys_id>
-        <sys_mod_count>759</sys_mod_count>
+        <sys_mod_count>804</sys_mod_count>
         <sys_name>GService Stock Header</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_header_footer_578e7263db80dc10fa11cf24149619e7</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-07-22 18:08:33</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-07-30 19:43:08</sys_updated_on>
         <template><![CDATA[<div class="content">
 
   <!-- SIDE BAR -->
@@ -778,6 +819,15 @@ nav {
       </div>
     </nav>
   </div>
+</div>
+
+<div class="mobile_message" ng-if="data.device == 'm'">
+  <img class="mobile_service_icon" src="mobile_service_icon.png" />
+  <div class="message_title">Esse portal não foi configurado para uso mobile.</div>
+  <div class="message no_margin">Recomendamos que você acesse ele pela versão desktop ou baixe o app Now Mobile para o seu celular.</div>
+  <div class="message">Disponível gratuitamente na App Store e no Google Play.</div>
+  <img class="mobile_service_logos" src="mobile_service_logos.png" />  
+  <div class="message">Todos os usuários da Globo têm acesso ao aplicativo que foi configurado para uma experiência similar ao portal desktop.</div>
 </div>
 
 <div ng-if="data.show_survey">
