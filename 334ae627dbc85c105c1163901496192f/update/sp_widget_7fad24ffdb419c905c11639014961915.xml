@@ -28,6 +28,20 @@
 					c.data.showEmptyMessage = true;
 				}
 			});
+		} else if(event.data.record.state.value == "rejected" ||
+							event.data.record.state.value == "approved" && stateChanged){
+			c.server.get({
+				action: "deleteApprovals",
+				approvalID: event.data.sys_id,
+				approvals: c.data.approvals
+			}).then(function(response) {
+				if(response.data.approvals.length > 0){
+					c.data.approvals = response.data.approvals;
+					c.data.showEmptyMessage = false;
+				} else {
+					c.data.showEmptyMessage = true;
+				}
+			});
 		}
 	});
 
@@ -872,7 +886,23 @@ tbody {&#13;
 		for(i in columns){
 			data.columns[i].name = gs.getMessage(columns[i].name).toUpperCase();
 		}
-		data.approverQuery = "state=requested^source_tableINsc_req_item,change_request^approver=" + gs.getUserID();
+		data.approverQuery = "state=requested^source_table=sc_req_item^ORsource_table=change_request^approver.sys_idIN" + gs.getUserID();
+
+		var delegateUsers = [];
+		var grDelegate = new GlideRecord("sys_user_delegate");
+		grDelegate.addQuery("delegate", gs.getUserID());
+		grDelegate.addQuery("approvals", true);
+		grDelegate.query();
+		if(grDelegate.next()){
+			do{
+				delegateUsers.push(grDelegate.getValue("user"));
+			} while(grDelegate.next());
+		}
+
+		if(delegateUsers.length > 0){
+			data.approverQuery += "," + delegateUsers.join(",");
+		}
+
 		data.approvals = portalUtils.getApprovals(data.user_id);
 		if(data.approvals.length == 0){
 			data.showEmptyMessage = true;
@@ -921,12 +951,29 @@ tbody {&#13;
 
 			case "getNewApproval":
 				data.approvals = [];
+
 				if(localInput.approvals){
 					data.approvals = localInput.approvals;
 				}
+
 				data.approvals.push(portalUtils.getNewApproval(localInput.approvalID));
 				break;
+			case "deleteApprovals":
+				var newObject = [];
+				if(localInput.approvals){
+					data.approvals = localInput.approvals;
+				}
+				if(data.approvals.length > 0){
+					for(var i in data.approvals){
+						if(data.approvals[i].approvalID != localInput.approvalID){
+							newObject.push(data.approvals[i]);
+						}
+					}
+					data.approvals = newObject;
+				}
+				break;
 		}
+
 	}
 })();]]></script>
         <servicenow>false</servicenow>
@@ -934,14 +981,14 @@ tbody {&#13;
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-03 19:09:12</sys_created_on>
         <sys_id>7fad24ffdb419c905c11639014961915</sys_id>
-        <sys_mod_count>42</sys_mod_count>
+        <sys_mod_count>53</sys_mod_count>
         <sys_name>GService My Dashboard Approvals</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7fad24ffdb419c905c11639014961915</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-30 15:45:54</sys_updated_on>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-31 21:07:58</sys_updated_on>
         <template><![CDATA[<div class="approval_content">
   <div class="page_description">
     ${My Dashboard Approvals 1}<br>

@@ -438,10 +438,37 @@
 			data.tabs.push(tab);
 			data.tabs[i].label = gs.getMessage(tab.label);
 		}
-		data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by="+ gs.getUserID();
 
-		data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
-		data.approverQuery = "state=requested^source_table=sc_req_item^ORsource_table=change_request^approver=" + gs.getUserID();
+		var delegateUsersNotification = [];
+		var delegateUsersApproval = [];
+		var grDelegate = new GlideRecord("sys_user_delegate");
+		grDelegate.addQuery("delegate", gs.getUserID());
+		var qc = grDelegate.addQuery("u_pending_requests", true);
+		qc.addOrCondition("approvals", true);
+		grDelegate.query();
+		if(grDelegate.next()){
+			do{
+				if(grDelegate.getValue("u_pending_requests") == 1){
+					delegateUsersNotification.push(grDelegate.getValue("user"));
+				}
+				if(grDelegate.getValue("approvals") == 1){
+					delegateUsersApproval.push(grDelegate.getValue("user"));
+				}
+
+			} while(grDelegate.next());
+		}
+
+		data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by.sys_idIN"+ gs.getUserID();
+		data.incidentQuery = "state=3^hold_reason=1^opened_by.sys_idIN" + gs.getUserID();
+		data.approverQuery = "state=requested^source_table=sc_req_item^ORsource_table=change_request^approver.sys_idIN" + gs.getUserID();
+
+		if(delegateUsersNotification.length > 0){
+			data.taskQuery += "," + delegateUsersNotification.join(",");
+			data.incidentQuery += "," + delegateUsersNotification.join(",");
+		}
+		if(delegateUsersApproval.length > 0){
+			data.approverQuery += "," + delegateUsersApproval.join(",");
+		}
 
 		data.notificationsCount = portalUtils.setNotificationsCount(data.taskQuery, data.incidentQuery);
 		data.approvalsCount = portalUtils.setApprovalsCount(data.approverQuery);
@@ -498,14 +525,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>123</sys_mod_count>
+        <sys_mod_count>128</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-30 15:49:54</sys_updated_on>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-31 20:41:55</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
 
   <div class="content_avatar">
