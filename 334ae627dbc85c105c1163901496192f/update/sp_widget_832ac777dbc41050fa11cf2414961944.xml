@@ -337,301 +337,295 @@
 	}
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.content {&#13;
-  background-color: white;&#13;
-  margin-bottom: 30px;&#13;
-  padding-bottom: 40px;&#13;
-  margin-top: 0;&#13;
-&#13;
-  .content_header {&#13;
-    width: 100%;&#13;
-    display: flex;&#13;
-    justify-content: space-between;&#13;
-    align-items: flex-start;&#13;
-&#13;
-    img {&#13;
-      width: 30%;&#13;
-    }&#13;
-&#13;
-    .content_center {&#13;
-      padding: 0 50px;&#13;
-      width: 40%;&#13;
-&#13;
-      .title, .description {&#13;
-        text-align: center;&#13;
-      }&#13;
-      .title {&#13;
-        font-size: 46px;&#13;
-        text-transform: uppercase;&#13;
-        margin-top: 40px;&#13;
-        line-height: 1;&#13;
-      }&#13;
-      .description {&#13;
-        font-size: 16px;&#13;
-        color: $slate-gray;&#13;
-        padding-top: 40px;&#13;
-        padding-bottom: 20px;&#13;
-      }&#13;
-    }&#13;
-  }&#13;
-&#13;
-  .content_body {&#13;
-    width: 100%;&#13;
-    display: flex;&#13;
-    flex-direction: column;&#13;
-    padding: 0 100px;&#13;
-&#13;
-    .line {&#13;
-      width: 100%;&#13;
-      height: 2px;&#13;
-      margin: 30px 0;&#13;
-    }&#13;
-&#13;
-    .content-form-group {&#13;
-      display: flex;&#13;
-      flex-direction: column;&#13;
-      align-items: center;&#13;
-&#13;
-      .form-group {&#13;
-        width: 400px;&#13;
-        .icon-img {&#13;
-          width: 50px;&#13;
-          height: 50px;&#13;
-        }&#13;
-        .input-group { border-bottom: 2px solid $dodger-blue; }&#13;
-        .text-left { font-size: 12px; }&#13;
-      }&#13;
-    }&#13;
-&#13;
-    .articles {&#13;
-      margin-bottom: -30px;&#13;
-&#13;
-      .article_list {&#13;
-        margin-bottom: 5px;&#13;
-        &amp;:last-child { margin-bottom: 0; }&#13;
-&#13;
-        .article_title {&#13;
-          font-size: 15px;&#13;
-          font-weight: bold;&#13;
-          color: $slate-gray;&#13;
-          text-decoration: underline;&#13;
-&#13;
-          &amp;:hover {&#13;
-            color: $dodger-blue;&#13;
-          }&#13;
-        }&#13;
-      }&#13;
-    }&#13;
-&#13;
-    .categories_title {&#13;
-      color: $slate-gray;&#13;
-      text-align: center;&#13;
-      font-weight: bold;&#13;
-      font-size: 16px;&#13;
-      margin-bottom: 10px;&#13;
-    }&#13;
-    .categories_list {&#13;
-      color: $slate-gray;&#13;
-      text-align: center;&#13;
-      font-weight: bold;&#13;
-      font-size: 24px;&#13;
-      &amp;:hover {&#13;
-        text-decoration: underline;&#13;
-      }&#13;
-    }&#13;
-    .subcategory_list {&#13;
-      font-weight: normal;&#13;
-    }&#13;
-&#13;
-    .content_breadcrumb_items {&#13;
-      width: 100%;&#13;
-&#13;
-      .breadcrumb_item {&#13;
-        color: $slate-gray;&#13;
-        font-weight: bold;&#13;
-      }&#13;
-      .request_title {&#13;
-        font-size: 24px;&#13;
-        margin-bottom: 10px;&#13;
-      }&#13;
-&#13;
-      .content_cat_items {&#13;
-        margin: 3px 0;&#13;
-        padding: 0;&#13;
-&#13;
-        .cat_item {&#13;
-          color: $slate-gray;&#13;
-          font-weight: bold;&#13;
-          font-size: 14px;&#13;
-&#13;
-          &amp;:hover {&#13;
-            font-weight: bold;&#13;
-            font-size: 14px;&#13;
-            cursor: pointer;&#13;
-          }&#13;
-        }&#13;
-&#13;
-        label {&#13;
-          font-size: 18px;&#13;
-          font-family: $text-bold;&#13;
-          color: #737373;&#13;
-          padding: 6px 0 2px 10px;&#13;
-        }&#13;
-&#13;
-        input[type="radio"]:checked + label {&#13;
-          font-size: 18px;&#13;
-          font-family: $text-bold;&#13;
-          padding: 6px 0 2px 10px;&#13;
-        }&#13;
-&#13;
-        label:hover {&#13;
-          padding: 6px 0 2px 10px;&#13;
-          font-size: 18px;&#13;
-          font-family: $text-bold;&#13;
-        }&#13;
-&#13;
-        .icon_yourself {&#13;
-          &#13;
-          img {&#13;
-            height: 25px;&#13;
-            margin-left: 5px;&#13;
-            margin-top: -4px;&#13;
-          }&#13;
-&#13;
-          .tooltip {&#13;
-            display: inline-flex;&#13;
-            align-items: center;&#13;
-            margin-left: 8px;&#13;
-            margin-top: -3px;&#13;
-          }&#13;
-&#13;
-          &amp;:hover {&#13;
-            .tooltip {&#13;
-              visibility: visible;&#13;
-              opacity: 1;&#13;
-            }&#13;
-            /*&#13;
-            .tooltip_right {&#13;
-            top: calc(50% - 15px);&#13;
-            left: 60px;&#13;
-          }&#13;
-            */&#13;
-          }&#13;
-        }&#13;
-      }&#13;
-&#13;
-      .content_mostviewed_articles {&#13;
-        width: 80%;&#13;
-      }&#13;
-    }&#13;
-&#13;
-    .description_item {&#13;
-      font-size: 18px;&#13;
-      font-family: $text-bold;&#13;
-      margin-top: 10px;&#13;
-      margin-bottom: 30px;&#13;
-    }&#13;
-  }&#13;
-&#13;
-  //Configurações do Radio check&#13;
-  .content_breadcrumb_items {&#13;
-    input[type="radio"]{&#13;
-      display: none;&#13;
-    }&#13;
-&#13;
-    .radio-properties{&#13;
-      position: relative;&#13;
-      display: inline-block;&#13;
-      padding-left: 30px;&#13;
-    }&#13;
-&#13;
-    .new-radio {&#13;
-      height: 20px;&#13;
-      width: 20px;&#13;
-      border-radius: 50%;&#13;
-      border: 2px solid $slate-gray;&#13;
-      display: block;&#13;
-      position: absolute;&#13;
-      left: 0;&#13;
-      top: 4px;&#13;
-&#13;
-    }&#13;
-&#13;
-    .radio-after {&#13;
-      content: "";&#13;
-      height: 12px;&#13;
-      width: 12px;&#13;
-      display: block;&#13;
-      position: absolute;&#13;
-      left: 2px;&#13;
-      top: 2px;&#13;
-      border-radius: 50%;&#13;
-    }&#13;
-&#13;
-    .item_title {&#13;
-      font-size: 16px;&#13;
-    }&#13;
-&#13;
-    .radio-color_category1{&#13;
-      background: $dodger-blue !important;&#13;
-      .item_title:hover {color: $dodger-blue; !important}&#13;
-    }&#13;
-    .radio-color_category2{&#13;
-      background: $dark-orchid;&#13;
-      .item_title:hover {color: $dark-orchid; !important}&#13;
-    }&#13;
-    .radio-color_category3{&#13;
-      background: $tan;&#13;
-      .item_title:hover {color: $tan; !important}&#13;
-    }&#13;
-    .radio-color_category4{&#13;
-      background: $orange;&#13;
-      .item_title:hover {color: $orange; !important}&#13;
-    }&#13;
-    .radio-color_category5{&#13;
-      background: $turquoise;&#13;
-      .item_title:hover {color: $turquoise; !important}&#13;
-    }&#13;
-&#13;
-    .hover_color_category1{&#13;
-      .item_title_current {color: $dodger-blue; !important}&#13;
-      .item_title:hover {color: $dodger-blue; !important}&#13;
-    }&#13;
-    .hover_color_category2{&#13;
-      .item_title_current {color: $dark-orchid; !important}&#13;
-      .item_title:hover {color: $dark-orchid; !important}&#13;
-    }&#13;
-    .hover_color_category3{&#13;
-      .item_title_current {color: $tan; !important}&#13;
-      .item_title:hover {color: $tan; !important}&#13;
-    }&#13;
-    .hover_color_category4{&#13;
-      .item_title_current {color: $orange; !important}&#13;
-      .item_title:hover {color: $orange; !important}&#13;
-    }&#13;
-    .hover_color_category5{&#13;
-      .item_title_current {color: $turquoise; !important}&#13;
-      .item_title:hover {color: $turquoise; !important}&#13;
-    }&#13;
-  }&#13;
-&#13;
-  .selected_category {&#13;
-    text-align: center;&#13;
-    font-weight: bold;&#13;
-    font-size: 24px;&#13;
-  }&#13;
-}&#13;
-&#13;
-@media only screen and (max-width : 1100px)  {&#13;
-  .content {&#13;
-    .content_header {&#13;
-      .content_center {&#13;
-        .title {&#13;
-          font-size: 32px;&#13;
-        }&#13;
-      }&#13;
-    }&#13;
-  }&#13;
+        <css>.content {
+  background-color: white;
+  margin-bottom: 30px;
+  padding-bottom: 40px;
+  margin-top: 0;
+
+  .content_header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    img {
+      width: 30%;
+    }
+
+    .content_center {
+      padding: 0 50px;
+      width: 40%;
+
+      .title, .description {
+        text-align: center;
+      }
+      .title {
+        font-size: 46px;
+        text-transform: uppercase;
+        margin-top: 40px;
+        line-height: 1;
+      }
+      .description {
+        font-size: 16px;
+        color: $slate-gray;
+        padding-top: 40px;
+        padding-bottom: 20px;
+      }
+    }
+  }
+
+  .content_body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 100px;
+
+    .line {
+      width: 100%;
+      height: 2px;
+      margin: 30px 0;
+    }
+
+    .content-form-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .form-group {
+        width: 400px;
+        .icon-img {
+          width: 50px;
+          height: 50px;
+        }
+        .input-group { border-bottom: 2px solid $dodger-blue; }
+        .text-left { font-size: 12px; }
+      }
+    }
+
+    .articles {
+      margin-bottom: -30px;
+
+      .article_list {
+        margin-bottom: 5px;
+        &amp;:last-child { margin-bottom: 0; }
+
+        .article_title {
+          font-size: 15px;
+          font-weight: bold;
+          color: $slate-gray;
+          text-decoration: underline;
+
+          &amp;:hover {
+            color: $dodger-blue;
+          }
+        }
+      }
+    }
+
+    .categories_title {
+      color: $slate-gray;
+      text-align: center;
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .categories_list {
+      color: $slate-gray;
+      text-align: center;
+      font-weight: bold;
+      font-size: 24px;
+      &amp;:hover {
+        text-decoration: underline;
+      }
+    }
+    .subcategory_list {
+      font-weight: normal;
+    }
+
+    .content_breadcrumb_items {
+      width: 100%;
+
+      .breadcrumb_item {
+        color: $slate-gray;
+        font-weight: bold;
+      }
+      .request_title {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      .content_cat_items {
+        margin: 3px 0;
+        padding: 0;
+
+        .cat_item {
+          color: $slate-gray;
+          font-weight: bold;
+          font-size: 14px;
+
+          &amp;:hover {
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+          }
+        }
+
+        label {
+          font-size: 18px;
+          font-family: $text-bold;
+          color: #737373;
+          padding: 6px 0 2px 10px;
+        }
+
+        input[type="radio"]:checked + label {
+          font-size: 18px;
+          font-family: $text-bold;
+          padding: 6px 0 2px 10px;
+        }
+
+        label:hover {
+          padding: 6px 0 2px 10px;
+          font-size: 18px;
+          font-family: $text-bold;
+        }
+
+        .icon_yourself {
+          
+          img {
+            height: 25px;
+            margin-left: 5px;
+            margin-top: -4px;
+          }
+
+          .tooltip {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 8px;
+            margin-top: -3px;
+          }
+
+          &amp;:hover {
+            .tooltip {
+              visibility: visible;
+              opacity: 1;
+            }
+          }
+        }
+      }
+
+      .content_mostviewed_articles {
+        width: 80%;
+      }
+    }
+
+    .description_item {
+      font-size: 18px;
+      font-family: $text-bold;
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
+  }
+
+  //Radio check
+  .content_breadcrumb_items {
+    input[type="radio"]{
+      display: none;
+    }
+
+    .radio-properties{
+      position: relative;
+      display: inline-block;
+      padding-left: 30px;
+    }
+
+    .new-radio {
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      border: 2px solid $slate-gray;
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 4px;
+
+    }
+
+    .radio-after {
+      content: "";
+      height: 12px;
+      width: 12px;
+      display: block;
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      border-radius: 50%;
+    }
+
+    .item_title {
+      font-size: 16px;
+    }
+
+    .radio-color_category1{
+      background: $dodger-blue !important;
+      .item_title:hover {color: $dodger-blue; !important}
+    }
+    .radio-color_category2{
+      background: $dark-orchid;
+      .item_title:hover {color: $dark-orchid; !important}
+    }
+    .radio-color_category3{
+      background: $tan;
+      .item_title:hover {color: $tan; !important}
+    }
+    .radio-color_category4{
+      background: $orange;
+      .item_title:hover {color: $orange; !important}
+    }
+    .radio-color_category5{
+      background: $turquoise;
+      .item_title:hover {color: $turquoise; !important}
+    }
+
+    .hover_color_category1{
+      .item_title_current {color: $dodger-blue; !important}
+      .item_title:hover {color: $dodger-blue; !important}
+    }
+    .hover_color_category2{
+      .item_title_current {color: $dark-orchid; !important}
+      .item_title:hover {color: $dark-orchid; !important}
+    }
+    .hover_color_category3{
+      .item_title_current {color: $tan; !important}
+      .item_title:hover {color: $tan; !important}
+    }
+    .hover_color_category4{
+      .item_title_current {color: $orange; !important}
+      .item_title:hover {color: $orange; !important}
+    }
+    .hover_color_category5{
+      .item_title_current {color: $turquoise; !important}
+      .item_title:hover {color: $turquoise; !important}
+    }
+  }
+
+  .selected_category {
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+  }
+}
+
+@media only screen and (max-width : 1100px)  {
+  .content {
+    .content_header {
+      .content_center {
+        .title {
+          font-size: 32px;
+        }
+      }
+    }
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -861,14 +855,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 13:30:17</sys_created_on>
         <sys_id>832ac777dbc41050fa11cf2414961944</sys_id>
-        <sys_mod_count>1661</sys_mod_count>
+        <sys_mod_count>1662</sys_mod_count>
         <sys_name>GService Categories</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_832ac777dbc41050fa11cf2414961944</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-30 15:35:18</sys_updated_on>
+        <sys_updated_on>2020-08-01 13:41:53</sys_updated_on>
         <template><![CDATA[<div id="widget-category" class="content" ng-show="data.showWidget">
   <div>
 
@@ -882,7 +876,6 @@
     </div>
 
     <div class="content_body">
-
       <div class="content-form-group">
         <div class="form-group">
           <sp-widget widget="data.typeaheadWidget"></sp-widget>
@@ -950,9 +943,7 @@
       </div>
 
       <div class="description_item" ng-show="c.data.showSelectedItem" ng-bind-html="c.data.itemDescription"></div>
-
       <div class="line {{data.categoryBgColor}}" ng-show="c.data.showSelectedItem"></div>
-
       <div id="show-selected-item" ng-show="c.data.showSelectedItem">
         <sp-widget widget="data.gserviceCatalogItem"></sp-widget>
       </div>
@@ -960,9 +951,7 @@
       <div id="show-selected-item" ng-show="c.data.showSelectedOrder">
         <sp-widget widget="data.gserviceOrderGuide"></sp-widget>
       </div>
-
       <div class="line {{data.categoryBgColor}}" ng-show="data.showItems"></div>
-
       <div class="content_mostviewed_articles">
         <widget id="gservice_kb_most_viewed" options='data.kb_most_viewed_options'></widget>
       </div>

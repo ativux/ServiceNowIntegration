@@ -6,18 +6,15 @@
         <css>.transclude:last-child {
   padding-bottom: 10px;
 }
-
 .list-group {
  	margin-bottom: 0px; 
 }
-
 .list-group-item {
     padding: 0;
     border: none;
     margin-bottom: 10px;
     border-radius: 0px;
 }
-
 .list-group-item:last-child {
 	margin-bottom: 10px;
 }</css>
@@ -91,14 +88,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 15:47:16</sys_created_on>
         <sys_id>4c9927b7dbc81050fa11cf241496197f</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>GService KB Most Viewed 2 </sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4c9927b7dbc81050fa11cf241496197f</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-14 18:01:29</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-01 14:10:42</sys_updated_on>
         <template><![CDATA[<sp-panel ng-if="data.articles.length > 0" >
   <ul class="list-group">
     <li class="list-group-item" ng-repeat="a in data.articles">

@@ -25,75 +25,54 @@
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.content {&#13;
-  width: 100%;&#13;
-  display: inline-block;&#13;
-&#13;
-  .items {&#13;
-    transition: .2s ease-in-out;&#13;
-    text-align: center;&#13;
-&#13;
-    &amp;:hover {&#13;
-      img {&#13;
-        transform: scale(1.1);&#13;
-        -webkit-transform: scale(1.1);&#13;
-        -ms-transform: scale(1.1);&#13;
-        -moz-transform: scale(1.1);&#13;
-        -o-transform: scale(1.1);&#13;
-      }&#13;
-      .image-link-header {&#13;
-        transform: translateY(-10px);&#13;
-        -webkit-transform: translateY(-10px);&#13;
-        -ms-transform: translateY(-10px);&#13;
-        -moz-transform: translateY(-10px);&#13;
-        -o-transform: translateY(-10px);&#13;
-      }&#13;
-    }&#13;
-&#13;
-    img {&#13;
-      transition: .3s ease-in-out;&#13;
-      display: block;&#13;
-      margin: 30px auto;&#13;
-      height: 110px;&#13;
-    }&#13;
-    .image-link-header {&#13;
-      transition: .3s ease-in-out;&#13;
-      font-family: $text-bold;&#13;
-      font-size: 24px;&#13;
-      padding-bottom: 12px;&#13;
-      line-height: 1.2;&#13;
-      width: 150px;&#13;
-      margin: 0 auto;&#13;
-    }&#13;
-&#13;
-    .description {&#13;
-      transition: .5s ease-in-out;&#13;
-      font-family: $text-bold;&#13;
-      font-size: 16px;&#13;
-      line-height: 1.2;&#13;
-    }&#13;
-  }&#13;
-}&#13;
-&#13;
-@media only screen and (max-width : 1190px)  {&#13;
-  .content {&#13;
-    .items {&#13;
-      .image-link-header {&#13;
-        //padding: 0 15px;&#13;
-        //padding-bottom: 12px;&#13;
-      }&#13;
-    }&#13;
-  }&#13;
-}&#13;
-@media only screen and (max-width : 1179px)  {&#13;
-  .content {&#13;
-    .items {&#13;
-      .image-link-header {&#13;
-        //padding: 0;&#13;
-        //padding-bottom: 12px;&#13;
-      }&#13;
-    }&#13;
-  }&#13;
+        <css>.content {
+  width: 100%;
+  display: inline-block;
+
+  .items {
+    transition: .2s ease-in-out;
+    text-align: center;
+
+    &amp;:hover {
+      img {
+        transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        -o-transform: scale(1.1);
+      }
+      .image-link-header {
+        transform: translateY(-10px);
+        -webkit-transform: translateY(-10px);
+        -ms-transform: translateY(-10px);
+        -moz-transform: translateY(-10px);
+        -o-transform: translateY(-10px);
+      }
+    }
+
+    img {
+      transition: .3s ease-in-out;
+      display: block;
+      margin: 30px auto;
+      height: 110px;
+    }
+    .image-link-header {
+      transition: .3s ease-in-out;
+      font-family: $text-bold;
+      font-size: 24px;
+      padding-bottom: 12px;
+      line-height: 1.2;
+      width: 150px;
+      margin: 0 auto;
+    }
+
+    .description {
+      transition: .5s ease-in-out;
+      font-family: $text-bold;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -123,18 +102,15 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-16 17:41:26</sys_created_on>
         <sys_id>c64dc558dbd49050fa11cf2414961949</sys_id>
-        <sys_mod_count>263</sys_mod_count>
+        <sys_mod_count>264</sys_mod_count>
         <sys_name>GService Icon Link</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_c64dc558dbd49050fa11cf2414961949</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-30 14:46:52</sys_updated_on>
+        <sys_updated_on>2020-08-01 13:55:33</sys_updated_on>
         <template><![CDATA[<div class="content col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-20">
-
-  <!-- Widget nativo para imagens com customizações-->
-  <!-- Função ng-click utilizada para esconder os widgets abaixo e, ao selecionar, abri-los-->
   <div aria-label="{{c.options.description}}" class="items" ng-click="selectPill()"> <!--Link para criar modal ou page-->
     ${{{c.options.link_title}}}
     <img src="{{c.options.image}}">
@@ -143,7 +119,6 @@
       <p class="text-format-custom">${{{c.options.description}}}</p>
     </div>
   </div>
-
 </div>]]></template>
     </sp_widget>
 </record_update>

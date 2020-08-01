@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $timeout) {
+	var c = this;
+	c.hasSelectedProperty = true;
+	c.tableSelected = 'incident';
+
+	c.hideFilter = function(filter){
+		if(filter == 'property'){
+			c.data.showPropertyFilter = !c.data.showPropertyFilter;
+		} else if(filter == 'type'){
+			c.data.showTypeFilter = !c.data.showTypeFilter;
+		} else if(filter == 'status'){
+			c.data.showStatusFilter = !c.data.showStatusFilter;
+		}
+	}
+
+	c.selectedProperty = function(propertyFilter){
+		var isSelected = false;
+		for(var i in c.data.filters.propertyFilter){
+			if(c.data.filters.propertyFilter[i].name == propertyFilter.name){
+				c.data.filters.propertyFilter[i].selected = !c.data.filters.propertyFilter[i].selected;
+				if(c.data.filters.propertyFilter[i].selected)
+					isSelected = true;
+			}
+			else
+				c.data.filters.propertyFilter[i].selected = false;
+		}
+		if(!c.data.showTypeFilter)
+			c.data.showTypeFilter = true;
+		if(isSelected){
+			c.data.propertyFilter = propertyFilter.value;
+			c.hasSelectedProperty = true;
+		}
+		else{
+			c.data.showTypeFilter = false;
+			c.data.showStatusFilter = false;
+			c.data.propertyFilter = false;
+			c.data.tableFilter = false;
+			$timeout(function() {
+				c.hasSelectedProperty = false;
+				cleanTypeFilters();
+				cleanStatusFilters();
+			}, 200);
+		}
+		changeQuery();
+	}
+
+	cleanTypeFilters = function(){
+		for(var i in c.data.filters.typeFilter){
+			c.data.filters.typeFilter[i].selected = false;
+		}
+	}
+
+	cleanStatusFilters = function(){
+		for(var i in c.data.filters.statusFilter){
+			c.data.filters.statusFilter[i].selected = false;
+		}
+		c.data.statusFilter= "";
+	}
+
+	c.selectedType = function(typeFilter){
+		cleanStatusFilters();
+		var isSelected = false;
+		for(var i in c.data.filters.typeFilter){
+			if(c.data.filters.typeFilter[i].name == typeFilter.name){
+				c.data.filters.typeFilter[i].selected = !c.data.filters.typeFilter[i].selected;
+				if(c.data.filters.typeFilter[i].selected)
+					isSelected = true;
+			} else 
+				c.data.filters.typeFilter[i].selected = false;
+		}
+		if(!c.data.showStatusFilter)
+			c.data.showStatusFilter = true;
+		if(isSelected){
+			c.data.tableFilter = typeFilter.table;
+			c.tableSelected = typeFilter.table;
+		}
+		else{
+			c.data.showStatusFilter = false;
+			c.data.tableFilter = false;
+			$timeout(function() {
+				c.tableSelected = false;
+			}, 200);
+		}
+		changeQuery();
+	}
+
+	c.selectedStatus = function(statusFilter){
+		var isSelected = false;
+		var actualStatus;
+		for(var i in c.data.filters.statusFilter){
+			if(c.data.filters.statusFilter[i].table == c.tableSelected){
+				if(c.data.filters.statusFilter[i].name == statusFilter.name){
+					c.data.filters.statusFilter[i].selected = !c.data.filters.statusFilter[i].selected;
+				}
+				if(c.data.filters.statusFilter[i].selected){
+					isSelected = true;
+					if(!actualStatus)
+						actualStatus = c.data.filters.statusFilter[i].value;
+					else
+						actualStatus += ',' + c.data.filters.statusFilter[i].value;
+				}
+			}
+		}
+		if(isSelected){
+			c.data.statusFilter = actualStatus;
+		} else{
+			c.data.statusFilter = false;
+		}
+		changeQuery();
+	}
+
+	c.selectedQueue = function(selectedQueue){
+		c.data.queueFilter = selectedQueue;
+		changeQuery();
+	}
+
+	changeQuery = function(){
+		c.data.action = "changeQuery";
+		c.server.update().then(function(){
+			$timeout(function() {
+				if(!c.data.propertyFilter || !c.data.tableFilter)
+					$scope.$broadcast('data_table.setFilter', '');
+				else
+					$scope.$broadcast('data_table.setFilter', c.data.query);
+			}, 200);
+		});
+	}
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.content_list_manager {
+  background-color: white;
+  padding: 0;
+  transition: .9s ease-in-out;
+
+  .content_list {
+    padding-top: 20px;
+    padding-left: 0 !important;
+    display: flex;
+
+    .column:nth-child(1) {
+      width: 20%;
+
+      .break-line-filter {
+        width: 94px;
+      }
+    }
+    .column:nth-child(2) {
+      width: 20%;
+    }
+    .column:nth-child(3) {
+      width: 25%;
+    }
+    .column:nth-child(4) {
+      width: 35%;
+
+      select {
+        border: 0;
+        width: 100%;
+        border-bottom: 2px solid $deep-sky-blue;
+        padding: 5px 0;
+      }
+    }
+
+    .filter-click-size {
+      transition: .4s ease-in-out;
+      width: 120px;
+      height: 30px;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      color: $deep-sky-blue;
+      font-size: 13px;
+      font-family: $text-bolder;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 15px !important;
+
+      .break-line-other {
+        transition: .4s ease-in-out;
+        width: 60px;
+      }
+    }
+
+    .break-line-filter {
+      width: 80px;
+    }
+
+    .mask_filter {
+      overflow: hidden;
+
+      .content_filters {
+        transition: .5s ease-in-out;
+      }
+      .filter_open {
+        margin-top: 0;
+      }
+      .filter_close {
+        margin-top: -260px;
+      }
+    }
+
+    .status_filter {
+      transition: .1s ease-in-out;
+      display: flex;
+      cursor: pointer;
+
+      input[type="checkbox"]{
+        display: none;
+      }
+
+      &amp;:hover {
+        transition: .1s ease-in-out;
+        opacity: .6;
+      }
+
+      .new-radio {
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        border: 2px solid #737373;
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 4px;
+      }
+      .radio-after {
+        content: "";
+        height: 10px;
+        width: 10px;
+        display: block;
+        position: absolute;
+        left: 1px;
+        top: 1px;
+        border-radius: 50%;
+        background-color: $deep-sky-blue;
+      }
+      .filter_name {
+        margin-left: 25px;
+        margin-top: 4px;
+        margin-bottom: -6px;
+        font-size: 12px;
+        font-family: $text-bold;
+      }
+    }
+
+    .arrow-size {
+      transition: .4s ease-in-out;
+      height: 10px;
+      position: relative;
+      top: -34px;
+      left: 100px;
+    }
+    .invert-arrow {
+      transform: rotate(180deg);
+    }
+    .filter_type {
+      .arrow-size {
+        left: 82px;
+      }
+    }
+
+    .confirm_button {
+      transition: .4s ease-in-out;
+      font-size: 12px;
+      color: $deep-sky-blue;
+      font-family: $text-bolder;
+      text-decoration: underline;
+      text-transform: uppercase;
+      margin-left: 30px;
+      padding-top: 10px !important;
+    }
+
+    .radio-properties {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 5px;
+    }
+
+    .list-properties {
+      padding-left: 0 !important;
+      margin-bottom: -8px;
+    }
+
+    .detail_search {
+      margin-top: -30px;
+      margin-right: 60px;
+    }
+
+    .filter-click-size, .break-line-other {
+      &amp;:hover {
+        transition: .2s ease-in-out;
+        transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        -o-transform: scale(1.1);
+      }
+    }
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_list_filter_manager</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService List Filter Manager</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var localInput = input;
+	var portalUtils = new global.OCLPortalUtils_GServiceManager();
+
+	if(!localInput){
+		data.showPropertyFilter = true;
+		data.showTypeFilter = true;
+		data.showStatusFilter = true;
+		data.propertyFilterTitle = gs.getMessage("Filtrar por propriedade").toUpperCase();
+		data.typeFilterTitle = gs.getMessage("Filtrar por tipo").toUpperCase();
+		data.statusFilterTitle = gs.getMessage("Filtrar por status").toUpperCase();
+		data.queueFilterTitle = gs.getMessage("Filtrar por fila").toUpperCase();
+		data.clearFilter = gs.getMessage("Clear Filters").toUpperCase();
+
+		data.filters = {propertyFilter : [], typeFilter : [], statusFilter : []};
+
+		var propertyFilter = gs.getProperty("gservice_list_filters_manager_property").split("|");
+		for(var i in propertyFilter){
+			data.filters.propertyFilter.push(JSON.parse(propertyFilter[i]));
+			data.filters.propertyFilter[i].name = gs.getMessage(data.filters.propertyFilter[i].name);
+		}
+
+		var typeFilter = gs.getProperty("gservice_list_filters_manager_type").split("|");
+		for(i in typeFilter){
+			data.filters.typeFilter.push(JSON.parse(typeFilter[i]));
+		}
+
+		data.filters.statusFilter = portalUtils.getStatusFilter(typeFilter);
+
+		var userID = gs.getUserID();
+
+		var grGroupMember = new GlideRecord("sys_user_grmember");
+		grGroupMember.addQuery("user", userID);
+		grGroupMember.query();
+		data.queues = [];
+		data.queues.push({"groupName": "Todas", "sys_id": false});
+		while(grGroupMember.next()){
+			var objectQueue = {"groupName": grGroupMember.getDisplayValue("group"),
+												 "sys_id": grGroupMember.getValue("group")};
+			data.queues.push(objectQueue);
+		}
+
+		var firstQuery = gs.getProperty("gservice_first_manager_query");
+		firstQuery = JSON.parse(firstQuery);
+
+		data.tableFilter = firstQuery.table;
+		data.propertyFilter = firstQuery.property;
+		data.statusFilter = firstQuery.status;
+		data.queueFilter = firstQuery.queue;
+
+		data.query = portalUtils.mountFilter(data.tableFilter, data.propertyFilter, data.queueFilter, data.statusFilter);
+
+		options = {'table' : 'task',
+							 'view' : 'gservice_manager',
+							 'o' : 'number',
+							 'd' : 'asc',
+							 'filter' : data.query};
+
+		data.dataTableWidget = $sp.getWidget('gservice_data_table', options);
+
+	} else{
+		if(localInput.action == 'changeQuery'){
+			data.tableFilter = localInput.tableFilter;
+			data.propertyFilter = localInput.propertyFilter;
+			data.statusFilter = localInput.statusFilter;
+			data.queueFilter = localInput.queueFilter;
+			data.query = portalUtils.mountFilter(data.tableFilter, data.propertyFilter, data.queueFilter, data.statusFilter);
+		}
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-22 14:21:53</sys_created_on>
+        <sys_id>d82261f9db699810fa11cf2414961901</sys_id>
+        <sys_mod_count>357</sys_mod_count>
+        <sys_name>GService List Filter Manager</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_d82261f9db699810fa11cf2414961901</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-01 14:05:46</sys_updated_on>
+        <template><![CDATA[<div class="content_list_manager">
+  <div class="content_list">
+    <div class="column">
+      <div ng-click="c.hideFilter('property')" class="filter-click-size">
+        <div class="title break-line-filter">{{data.propertyFilterTitle}}
+        </div>
+        <img class="arrow-size" src="gservice_filter_dashboard_arrow.png" ng-class="c.data.showPropertyFilter ? '' : 'invert-arrow'"/>
+      </div>
+      <div class="mask_filter">
+        <div class="content_filters" ng-class="c.data.showPropertyFilter ? 'filter_open' : 'filter_close'">
+          <div class="list-properties" ng-repeat="propertyFilter in data.filters.propertyFilter">
+            <div method="get" class="radio-properties testingClass">
+              <label for="{{propertyFilter.name}}" class="status_filter" ng-click="c.selectedProperty(propertyFilter)">
+                <input type="checkbox"
+                       id="{{propertyFilter.name}}"
+                       name="propertyFilter"
+                       value="{{propertyFilter.name}}"
+                       ng-model="propertyFilter.selected">
+                <div class="new-radio">
+                  <span ng-class="propertyFilter.selected ? 'radio-after' : ''"/>
+                </div>
+                <div class="filter_name">{{propertyFilter.name}}</div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column filter_type">
+      <div ng-click="c.hideFilter('type')" class="filter-click-size">
+        <div class="title break-line-filter">{{data.typeFilterTitle}}
+        </div>
+        <img class="arrow-size" src="gservice_filter_dashboard_arrow.png" ng-class="c.data.showTypeFilter ? '' : 'invert-arrow'"/>
+      </div>
+      <div class="mask_filter">
+        <div class="content_filters" ng-class="c.data.showTypeFilter ? 'filter_open' : 'filter_close'">
+          <div class="list-properties" ng-repeat="typeFilter in data.filters.typeFilter" ng-if="c.hasSelectedProperty">
+            <div method="get" class="radio-properties" ng-click="c.selectedType(typeFilter)">
+              <label for="{{typeFilter.name}}" class="status_filter">
+                <input type="checkbox"
+                       id="{{typeFilter.name}}"
+                       name="selectedItem"
+                       value="{{typeFilter.name}}"
+                       ng-model="typeFilter.selected">
+                <div class="new-radio">
+                  <span ng-class="typeFilter.selected ? 'radio-after' : ''"/>
+                </div>
+                <div class="filter_name">{{typeFilter.name}}</div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column filter-padding">
+      <div ng-click="c.hideFilter('status')" class="filter-click-size">
+        <div class="title break-line-filter">{{data.statusFilterTitle}}
+        </div>
+        <img class="arrow-size" src="gservice_filter_dashboard_arrow.png" ng-class="c.data.showStatusFilter ? '' : 'invert-arrow'"/>
+      </div>
+      <div class="mask_filter">
+        <div class="content_filters" ng-class="c.data.showStatusFilter ? 'filter_open' : 'filter_close'">
+          <div class="list-properties" ng-repeat="statusFilter in data.filters.statusFilter" ng-if="statusFilter.table == c.tableSelected">
+            <div method="get" class="radio-properties" ng-click="c.selectedStatus(statusFilter)">
+              <label for="{{statusFilter.name}}" class="status_filter">
+                <input type="checkbox"
+                       id="{{statusFilter.name}}"
+                       name="selectedItem"
+                       value="{{statusFilter.name}}"
+                       ng-model="statusFilter.selected">
+                <div class="new-radio">
+                  <span ng-class="statusFilter.selected ? 'radio-after' : ''"/>
+                </div>
+                <div class="filter_name">{{statusFilter.name}}</div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column filter-padding">
+      <div class="title break-line-filter">{{data.queueFilterTitle}}</div>
+      <select id="queuesFilter" ng-init="queue = data.queues[0]"
+              name="queues" ng-model="queue" ng-change="c.selectedQueue(queue.sys_id)"
+              ng-options="queue.groupName for queue in data.queues"/>
+    </div>
+  </div>
+  <div><sp-widget widget="data.dataTableWidget"/></div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

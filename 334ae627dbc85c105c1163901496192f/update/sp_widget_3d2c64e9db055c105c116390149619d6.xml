@@ -225,21 +225,19 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-27 19:16:11</sys_created_on>
         <sys_id>3d2c64e9db055c105c116390149619d6</sys_id>
-        <sys_mod_count>68</sys_mod_count>
+        <sys_mod_count>69</sys_mod_count>
         <sys_name>GService Ticket Attachments</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_3d2c64e9db055c105c116390149619d6</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-30 15:11:28</sys_updated_on>
+        <sys_updated_on>2020-08-01 13:53:49</sys_updated_on>
         <template><![CDATA[<div ng-if="data.canRead" class="content_attach">
   <div class="attach_left">
-
     <div ng-file-drop="dropFiles($files)" ng-multiple="true"> 
       <img src="GService_Upload Dash retangulo.png"/>
     </div>
-
     <div ng-if="(data.canWrite && data.canAttach)">
       <span class="button_attach">
         <sp-attachment-button></sp-attachment-button>

@@ -79,12 +79,9 @@
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.content_margin {
-  margin-bottom: 0;
-}
-.content_margin_bottom {
-  margin-bottom: 440px;
-}
+        <css>.content_margin { margin-bottom: 0; }
+.content_margin_bottom { margin-bottom: 440px; }
+
 .content_categories_knowledge {
   background-color: white;
   overflow: auto;
@@ -128,9 +125,7 @@
           font-size: 14px;
           margin-top: -1px;
 
-          &amp;:hover {
-            text-decoration: underline;
-          }
+          &amp;:hover { text-decoration: underline; }
         }
         .category_current {
           text-decoration: underline;
@@ -154,7 +149,6 @@
 }
 
 @media only screen and (max-width : 1200px)  {
-  
   .content_categories_knowledge {
     .content {
       .content_category_items {
@@ -164,7 +158,6 @@
       }
     }
   }
-  
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -213,14 +206,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-04 17:30:49</sys_created_on>
         <sys_id>1470e900db91dc905c1163901496191d</sys_id>
-        <sys_mod_count>405</sys_mod_count>
+        <sys_mod_count>406</sys_mod_count>
         <sys_name>GService Categories Knowledge</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_1470e900db91dc905c1163901496191d</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-31 12:24:58</sys_updated_on>
+        <sys_updated_on>2020-08-01 13:02:49</sys_updated_on>
         <template><![CDATA[<div class="content_categories_knowledge" id="categoriesKnowledge" ng-class="c.categorySelected ? 'content_margin' : 'content_margin_bottom'">
   <div class="content">
     <div class="title">${Tire Duvidas Category}</div>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function($scope, $rootScope, $timeout, spUtil) {
+        <client_script><![CDATA[function($scope, $rootScope, $timeout) {
 	/* widget controller */
 	var c = this;
 	c.isLoading = true;
@@ -15,14 +15,6 @@
 			}, 200);
 		}
 		$scope.loadingIndicator = value;
-	});
-	
-	spUtil.recordWatch($scope, "wm_order", c.data.equipment_query, function(event) {
-		c.server.get({
-			action: "equipmentsCount"
-		}).then(function(response) {
-			c.data.equipmentsCount = response.data.equipmentsCount;
-		});
 	});
 
 	$scope.userID = $scope.user.sys_id;
@@ -182,27 +174,16 @@
           }
         }
       }
-      .tab_current {
-        color: $deep-sky-blue;
-      }
-
-      .count-align {
-        text-align: center;
-        background: $coral;
-        height: 20px;
-        width: 20px;
-        border-radius: 50%;
-        color: white;
-        font-family: $text-bolder;
-        position: absolute;
-        bottom: 95px;
-        right: 20px;
-      }
-
+      .tab_current { color: $deep-sky-blue; }
     }
     .categories:nth-child(1) {
       .tab_items {
-        .tab_title { width: 120px; }
+        .tab_title { width: 90px; }
+      }
+    }
+    .categories:nth-child(4) {
+      .tab_items {
+        .tab_title { width: 155px; }
       }
     }
   }
@@ -212,12 +193,10 @@
   text-align: center;
   padding-bottom: 30px;
 }
-
 .margin-align {
   margin: 0 auto;
   text-align: center;
 }
-
 .line {
   width: 100%;
   height: 2px;
@@ -230,22 +209,16 @@
         <docs/>
         <field_list/>
         <has_preview>false</has_preview>
-        <id>gservice_equipments_tabs</id>
+        <id>gservice_manager_tabs</id>
         <internal>false</internal>
         <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
-        <name>GService Equipments Tabs</name>
+        <name>GService Manager Tabs</name>
         <option_schema/>
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
-	
-	var equipmentsUtils = new global.OCLPortalEquipmentsUtil();
-
-	data.equipment_query = gs.getProperty("gservice_equipments_query");
-	data.equipmentsCount = equipmentsUtils.getEquipmentsCount();
-	
 	data.employee_role = gs.getMessage("Employee Role").toUpperCase();
 
 	if(!localInput){
@@ -260,7 +233,7 @@
 		data.phone = grUserInfo.getValue("mobile_phone");
 		data.location = grUserInfo.getDisplayValue("location");
 
-		var tabs = gs.getProperty("gservice_equipments_tabs").split("|");
+		var tabs = gs.getProperty("gservice_manager_tabs").split("|");
 		data.tabs = [];
 		for(var i in tabs){
 			var tab = JSON.parse(tabs[i]);
@@ -270,11 +243,16 @@
 
 		data.widgets = [];
 		var listWidget = {show : true,
-											widget : $sp.getWidget('gservice_equipment_list')};
+											widget : $sp.getWidget('gservice_list_filter_manager')};
+		var panelWidget = {show : false,
+											 widget : $sp.getWidget('gservice_panels')};
+		var reportWidget = {show : false,
+												widget : $sp.getWidget('gservice_report_list')};
 		data.widgets.push(listWidget);
+		data.widgets.push(panelWidget);
+		data.widgets.push(reportWidget);
 	}
 	else{
-		/*
 		if(localInput.action == "selectedTab"){
 			data.widgets = localInput.widgets;
 			for(var i in data.widgets){
@@ -284,33 +262,27 @@
 				data.widgets[i].show = i == localInput.index ? true : false;
 			}
 		}
-		*/
-		if(localInput.action == "equipmentsCount"){
-			data.equipmentsCount = equipmentsUtils.getEquipmentsCount();
-		}
 	}
 
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>organize.henrique</sys_created_by>
-        <sys_created_on>2020-07-09 19:46:18</sys_created_on>
-        <sys_id>826f8e5bdbb9d410fa11cf241496193e</sys_id>
-        <sys_mod_count>17</sys_mod_count>
-        <sys_name>GService Equipments Tabs</sys_name>
+        <sys_created_on>2020-06-22 12:24:02</sys_created_on>
+        <sys_id>3d2781b5dba59810fa11cf241496193b</sys_id>
+        <sys_mod_count>53</sys_mod_count>
+        <sys_name>GService Manager Tabs</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
-        <sys_update_name>sp_widget_826f8e5bdbb9d410fa11cf241496193e</sys_update_name>
+        <sys_update_name>sp_widget_3d2781b5dba59810fa11cf241496193b</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 13:57:59</sys_updated_on>
+        <sys_updated_on>2020-08-01 13:08:38</sys_updated_on>
         <template><![CDATA[<div class="content">
   <div class="content_tabs">
     <div class="content_avatar">
-      <div class="">
-        <a title="Avatar Pic" href="">
-          <sn-avatar class="avatar-custom-size" primary="userID" />
-        </a>
+      <div>
+        <a title="Avatar Pic" href=""><sn-avatar class="avatar-custom-size" primary="userID" /></a>
       </div>
       <div class="user-info-properties">
         <div class="name-properties">{{data.name}}</div>
@@ -327,7 +299,6 @@
             <img ng-show="!tab.selected" src="{{tab.img}}" class="icon-img"/>
             <img ng-show="tab.selected" src="{{tab.imgSelected}}" class="icon-img"/>
           </div>
-          <span class="count-align" ng-if="data.equipmentsCount > 0 && tab.name == 'intraffic'"> {{data.equipmentsCount}} </span>
           <div class="tab_title">{{tab.label}}</div>
         </div>
       </div>

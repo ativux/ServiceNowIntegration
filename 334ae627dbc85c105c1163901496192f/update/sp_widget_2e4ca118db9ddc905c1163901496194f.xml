@@ -771,14 +771,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-05 12:59:42</sys_created_on>
         <sys_id>2e4ca118db9ddc905c1163901496194f</sys_id>
-        <sys_mod_count>762</sys_mod_count>
+        <sys_mod_count>763</sys_mod_count>
         <sys_name>GService Categories Knowledge Content</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2e4ca118db9ddc905c1163901496194f</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-31 14:52:25</sys_updated_on>
+        <sys_updated_on>2020-08-01 13:01:33</sys_updated_on>
         <template><![CDATA[<div id="widgetKBcategory" class="content" ng-show="data.showWidget">
 
   <div class="header-loader" ng-show="c.isLoading">
@@ -821,7 +821,6 @@
 
       <div class="content_services" ng-if="data.kb_categories.length > 0">
         <div class="section_title">Sobre Serviços</div>
-
         <div>
           <div ng-if="kbCategory.show" ng-repeat="kbCategory in data.kb_categories">
             <div ng-if="kbCategory.articles.length > 0" class="service_title">
@@ -896,8 +895,6 @@
         <div class="content_otherchannels">
           <div class="otherchannel_title">${Não encontrou o que procurava?}</div>
           <div class="otherchannel_desc">${Temos outros canais de atendimento.}</div>
-          <!--<a ng-click="c.buttonClicked('call')">ng-if="!c.callClicked"-->
-          <!--<img ng-if="c.callClicked" src="gservice_call_after.png"></a>-->
           <div class="otherchannel_buttons">
             <div class="item_button">
               <img src="gservice_call.png">
@@ -918,15 +915,12 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-body">
-
             <div class="close_modal" ng-click="c.closeModal()">x</div>
-
             <div ng-if="!c.submited" class="panel-body wrapper-xl wrapper-sc-cat-item">
               <div class="form-group">
                 <sp-widget widget="data.gserviceCatalogItem"></sp-widget>
               </div>
             </div>
-
             <div class="header-loader" ng-show="c.submited && !c.itemInfo">
               <div class="hidden-xs sp-loading-indicator custom_loading">
                 <div></div>
@@ -934,7 +928,6 @@
                 <div></div>
               </div>
             </div>
-
             <div ng-if="c.submited && c.itemInfo" class="checkout_modal_request">
               <div class="close_modal" ng-click="c.closeModal()">x</div>
               <div class="modal_title color_category5">{{data.username}},<br>Sua solicitação foi enviada com sucesso!</div>

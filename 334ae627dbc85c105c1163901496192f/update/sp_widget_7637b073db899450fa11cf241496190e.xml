@@ -189,196 +189,193 @@
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.content {&#13;
-  background-color: white;&#13;
-  padding: 0 90px;&#13;
-  padding-top: 30px;&#13;
-  padding-bottom: 30px;&#13;
-  margin-bottom: 50px;&#13;
-&#13;
-  .header-loader{&#13;
-    padding: 50px;&#13;
-    padding-bottom: 100px;&#13;
-    .sp-loading-indicator{&#13;
-      color: $deep-sky-blue !important;&#13;
-    }&#13;
-  }&#13;
-&#13;
-  .content_avatar {&#13;
-    display: flex;&#13;
-&#13;
-    a {&#13;
-      .avatar-custom-size {&#13;
-        margin-top: 15px;&#13;
-        margin-bottom: 30px;&#13;
-        height: 90px;&#13;
-        width: 90px;&#13;
-        box-shadow: 0 0 0 4px $deep-sky-blue;&#13;
-        font-size: 20px !important;&#13;
-&#13;
-        &amp;:hover {&#13;
-          .tooltip {&#13;
-            visibility: visible;&#13;
-            opacity: 1;&#13;
-          }&#13;
-        }&#13;
-      }&#13;
-      .avatar-container .avatar.soloAvatar .sub-avatar {&#13;
-        border-radius: 0;&#13;
-        font-size: 50px;&#13;
-        line-height: 95px;&#13;
-        font-family: $text-bold;&#13;
-        background-color: white;&#13;
-        color: $deep-sky-blue;&#13;
-      }&#13;
-    }&#13;
-&#13;
-    .user-info-properties {&#13;
-      margin-left: 100px;&#13;
-      color: $slate-gray;&#13;
-&#13;
-      .name-properties {&#13;
-        font-size: 30px;&#13;
-        font-family: $text-bold;&#13;
-        color: $deep-sky-blue;&#13;
-        letter-spacing: -1px;&#13;
-      }&#13;
-      .job-properties {&#13;
-        color: $dodger-blue;&#13;
-        font-size: 14px;&#13;
-      }&#13;
-      .location-properties {&#13;
-        text-transform: uppercase;&#13;
-      }&#13;
-    }&#13;
-  }&#13;
-&#13;
-  .tabs-align {&#13;
-    display: flex;&#13;
-    justify-content: center;&#13;
-&#13;
-    .categories {&#13;
-      display: inline-block;&#13;
-      width: 20%;&#13;
-      position: relative;&#13;
-&#13;
-      .tab_items {&#13;
-        transition: .4s ease-in-out;&#13;
-        margin: 0 auto;&#13;
-&#13;
-        .tab_images {&#13;
-          transition: .4s ease-in-out;&#13;
-          height: 80px;&#13;
-          display: flex;&#13;
-          justify-content: center;&#13;
-&#13;
-          .icon-img {&#13;
-            transition: .4s ease-in-out;&#13;
-            width: 80px;&#13;
-            height: 80px;&#13;
-            position: absolute;&#13;
-            text-align: center;&#13;
-          }&#13;
-        }&#13;
-        .tab_title {&#13;
-          transition: .4s ease-in-out;&#13;
-          font-size: 14px;&#13;
-          font-family: $text-bolder;&#13;
-          text-align: center;&#13;
-          text-transform: uppercase;&#13;
-          line-height: 1;&#13;
-          width: 150px;&#13;
-          margin: inherit;&#13;
-          margin-top: 10px;&#13;
-        }&#13;
-        &amp;:hover {&#13;
-&#13;
-          .icon-img {&#13;
-            transition: .2s ease-in-out;&#13;
-            transform: scale(1.1);&#13;
-            -webkit-transform: scale(1.1);&#13;
-            -ms-transform: scale(1.1);&#13;
-            -moz-transform: scale(1.1);&#13;
-            -o-transform: scale(1.1);&#13;
-          }&#13;
-          .tab_title {&#13;
-            transition: .2s ease-in-out;&#13;
-            transform: translateY(-10px);&#13;
-            -webkit-transform: translateY(-10px);&#13;
-            -ms-transform: translateY(-10px);&#13;
-            -moz-transform: translateY(-10px);&#13;
-            -o-transform: translateY(-10px);&#13;
-            color: $deep-sky-blue;&#13;
-          }&#13;
-        }&#13;
-      }&#13;
-      .tab_current {&#13;
-        color: $deep-sky-blue;&#13;
-      }&#13;
-&#13;
-    }&#13;
-    .categories:nth-child(1) {&#13;
-      .tab_items {&#13;
-        .tab_title { width: 90px; }&#13;
-      }&#13;
-    }&#13;
-    .categories:nth-child(4) {&#13;
-      .tab_items {&#13;
-        .tab_title { width: 155px; }&#13;
-      }&#13;
-    }&#13;
-&#13;
-  }&#13;
-&#13;
-}&#13;
-&#13;
-.text-align {&#13;
-  text-align: center;&#13;
-  padding-bottom: 30px;&#13;
-}&#13;
-&#13;
-.margin-align {&#13;
-  margin: 0 auto;&#13;
-  text-align: center;&#13;
-}&#13;
-&#13;
-.count-align {&#13;
-  text-align: center;&#13;
-  background: $coral;&#13;
-  height: 20px;&#13;
-  width: 20px;&#13;
-  border-radius: 50%;&#13;
-  color: white;&#13;
-  font-family: $text-bolder;&#13;
-  position: absolute;&#13;
-  bottom: 95px;&#13;
-  right: 20px;&#13;
-}&#13;
-&#13;
-.notification-align {&#13;
-  font-size: 12px;&#13;
-  font-family: $text-bold;&#13;
-  line-height: 1;&#13;
-  .tooltip {&#13;
-    visibility: visible;&#13;
-    opacity: 1;&#13;
-  }&#13;
-  .tooltip_top {&#13;
-    top: -41px;&#13;
-    left: -17px;&#13;
-  }&#13;
-}&#13;
-&#13;
-.line {&#13;
-  width: 100%;&#13;
-  height: 2px;&#13;
-  background-color: $deep-sky-blue;&#13;
-  margin-top: 30px;&#13;
-}&#13;
-&#13;
-.tooltip_top {&#13;
-  top: -46px;&#13;
-  left: -37px;&#13;
+        <css>.content {
+  background-color: white;
+  padding: 0 90px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-bottom: 50px;
+
+  .header-loader{
+    padding: 50px;
+    padding-bottom: 100px;
+    .sp-loading-indicator{
+      color: $deep-sky-blue !important;
+    }
+  }
+
+  .content_avatar {
+    display: flex;
+
+    a {
+      .avatar-custom-size {
+        margin-top: 15px;
+        margin-bottom: 30px;
+        height: 90px;
+        width: 90px;
+        box-shadow: 0 0 0 4px $deep-sky-blue;
+        font-size: 20px !important;
+
+        &amp;:hover {
+          .tooltip {
+            visibility: visible;
+            opacity: 1;
+          }
+        }
+      }
+      .avatar-container .avatar.soloAvatar .sub-avatar {
+        border-radius: 0;
+        font-size: 50px;
+        line-height: 95px;
+        font-family: $text-bold;
+        background-color: white;
+        color: $deep-sky-blue;
+      }
+    }
+
+    .user-info-properties {
+      margin-left: 100px;
+      color: $slate-gray;
+
+      .name-properties {
+        font-size: 30px;
+        font-family: $text-bold;
+        color: $deep-sky-blue;
+        letter-spacing: -1px;
+      }
+      .job-properties {
+        color: $dodger-blue;
+        font-size: 14px;
+      }
+      .location-properties {
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .tabs-align {
+    display: flex;
+    justify-content: center;
+
+    .categories {
+      display: inline-block;
+      width: 20%;
+      position: relative;
+
+      .tab_items {
+        transition: .4s ease-in-out;
+        margin: 0 auto;
+
+        .tab_images {
+          transition: .4s ease-in-out;
+          height: 80px;
+          display: flex;
+          justify-content: center;
+
+          .icon-img {
+            transition: .4s ease-in-out;
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            text-align: center;
+          }
+        }
+        .tab_title {
+          transition: .4s ease-in-out;
+          font-size: 14px;
+          font-family: $text-bolder;
+          text-align: center;
+          text-transform: uppercase;
+          line-height: 1;
+          width: 150px;
+          margin: inherit;
+          margin-top: 10px;
+        }
+        &amp;:hover {
+          .icon-img {
+            transition: .2s ease-in-out;
+            transform: scale(1.1);
+            -webkit-transform: scale(1.1);
+            -ms-transform: scale(1.1);
+            -moz-transform: scale(1.1);
+            -o-transform: scale(1.1);
+          }
+          .tab_title {
+            transition: .2s ease-in-out;
+            transform: translateY(-10px);
+            -webkit-transform: translateY(-10px);
+            -ms-transform: translateY(-10px);
+            -moz-transform: translateY(-10px);
+            -o-transform: translateY(-10px);
+            color: $deep-sky-blue;
+          }
+        }
+      }
+      .tab_current {
+        color: $deep-sky-blue;
+      }
+
+    }
+    .categories:nth-child(1) {
+      .tab_items {
+        .tab_title { width: 90px; }
+      }
+    }
+    .categories:nth-child(4) {
+      .tab_items {
+        .tab_title { width: 155px; }
+      }
+    }
+  }
+}
+
+.text-align {
+  text-align: center;
+  padding-bottom: 30px;
+}
+.margin-align {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.count-align {
+  text-align: center;
+  background: $coral;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  color: white;
+  font-family: $text-bolder;
+  position: absolute;
+  bottom: 95px;
+  right: 20px;
+}
+
+.notification-align {
+  font-size: 12px;
+  font-family: $text-bold;
+  line-height: 1;
+  
+  .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+  .tooltip_top {
+    top: -41px;
+    left: -17px;
+  }
+}
+
+.line {
+  width: 100%;
+  height: 2px;
+  background-color: $deep-sky-blue;
+  margin-top: 30px;
+}
+
+.tooltip_top {
+  top: -46px;
+  left: -37px;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -525,14 +522,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>128</sys_mod_count>
+        <sys_mod_count>129</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-07-31 20:41:55</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-01 13:00:07</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
 
   <div class="content_avatar">
@@ -579,7 +576,6 @@
   </div>
 
   <div class="line"></div>
-
   <div class="header-loader" ng-show="c.isLoading">
     <div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator">
       <div></div>

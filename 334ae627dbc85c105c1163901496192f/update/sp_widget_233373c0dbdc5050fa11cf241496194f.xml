@@ -1,20 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function($scope, $rootScope) {
-  /* widget controller */
-  var c = this;
-	
+        <client_script><![CDATA[function ($scope, $element, $rootScope, $timeout, snAttachmentHandler, $http, spUtil, i18n) {
+
 	$scope.userID = $scope.user.sys_id;
-	// Coleta informações sobre a foto do usuário logado
 	$rootScope.$on('sp.avatar_changed', function() {
 		$scope.userID = "";
 		$timeout(function(){
 			$scope.userID = $scope.user.sys_id;
 		});
 	});
-	
 
+	var fieldExcludes = {
+		sys_user: ['name', 'introduction', 'title', 'department', 'location', 'photo',
+							 'manager', 'company'],
+		live_profile: ['short_description', 'photo']
+	}
+
+	$scope.uploadNewProfilePicture = function($event) {
+		$event.stopPropagation();
+		if($event.keyCode === 9) {
+			return;
+		}
+		var $el = $element.find('input[type=file]');
+		$el.click();
+	}
+
+	$scope.attachFiles = function(files) {
+		var file = files.files[0];
+
+		var validImage = false;
+
+		switch(file.type) {
+			case 'image/jpeg':
+			case 'image/png':
+			case 'image/bmp':
+			case 'image/x-windows-bmp':
+			case 'image/gif':
+			case 'image/x-icon':
+			case 'image/svg+xml':
+				validImage = true;
+				break;
+			default:
+				break;
+		}
+
+		if(!validImage) {
+			alert(file.name + " " + i18n.getMessage("isn't a recognized image file format"));
+			return;
+		}
+
+		snAttachmentHandler.create("live_profile", $scope.data.liveProfileID).uploadAttachment(file, {
+			sysparm_fieldname: "photo"
+		}).then(function(response) {
+			var obj = {};
+			obj.newAvatarId = response.sys_id;
+			$scope.avatarPicture = {
+				'background-image': "url('" + response.sys_id + ".iix')",
+				'color': 'transparent'
+			};
+			$rootScope.$broadcast("sp.avatar_changed", obj);
+		});
+	}
+
+	$scope.avatarPicture = "";
+
+	$http.get('/api/now/live/profiles/sys_user.' + $scope.data.sysUserID).then(function (response) {
+		if (response.data.result && response.data.result.avatar){
+			var avatarPicture = response.data.result.avatar.replace("?t=small", "");
+			$scope.avatarPicture = {
+				'background-image': "url('" + avatarPicture + "')",
+				'color': 'transparent'
+			};
+		}
+	});
+
+	spUtil.recordWatch($scope, "sys_user", "sys_id=" + $scope.data.sysUserID);
+	spUtil.recordWatch($scope, "live_profile", "sys_id=" + $scope.data.liveProfileID);
+	
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.avatar-custom-size{
@@ -76,35 +139,52 @@
         <option_schema/>
         <public>true</public>
         <roles/>
-        <script><![CDATA[(function() {  /* populate the 'data' object */  /* e.g., data.table = $sp.getValue('table'); */})();]]></script>
+        <script><![CDATA[(function() {
+	data.sysUserID = $sp.getParameter("sys_id");
+	if (!data.sysUserID)
+		data.sysUserID = gs.getUser().getID();
+	var sysUserGR = new GlideRecord("sys_user");
+	data.userExists = sysUserGR.get(data.sysUserID) && sysUserGR.canRead();
+
+	if (data.userExists) {
+		data.name = sysUserGR.getValue("name");
+		var loggedInSysUserID = gs.getUser().getID();
+		data.liveProfileID = "";
+
+		if (GlidePluginManager().isActive('com.glideapp.live_common')) {
+			var liveProfileGR = new GlideRecord("live_profile");
+			liveProfileGR.addQuery("document", data.sysUserID);
+			liveProfileGR.query();
+			if (liveProfileGR.next()) {
+				data.liveProfileID = liveProfileGR.getValue("sys_id");
+				data.liveProfileModel = $sp.getForm("live_profile", data.liveProfileID)._fields;
+			}
+		}
+	}
+})();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-16 11:08:03</sys_created_on>
         <sys_id>233373c0dbdc5050fa11cf241496194f</sys_id>
-        <sys_mod_count>127</sys_mod_count>
+        <sys_mod_count>133</sys_mod_count>
         <sys_name>GService Main User</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_233373c0dbdc5050fa11cf241496194f</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-26 15:02:15</sys_updated_on>
-        <template><![CDATA[<div ng-if="::user.logged_in" class="align-all">
-  
+        <sys_updated_on>2020-08-01 14:08:07</sys_updated_on>
+        <template><![CDATA[<div ng-if="user.logged_in" class="align-all">
   <div>
-    <a title="Avatar Pic" href=""><!-- Exibe a foto do usuário logado -->
+    <a title="Avatar Pic">
       <sn-avatar class="avatar-custom-size" primary="userID" />
     </a>
   </div>
-  
-  <div class="hello-stranger em-tight">Olá {{::user.name}}!</div>
-  
+  <div class="hello-stranger em-tight">${Hello}, {{data.name}}!</div>
   <div class="stranger-help em-tight" style="line-height:0.95">
     <div>${Em que conseguimos <br> te ajudar hoje?}</div>
   </div>
-  
-</div>
-]]></template>
+</div>]]></template>
     </sp_widget>
 </record_update>

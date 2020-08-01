@@ -1217,17 +1217,17 @@ ul {&#13;
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-19 14:34:49</sys_created_on>
         <sys_id>420f56b2dbf05410fa11cf24149619ab</sys_id>
-        <sys_mod_count>412</sys_mod_count>
+        <sys_mod_count>413</sys_mod_count>
         <sys_name>GService Ticket Conversations</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_420f56b2dbf05410fa11cf24149619ab</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-30 14:31:45</sys_updated_on>
+        <sys_updated_on>2020-08-01 13:56:31</sys_updated_on>
         <template><![CDATA[<div class="content_notifications" ng-if="data.canRead && !data.isNewRecord && !data.hide">
   <div class="mask_submitting" ng-show="c.submitting"/>
-  <div class="content_conversation"> <!-- -->
+  <div class="content_conversation">
     <div class="panel-heading panel-title-container">
       <div class="number_title" ng-click="c.goToItem()">
         <div class="ticket_number">{{data.number}}</div>
@@ -1238,15 +1238,12 @@ ul {&#13;
     <div class="panel-body">
       <div ng-if="data.hasReadableJournalField">
         <div class="row">
-
           <ul role="list" class="avatar_list" aria-label="${Ticket history}">
             <li class="" ng-repeat="e in data.mergedEntries | limitTo : 1">
-
               <sn-avatar ng-if="hasLiveProfile(e.user_sys_id)" primary="getLiveProfileByUserId(e.user_sys_id)" class="avatar-large avatar-custom-size" show-presence="false" enable-context-menu="false">
               </sn-avatar>
-
               <div class="history-name-size">{{e.name}}</div>
-              <div class=""> <!-- timeline-body -->
+              <div class="">
                 <p ng-if="(e.element != 'attachment')" ng-bind-html="e.value"></p>
                 <div ng-if="(e.element == 'attachment')">
                   <a ng-if="(e.attachment.state == 'available')" target="_blank" href="/sys_attachment.do?view=true&sys_id={{e.attachment.sys_id}}" title="${View}">

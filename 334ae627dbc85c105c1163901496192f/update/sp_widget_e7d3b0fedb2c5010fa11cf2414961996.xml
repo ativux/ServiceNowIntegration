@@ -34,7 +34,7 @@
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>@media only screen and (max-width : 992px) {
-.button-to-top {
+  .button-to-top {
     position: fixed;
     bottom: 0;
     right: 0;
@@ -49,7 +49,6 @@
     background-color: #ddd;
   }
 }
-
 .page1 {
   height: 500px;
   background-color: red;
@@ -83,26 +82,22 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-05-06 20:30:55</sys_created_on>
         <sys_id>e7d3b0fedb2c5010fa11cf2414961996</sys_id>
-        <sys_mod_count>22</sys_mod_count>
+        <sys_mod_count>23</sys_mod_count>
         <sys_name>GService Scroll to Top</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_e7d3b0fedb2c5010fa11cf2414961996</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-14 18:01:57</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-01 14:10:22</sys_updated_on>
         <template><![CDATA[<div>
   <div id="page2" class="page2"></div>
-  
-	<button name="gotoTop" ng-click="goTop()" class="">teste scroll</button>
-  
+	<button name="gotoTop" ng-click="goTop()">Scroll</button>
   <div id="page1" class="page1"></div>
   <div id="page2" class="page2"></div>
   <div id="page3" class="page3"></div>
   <div id="page1" class="page1"></div>
   <div id="page2" class="page2"></div>
-  
-  
 </div>]]></template>
     </sp_widget>
 </record_update>

@@ -151,176 +151,150 @@
 	});
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.content-table{&#13;
-  transition: .5s ease-in-out;&#13;
-}&#13;
-.content-header{&#13;
-  margin-top: -200px;&#13;
-  transition: .1s ease-in-out;&#13;
-}&#13;
-.mask{&#13;
-  overflow: hidden;&#13;
-}&#13;
-.alert-info {&#13;
-  font-size: 18px;&#13;
-  color: $slate-gray;&#13;
-  background-color: white;&#13;
-  border: 0;&#13;
-  border-top: 2px solid $slate-gray;&#13;
-  border-bottom: 2px solid $slate-gray;&#13;
-}&#13;
-.panel-heading {&#13;
-  padding-left: 8px;&#13;
-}&#13;
-&#13;
-table {&#13;
-  margin-bottom: 0;&#13;
-  table-layout: fixed;&#13;
-&#13;
-  thead {&#13;
-    border-top: 2px solid $slate-gray;&#13;
-    border-bottom: 2px solid $slate-gray;&#13;
-&#13;
-    .text-properties{&#13;
-      padding: 20px 5px 20px 0;&#13;
-    }&#13;
-&#13;
-    th {&#13;
-      padding: 8px 0;&#13;
-      border-bottom: 0;&#13;
-      cursor: pointer;&#13;
-      vertical-align: middle;&#13;
-      font-size: 12px;&#13;
-      font-family: $text-bolder;&#13;
-&#13;
-      .th-title {&#13;
-        display: inline-block;&#13;
-        color: $slate-gray;&#13;
-        text-transform: uppercase;&#13;
-      }&#13;
-    }&#13;
-    /*.number {&#13;
-      width: 10%;&#13;
-    }&#13;
-    .priority {&#13;
-      width: 10%;&#13;
-    }&#13;
-    .sla_due {&#13;
-      width: 10%;&#13;
-    }&#13;
-    .short_description {&#13;
-      width: 10%;&#13;
-    }&#13;
-    .state {&#13;
-      width: 10%;&#13;
-    }&#13;
-    .assignment_group {&#13;
-      width: 10%;&#13;
-    }&#13;
-    .assigment_to {&#13;
-      width: 10%;&#13;
-    }&#13;
-    .opened_by {&#13;
-      width: 10%;&#13;
-    }*/&#13;
-    th i {&#13;
-      display: inline-block;&#13;
-      margin-left: 5px;&#13;
-      color: $deep-sky-blue;&#13;
-    }&#13;
-    th .disabled {&#13;
-      color:#ddd;&#13;
-    }&#13;
-  }&#13;
-&#13;
-  tbody {&#13;
-    tr {&#13;
-      border-top: 2px solid $slate-gray;&#13;
-      border-bottom: 2px solid $slate-gray;&#13;
-&#13;
-      td {&#13;
-        padding: 20px 10px 20px 0;&#13;
-        font-size: 12px;&#13;
-        vertical-align: middle;&#13;
-        position: relative;&#13;
-&#13;
-        &amp;:hover {&#13;
-          .tooltip {&#13;
-            visibility: visible;&#13;
-            opacity: 1;&#13;
-          }&#13;
-        }&#13;
-        .tooltip_bottom {&#13;
-          left: 0;&#13;
-          top: 45px;&#13;
-        }&#13;
-        .arrow_top{&#13;
-          position: absolute;&#13;
-          left: 30px;&#13;
-          top: -10px;&#13;
-        }&#13;
-        .tooltip_text {&#13;
-          white-space: normal;&#13;
-        }&#13;
-      }&#13;
-      td:nth-child(1) {&#13;
-        text-decoration: underline;&#13;
-      }&#13;
-      td:nth-child(5) {&#13;
-        font-family: $text-bold;&#13;
-      }&#13;
-      .pending {&#13;
-        color: $coral;&#13;
-      }&#13;
-      .inProgress {&#13;
-        color: $yellow-green;&#13;
-      }&#13;
-      .resolved {&#13;
-        color: $deep-sky-blue;&#13;
-      }&#13;
-      .draft {&#13;
-        color: $light-steel-blue;&#13;
-      }&#13;
-    }&#13;
-    tr:nth-of-type(odd) {&#13;
-      background-color: white;&#13;
-    }&#13;
-  }&#13;
-  tbody tr:last-child {&#13;
-    border-bottom: none;&#13;
-  }&#13;
-}&#13;
-.panel-footer {&#13;
-  padding: 0;&#13;
-  border-top: 2px solid $slate-gray;&#13;
-&#13;
-  .content_pagination {&#13;
-    padding-top: 20px;&#13;
-&#13;
-&#13;
-    .pag_arrow_left {&#13;
-      img {&#13;
-        transform: rotate(90deg);&#13;
-      }&#13;
-    }&#13;
-    .pag_arrow_right {&#13;
-      img {&#13;
-        margin-left: 25px;&#13;
-        transform: rotate(-90deg);&#13;
-      }&#13;
-    }&#13;
-    .pag_arrow_left, .pag_arrow_right {&#13;
-      img {&#13;
-        height: 14px;&#13;
-        margin-top: -4px;&#13;
-      }&#13;
-    }&#13;
-    .pag_text {&#13;
-      font-family: $text-bold;&#13;
-      text-transform: uppercase;&#13;
-      margin-left: 25px;&#13;
-    }&#13;
-  }&#13;
+        <css>.content-table{
+  transition: .5s ease-in-out;
+}
+.content-header{
+  margin-top: -200px;
+  transition: .1s ease-in-out;
+}
+.mask { overflow: hidden; }
+
+.alert-info {
+  font-size: 18px;
+  color: $slate-gray;
+  background-color: white;
+  border: 0;
+  border-top: 2px solid $slate-gray;
+  border-bottom: 2px solid $slate-gray;
+}
+.panel-heading {
+  padding-left: 8px;
+}
+
+table {
+  margin-bottom: 0;
+  table-layout: fixed;
+
+  thead {
+    border-top: 2px solid $slate-gray;
+    border-bottom: 2px solid $slate-gray;
+
+    .text-properties{
+      padding: 20px 5px 20px 0;
+    }
+
+    th {
+      padding: 8px 0;
+      border-bottom: 0;
+      cursor: pointer;
+      vertical-align: middle;
+      font-size: 12px;
+      font-family: $text-bolder;
+
+      .th-title {
+        display: inline-block;
+        color: $slate-gray;
+        text-transform: uppercase;
+      }
+    }
+    th i {
+      display: inline-block;
+      margin-left: 5px;
+      color: $deep-sky-blue;
+    }
+    th .disabled {
+      color:#ddd;
+    }
+  }
+
+  tbody {
+    tr {
+      border-top: 2px solid $slate-gray;
+      border-bottom: 2px solid $slate-gray;
+
+      td {
+        padding: 20px 10px 20px 0;
+        font-size: 12px;
+        vertical-align: middle;
+        position: relative;
+
+        &amp;:hover {
+          .tooltip {
+            visibility: visible;
+            opacity: 1;
+          }
+        }
+        .tooltip_bottom {
+          left: 0;
+          top: 45px;
+        }
+        .arrow_top{
+          position: absolute;
+          left: 30px;
+          top: -10px;
+        }
+        .tooltip_text {
+          white-space: normal;
+        }
+      }
+      td:nth-child(1) {
+        text-decoration: underline;
+      }
+      td:nth-child(5) {
+        font-family: $text-bold;
+      }
+      .pending {
+        color: $coral;
+      }
+      .inProgress {
+        color: $yellow-green;
+      }
+      .resolved {
+        color: $deep-sky-blue;
+      }
+      .draft {
+        color: $light-steel-blue;
+      }
+    }
+    tr:nth-of-type(odd) {
+      background-color: white;
+    }
+  }
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+}
+.panel-footer {
+  padding: 0;
+  border-top: 2px solid $slate-gray;
+
+  .content_pagination {
+    padding-top: 20px;
+    
+    .pag_arrow_left {
+      img {
+        transform: rotate(90deg);
+      }
+    }
+    .pag_arrow_right {
+      img {
+        margin-left: 25px;
+        transform: rotate(-90deg);
+      }
+    }
+    .pag_arrow_left, .pag_arrow_right {
+      img {
+        height: 14px;
+        margin-top: -4px;
+      }
+    }
+    .pag_text {
+      font-family: $text-bold;
+      text-transform: uppercase;
+      margin-left: 25px;
+    }
+  }
 }</css>
         <data_table>sp_instance_table</data_table>
         <demo_data>{"data":
@@ -649,20 +623,18 @@ table {&#13;
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-24 17:52:22</sys_created_on>
         <sys_id>f275a02adba19c10fa11cf24149619da</sys_id>
-        <sys_mod_count>455</sys_mod_count>
+        <sys_mod_count>456</sys_mod_count>
         <sys_name>GService Data Table</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f275a02adba19c10fa11cf24149619da</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-30 17:08:12</sys_updated_on>
+        <sys_updated_on>2020-08-01 13:10:06</sys_updated_on>
         <template><![CDATA[<div class="clearfix"/>
 <div>
   <div class="panel-heading form-inline"></div>
-  <div class="alert alert-info" ng-if="data.list.length == 0">
-    ${Ops! Não encontramos resultados para essa busca.}
-  </div>
+  <div class="alert alert-info" ng-if="data.list.length == 0">${Ops! Não encontramos resultados para essa busca.}</div>
   <div ng-if="data.list.length > 0">
     <table class="table">
       <thead>

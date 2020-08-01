@@ -244,149 +244,149 @@
 	});
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>ul.dropdown-menu {&#13;
-  min-width: 100%;&#13;
-  border-radius: 0px 0px 4px 4px;&#13;
-  margin:0px;&#13;
-}&#13;
-&#13;
-ul.dropdown-menu a.ta-item {&#13;
-  line-height: 20px;&#13;
-}&#13;
-&#13;
-ul.dropdown-menu i.ta-icon, i.ta-img {&#13;
-  width: 20px;&#13;
-  height: 20px;&#13;
-  background-size: contain;&#13;
-  display: inline-block;&#13;
-  background-repeat: no-repeat;&#13;
-  background-position: center center;&#13;
-  text-align: center;&#13;
-  line-height: 20px;&#13;
-  vertical-align: bottom;&#13;
-  margin-right: 8px;&#13;
-}&#13;
-&#13;
-.icon-img {&#13;
-  height: 60px;&#13;
-  border: 0;&#13;
-}&#13;
-&#13;
-.icon-img-dashboard {&#13;
-  height: 20px;&#13;
-  border: 0;&#13;
-}&#13;
-&#13;
-::placeholder {&#13;
-  font-size: 13px;&#13;
-}&#13;
-&#13;
-.text-left {&#13;
-  font-family: $text-rough;&#13;
-  color: #708090;&#13;
-  margin-top: 10px;&#13;
-}&#13;
-&#13;
-.input-group-btn {&#13;
-  z-index: 3;&#13;
-}&#13;
-&#13;
-.dashboard-button {&#13;
-  .btn{&#13;
-    padding: 6px 12px !important;&#13;
-    margin-bottom: -12px !important;&#13;
-  }&#13;
-}&#13;
-&#13;
-.input-group .form-control {&#13;
-  width: 100%;&#13;
-}&#13;
-&#13;
-.input-group {&#13;
-  border-bottom: 2px solid $dodger-blue;&#13;
-}&#13;
-&#13;
-.input-group-dashboard {&#13;
-  border-bottom: 2px solid $deep-sky-blue;&#13;
-}&#13;
-.margins{&#13;
-  margin: 32px 30px 40px 50px;&#13;
-}&#13;
-&#13;
-input[name='q'] {&#13;
-  border: 0;&#13;
-  margin-top: 10%;&#13;
-}&#13;
-&#13;
-.content_typeahead_home {&#13;
-  input[name='q'] {&#13;
-    margin-top: 0;&#13;
-    position: absolute;&#13;
-    bottom: 4px;&#13;
-  }&#13;
-}&#13;
-&#13;
-input[name='q']:focus {&#13;
-  outline: none;&#13;
-  box-shadow: none;&#13;
-}&#13;
-&#13;
-input[type="reset"]{&#13;
-  border: 0;&#13;
-  position: absolute;&#13;
-  right: 15px;&#13;
-  top: 30px;&#13;
-  font-size: 28px;&#13;
-  z-index: 4;&#13;
-  background: none;&#13;
-}&#13;
-&#13;
-.default_properties{&#13;
-  input[type='text'] {&#13;
-    width: 90% !important;&#13;
-  }&#13;
-  .close_result-default {&#13;
-    display: block;&#13;
-    float: right;&#13;
-    z-index: 3;&#13;
-    font-size: 24px;&#13;
-    margin-top: 10%;&#13;
-    margin-right: 2%;&#13;
-  }&#13;
-}&#13;
-&#13;
-.close_result {&#13;
-  position: absolute;&#13;
-  z-index: 3;&#13;
-  right: 10px !important;&#13;
-  font-size: 24px;&#13;
-}&#13;
-&#13;
-/* Template Main Search - Home */&#13;
-.content_typeahead_home {&#13;
-  .close_result {&#13;
-    bottom: 4px;&#13;
-  }&#13;
-}&#13;
-&#13;
-/* Template Dashboard */&#13;
-.content_typeahead_dashboard {&#13;
-  .close_result {&#13;
-    top: 17px !important;&#13;
-    right: 60px !important;&#13;
-  }&#13;
-}&#13;
-&#13;
-/* TOOLTIPS */&#13;
-.close_result:hover {&#13;
-  .tooltip, .tooltip_ {&#13;
-    visibility: visible;&#13;
-    opacity: 1;&#13;
-  }&#13;
-}&#13;
-.tooltip_top {&#13;
-  top: -100%;&#13;
-  left: -36px;&#13;
+        <css>ul.dropdown-menu {
+  min-width: 100%;
+  border-radius: 0px 0px 4px 4px;
+  margin:0px;
+}
+
+ul.dropdown-menu a.ta-item {
+  line-height: 20px;
+}
+
+ul.dropdown-menu i.ta-icon, i.ta-img {
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center center;
+  text-align: center;
+  line-height: 20px;
+  vertical-align: bottom;
+  margin-right: 8px;
+}
+
+.icon-img {
+  height: 60px;
+  border: 0;
+}
+
+.icon-img-dashboard {
+  height: 20px;
+  border: 0;
+}
+
+::placeholder {
+  font-size: 13px;
+}
+
+.text-left {
+  font-family: $text-rough;
+  color: #708090;
+  margin-top: 10px;
+}
+
+.input-group-btn {
+  z-index: 3;
+}
+
+.dashboard-button {
+  .btn{
+    padding: 6px 12px !important;
+    margin-bottom: -12px !important;
+  }
+}
+
+.input-group .form-control {
+  width: 100%;
+}
+
+.input-group {
+  border-bottom: 2px solid $dodger-blue;
+}
+
+.input-group-dashboard {
+  border-bottom: 2px solid $deep-sky-blue;
+}
+.margins{
+  margin: 32px 30px 40px 50px;
+}
+
+input[name='q'] {
+  border: 0;
+  margin-top: 10%;
+}
+
+.content_typeahead_home {
+  input[name='q'] {
+    margin-top: 0;
+    position: absolute;
+    bottom: 4px;
+  }
+}
+
+input[name='q']:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+input[type="reset"]{
+  border: 0;
+  position: absolute;
+  right: 15px;
+  top: 30px;
+  font-size: 28px;
+  z-index: 4;
+  background: none;
+}
+
+.default_properties{
+  input[type='text'] {
+    width: 90% !important;
+  }
+  .close_result-default {
+    display: block;
+    float: right;
+    z-index: 3;
+    font-size: 24px;
+    margin-top: 10%;
+    margin-right: 2%;
+  }
+}
+
+.close_result {
+  position: absolute;
+  z-index: 3;
+  right: 10px !important;
+  font-size: 24px;
+}
+
+/* Template Main Search - Home */
+.content_typeahead_home {
+  .close_result {
+    bottom: 4px;
+  }
+}
+
+/* Template Dashboard */
+.content_typeahead_dashboard {
+  .close_result {
+    top: 17px !important;
+    right: 60px !important;
+  }
+}
+
+/* TOOLTIPS */
+.close_result:hover {
+  .tooltip, .tooltip_ {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+.tooltip_top {
+  top: -100%;
+  left: -36px;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -514,14 +514,14 @@ input[type="reset"]{&#13;
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 15:27:43</sys_created_on>
         <sys_id>d1156733dbc81050fa11cf2414961952</sys_id>
-        <sys_mod_count>310</sys_mod_count>
+        <sys_mod_count>311</sys_mod_count>
         <sys_name>GService Typeahead Search</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_d1156733dbc81050fa11cf2414961952</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-30 15:10:36</sys_updated_on>
+        <sys_updated_on>2020-08-01 13:54:41</sys_updated_on>
         <template><![CDATA[<div ng-include="data.htmlTemplate"></div>]]></template>
     </sp_widget>
 </record_update>

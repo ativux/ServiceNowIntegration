@@ -51,7 +51,6 @@
         <css>.text-align {
   text-align:center;
 }
-
 .icon-img{
   display: block;
   margin: 0 auto;
@@ -59,12 +58,10 @@
   margin-top: 30px;
   margin-bottom: 30px;
 }
-
 .margin-align{
   width: 100%;
   display: inline-block;
 }
-
 .category-title{
   font-family: $text-bold;
   font-size: 22px;
@@ -74,10 +71,6 @@
 .description-properties {
   font-family: $text-rough;
   font-size: $font-size-h4;
-}
-
-h3{
-  color:red;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -119,40 +112,32 @@ h3{
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-20 11:15:38</sys_created_on>
         <sys_id>6d5bdc2ddb5cd450fa11cf24149619c6</sys_id>
-        <sys_mod_count>171</sys_mod_count>
+        <sys_mod_count>172</sys_mod_count>
         <sys_name>GService Category Items</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_6d5bdc2ddb5cd450fa11cf24149619c6</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-14 18:00:49</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-01 14:12:25</sys_updated_on>
         <template><![CDATA[<div id="widget-category-items" ng-if="c.data.showWidget">
   <div class="margin-align">
     <div class="row">
       <div class="col-lg-4 text-align margin-align">
-
         <div ng-click="selectedCategory(data.category.sys_id)">
           <img src="{{data.categoryImg}}" class="icon-img"/>
           <div>
-
             <div class="category-title">
               {{data.title}}  
             </div>
             <div class="description-properties">
               {{data.category.description}}
             </div>
-
           </div>       
-
         </div>
-
       </div>
-
     </div>  
-
   </div>
-
 </div>]]></template>
     </sp_widget>
 </record_update>

@@ -6,14 +6,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-27 09:06:45</sys_created_on>
         <sys_id>f970a2d1db491c105c1163901496195f</sys_id>
-        <sys_mod_count>21</sys_mod_count>
+        <sys_mod_count>59</sys_mod_count>
         <sys_name>gservice_typeahead_default</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_ng_template_f970a2d1db491c105c1163901496195f</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-06-03 15:10:40</sys_updated_on>
+        <sys_updated_on>2020-08-01 13:54:41</sys_updated_on>
         <template><![CDATA[<div class="content_typeahead_home">
   <form ng-submit="c.submitSearch()">
     <input type="hidden" name="id" value="search"/>
@@ -26,7 +26,7 @@
         </button>
       </span>
       <input ng-if="c.showSuggestions"
-             name="q" type="text" ng-model="c.searchTerm"
+             name="q" type="text" ng-model="data.searchTerm"
              autocomplete="off"
              uib-typeahead="item as item.term for item in c.getSearchSuggestions($viewValue)"
              typeahead-wait-ms="250"
@@ -38,7 +38,7 @@
              class="form-control input-typeahead"
              role="textbox"
              aria-label="{{::c.options.title}}" tabindex="0" aria-haspopup="true">
-      <div class="close_result" ng-click="c.clearResults()" ng-if="c.showClear"> <!-- ng-class="c.options.color == 'default' ? 'close_result-default' : 'close_result'" -->
+      <div class="close_result" ng-click="c.clearResults()" ng-if="data.showClear"> <!-- ng-class="c.options.color == 'default' ? 'close_result-default' : 'close_result'" -->
         x
         <span class="tooltip tooltip_top">
           <div class="tooltip_text">${Clean Search}</div>
@@ -46,9 +46,7 @@
         </span>
       </div>
     </div>
-    <div class="text-left">
-      {{data.searchMsg}}
-    </div>
+    <div class="text-left">{{data.searchMsg}}</div>
   </form>
 </div>]]></template>
     </sp_ng_template>

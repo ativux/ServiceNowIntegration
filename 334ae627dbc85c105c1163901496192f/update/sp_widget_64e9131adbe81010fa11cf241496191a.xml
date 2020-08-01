@@ -133,7 +133,6 @@
       }
     }
   }
-
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -144,7 +143,7 @@
         <id>gservice_category_items_v2</id>
         <internal>false</internal>
         <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
-        <name>GService Category Items V2</name>
+        <name>GService Category Items v2</name>
         <option_schema>[{"displayValue":"Category","hint":"Selecione a categoria que deseja exibir","name":"selected_category","display_value_list":[],"section":"Data","label":"Category","type":"glide_list","value":"sc_category","ed":{"reference":"sc_category"}}]</option_schema>
         <public>false</public>
         <roles/>
@@ -165,23 +164,20 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-05 19:19:17</sys_created_on>
         <sys_id>64e9131adbe81010fa11cf241496191a</sys_id>
-        <sys_mod_count>257</sys_mod_count>
-        <sys_name>GService Category Items V2</sys_name>
+        <sys_mod_count>261</sys_mod_count>
+        <sys_name>GService Category Items v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_64e9131adbe81010fa11cf241496191a</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-05-26 15:00:43</sys_updated_on>
+        <sys_updated_on>2020-08-01 14:06:41</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
   <h1 class="category-title">${GService Request a Service}</h1>
   <div class="row margin-align">
     <div class="col-md-1"></div>
-    
     <div ng-repeat="item in data.categories" class="categories">
-      
       <div class="m-b-s col-md-2 text-align {{item.color}}">
-        
         <div ng-click="selectedCategory(item.sys_id)">
           <img src="{{item.img}}" class="icon-img">
           <div>
@@ -189,11 +185,8 @@
             <div class="description-properties">{{item.description}}</div>
           </div>
         </div>
-        
       </div>
-      
     </div>
-    
   </div>  
 </div>]]></template>
     </sp_widget>

@@ -14,7 +14,7 @@
 	});
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.content{
+        <css>.content {
   
   .cat_item_properties{
     font-family: $text-bold;
@@ -22,13 +22,20 @@
   }
   
   .turn_bold{
-    font-weight: bold;
+    font-family: $text-bold;
+  }
+  
+  .set_margin_top{
     margin-top: 20px;
   }
+  
+  .set_margin_bottom{
+  	margin-bottom: 20px;
+  }
+  
   .color_change{
     color: $deep-sky-blue;
   }
-  
   
   .pending {
     color: $coral !important;
@@ -89,6 +96,7 @@
 
 
 			data.ticketInfo = portalUtils.getTicketInfo(data.table, data.sys_id);
+			data.ticketInfo.forecast = portalUtils.getForecast(data.sys_id);
 
 		}
 
@@ -127,35 +135,27 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-07-23 12:29:11</sys_created_on>
         <sys_id>2391f03b1bc6101094962170f54bcb35</sys_id>
-        <sys_mod_count>45</sys_mod_count>
+        <sys_mod_count>58</sys_mod_count>
         <sys_name>GService Record Details</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2391f03b1bc6101094962170f54bcb35</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-29 18:51:00</sys_updated_on>
+        <sys_updated_on>2020-08-01 13:57:23</sys_updated_on>
         <template><![CDATA[<div class="content">
-
-  <div ng-if="data.parent">
-    <span class="">${Request} #{{data.parent}}</span>
-  </div>
-
-  <div>
-    <span class="">#{{data.number}}</span>
-  </div>
-
+  <div ng-if="data.parent"><span>${Request} #{{data.parent}}</span></div>
+  <div><span>#{{data.number}}</span></div>
   <div ng-if="data.cat_item">
     <span class="cat_item_properties">{{data.cat_item}}</span>
   </div>
-
-  <div class="turn_bold">
+  <div class="turn_bold set_margin_top set_margin_bottom set_margin">
     <span class="{{data.statusColor}}">${Status}: {{data.statusLabel}}</span>
   </div>
-
   <div>
     <div class="turn_bold color_change">${Data de Abertura}: {{data.ticketInfo.openedAt}}</div>
-    <div><span class="turn_bold">${Resumo da solicitação}: </span>{{data.ticketInfo.summary}}</div>
+    <div class="turn_bold color_change">${Forecast}: {{data.ticketInfo.forecast}}</div>
+    <div class="set_margin_bottom"><span class="turn_bold">${Resumo da solicitação}: </span>{{data.ticketInfo.summary}}</div>
     <span ng-if="data.table == 'sc_req_item'">
       <div class="turn_bold color_change">${Detalhes da solicitação}:</div>
       <div ng-repeat="variable in data.variables">
@@ -163,11 +163,9 @@
       </div>
     </span>
   </div>
-
   <div class="margin_align">
     <widget id="gservice_custom_conversation" options='data.gservice_ticket_conversation_options'></widget>
   </div>
-
 </div>]]></template>
     </sp_widget>
 </record_update>
