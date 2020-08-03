@@ -136,6 +136,20 @@
 			if(stop){
 				return;
 			}
+		} else if(c.state == "cancelItem"){
+			var stop = false;
+			if(!c.requestComment){
+				c.needComment = true;
+				stop = true;
+			} else if(c.requestComment.length < 100){
+				c.needComment = true;
+				stop = true;
+			} else{
+				c.needComment = false;
+			}
+			if(stop){
+				return;
+			}
 		}
 		if(c.state != "rejectSolution"){
 			if(c.requestComment){
@@ -303,11 +317,13 @@
 	}
 
 	c.openItem = function(ritm){
+		c.data.showRecordDetails = false;
 		c.server.get({
 			action : "openRITM",
 			ritm : ritm
 		}).then(function(response) {
 			c.data.recordDetailsWidget = response.data.recordDetailsWidget;
+			c.data.showRecordDetails = true;
 			$('#ritmDetails').modal("show");
 		});
 	}
@@ -1299,6 +1315,7 @@ tbody {
 	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
 	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
 	var portalUtils = new global.OCLPortalUtils();
+	data.showRecordDetails = false;
 	data.requestsID = '';
 	data.showEmptyMessage = false;
 
@@ -1356,6 +1373,7 @@ tbody {
 
 			case "changeItemState":
 				var comment = localInput.comment ? localInput.comment : false;
+				gs.addInfoMessage(localInput.item.table);
 				data.item = portalUtils.changeItemState(localInput.item, localInput.state, comment, localInput.reopeningReason);
 				if(localInput.state == "acceptSolution"){
 					var surveyUtils = new global.OCLPortalSurveyUtils();
@@ -1646,14 +1664,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 18:48:13</sys_created_on>
         <sys_id>88e8a47fdb099450fa11cf2414961937</sys_id>
-        <sys_mod_count>600</sys_mod_count>
+        <sys_mod_count>610</sys_mod_count>
         <sys_name>GService My Dashboard Requests</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_88e8a47fdb099450fa11cf2414961937</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 13:50:12</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-08-03 14:56:33</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   <div class="col-md-12 filter-padding">
     <sp-widget widget="data.listFilter_widget"></sp-widget>
@@ -1860,7 +1878,9 @@ tbody {
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <sp-widget widget="data.recordDetailsWidget"></sp-widget>
+        <div ng-if="data.showRecordDetails">
+          <sp-widget widget="data.recordDetailsWidget"></sp-widget>
+        </div>
       </div>
     </div>
   </div>

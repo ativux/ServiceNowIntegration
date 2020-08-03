@@ -847,18 +847,31 @@ ul {
 		data.gservice_ticket_attachment = $sp.getWidget('gservice_ticket_attachments');
 		var grVariables = new GlideRecord(data.table);
 		grVariables.get(data.sys_id);
-		if(data.table != 'change_request'){
-			if(data.table != 'wm_order'){
+
+		switch(data.table){
+			case "sc_req_item":
+			case "u_question":
+			case "incident":
+			case "sn_si_incident":
 				data.variables = new global.GlobalServiceCatalogUtil().getVariablesForTask(grVariables, true);
-			} else{
+				break;
+
+			case "change_request":
+				var fields = gs.getProperty('gservice_modal_change_fields');
+				data.variables = $sp.getFields(grVariables, fields);
+				break;
+
+			case "wm_order":
 				var wmFields = gs.getProperty('gservice_modal_wm_fields');
 				data.variables = $sp.getFields(grVariables, wmFields);
-			}
+				break;
 
-		} else {
-			var fields = gs.getProperty('gservice_modal_change_fields');
-			data.variables = $sp.getFields(grVariables, fields);
+			default:
+				data.variables = [];
+				break;
+
 		}
+
 		data.ticketInfo = portalUtils.getTicketInfo(data.table, data.sys_id);
 	}
 	else{
@@ -884,14 +897,14 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-02 15:30:08</sys_created_on>
         <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
-        <sys_mod_count>386</sys_mod_count>
+        <sys_mod_count>391</sys_mod_count>
         <sys_name>GService Custom Conversation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 13:34:15</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-08-03 12:27:26</sys_updated_on>
         <template><![CDATA[<div class="content_conversation_all">
   <div ng-if="data.hide_title == false" class="conversation_title">${GService Conversation Request History}</div>
   <div>

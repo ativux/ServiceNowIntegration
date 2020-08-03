@@ -394,14 +394,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-22 14:21:53</sys_created_on>
         <sys_id>d82261f9db699810fa11cf2414961901</sys_id>
-        <sys_mod_count>357</sys_mod_count>
+        <sys_mod_count>358</sys_mod_count>
         <sys_name>GService List Filter Manager</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_d82261f9db699810fa11cf2414961901</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 14:05:46</sys_updated_on>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-08-01 15:49:22</sys_updated_on>
         <template><![CDATA[<div class="content_list_manager">
   <div class="content_list">
     <div class="column">
@@ -413,7 +413,7 @@
       <div class="mask_filter">
         <div class="content_filters" ng-class="c.data.showPropertyFilter ? 'filter_open' : 'filter_close'">
           <div class="list-properties" ng-repeat="propertyFilter in data.filters.propertyFilter">
-            <div method="get" class="radio-properties testingClass">
+            <div method="get" class="radio-properties">
               <label for="{{propertyFilter.name}}" class="status_filter" ng-click="c.selectedProperty(propertyFilter)">
                 <input type="checkbox"
                        id="{{propertyFilter.name}}"
