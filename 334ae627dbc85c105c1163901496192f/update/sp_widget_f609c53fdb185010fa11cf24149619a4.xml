@@ -9,10 +9,14 @@
 	c.bdColor = "";
 
 	$scope.$on(c.data.broadcast_name, function (event, data, searchSourceID, categorySearch) {
+		c.data.hasResults = false;
 		if(categorySearch){
 			c.data.searchSources = data.results[0].items;
 			c.showArticles = true;
 			for(var i in c.data.searchSources){
+				if(c.data.searchSources[i].results.length > 0){
+					c.data.hasResults = true;
+				}
 				c.data.searchSources[i].resultLimit = 2;
 				if(c.data.searchSources[i].results.length > c.data.searchSources[i].resultLimit){
 					c.data.searchSources[i].seeAllMsg = c.data.msgs.seeAll;
@@ -20,6 +24,7 @@
 					c.data.searchSources[i].seeAllMsg = c.data.msgs.seeLess;
 				}
 			}
+			c.data.searchMade = true;
 		}
 		else{
 			c.data.action = "searchedItem";
@@ -28,10 +33,14 @@
 			c.server.update().then(function() {
 				c.showArticles = c.data.showArticles;
 				for(var i in c.data.searchSources){
+					if(c.data.searchSources[i].results.length > 0){
+						c.data.hasResults = true;
+					}
 					for(var j in c.data.searchSources[i].results){
 						c.data.searchSources[i].results[j].title = replaceHtml(c.data.searchSources[i].results[j].title);
 					}
 				}
+				c.data.searchMade = true;
 			});
 		}
 	});
@@ -45,6 +54,8 @@
 
 	$scope.$on(c.data.broadcast_name + "Clear", function (event) {
 		c.data.searchSources = [];
+		c.data.searchMade = false;
+		c.data.hasResults = false;
 	});
 
 	//When an article searched by the "GService Typeahead Search" widget is clicked, we send the data to the widget embedded
@@ -179,6 +190,8 @@
 	/* e.g., data.table = $sp.getValue('table'); */
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
+	data.hasResults = false;
+	data.searchMade = false;
 	data.broadcast_name = options.broadcast_name;
 	data.articleModalID = data.broadcast_name + "ArticleModal";
 	data.msgs = {};
@@ -226,15 +239,15 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-27 14:21:58</sys_created_on>
         <sys_id>f609c53fdb185010fa11cf24149619a4</sys_id>
-        <sys_mod_count>296</sys_mod_count>
+        <sys_mod_count>308</sys_mod_count>
         <sys_name>GService Search Result</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f609c53fdb185010fa11cf24149619a4</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 14:05:09</sys_updated_on>
-        <template><![CDATA[<div class="col-lg-12 col-md-12 col-sm-12">
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-08-04 13:51:30</sys_updated_on>
+        <template><![CDATA[<div class="col-lg-12 col-md-12 col-sm-12" ng-if="data.hasResults">
   <div class="articles">
     <div class="article" ng-if="c.showArticles" ng-repeat="searchSource in data.searchSources">
       <div ng-if="searchSource.results.length > 0">
@@ -247,6 +260,11 @@
         <div class="article_line"></div>
       </div>
     </div>
+  </div>
+</div>
+<div ng-if="!data.hasResults && data.searchMade">
+  <div>
+    ${Ops, não encontramos o que você está buscando.}
   </div>
 </div>
 <div class="modal fade modal_article" id="{{data.articleModalID}}" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">

@@ -51,13 +51,22 @@
 
 	$scope.$on("getSearchKB", function(event, result, searchSourceID, category_id){
 		c.data.kb_categories = result.results[0].search;
+		if(c.data.kb_categories.length == 0)
+			c.data.hasResults = false;
+		else
+			c.data.hasResults = true;
+		c.data.searchMade = true;
 	});
 
 	$scope.$on("clearAllBeforeSearch", function(event){
+		c.data.searchMade = false;
+		c.data.hasResults = false;
 		c.clearSelectedKBs();
 	});
 
 	$scope.$on("getSearchKBClear", function(event, result, searchSourceID, category_id){
+		c.data.searchMade = false;
+		c.data.hasResults = false;
 		c.data.kb_categories = [];
 		c.data.thirdCategories = [];
 		c.data.breadcrumb.second = [];
@@ -658,6 +667,8 @@
         <script><![CDATA[(function() {
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
+	data.hasResults = false;
+	data.searchMade = false;
 	data.username = gs.getUserDisplayName();
 	data.showWidget = false;
 	data.showArticles = false;
@@ -771,14 +782,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-05 12:59:42</sys_created_on>
         <sys_id>2e4ca118db9ddc905c1163901496194f</sys_id>
-        <sys_mod_count>763</sys_mod_count>
+        <sys_mod_count>768</sys_mod_count>
         <sys_name>GService Categories Knowledge Content</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2e4ca118db9ddc905c1163901496194f</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 13:01:33</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-08-04 14:05:15</sys_updated_on>
         <template><![CDATA[<div id="widgetKBcategory" class="content" ng-show="data.showWidget">
 
   <div class="header-loader" ng-show="c.isLoading">
@@ -817,6 +828,10 @@
         <div class="category_items" ng-if="thirdCategory.hasArticles" ng-repeat="thirdCategory in data.thirdCategories" ng-click="c.selectedThirdCategory(thirdCategory.sys_id)" ng-class="thirdCategory.selected ? '{{data.color.categoryColor}} category_items_current' : ''">
           {{thirdCategory.title}}
         </div>
+      </div>
+
+      <div ng-if="!data.hasResults && data.searchMade">
+        ${Ops, não encontramos o que você está buscando.}
       </div>
 
       <div class="content_services" ng-if="data.kb_categories.length > 0">
