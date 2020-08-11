@@ -1,0 +1,941 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope, $timeout, spUtil, $location) {
+	var c = this;
+	c.approvalComment = '';
+	c.approvalItem = false;
+	c.needComment = false;
+	
+	c.contentOpened = true;
+	c.openContent = function() {
+		c.contentOpened = !c.contentOpened;
+
+		if(!c.contentOpened) {
+			$('.content_body_app').each(function(){
+				$(this).css({
+					'margin-top' : '-' + $(this).outerHeight() + 'px'
+				});
+			});
+		}
+		else {
+			$('.content_body_app').each(function(){
+				$(this).css({
+					'margin-top' : 0
+				});
+			});
+		}
+		
+	}
+
+	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
+		var changes = event.data.changes;
+		var stateChanged = false;
+		for(i in changes){
+			if(changes[i] == "state"){
+				stateChanged = true;
+			}
+		}
+		if(event.data.record.state.value == "requested" && stateChanged){
+			c.server.get({
+				action: "getNewApproval",
+				approvalID: event.data.sys_id,
+				approvals: c.data.approvals
+			}).then(function(response) {
+				if(response.data.approvals.length > 0){
+					c.data.approvals = response.data.approvals;
+					c.data.showEmptyMessage = false;
+				} else {
+					c.data.showEmptyMessage = true;
+				}
+			});
+		} else if(event.data.record.state.value == "rejected" ||
+							event.data.record.state.value == "approved" && stateChanged){
+			c.server.get({
+				action: "deleteApprovals",
+				approvalID: event.data.sys_id,
+				approvals: c.data.approvals
+			}).then(function(response) {
+				if(response.data.approvals.length > 0){
+					c.data.approvals = response.data.approvals;
+					c.data.showEmptyMessage = false;
+				} else {
+					c.data.showEmptyMessage = true;
+				}
+			});
+		}
+	});
+
+	c.showDetails = function(item){
+		var showDetails = false;
+		for(i in c.data.approvals){
+			if(c.data.approvals[i].sys_id == item.sys_id){
+				c.data.approvals[i].showDetails = !c.data.approvals[i].showDetails;
+				showDetails = c.data.approvals[i].showDetails;
+			}
+			else{
+				c.data.approvals[i].showDetails = false;
+			}
+		}
+		if(showDetails){
+			c.server.get({
+				action: 'getTicketConversationWidget',
+				item: item
+			}).then(function(response) {
+				c.data.ticketConversationWidget = response.data.ticketConversationWidget;
+			});
+		}
+
+	}
+
+	c.orderBy = function(order, items){
+		c.server.get({
+			action : "orderBy",
+			items : items,
+			order : order,
+			allColumns : c.data.columns
+		}).then(function(response) {
+			c.data.columns = response.data.columns;
+			c.data.approvals = response.data.approvals;
+		});
+	}
+	
+	c.submitApproval = function(item, approval){
+		c.approvalItem = item;
+		if(approval){
+			c.server.get({
+				action : "submitApproval",
+				item : item,
+				approvals : c.data.approvals,
+				approval : approval
+			}).then(function(response) {
+				c.data.approvals = response.data.approvals;
+			});
+		}
+		else{
+			$('#approvalCommentModal').modal("show");
+		}
+	}
+
+	c.submitCommentApproval = function(){
+		if(c.approvalComment){
+			c.needComment = false;
+			c.server.get({
+				action : "submitApproval",
+				item : c.approvalItem,
+				approvals : c.data.approvals,
+				comment : c.approvalComment,
+				approval : false
+			}).then(function(response) {
+				$('#approvalCommentModal').modal("hide");
+				c.data.approvals = response.data.approvals;
+				c.approvalComment = '';
+			});
+		}
+		else{
+			c.needComment = true;
+		}
+	}
+	
+	$('#approvalCommentModal').on('hide.bs.modal', function () {
+		c.needComment = "";
+	});
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>/* PAGE 3 - APPROVALS */
+.approval_content {
+  background-color: white;
+  padding: 30px 90px;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  
+  .title_category {
+    transition: .2s ease-in-out;
+    color: $deep-sky-blue;
+    text-transform: uppercase;
+    font-size: 22px;
+    margin-bottom: 15px;
+
+    .invert-arrow {
+      transition: .8s ease-in-out;
+      transform: rotate(180deg);
+    }
+    img {
+      transition: .8s ease-in-out;
+      margin-top: -4px;
+      margin-left: 8px;
+      width: 16px;
+    }
+
+    &amp;:hover {
+      transition: .2s ease-in-out;
+      transform: translate(0, -5px);
+    }
+  }
+  
+  .content_body_mask {
+    overflow: hidden;
+
+    .content_body_app {
+      transition: .8s ease-in-out;
+    }
+  }
+  
+  .approval_column_title{
+    h4 {
+      margin: 4px 0 0 0 !important;
+    }
+    .approval_number{
+      font-size: 16px;
+    }
+    .approval_title{
+      font-family: $text-bold;
+    }
+    .approval_more-details{
+      font-size: 12px;
+      text-decoration: underline;
+      color: $slate-gray;
+      cursor: pointer;
+    }
+  }
+  .approval_column_requester{
+    padding-left: 10px !important;
+    .info-size{
+      height: 20px;
+      width: 20px;
+      margin-left: 10px;
+      margin-top: -5px;
+      cursor: pointer;
+    }
+  }
+  .approval_column_opened{
+    padding-left: 20px !important;
+
+  }
+  .approval_column_forecast{
+    padding-left: 12px !important;
+
+  }
+  .approvals-buttons{
+    display: flex;
+
+    .submit-button{
+      margin-left: 20px;
+    }
+    .cancel-button{
+      margin-left: 15%;;
+    }
+  }
+  .modal-body{
+    overflow: hidden !important;
+    border: 20px solid white;
+    padding-left: 50px !important;
+    .wrapper-xl {
+      padding: 50px 0 0 50px !important;
+      margin-right: -20px;
+    }
+    button{
+      text-align: right;
+      font-size: 42px;
+    }
+    .justify-text{
+      color: $deep-sky-blue;
+      font-size: 36px;
+      padding-bottom: 15px;
+      margin-bottom: 5px;
+    }
+    .no-text-answer{
+      font-size: 16px;
+      color: lightcoral;
+      padding: 2px;
+    }
+    .form-group{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      
+      textarea{
+        margin-top: 5px;
+        margin-right: 10% !important;
+        resize: none;
+        overflow: hidden;
+        height: 140px;
+        width: 90%;
+        overflow-wrap: break-word;
+        border: solid 3px $deep-sky-blue;
+      }
+    }
+    .resize-img{
+      height: 70px;
+      margin-top: 25px;
+      margin-left: -110%;
+    }
+  }
+}
+
+.cart-mobile {
+  border: 0;
+  box-shadow: none;
+
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    a {
+      text-align: right;
+      display: block !important;
+    }
+  }
+
+  .cart-item-mobile-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px 20px 10px;
+
+    .item-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .item-image {
+      margin: 0;
+    }
+
+    a {
+      float: none;
+      text-align: center;
+    }
+
+    select {
+      margin-top: 10px;
+      padding: 0px 5px;
+      text-align-last: center;
+    }
+  }  
+}
+
+td {
+  vertical-align: middle !important;
+}
+
+.a-disabled {
+  cursor: default;
+  color: $btn-link-disabled-color;
+}
+
+.media-body {
+  .btn-link {
+    padding-left: 0;
+    padding-right: 0;
+    color: $primary;
+
+    &amp;:hover {
+      color: darken($primary, 10%);
+    }
+
+    &amp;:focus {
+      color: darken($primary, 10%);
+    }
+  }
+}
+
+.btn-remove {
+  font-size: 18px !important;
+}
+
+.action-btn {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+
+  &amp;.btn-link {
+    color: $primary;
+  }
+}
+
+.list-group {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.list-group-item.ng-enter {
+  transition: all 1s;
+  -webkit-transition: all 1s;
+  background-color: #c0dcfa;
+}
+
+.list-group-item.ng-enter-active {
+  background-color: #fff;
+}
+
+.empty-cart {
+  font-style: italic;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 7px;
+}
+
+.view-carts-link {
+  text-align: center;
+  display: block;
+}
+
+.order-details-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 5px 10px 10px 10px;
+
+  .order-details {
+    padding: 5px;
+
+    textarea {
+      resize: none;
+      flex-basis: 100%;
+      flex-shrink: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .requested-for-details {
+    flex: 1 0 auto;
+    max-width: 100%;
+  }
+
+  .special-instructions-details {
+    textarea {
+      height: calc(100% - 25px);
+    }
+  }
+}
+
+.item-image {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.empty-state-content {
+  margin-top: 30px;
+
+  &amp;.small-cart {
+    margin-top: 0px;
+    padding: 10px 20px;
+  }
+
+  .fa-shopping-cart {
+    color: $gray-light;
+    font-size: 80px;
+    display: block;
+    text-align: center;
+
+    &amp;.small-cart {
+      font-size: 40px;
+    }
+  }
+
+  .h3 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  .h4 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    max-width: 100%;
+    margin-bottom: 35px;
+  }
+}
+
+.large-checkout {
+  display: inline-block;
+  float: none !important;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.item-row:hover .btn-clear {
+  background-color: #f5f5f5;
+}
+
+.sc-btn {
+  margin-bottom: 10px;
+}
+.sc-btn-group {
+  clear: right;
+}
+
+.sc-remove-btn {
+  &amp;:hover {
+    background-color: $danger;
+    color: #fff;
+    border-color: darken($danger, 10%);
+  }
+}
+
+.btn-group-justified &gt; .btn-group {
+  padding: 0 5px;
+
+  .btn {
+    border-radius: 4px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.cart-table {
+  th {
+    position: sticky;
+    -webkit-position: sticky;
+    top: -1px;
+    z-index: 10;
+    background-color: $panel-bg;
+    box-shadow: 0px 1px 0px $panel-inner-border;
+  }
+}
+
+@media only screen and (max-width : 992px) {
+  .sc-btn, .sc-btn-group {
+    width: 100%;
+  }
+  .item-image {
+    max-width: 70px;
+  }
+}
+
+//All pages
+.without_notification {
+  padding: 30px 0;
+  font-size: 30px;
+}
+
+/* Custom Checkout */
+.panel {
+  padding: 30px 100px;
+  box-shadow: 0 0 0 0;
+  -webkit-box-shadow: 0 0 0 0;
+}
+
+/* Table */
+.h3 {
+  font-size: 28px;
+  color: $dodger-blue;
+  margin-top: 20px !important;
+  margin-bottom: 30px;
+}
+.b-b {
+  border-bottom: 2px solid $slate-gray;
+}
+.b-t {
+  border: 0;
+}
+thead {
+  color: $slate-gray;
+  font-family: $text-bolder;
+  font-size: 13px;
+}
+.table &gt; thead &gt; tr &gt; th {
+  border: 0;
+  vertical-align: middle;
+}
+.table-hover &gt; tbody &gt; tr:hover {
+  background-color: white;
+}
+tbody {
+  img {
+    width: 50px;
+    height: 50px;
+  }
+
+  td:nth-child(1) {
+    width: 15%;
+    padding: 20px;
+  }
+
+  td:nth-child(2) {
+    width: 15%;
+    padding: 20px;
+  }
+
+  td:nth-child(3) {
+    width: 15%;
+  }
+
+  td:nth-child(4) {
+    width: 5%;
+    padding: 15px;
+  }
+
+  td:nth-child(5) {
+    width: 20%;
+    padding: 20px;
+
+    .request_button {
+      margin-right: 50px;
+    }
+  }
+  
+  td:nth-child(6) {
+    width: 20%;
+    padding: 20px;
+  }
+
+}
+
+
+
+.footer_checkout {
+
+  .continue_shopping {
+    color: $slate-gray;
+    font-size: 10px;
+    font-weight: bold;
+    text-decoration: underline;
+    text-transform: uppercase;
+    padding: 20px 0 !important;
+  }
+
+  .submit_button {
+    .submit_button_content {
+      display: flex;
+      align-items: center;
+
+      .submit_img {
+        width: 50px;
+        height: 50px;
+        margin-right: 5px;
+      }
+      .submit_title {
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1;
+        color: $dodger-blue;
+        width: 90px;
+      }
+    }
+  }
+}
+
+.empty_content {
+  background-color: white;
+  padding: 30px 100px;
+  padding-bottom: 330px;
+  font-size: 30px;
+
+  .empty_title {
+    color: $dodger-blue;
+    margin-bottom: 30px;
+  }
+}
+
+.column_content {
+  img {
+    height: 10px;
+    position: relative;
+    top: -2px;
+    right: -2px;
+  }
+  .invert-arrow{
+    transform: rotateX(180deg);
+  }
+}
+
+.content_conversation {
+  width: 100%;
+}
+
+.buttons {
+  img { transition: .4s ease-in-out; }
+  &amp;:hover {
+    img {
+      transition: .2s ease-in-out;
+      transform: scale(1.1);
+      -webkit-transform: scale(1.1);
+      -ms-transform: scale(1.1);
+      -moz-transform: scale(1.1);
+      -o-transform: scale(1.1);
+    }
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id/>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService My Dashboard Approvals v2</name>
+        <option_schema>[{"hint":"Selects the columns to show on the table","name":"table","section":"Presentation","label":"Table","type":"string"},{"name":"table_template","section":"Behavior","label":"Table Template","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+	var portalUtils = new global.OCLPortalUtils();
+	data.showEmptyMessage = false;
+	data.user_id = gs.getUserID();
+	data.columns = [];
+
+	if(!localInput){
+		var columns_property = gs.getProperty("gservice_dashboard_columns");
+
+		var parse = JSON.parse(columns_property);
+		var columns = parse['approvalsTab'].columns;
+
+		data.columns = columns;
+		for(i in columns){
+			data.columns[i].name = gs.getMessage(columns[i].name).toUpperCase();
+		}
+		data.approverQuery = "state=requested^source_table=sc_req_item^ORsource_table=change_request^approver.sys_idIN" + gs.getUserID();
+
+		var delegateUsers = [];
+		var grDelegate = new GlideRecord("sys_user_delegate");
+		grDelegate.addQuery("delegate", gs.getUserID());
+		grDelegate.addQuery("approvals", true);
+		grDelegate.query();
+		if(grDelegate.next()){
+			do{
+				delegateUsers.push(grDelegate.getValue("user"));
+			} while(grDelegate.next());
+		}
+
+		if(delegateUsers.length > 0){
+			data.approverQuery += "," + delegateUsers.join(",");
+		}
+
+		data.approvals = portalUtils.getApprovals(data.user_id);
+		if(data.approvals.length == 0){
+			data.showEmptyMessage = true;
+		}
+	}
+
+	else{
+		switch(localInput.action){
+			case "getTicketConversationWidget":
+				var gservice_ticket_conversation_options = {table : localInput.item.table,
+																										sys_id : localInput.item.sys_id,
+																										item_status : localInput.item.colorClass};
+				data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
+				break;
+
+			case "orderBy":
+				var order = localInput.order;
+				data.columns = localInput.allColumns;
+				var direction;
+				for(i in data.columns){
+					if(order == data.columns[i].order){
+						data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
+						direction = data.columns[i].direction;
+					}
+					else{
+						data.columns[i].direction = false;
+					}
+				}
+				var items = localInput.items;
+				var itemsSort = portalUtils.sortList(items, localInput.order, direction);
+				data.approvals = itemsSort;
+				break;
+			case "submitApproval":
+				data.approvals = localInput.approvals;
+				var comment = localInput.comment ? localInput.comment : '';
+				var newApprovalID = portalUtils.submitApproval(localInput.item, localInput.approval, comment);
+
+				var newApprovals = [];
+				for(i in data.approvals){
+					if(data.approvals[i].approvalID != newApprovalID){
+						newApprovals.push(data.approvals[i]);
+					}
+				}
+				data.approvals = newApprovals;
+				break;
+
+			case "getNewApproval":
+				data.approvals = [];
+
+				if(localInput.approvals){
+					data.approvals = localInput.approvals;
+				}
+
+				data.approvals.push(portalUtils.getNewApproval(localInput.approvalID));
+				break;
+			case "deleteApprovals":
+				var newObject = [];
+				if(localInput.approvals){
+					data.approvals = localInput.approvals;
+				}
+				if(data.approvals.length > 0){
+					for(var i in data.approvals){
+						if(data.approvals[i].approvalID != localInput.approvalID){
+							newObject.push(data.approvals[i]);
+						}
+					}
+					data.approvals = newObject;
+				}
+				break;
+		}
+
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-08-11 16:52:01</sys_created_on>
+        <sys_id>36f3e7311bee141097c0dca0f54bcb9a</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>GService My Dashboard Approvals v2</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_36f3e7311bee141097c0dca0f54bcb9a</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-11 18:01:23</sys_updated_on>
+        <template><![CDATA[<div class="approval_content">
+  
+  <div class="title_category" ng-click="c.openContent()">
+    ${Aprovações de Tecnologia}
+    <span><img src="GService_Seta_PD_Transparent.png" ng-class="c.contentOpened ? '' : 'invert-arrow'"/></span>
+  </div>
+
+  <div class="content_body_mask">
+    <div class="content_body_app">
+  
+  <div class="page_description">${My Dashboard Approvals 1}<br>${My Dashboard Approvals 2}</div>
+  <div>
+    <div ng-if="data.approvals.length == 0" class="without_notification">
+      ${Oba! Não existem aprovações pendentes.}
+    </div>
+    <table ng-if="data.approvals.length > 0" class="table table-hover b-t table-condensed cart-table">
+      <thead>
+        <tr>
+          <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
+            <div ng-click="c.orderBy(column.order, data.approvals)">
+              {{column.name}}
+              <span ng-if="column.order">
+                <span ng-if="!column.direction"></span>
+                <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
+              </span>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody ng-repeat="item in data.approvals">
+        <tr class="item-row b-b">
+          <td data-th="Product">
+            <div class="approval_column_title">
+              <div class="">
+                <h4 class="approval_number">#{{item.number}}</h4>
+                <h4 class="approval_title">{{item.title}}</h4>
+                <a class="approval_more-details" ng-click="c.showDetails(item)">${GService Details}</a>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row approval_column_requester">
+              <div>
+                <span class="service_title">{{item.requester}}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row approval_column_requester">
+              <div>
+                <span class="service_title">{{item.price}}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row approval_column_opened">
+              <div>
+                <span class="">{{item.opened}}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row approval_column_forecast">
+              <div>
+                <span class="" ng-if="item.forecast">{{item.forecast}}</span>
+                <span class="" ng-if="!item.forecast">${Não há SLA para esse item}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row approvals-buttons">
+              <!-- Button to request a service again -->
+              <a class="submit-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, true)" aria-label="" title="">
+                <img src="gservice_dashboard_confirm.png"/>
+              </a>
+              <a class="cancel-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, false)" aria-label="" title="">
+                <img src="GService_DASH_Cancelar.png"/>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <!-- Requests End -->
+          <td ng-if="item.showDetails" class="content_conversation" colspan='6'>
+
+            <!-- Process Flow -->
+            <div class="col-md-3">
+              <div ng-repeat="status in item.processFlow">
+                <div ng-class="status.selected ? 'text-uppercase' : text-lowercase">{{status.name}}</div>
+              </div>
+            </div>
+
+            <!-- Ticket Conversation -->
+            <div class="col-md-9">
+              <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal fade" style="z-index: 1041" id="approvalCommentModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="panel-body wrapper-xl wrapper-sc-cat-item">
+            <div class="justify-text">${Justifique sua resposta negativa:}</div>
+            <span class="notification-align no-text-answer" ng-if="c.needComment"> ${Favor preencher o comentário antes de submeter} </span>
+            <div class="form-group">
+              <textarea class="form-control" ng-model="c.approvalComment" maxlength="255"></textarea>
+              <a class="" style="cursor: pointer;" ng-click="c.submitCommentApproval()" aria-label="" title="">
+                <img class="resize-img" src="gservice_dashboard_submit.png"/>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+      
+    </div>
+  </div>
+      
+</div>
+
+<now-message key="Done" value="${Done}"/>]]></template>
+    </sp_widget>
+</record_update>
