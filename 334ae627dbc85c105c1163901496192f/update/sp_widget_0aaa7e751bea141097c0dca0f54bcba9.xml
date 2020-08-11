@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope, $timeout, spUtil, $location) {
+	var c = this;
+	
+	c.contentOpened = true;
+	c.openContent = function() {
+		c.contentOpened = !c.contentOpened;
+
+		if(!c.contentOpened) {
+			$('.content_body_ntf_csc').each(function(){
+				$(this).css({
+					'margin-top' : '-' + $(this).outerHeight() + 'px'
+				});
+			});
+		}
+		else {
+			$('.content_body_ntf_csc').each(function(){
+				$(this).css({
+					'margin-top' : 0
+				});
+			});
+		}
+		
+	}
+
+	$scope.$on('refreshNotificationList', function(event, notificationID) {
+		c.server.get({
+			action: "refreshNotificationList",
+			notificationWidget : c.data.notificationWidget,
+			notificationID : notificationID
+		}).then(function(response) {
+			c.data.notificationWidget = response.data.notificationWidget;
+			c.data.showEmptyMessage = true;
+			for(i in c.data.notificationWidget){
+				if(c.data.notificationWidget[i].show){
+					c.data.showEmptyMessage = false;
+				}
+			}
+			$('#pendingResponse').modal("show");
+		});
+	});
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>/* PAGE 2 - Notifications */
+.content_notification {
+  background-color: white;
+  padding: 30px 90px;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  
+  .title_category {
+    transition: .2s ease-in-out;
+    color: $dark-orchid;
+    text-transform: uppercase;
+    font-size: 22px;
+    margin-bottom: 15px;
+
+    .invert-arrow {
+      transition: .8s ease-in-out;
+      transform: rotate(180deg);
+    }
+    img {
+      transition: .8s ease-in-out;
+      margin-top: -4px;
+      margin-left: 8px;
+      width: 16px;
+    }
+
+    &amp;:hover {
+      transition: .2s ease-in-out;
+      transform: translate(0, -5px);
+    }
+  }
+  
+  .content_body_mask {
+    overflow: hidden;
+
+    .content_body_ntf_csc {
+      transition: .8s ease-in-out;
+    }
+  }
+
+  .header_message {
+    padding: 20px 0;
+    font-family: $text-bold;
+    font-size: 16px;
+    line-height: 1;
+    border-bottom: 2px solid $dark-orchid;
+  }
+  .widget_notifications {
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+
+    .border-notification {
+      padding: 20px 0;
+    }
+  }
+
+  .close {
+    font-size: 36px;
+    font-family: $text-light;
+    margin-right: 20px;
+    margin-top: 15px;
+  }
+  .modal-body {
+    padding: 60px 100px;
+
+    .modal-title {
+      color: $dark-orchid;
+      font-size: 30px;
+    }
+    .modal-description {
+      font-size: 24px;
+      font-family: $text-bold;
+    }
+  }
+  .form-control {
+    width: 329px !important;
+  }
+}
+
+
+/* Table */
+.h3 {
+  font-size: 28px;
+  color: $dodger-blue;
+  margin-top: 20px !important;
+  margin-bottom: 30px;
+}
+.b-b {
+  border-bottom: 2px solid $slate-gray;
+}
+.b-t {
+  border: 0;
+}
+thead {
+  color: $slate-gray;
+  font-family: $text-bolder;
+  font-size: 13px;
+}
+.table &gt; thead &gt; tr &gt; th {
+  border: 0;
+  vertical-align: middle;
+}
+.table-hover &gt; tbody &gt; tr:hover {
+  background-color: white;
+}
+tbody {
+  img {
+    width: 50px;
+    height: 50px;
+  }
+
+  td:nth-child(1) {
+    width: 20%;
+    padding: 20px;
+  }
+
+  td:nth-child(2) {
+    width: 20%;
+    padding: 20px;
+  }
+
+  td:nth-child(3) {
+    width: 25%;
+  }
+
+  td:nth-child(4) {
+    width: 5%;
+    padding: 20px;
+  }
+
+  td:nth-child(5) {
+    width: 30%;
+    padding: 20px;
+
+    .request_button {
+      margin-right: 50px;
+    }
+  }
+
+}
+
+
+
+
+.footer_checkout {
+
+  .continue_shopping {
+    color: $slate-gray;
+    font-size: 10px;
+    font-weight: bold;
+    text-decoration: underline;
+    text-transform: uppercase;
+    padding: 20px 0 !important;
+  }
+
+  .submit_button {
+    .submit_button_content {
+      display: flex;
+      align-items: center;
+
+      .submit_img {
+        width: 50px;
+        height: 50px;
+        margin-right: 5px;
+      }
+      .submit_title {
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1;
+        color: $dodger-blue;
+        width: 90px;
+      }
+    }
+  }
+}
+
+.empty_content {
+  background-color: white;
+  padding: 30px 100px;
+  padding-bottom: 330px;
+  font-size: 30px;
+
+  .empty_title {
+    color: $dodger-blue;
+    margin-bottom: 30px;
+  }
+}
+
+.column_content {
+  img {
+    height: 10px;
+    position: relative;
+    top: -2px;
+    right: -2px;
+  }
+  .invert-arrow{
+    transform: rotateX(180deg);
+  }
+}
+
+.content_conversation {
+  width: 100%;
+}
+
+
+
+
+.cart-mobile {
+  border: 0;
+  box-shadow: none;
+
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    a {
+      text-align: right;
+      display: block !important;
+    }
+  }
+
+  .cart-item-mobile-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px 20px 10px;
+
+    .item-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .item-image {
+      margin: 0;
+    }
+
+    a {
+      float: none;
+      text-align: center;
+    }
+
+    select {
+      margin-top: 10px;
+      padding: 0px 5px;
+      text-align-last: center;
+    }
+  }  
+}
+
+td {
+  vertical-align: middle !important;
+}
+
+.a-disabled {
+  cursor: default;
+  color: $btn-link-disabled-color;
+}
+
+.media-body {
+  .btn-link {
+    padding-left: 0;
+    padding-right: 0;
+    color: $primary;
+
+    &amp;:hover {
+      color: darken($primary, 10%);
+    }
+
+    &amp;:focus {
+      color: darken($primary, 10%);
+    }
+  }
+}
+
+.btn-remove {
+  font-size: 18px !important;
+}
+
+.action-btn {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+
+  &amp;.btn-link {
+    color: $primary;
+  }
+}
+
+.list-group {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.list-group-item.ng-enter {
+  transition: all 1s;
+  -webkit-transition: all 1s;
+  background-color: #c0dcfa;
+}
+
+.list-group-item.ng-enter-active {
+  background-color: #fff;
+}
+
+.empty-cart {
+  font-style: italic;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 7px;
+}
+
+.view-carts-link {
+  text-align: center;
+  display: block;
+}
+
+.order-details-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 5px 10px 10px 10px;
+
+  .order-details {
+    padding: 5px;
+
+    textarea {
+      resize: none;
+      flex-basis: 100%;
+      flex-shrink: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .requested-for-details {
+    flex: 1 0 auto;
+    max-width: 100%;
+  }
+
+  .special-instructions-details {
+    textarea {
+      height: calc(100% - 25px);
+    }
+  }
+}
+
+.item-image {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.empty-state-content {
+  margin-top: 30px;
+
+  &amp;.small-cart {
+    margin-top: 0px;
+    padding: 10px 20px;
+  }
+
+  .fa-shopping-cart {
+    color: $gray-light;
+    font-size: 80px;
+    display: block;
+    text-align: center;
+
+    &amp;.small-cart {
+      font-size: 40px;
+    }
+  }
+
+  .h3 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  .h4 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    max-width: 100%;
+    margin-bottom: 35px;
+  }
+}
+
+.large-checkout {
+  display: inline-block;
+  float: none !important;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.item-row:hover .btn-clear {
+  background-color: #f5f5f5;
+}
+
+.sc-btn {
+  margin-bottom: 10px;
+}
+.sc-btn-group {
+  clear: right;
+}
+
+.sc-remove-btn {
+  &amp;:hover {
+    background-color: $danger;
+    color: #fff;
+    border-color: darken($danger, 10%);
+  }
+}
+
+.btn-group-justified &gt; .btn-group {
+  padding: 0 5px;
+
+  .btn {
+    border-radius: 4px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.cart-table {
+  th {
+    position: sticky;
+    -webkit-position: sticky;
+    top: -1px;
+    z-index: 10;
+    background-color: $panel-bg;
+    box-shadow: 0px 1px 0px $panel-inner-border;
+  }
+}
+
+@media only screen and (max-width : 992px) {
+  .sc-btn, .sc-btn-group {
+    width: 100%;
+  }
+  .item-image {
+    max-width: 70px;
+  }
+}
+
+.without_notification {
+  padding: 30px 0;
+  font-size: 30px;
+}
+
+/* Custom Checkout */
+.panel {
+  padding: 30px 100px;
+  box-shadow: 0 0 0 0;
+  -webkit-box-shadow: 0 0 0 0;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id/>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService My Dashboard Notification CSC</name>
+        <option_schema>[{"hint":"Selects the columns to show on the table","name":"table","section":"Presentation","label":"Table","type":"string"},{"name":"table_template","section":"Behavior","label":"Table Template","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+	var portalUtils = new global.OCLPortalUtils();
+	data.showEmptyMessage = false;
+
+	//Used to get the current user sys_id
+	var userID = gs.getUser().getID();
+	data.user_id = userID;
+
+	var user_id = localInput ? localInput.userID : data.user_id;
+	data.notifications = portalUtils.getNotifications(user_id);
+	data.notificationWidget = [];
+	for(i in data.notifications){
+		var gservice_ticket_notification_options = {table : data.notifications[i].table,
+																								sys_id : data.notifications[i].sys_id,
+																								tab : "gservice_ticket_notifications_tab"};
+		var gservice_ticket_notification = $sp.getWidget('gservice_ticket_conversation', gservice_ticket_notification_options);
+		var jsonWidget = {instance : gservice_ticket_notification, show : true, sys_id : data.notifications[i].sys_id};
+		data.notificationWidget.push(jsonWidget);
+	}
+	if(data.notificationWidget.length == 0){
+		data.showEmptyMessage = true;
+	}
+
+	if(localInput){
+		if(localInput.action == "refreshNotificationList"){
+			data.notificationWidget = localInput.notificationWidget;
+			for(i in data.notificationWidget){
+				if(data.notificationWidget[i].sys_id == localInput.notificationID){
+					data.notificationWidget.splice(i, 1);
+				}
+			}
+		}
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-08-11 13:51:28</sys_created_on>
+        <sys_id>0aaa7e751bea141097c0dca0f54bcba9</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>GService My Dashboard Notification CSC</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_0aaa7e751bea141097c0dca0f54bcba9</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-11 14:30:46</sys_updated_on>
+        <template><![CDATA[<div class="content_notification">
+
+  <div class="title_category" ng-click="c.openContent()">
+    ${Notificações de Finanças, Jurídico e Infraestrutura}
+    <span><img src="GService_Seta_PTV.png" ng-class="c.contentOpened ? '' : 'invert-arrow'"/></span>
+  </div>
+
+  <div class="content_body_mask">
+    <div class="content_body_ntf_csc">
+
+      <div class="header_message">${My Dashboard Notification 1}<br>${My Dashboard Notification 2}</div>
+      <div ng-if="data.notificationWidget.length == 0" ng-show="!c.isLoading" class="without_notification">
+        ${GService Without Notifications}
+      </div>
+      <div class="widget_notifications" ng-if='data.notificationWidget.length > 0'>
+        <div class="col-md-6 border-notification" ng-repeat="widget in data.notificationWidget" ng-if="widget.show">
+          <sp-widget widget="widget.instance"></sp-widget>
+        </div>
+      </div>
+      <div class="modal fade" style="z-index: 1041" id="pendingResponse" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal-body">
+              <div class="modal-title">${Sua resposta foi enviada com sucesso!}</div>
+              <div class="modal-description">${Acompanhe o andamento no Histórico da Solicitação.}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>]]></template>
+    </sp_widget>
+</record_update>
