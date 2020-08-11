@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope, $timeout, spUtil, $location) {
+	var c = this;
+	
+	c.contentOpened = true;
+	c.openContent = function() {
+		c.contentOpened = !c.contentOpened;
+
+		if(!c.contentOpened) {
+			$('.content_body').each(function(){
+				$(this).css({
+					'margin-top' : '-' + $(this).outerHeight() + 'px'
+				});
+			});
+		}
+		else {
+			$('.content_body').each(function(){
+				$(this).css({
+					'margin-top' : 0
+				});
+			});
+		}
+		
+	}
+	
+	//Function created for redirect users to main page and auto-fill the form with informations provided by cart items
+	c.duplicateItem = function(item) {
+		var mostReq_id = item.sys_id;
+		$location.search("id=globoservice_index" + "&item_id=" + mostReq_id);
+	}
+
+	c.orderBy = function(order, items){
+		c.server.get({
+			action : "orderBy",
+			items : items,
+			order : order,
+			allColumns : c.data.columns
+		}).then(function(response) {
+			c.data.columns = response.data.columns;
+			c.data.mostRequested = response.data.mostRequested;
+		});
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.content {
+  background-color: white;
+  padding: 40px 90px;
+  padding-bottom: 0;
+  margin-bottom: 15px;
+
+  .title_category {
+    transition: .2s ease-in-out;
+    color: $deep-sky-blue;
+    text-transform: uppercase;
+    font-size: 22px;
+    margin-bottom: 15px;
+
+    .invert-arrow {
+      transition: .8s ease-in-out;
+      transform: rotate(180deg);
+    }
+    img {
+      transition: .8s ease-in-out;
+      margin-top: -4px;
+      margin-left: 8px;
+      width: 16px;
+    }
+
+    &amp;:hover {
+      transition: .2s ease-in-out;
+      transform: translate(0, -5px);
+    }
+  }
+
+  .content_body_mask {
+    overflow: hidden;
+
+    .content_body {
+      transition: .8s ease-in-out;
+    }
+  }
+
+}
+
+
+
+/* Table */
+.b-b {
+  border-bottom: 2px solid $slate-gray;
+}
+.b-t {
+  border: 0;
+}
+thead {
+  color: $slate-gray;
+  font-family: $text-bolder;
+  font-size: 13px;
+}
+.table &gt; thead &gt; tr &gt; th {
+  border: 0;
+  vertical-align: middle;
+}
+.table-hover &gt; tbody &gt; tr:hover {
+  background-color: white;
+}
+tbody {
+  img {
+    width: 50px;
+    height: 50px;
+  }
+
+  td:nth-child(1) {
+    width: 20%;
+    padding: 20px;
+  }
+
+  td:nth-child(2) {
+    width: 20%;
+    padding: 20px;
+  }
+
+  td:nth-child(3) {
+    width: 25%;
+  }
+
+  td:nth-child(4) {
+    width: 5%;
+    padding: 20px;
+  }
+
+  td:nth-child(5) {
+    width: 30%;
+    padding: 20px;
+
+    .request_button {
+      margin-right: 50px;
+    }
+  }
+
+}
+
+/* CONTENT */
+.page_description {
+  border-bottom: 2px solid $slate-gray;
+  padding: 20px 0;
+  font-family: $text-bold;
+  font-size: 16px;
+  line-height: 1;
+}
+.column_category {
+  text-align: center;
+
+  h4 {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-family: $text-bolder;
+    color: $dodger-blue;
+    width: 130px;
+    margin: 0 auto;
+    margin-top: 5px;
+  }
+}
+.column_service {
+  color: $dodger-blue;
+
+  .service_title {
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  .service_description {
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+.column_description {
+  .description {
+    font-size: 12px;
+  }
+}
+.column_sla {
+  .sla_text {
+    font-size: 12px;
+  }
+}
+
+
+
+.cart-mobile {
+  border: 0;
+  box-shadow: none;
+
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    a {
+      text-align: right;
+      display: block !important;
+    }
+  }
+
+  .cart-item-mobile-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px 20px 10px;
+
+    .item-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .item-image {
+      margin: 0;
+    }
+
+    a {
+      float: none;
+      text-align: center;
+    }
+
+    select {
+      margin-top: 10px;
+      padding: 0px 5px;
+      text-align-last: center;
+    }
+  }  
+}
+
+td {
+  vertical-align: middle !important;
+}
+
+.a-disabled {
+  cursor: default;
+  color: $btn-link-disabled-color;
+}
+
+.media-body {
+  .btn-link {
+    padding-left: 0;
+    padding-right: 0;
+    color: $primary;
+
+    &amp;:hover {
+      color: darken($primary, 10%);
+    }
+
+    &amp;:focus {
+      color: darken($primary, 10%);
+    }
+  }
+}
+
+.btn-remove {
+  font-size: 18px !important;
+}
+
+.action-btn {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+
+  &amp;.btn-link {
+    color: $primary;
+  }
+}
+
+.list-group {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.list-group-item.ng-enter {
+  transition: all 1s;
+  -webkit-transition: all 1s;
+  background-color: #c0dcfa;
+}
+
+.list-group-item.ng-enter-active {
+  background-color: #fff;
+}
+
+.empty-cart {
+  font-style: italic;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 7px;
+}
+
+.view-carts-link {
+  text-align: center;
+  display: block;
+}
+
+.order-details-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 5px 10px 10px 10px;
+
+  .order-details {
+    padding: 5px;
+
+    textarea {
+      resize: none;
+      flex-basis: 100%;
+      flex-shrink: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .requested-for-details {
+    flex: 1 0 auto;
+    max-width: 100%;
+  }
+
+  .special-instructions-details {
+    textarea {
+      height: calc(100% - 25px);
+    }
+  }
+}
+
+.item-image {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.empty-state-content {
+  margin-top: 30px;
+
+  &amp;.small-cart {
+    margin-top: 0px;
+    padding: 10px 20px;
+  }
+
+  .fa-shopping-cart {
+    color: $gray-light;
+    font-size: 80px;
+    display: block;
+    text-align: center;
+
+    &amp;.small-cart {
+      font-size: 40px;
+    }
+  }
+
+  .h3 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  .h4 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    max-width: 100%;
+    margin-bottom: 35px;
+  }
+}
+
+.large-checkout {
+  display: inline-block;
+  float: none !important;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.item-row:hover .btn-clear {
+  background-color: #f5f5f5;
+}
+
+.sc-btn {
+  margin-bottom: 10px;
+}
+.sc-btn-group {
+  clear: right;
+}
+
+.sc-remove-btn {
+  &amp;:hover {
+    background-color: $danger;
+    color: #fff;
+    border-color: darken($danger, 10%);
+  }
+}
+
+.btn-group-justified &gt; .btn-group {
+  padding: 0 5px;
+
+  .btn {
+    border-radius: 4px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.cart-table {
+  th {
+    position: sticky;
+    -webkit-position: sticky;
+    top: -1px;
+    z-index: 10;
+    background-color: $panel-bg;
+    box-shadow: 0px 1px 0px $panel-inner-border;
+  }
+}
+
+@media only screen and (max-width : 992px) {
+  .sc-btn, .sc-btn-group {
+    width: 100%;
+  }
+  .item-image {
+    max-width: 70px;
+  }
+}
+
+.without_notification {
+  padding: 30px 0;
+  font-size: 30px;
+}
+
+/* Custom Checkout */
+.panel {
+  padding: 30px 100px;
+  box-shadow: 0 0 0 0;
+  -webkit-box-shadow: 0 0 0 0;
+}
+
+.footer_checkout {
+
+  .continue_shopping {
+    color: $slate-gray;
+    font-size: 10px;
+    font-weight: bold;
+    text-decoration: underline;
+    text-transform: uppercase;
+    padding: 20px 0 !important;
+  }
+
+  .submit_button {
+    .submit_button_content {
+      display: flex;
+      align-items: center;
+
+      .submit_img {
+        width: 50px;
+        height: 50px;
+        margin-right: 5px;
+      }
+      .submit_title {
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1;
+        color: $dodger-blue;
+        width: 90px;
+      }
+    }
+  }
+}
+
+.empty_content {
+  background-color: white;
+  padding: 30px 100px;
+  padding-bottom: 330px;
+  font-size: 30px;
+
+  .empty_title {
+    color: $dodger-blue;
+    margin-bottom: 30px;
+  }
+}
+
+.column_content {
+  img {
+    height: 10px;
+    position: relative;
+    top: -2px;
+    right: -2px;
+  }
+  .invert-arrow{
+    transform: rotateX(180deg);
+  }
+}
+
+.content_conversation {
+  width: 100%;
+}
+
+.buttons {
+  img { transition: .4s ease-in-out; }
+  &amp;:hover {
+    img {
+      transition: .2s ease-in-out;
+      transform: scale(1.1);
+      -webkit-transform: scale(1.1);
+      -ms-transform: scale(1.1);
+      -moz-transform: scale(1.1);
+      -o-transform: scale(1.1);
+    }
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id/>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>GService My Dashboard Most Req v2</name>
+        <option_schema>[{"hint":"Selects the columns to show on the table","name":"table","section":"Presentation","label":"Table","type":"string"},{"name":"table_template","section":"Behavior","label":"Table Template","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+	var portalUtils = new global.OCLPortalUtils();
+	data.showEmptyMessage = false;
+
+	//Used to get the current user sys_id
+	var userID = gs.getUser().getID();
+	data.user_id = userID;
+
+	data.columns = [];
+	if(!localInput){
+		//You need to select the columns name on the property
+		//Using checkout as a test, but it`ll change to a dinamic way when you call the widget you send the option
+		var columns_property = gs.getProperty("gservice_dashboard_columns");
+
+		var parse = JSON.parse(columns_property);
+		var columns = parse['mostRequestedTab'].columns;
+
+		data.columns = columns;
+		for(i in columns){
+			data.columns[i].name = gs.getMessage(columns[i].name);
+		}
+		data.mostRequested = portalUtils.getMostRequested(5, data.user_id);
+		//Get the property of the categories images
+		var category_property = gs.getProperty("categories_color");
+		var parse = JSON.parse(category_property);
+		//Get the images of the categories
+		if(data.mostRequested.length == 0){
+			data.showEmptyMessage = true;
+		} else {
+			for(i in data.mostRequested){
+				if(parse[data.mostRequested[i].categoryID]){
+					data.mostRequested[i].color = parse[data.mostRequested[i].categoryID].color;
+					data.mostRequested[i].img = parse[data.mostRequested[i].categoryID].imgcategory;
+					data.mostRequested[i].submitImage = parse[data.mostRequested[i].categoryID].submitImg;
+				}
+			}
+		}
+	}
+	else{
+		if(localInput.action == "orderBy"){
+			var order = localInput.order;
+			data.columns = localInput.allColumns;
+			var direction;
+			for(i in data.columns){
+				if(order == data.columns[i].order){
+					data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
+					direction = data.columns[i].direction;
+				}
+				else{
+					data.columns[i].direction = false;
+				}
+			}
+			var items = localInput.items;
+			var itemsSort = portalUtils.sortList(items, localInput.order, direction);
+			data.mostRequested = itemsSort;
+		}
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-08-10 17:20:03</sys_created_on>
+        <sys_id>f3c0a2291bae901097c0dca0f54bcbde</sys_id>
+        <sys_mod_count>44</sys_mod_count>
+        <sys_name>GService My Dashboard Most Req v2</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_f3c0a2291bae901097c0dca0f54bcbde</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-11 13:13:55</sys_updated_on>
+        <template><![CDATA[<div class="content">
+
+  <div class="title_category" ng-click="c.openContent()">
+    ${Serviços Frequentes em Tecnologia}
+    <span><img src="GService_Seta_PD_Transparent.png" ng-class="c.contentOpened ? '' : 'invert-arrow'"/></span>
+  </div>
+
+  <div class="content_body_mask">
+    <div class="content_body">
+
+      <div class="page_description">
+        ${My Dashboard Most Req 1}<br>
+        ${My Dashboard Most Req 2}
+      </div>
+      <div>
+        <div ng-if="data.showEmptyMessage" class="without_notification">
+          ${Você ainda não tem serviços frequentes.}
+        </div>
+        <table ng-if="!data.showEmptyMessage" class="table table-hover b-t table-condensed cart-table">
+          <thead>
+            <tr>
+              <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
+                <div ng-click="c.orderBy(column.order, data.mostRequested)">
+                  {{column.name}}
+                  <span ng-if="column.order">
+                    <span ng-if="!column.direction"></span>
+                    <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
+                  </span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="item-row b-b" ng-repeat="item in c.data.mostRequested">
+              <div>
+                <td data-th="Product">
+                  <div class="column_category">
+                    <div>
+                      <img src="{{item.img}}">
+                      <h4 class="{{item.color}}">{{item.category}}</h4>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="row column_service">
+                    <div class="{{item.color}}">
+                      <div class="service_title">{{item.secondCategory}}</div>
+                      <div class="service_title" ng-if="item.thirdCategory">{{item.thirdCategory}}</div>
+                      <div class="service_description">{{item.title}}</div>
+                    </div>
+                  </div>
+                </td>
+                
+                <td class="column_description">
+                  <div class="description">{{item.short_description}}</div>
+                  <div ng-if="!item.short_description">${O item não possui descrição}</div>
+                </td>
+                <td class="column_sla">
+                  <div class="sla_text">{{item.delivery_time}}</div>
+                </td>
+                
+                <td>
+                  <div class="row">
+                    <!-- Button to request a service again -->
+                    <a class="request_button buttons" style="cursor: pointer;" ng-click="c.duplicateItem(item)">
+                      <img src="{{item.submitImage}}"/>
+                    </a>
+                  </div>
+                </td>
+              </div>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<now-message key="Done" value="${Done}"/>]]></template>
+    </sp_widget>
+</record_update>
