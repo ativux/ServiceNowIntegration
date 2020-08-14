@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_grid_canvas_pane">
+    <sys_grid_canvas_pane action="INSERT_OR_UPDATE">
+        <grid_canvas display_value="PA INCs e PRBs em Andam - New Tab">a0add2b61be61c1097c0dca0f54bcbcc</grid_canvas>
+        <height>5</height>
+        <portal_widget display_value="Created 14-08-2020 11:23:31">4dceda7a1be61c1097c0dca0f54bcbfa</portal_widget>
+        <posx>0</posx>
+        <posy>0</posy>
+        <sys_class_name>sys_grid_canvas_pane</sys_class_name>
+        <sys_created_by>leonardo.borba</sys_created_by>
+        <sys_created_on>2020-08-14 14:23:32</sys_created_on>
+        <sys_id>41ceda7a1be61c1097c0dca0f54bcbfd</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>a0add2b61be61c1097c0dca0f54bcbcc</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_grid_canvas_pane_41ceda7a1be61c1097c0dca0f54bcbfd</sys_update_name>
+        <sys_updated_by>leonardo.borba</sys_updated_by>
+        <sys_updated_on>2020-08-14 15:40:20</sys_updated_on>
+        <width>12</width>
+    </sys_grid_canvas_pane>
+</record_update>

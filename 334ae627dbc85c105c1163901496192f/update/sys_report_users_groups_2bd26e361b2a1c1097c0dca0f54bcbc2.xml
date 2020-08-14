@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_report_users_groups">
+    <sys_report_users_groups action="INSERT_OR_UPDATE">
+        <group_id display_value="Perfil Gestor" name="Perfil Gestor">21196113db2fc850fa11cf241496190f</group_id>
+        <report_id display_value="INCs em Andamento">5b3edaf61be61c1097c0dca0f54bcb51</report_id>
+        <sys_class_name>sys_report_users_groups</sys_class_name>
+        <sys_created_by>leonardo.borba</sys_created_by>
+        <sys_created_on>2020-08-14 14:41:27</sys_created_on>
+        <sys_id>2bd26e361b2a1c1097c0dca0f54bcbc2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>5b3edaf61be61c1097c0dca0f54bcb51</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_report_users_groups_2bd26e361b2a1c1097c0dca0f54bcbc2</sys_update_name>
+        <sys_updated_by>leonardo.borba</sys_updated_by>
+        <sys_updated_on>2020-08-14 14:41:27</sys_updated_on>
+        <user_id/>
+    </sys_report_users_groups>
+</record_update>

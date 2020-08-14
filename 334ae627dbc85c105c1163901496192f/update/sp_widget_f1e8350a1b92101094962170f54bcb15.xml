@@ -8,21 +8,75 @@
 	c.redirectPA = function(){
 		$window.open(c.data.instance_url,'_blank');
 	}
+	
+	c.redirectPA2 = function(){
+		$window.open(c.data.instance_url2,'_blank');
+	}
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.message_panels {
-  padding: 30px 0;
-  font-size: 30px;
-  
-  .click_here {
-    transition: .2s ease-in-out;
-    color: $deep-sky-blue;
-    
-    &amp;:hover {
-      transition: .2s ease-in-out;
-      opacity: .6;
-    }
-  }
+        <css>.message_panels {&#13;
+  padding: 5px 10px;&#13;
+  font-size: 30px;&#13;
+  &#13;
+  .click_here {&#13;
+    transition: .2s ease-in-out;&#13;
+    color: $deep-sky-blue;&#13;
+    &#13;
+    &amp;:hover {&#13;
+      transition: .2s ease-in-out;&#13;
+      opacity: .6;&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.border-left-warning {&#13;
+    border-left: .25rem solid #00BFFF !important;&#13;
+}&#13;
+&#13;
+.h-100 {&#13;
+    height: 100% !important;&#13;
+}&#13;
+&#13;
+.shadow {&#13;
+    box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15) !important;&#13;
+}&#13;
+&#13;
+.card {&#13;
+  	margin: 2em 2em 0em 2em;&#13;
+    position: relative;&#13;
+    display: flex;&#13;
+    flex-direction: column;&#13;
+    min-width: 0;&#13;
+    word-wrap: break-word;&#13;
+    background-color: #fff;&#13;
+    background-clip: border-box;&#13;
+    border: 1px solid #e3e6f0;&#13;
+        border-left-color: rgb(227, 230, 240);&#13;
+        border-left-style: solid;&#13;
+        border-left-width: 1px;&#13;
+    border-radius: .35rem;&#13;
+}&#13;
+&#13;
+.card-body {&#13;
+    flex: 1 1 auto;&#13;
+    min-height: 1px;&#13;
+    padding: 1.25rem;&#13;
+}&#13;
+&#13;
+.align-items-center {&#13;
+    align-items: center !important;&#13;
+}&#13;
+&#13;
+.no-gutters {&#13;
+    margin-right: 0;&#13;
+    margin-left: 0;&#13;
+}&#13;
+&#13;
+.row {&#13;
+    display: flex;&#13;
+    flex-wrap: wrap;&#13;
+    margin-right: -.75rem;&#13;
+    margin-left: -.75rem;&#13;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -43,23 +97,44 @@
   /* populate the 'data' object */
   /* e.g., data.table = $sp.getValue('table'); */
 	data.instance_url = gs.getProperty('glide.servlet.uri') + "nav_to.do?uri=%2F$pa_dashboard.do%3Fsysparm_dashboard%3D3fd261a4db421c105c11639014961903";
-})();]]></script>
+	
+	data.instance_url2 = gs.getProperty('glide.servlet.uri') + "nav_to.do?uri=%2F$pa_dashboard.do%3Fsysparm_dashboard=a38d92b61be61c1097c0dca0f54bcb19";
+})();
+]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-07-30 17:29:39</sys_created_on>
         <sys_id>f1e8350a1b92101094962170f54bcb15</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>20</sys_mod_count>
         <sys_name>GService Panels</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f1e8350a1b92101094962170f54bcb15</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 13:04:27</sys_updated_on>
-        <template><![CDATA[<div>
-  <div class="message_panels">
-    <span class="click_here" ng-click="c.redirectPA()">${Click here}</span> ${para acessar os painéis disponíveis para você}.
+        <sys_updated_by>leonardo.borba</sys_updated_by>
+        <sys_updated_on>2020-08-14 15:03:58</sys_updated_on>
+        <template><![CDATA[<div class="card border-left-warning shadow h-100 py-2">
+  <div class="card-body">
+    <div class="row no-gutters align-items-center">
+      <div class="col mr-2">
+        <div class="message_panels">
+        	<span class="click_here" ng-click="c.redirectPA()">${Click here}</span> ${para acessar o painel Visão Geral sobre os Chamados}.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card border-left-warning shadow h-100 py-2">
+  <div class="card-body">
+    <div class="row no-gutters align-items-center">
+      <div class="col mr-2">
+        <div class="message_panels">
+        	<span class="click_here" ng-click="c.redirectPA2()">${Click here}</span> ${para acessar o painel de Incidentes e Problemas em Andamento}.
+        </div>
+      </div>
+    </div>
   </div>
 </div>]]></template>
     </sp_widget>

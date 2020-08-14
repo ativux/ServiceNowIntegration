@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="pa_tabs">
+    <pa_tabs action="INSERT_OR_UPDATE">
+        <canvas_page display_value="PA INCs e PRBs em Andam - New Tab">a0add2b61be61c1097c0dca0f54bcbcc</canvas_page>
+        <name>INCs e PRBs em Andam - New Tab</name>
+        <page display_value="PA INCs e PRBs em Andam - New Tab">ecadd2b61be61c1097c0dca0f54bcbca</page>
+        <sys_class_name>pa_tabs</sys_class_name>
+        <sys_created_by>leonardo.borba</sys_created_by>
+        <sys_created_on>2020-08-14 14:18:35</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>a4add2b61be61c1097c0dca0f54bcbce</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>INCs e PRBs em Andam - New Tab</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>pa_tabs_a4add2b61be61c1097c0dca0f54bcbce</sys_update_name>
+        <sys_updated_by>leonardo.borba</sys_updated_by>
+        <sys_updated_on>2020-08-14 14:18:35</sys_updated_on>
+    </pa_tabs>
+</record_update>
