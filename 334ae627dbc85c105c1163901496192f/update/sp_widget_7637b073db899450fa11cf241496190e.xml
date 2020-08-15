@@ -26,8 +26,14 @@
 	});
 
 	var fieldExcludes = {
-		sys_user: ['name', 'introduction', 'title', 'department', 'location', 'photo',
-							 'manager', 'company'],
+		sys_user: [ 'name', 
+					'introduction', 
+					'title', 
+				    'department',
+				    'location',
+				    'photo',
+					'manager',
+				    'company'],
 		live_profile: ['short_description', 'photo']
 	}
 
@@ -421,6 +427,7 @@
 		var grUserInfo = new GlideRecord ("sys_user");
 		grUserInfo.get(data.user_id);
 		data.name = grUserInfo.getValue("first_name");
+		data.title = grUserInfo.getValue("title");
 		data.email = grUserInfo.getValue("email");
 		data.phone = grUserInfo.getValue("mobile_phone");
 		data.location = grUserInfo.getDisplayValue("location");
@@ -522,14 +529,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>129</sys_mod_count>
+        <sys_mod_count>134</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 13:00:07</sys_updated_on>
+        <sys_updated_by>jorge.nunes@organizecloudlabs.com</sys_updated_by>
+        <sys_updated_on>2020-08-15 14:49:22</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
 
   <div class="content_avatar">
@@ -548,7 +555,7 @@
     </div>
     <div class="user-info-properties">
       <div class="name-properties">{{data.name}}</div>
-      <div class="job-properties">CARGO DO FUNCIONÁRIO</div>
+      <div class="job-properties">{{data.title}}</div>
       <div class="">{{data.email}}</div>
       <div class="">{{data.phone}}</div>
       <div class="location-properties">{{data.location}}</div>
