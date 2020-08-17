@@ -39,15 +39,21 @@
 	//Função do modal utilizada para enviar informações para o próximo widget e abri-lo em outro modal
 	c.nextModal = function() {
 		var selectedError = '';
-		//Envia objeto Json para o próximo Widget
-		//Breadcrumb enviado somente para não quebrar o próximo Widget
+		//c.server.update().then(function (){
 		if(c.data.errorType.sys_id){
-			var jsonItem = {itemID: c.data.errorType.sys_id, table: "incident", breadcrumb : "", name : c.data.errorType.name};
-			$rootScope.$broadcast('openIncident', jsonItem, 'openIncident');
+			/*var jsonItem = {itemID: , table: "incident", breadcrumb : "", name : c.data.errorType.name};
+				$rootScope.$broadcast('openIncident', jsonItem, 'openIncident');*/
+			var jsonItem = {itemID: c.data.errorType.sys_id, breadcrumb: "", table: "incident", duplicatedItemID : false};
+			$rootScope.$broadcast('openItem', jsonItem, "openItem");
 			$('#formModal').modal("show");
 
 			$('#errorModal').modal("hide");
 		}
+
+		//});
+		//Envia objeto Json para o próximo Widget
+		//Breadcrumb enviado somente para não quebrar o próximo Widget
+
 	};
 }]]></client_script>
         <controller_as>c</controller_as>
@@ -196,7 +202,7 @@ input[type="radio"]:checked + .new-radio:after {
 	data.parentid = "error";
 	data.categories = [];
 
-	var sc_catalog_item_options = {"show_add_cart_button": "true",
+	/*var sc_catalog_item_options = {"show_add_cart_button": "true",
 																 "show_field_validation_messages": "false",
 																 "show_add_to_wishlist_button": "false",
 																 "display_cart_on_right": "false",
@@ -206,7 +212,21 @@ input[type="radio"]:checked + .new-radio:after {
 																 "category_bd_color": "",
 																 "category_submit_img": "",
 																 "broadcast_name" : "openIncident"};
-	data.gserviceCatalogItem = $sp.getWidget('gservice_sc_catalog_item', sc_catalog_item_options);
+	data.gserviceCatalogItem = $sp.getWidget('gservice_sc_catalog_item', sc_catalog_item_options);*/
+	
+	var sc_catalog_item_options = {"show_add_cart_button": "true",
+															 "show_field_validation_messages": "false",
+															 "show_add_to_wishlist_button": "false",
+															 "display_cart_on_right": "false",
+															 "show_less_description": "false",
+															 "hide_delivery_time": "false",
+															 "category_color": "",
+															 "category_bg_color": "",
+															 "category_bd_color": "",
+															 "category_submit_img": "",
+															 "broadcast_name" : "openItem"};
+
+		data.gserviceCatalogItem = $sp.getWidget('gservice_custom_catalog_item_incident', sc_catalog_item_options);
 
 	var gr = new GlideRecord("sc_cat_item_producer");
 	gr.addActiveQuery();
@@ -234,14 +254,14 @@ input[type="radio"]:checked + .new-radio:after {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-20 15:58:36</sys_created_on>
         <sys_id>2e1c19a9dbd01850fa11cf2414961903</sys_id>
-        <sys_mod_count>670</sys_mod_count>
+        <sys_mod_count>672</sys_mod_count>
         <sys_name>GService Error Modal</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2e1c19a9dbd01850fa11cf2414961903</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 14:03:58</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-08-17 13:14:27</sys_updated_on>
         <template><![CDATA[<div class="modal fade" style="z-index: 1041" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
