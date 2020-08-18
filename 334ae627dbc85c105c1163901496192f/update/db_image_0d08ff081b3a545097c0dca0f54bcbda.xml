@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category/>
+        <format>png</format>
+        <height>71</height>
+        <image>a7087f081b3a545097c0dca0f54bcbef</image>
+        <name>GS_Solicitar_GCSC.png</name>
+        <size_bytes>1912</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-08-18 18:05:56</sys_created_on>
+        <sys_id>0d08ff081b3a545097c0dca0f54bcbda</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>GS_Solicitar_GCSC.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_0d08ff081b3a545097c0dca0f54bcbda</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-08-18 18:06:02</sys_updated_on>
+        <thumbnail/>
+        <width>71</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#f4efff</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>a64559ba6caaa0c3244488d6fe07822380a89b66a52cbc6a409757c3e7850061</hash>
+        <image_height>71</image_height>
+        <image_width>71</image_width>
+        <size_bytes>1912</size_bytes>
+        <size_compressed>1935</size_compressed>
+        <state>available</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-08-18 18:06:02</sys_created_on>
+        <sys_id>a7087f081b3a545097c0dca0f54bcbef</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-08-18 18:06:02</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>0d08ff081b3a545097c0dca0f54bcbda</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="a7087f081b3a545097c0dca0f54bcbef">a7087f081b3a545097c0dca0f54bcbef</sys_attachment>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-08-18 18:06:02</sys_created_on>
+        <sys_id>e7087f081b3a545097c0dca0f54bcbef</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>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</data>
+        <length>2568</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="a7087f081b3a545097c0dca0f54bcbef">a7087f081b3a545097c0dca0f54bcbef</sys_attachment>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-08-18 18:06:02</sys_created_on>
+        <sys_id>6b087f081b3a545097c0dca0f54bcbef</sys_id>
+    </sys_attachment_doc>
+</record_update>
