@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_search_source">
     <sp_search_source action="INSERT_OR_UPDATE">
         <advanced_typeahead_config>false</advanced_typeahead_config>
-        <condition table="task">sys_class_name=sc_req_item^ref_sc_req_item.request.requested_forDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORref_sc_req_item.request.opened_byDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORwatch_listDYNAMIC90d1921e5f510100a9ad2572f2b477fe^NQsys_class_name=incident^ref_incident.caller_idDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORopened_byDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORwatch_listDYNAMIC90d1921e5f510100a9ad2572f2b477fe^NQsys_class_name=sn_si_incident^opened_byDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORref_sm_order.callerDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORwatch_listDYNAMIC90d1921e5f510100a9ad2572f2b477fe^NQsys_class_name=u_question^opened_byDYNAMIC90d1921e5f510100a9ad2572f2b477fe^NQsys_class_name=sc_request^ref_sc_request.requested_forDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORopened_byDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORwatch_listDYNAMIC90d1921e5f510100a9ad2572f2b477fe^EQ<item display_value="Requested Item" endquery="false" field="sys_class_name" goto="false" newquery="false" operator="=" or="false" value="sc_req_item"/>
+        <condition table="task">sys_class_name=sc_req_item^ref_sc_req_item.request.requested_forDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORref_sc_req_item.request.opened_byDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORwatch_listDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORref_sc_req_item.request.requested_forDYNAMICfee353041bbe145097c0dca0f54bcb6c^ORref_sc_req_item.request.opened_byDYNAMICfee353041bbe145097c0dca0f54bcb6c^ORwatch_listDYNAMICfee353041bbe145097c0dca0f54bcb6c^NQsys_class_name=incident^ref_incident.caller_idDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORopened_byDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORwatch_listDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORref_incident.caller_idDYNAMICfee353041bbe145097c0dca0f54bcb6c^ORopened_byDYNAMICfee353041bbe145097c0dca0f54bcb6c^ORwatch_listDYNAMICfee353041bbe145097c0dca0f54bcb6c^NQsys_class_name=sn_si_incident^opened_byDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORref_sm_order.callerDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORwatch_listDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORopened_byDYNAMICfee353041bbe145097c0dca0f54bcb6c^ORref_sm_order.callerDYNAMICfee353041bbe145097c0dca0f54bcb6c^ORwatch_listDYNAMICfee353041bbe145097c0dca0f54bcb6c^NQsys_class_name=u_question^opened_byDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORopened_byDYNAMICfee353041bbe145097c0dca0f54bcb6c^NQsys_class_name=sc_request^ref_sc_request.requested_forDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORopened_byDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORwatch_listDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORref_sc_request.requested_forDYNAMICfee353041bbe145097c0dca0f54bcb6c^ORopened_byDYNAMICfee353041bbe145097c0dca0f54bcb6c^ORwatch_listDYNAMICfee353041bbe145097c0dca0f54bcb6c^EQ<item display_value="Requested Item" endquery="false" field="sys_class_name" goto="false" newquery="false" operator="=" or="false" value="sc_req_item"/>
             <item endquery="false" field="ref_sc_req_item.request.requested_for" goto="false" newquery="false" operator="DYNAMIC" or="false" value="90d1921e5f510100a9ad2572f2b477fe"/>
             <item endquery="false" field="ref_sc_req_item.request.opened_by" goto="false" newquery="false" operator="DYNAMIC" or="true" value="90d1921e5f510100a9ad2572f2b477fe"/>
             <item endquery="false" field="watch_list" goto="false" newquery="false" operator="DYNAMIC" or="true" value="90d1921e5f510100a9ad2572f2b477fe"/>
+            <item endquery="false" field="ref_sc_req_item.request.requested_for" goto="false" newquery="false" operator="DYNAMIC" or="true" value="fee353041bbe145097c0dca0f54bcb6c"/>
+            <item endquery="false" field="ref_sc_req_item.request.opened_by" goto="false" newquery="false" operator="DYNAMIC" or="true" value="fee353041bbe145097c0dca0f54bcb6c"/>
+            <item endquery="false" field="watch_list" goto="false" newquery="false" operator="DYNAMIC" or="true" value="fee353041bbe145097c0dca0f54bcb6c"/>
             <item display_value="Incident" endquery="false" field="sys_class_name" goto="false" newquery="true" operator="=" or="false" value="incident"/>
             <item endquery="false" field="ref_incident.caller_id" goto="false" newquery="false" operator="DYNAMIC" or="false" value="90d1921e5f510100a9ad2572f2b477fe"/>
             <item endquery="false" field="opened_by" goto="false" newquery="false" operator="DYNAMIC" or="true" value="90d1921e5f510100a9ad2572f2b477fe"/>
             <item endquery="false" field="watch_list" goto="false" newquery="false" operator="DYNAMIC" or="true" value="90d1921e5f510100a9ad2572f2b477fe"/>
+            <item endquery="false" field="ref_incident.caller_id" goto="false" newquery="false" operator="DYNAMIC" or="true" value="fee353041bbe145097c0dca0f54bcb6c"/>
+            <item endquery="false" field="opened_by" goto="false" newquery="false" operator="DYNAMIC" or="true" value="fee353041bbe145097c0dca0f54bcb6c"/>
+            <item endquery="false" field="watch_list" goto="false" newquery="false" operator="DYNAMIC" or="true" value="fee353041bbe145097c0dca0f54bcb6c"/>
             <item display_value="Security Incident" endquery="false" field="sys_class_name" goto="false" newquery="true" operator="=" or="false" value="sn_si_incident"/>
             <item endquery="false" field="opened_by" goto="false" newquery="false" operator="DYNAMIC" or="false" value="90d1921e5f510100a9ad2572f2b477fe"/>
             <item endquery="false" field="ref_sm_order.caller" goto="false" newquery="false" operator="DYNAMIC" or="true" value="90d1921e5f510100a9ad2572f2b477fe"/>
             <item endquery="false" field="watch_list" goto="false" newquery="false" operator="DYNAMIC" or="true" value="90d1921e5f510100a9ad2572f2b477fe"/>
+            <item endquery="false" field="opened_by" goto="false" newquery="false" operator="DYNAMIC" or="true" value="fee353041bbe145097c0dca0f54bcb6c"/>
+            <item endquery="false" field="ref_sm_order.caller" goto="false" newquery="false" operator="DYNAMIC" or="true" value="fee353041bbe145097c0dca0f54bcb6c"/>
+            <item endquery="false" field="watch_list" goto="false" newquery="false" operator="DYNAMIC" or="true" value="fee353041bbe145097c0dca0f54bcb6c"/>
             <item display_value="Question" endquery="false" field="sys_class_name" goto="false" newquery="true" operator="=" or="false" value="u_question"/>
             <item endquery="false" field="opened_by" goto="false" newquery="false" operator="DYNAMIC" or="false" value="90d1921e5f510100a9ad2572f2b477fe"/>
+            <item endquery="false" field="opened_by" goto="false" newquery="false" operator="DYNAMIC" or="true" value="fee353041bbe145097c0dca0f54bcb6c"/>
             <item display_value="Request" endquery="false" field="sys_class_name" goto="false" newquery="true" operator="=" or="false" value="sc_request"/>
             <item endquery="false" field="ref_sc_request.requested_for" goto="false" newquery="false" operator="DYNAMIC" or="false" value="90d1921e5f510100a9ad2572f2b477fe"/>
             <item endquery="false" field="opened_by" goto="false" newquery="false" operator="DYNAMIC" or="true" value="90d1921e5f510100a9ad2572f2b477fe"/>
             <item endquery="false" field="watch_list" goto="false" newquery="false" operator="DYNAMIC" or="true" value="90d1921e5f510100a9ad2572f2b477fe"/>
+            <item endquery="false" field="ref_sc_request.requested_for" goto="false" newquery="false" operator="DYNAMIC" or="true" value="fee353041bbe145097c0dca0f54bcb6c"/>
+            <item endquery="false" field="opened_by" goto="false" newquery="false" operator="DYNAMIC" or="true" value="fee353041bbe145097c0dca0f54bcb6c"/>
+            <item endquery="false" field="watch_list" goto="false" newquery="false" operator="DYNAMIC" or="true" value="fee353041bbe145097c0dca0f54bcb6c"/>
             <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
         </condition>
         <data_fetch_script><![CDATA[(function(query) {
@@ -56,14 +69,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-27 15:42:46</sys_created_on>
         <sys_id>803b1133db985010fa11cf24149619eb</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>Minhas Solicitações</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_search_source_803b1133db985010fa11cf24149619eb</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-08-02 19:20:35</sys_updated_on>
+        <sys_updated_by>organize.matias</sys_updated_by>
+        <sys_updated_on>2020-08-18 16:48:08</sys_updated_on>
         <typeahead_glyph/>
         <typeahead_template/>
     </sp_search_source>
