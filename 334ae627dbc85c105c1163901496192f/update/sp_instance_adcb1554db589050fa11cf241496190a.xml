@@ -4,16 +4,16 @@
         <class_name/>
         <color>default</color>
         <css>.image-link-header{&#13;
-  color: $dodger-blue;&#13;
+  color: $tec;&#13;
 }&#13;
 &#13;
 .description {&#13;
-  margin: 0 20px;&#13;
-  color: $dodger-blue;&#13;
+  //margin: 0 20px;&#13;
+  color: $tec;&#13;
 }&#13;
 &#13;
 .block {&#13;
-  width: 105%;&#13;
+  //width: 105%;&#13;
 }</css>
         <glyph/>
         <id/>
@@ -27,20 +27,20 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-16 18:44:45</sys_created_on>
         <sys_id>adcb1554db589050fa11cf241496190a</sys_id>
-        <sys_mod_count>13</sys_mod_count>
+        <sys_mod_count>15</sys_mod_count>
         <sys_name>SOLICITE UM SERVIÇO</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_instance_adcb1554db589050fa11cf241496190a</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-14 17:58:54</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-18 19:45:17</sys_updated_on>
         <title>SOLICITE UM SERVIÇO</title>
         <url/>
         <widget_parameters><![CDATA[{
 	"image": {
-		"value": "service.png",
-		"displayValue": "service.png"
+		"value": "GS_ACT_SERVICO.png",
+		"displayValue": "GS_ACT_SERVICO.png"
 	},
 	"description": {
 		"value": "Faltando recursos de tecnologia? Navegue por nosso catálogo e solicite o que você necessita",
