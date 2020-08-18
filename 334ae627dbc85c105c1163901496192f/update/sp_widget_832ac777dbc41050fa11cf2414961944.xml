@@ -64,7 +64,8 @@
 					c.data.showSelectedItem = false;
 				}
 				else{
-					if(item.table == "sc_cat_item"){
+					var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
+					if(item.table == "sc_cat_item" || isAllowedRP){
 						c.data.showSelectedItem = true;
 						c.data.showSelectedOrder = false;
 					}
@@ -286,7 +287,10 @@
 			if(c.data.arrayItems[i].sys_id == itemID){
 				c.selected_item = c.data.arrayItems[i];
 				c.data.arrayItems[i].selected = c.data.arrayItems[i].title;
-				if(c.data.arrayItems[i].table == "sc_cat_item"){
+				
+				var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
+				
+				if(c.data.arrayItems[i].table == "sc_cat_item" || isAllowedRP){
 					c.data.showSelectedItem = true;
 					c.data.showSelectedOrder = false;
 				}
@@ -662,6 +666,9 @@
 	data.categoryBdColor = '';
 	data.categorySearchImg = '';
 	data.categorySubmitImg = '';
+	
+	// Get the list of record producers that can be requestd as catalog item
+	data.allowed_record_producers = gs.getProperty('gs_allowed_record_producers');
 
 	//Getting the search sources id on the property gservice_categories_contextual_search_sources
 	data.search_property = gs.getProperty("gservice_categories_contextual_search_sources");
@@ -863,14 +870,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 13:30:17</sys_created_on>
         <sys_id>832ac777dbc41050fa11cf2414961944</sys_id>
-        <sys_mod_count>1665</sys_mod_count>
+        <sys_mod_count>1667</sys_mod_count>
         <sys_name>GService Categories</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_832ac777dbc41050fa11cf2414961944</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-08-13 14:08:53</sys_updated_on>
+        <sys_updated_by>thiago.ferreira.silva_O2B@prestador.glob</sys_updated_by>
+        <sys_updated_on>2020-08-18 16:06:30</sys_updated_on>
         <template><![CDATA[<div id="widget-category" class="content" ng-show="data.showWidget">
   <div>
 
