@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>2</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">4d8b1252db281010fa11cf2414961980</sp_column>
+        <sp_widget display_value="GService Category Items CSC">e47a47771be6d05097c0dca0f54bcb03</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-08-18 15:55:48</sys_created_on>
+        <sys_id>f73a9f401b32545097c0dca0f54bcb40</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_instance_f73a9f401b32545097c0dca0f54bcb40</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-08-18 16:52:31</sys_updated_on>
+        <title/>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"parent_id": {
+		"value": "",
+		"displayValue": ""
+	},
+	"selected_category": {
+		"value": "859a6ac81b321c1094962170f54bcb21,e39a260c1b321c1094962170f54bcbc3,08d4ab8c1b3e1c1094962170f54bcb6c,7faa620c1b321c1094962170f54bcbd8,29baa60c1b321c1094962170f54bcbc1,90a4a3881b3e1c1094962170f54bcb1e",
+		"displayValue": "Espaços Corporativos, Apoio Corporativo, Apoio a producões e Eventos, Ambiental e Regulatório, Financeiro e Suprimentos,Gestão de Serviços FJ&I"
+	}
+}]]></widget_parameters>
+    </sp_instance>
+    <sys_translated_text action="delete_multiple" query="documentkey=f73a9f401b32545097c0dca0f54bcb40"/>
+</record_update>
