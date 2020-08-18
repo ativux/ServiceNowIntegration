@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>429</height>
+        <image>e17f9fcc1b32545097c0dca0f54bcb2d</image>
+        <name>espacoCorpLeft.png</name>
+        <size_bytes>9367</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-08-18 16:18:07</sys_created_on>
+        <sys_id>f54f13cc1b32545097c0dca0f54bcb35</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>espacoCorpLeft.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_f54f13cc1b32545097c0dca0f54bcb35</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-08-18 16:18:36</sys_updated_on>
+        <thumbnail/>
+        <width>521</width>
+    </db_image>
+</record_update>
