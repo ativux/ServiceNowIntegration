@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>110</height>
+        <image>6bb758501bbe545097c0dca0f54bcb97</image>
+        <name>GS_Carrosel_ESQ.png</name>
+        <size_bytes>678</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-08-18 20:24:22</sys_created_on>
+        <sys_id>ecb710541bbe545097c0dca0f54bcbb4</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>GS_Carrosel_ESQ.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_ecb710541bbe545097c0dca0f54bcbb4</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-18 20:24:30</sys_updated_on>
+        <thumbnail/>
+        <width>62</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#0</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>591a595a8d661de2bd8e4711e825dea50be753c68e2eac34e00de2322ac2f0c2</hash>
+        <image_height>110</image_height>
+        <image_width>62</image_width>
+        <size_bytes>678</size_bytes>
+        <size_compressed>701</size_compressed>
+        <state>available</state>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-08-18 20:24:29</sys_created_on>
+        <sys_id>6bb758501bbe545097c0dca0f54bcb97</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-18 20:24:30</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>ecb710541bbe545097c0dca0f54bcbb4</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="6bb758501bbe545097c0dca0f54bcb97">6bb758501bbe545097c0dca0f54bcb97</sys_attachment>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-08-18 20:24:29</sys_created_on>
+        <sys_id>abb758501bbe545097c0dca0f54bcb97</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>AaYCWf2JUE5HDQoaCgAAAA1JSERSAAAAPgAAAG4IBgAAAH9PoLMAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAJYSURBVHic7d1PTsJQEMfxr8a9HsEbyBGQENYe1TUh6BHwBh5BT4AhYUFiXyl9f2Z+0876sfik0L7O/ErvjscjU6z7Sapn+ARrhk+tHiJ6t7v9E7AADpv16qdrTbgjfkZ/Ah9nfGeFgl+gX4Bf4Du1Ngy8A73crFex4Qn0oe8z8vAxaNThY9Eow3PQqMJz0SjCS6BRg5dCowQviUYFXhqNArwGGu/wWmg8w2ui8QqvjcYjvAUab/BWaDzBW6LxAm+NxgPcAo013AqNJdwSjRXcGo0F3AOa1nAvaFrCPaFpBfeGpgXcI5racK9oasI9o6kF946mBlwBTWm4CpqScCU0peBqaErAFdHkwlXR5MCV0YyFq6MZA4+A5lZ4FDS3wCOhGQqPhmYIPCKaa/CoaPrgkdGk4NHR9Bzx98ho5mdS/tcb8AU8nr7y290+mfRXrU74+TmOZWR88qseHd/7G4+Mv3pyi4ofdFaPiB98OYuGv+k6Hgl/8wYmCn7Uzi0CfvSWVR2ftVdXxmffpKjii9ydKeKL3Zaq4YvejyvhizciVPBVOjAK+GqtJ+/4qj03z/jqzUav+CZdVo/4Zu1lb/imfXVP+OYDBS94k0mKB7zZCMkabzo7s8SbDw2t8C6mpRZ4N2Pi1nhX8/GWeHfBgFZ4l4mIFni3UZDaeNcZmJp49+GfWniJ1FMNvEzcqzReKudWEi8X8CuFl0w2lsDLRjpz8dJZ1hy8fIh3LD5EenkMPtTrQjoeMFik/nE7VF6948g/p9aGC+pf4F9PrxJIrZvfjDO1muGTKuAPlghOAcz/nKkAAAAASUVORK5CYIJwpOe7pgIAAA==</data>
+        <length>924</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="6bb758501bbe545097c0dca0f54bcb97">6bb758501bbe545097c0dca0f54bcb97</sys_attachment>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-08-18 20:24:29</sys_created_on>
+        <sys_id>2fb758501bbe545097c0dca0f54bcb97</sys_id>
+    </sys_attachment_doc>
+</record_update>
