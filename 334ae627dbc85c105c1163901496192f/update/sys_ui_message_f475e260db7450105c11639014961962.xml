@@ -3,18 +3,18 @@
         <application/>
         <key>GService Request a Service</key>
         <language>pb</language>
-        <message>SOLICITE UM SERVIÇO</message>
+        <message>Serviços de Tecnologia</message>
         <sys_class_name>sys_ui_message</sys_class_name>
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-12 15:16:32</sys_created_on>
         <sys_id>f475e260db7450105c11639014961962</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>GService Request a Service</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sys_ui_message_f475e260db7450105c11639014961962</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-05-12 15:16:32</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-19 14:54:05</sys_updated_on>
     </sys_ui_message>
 </record_update>
