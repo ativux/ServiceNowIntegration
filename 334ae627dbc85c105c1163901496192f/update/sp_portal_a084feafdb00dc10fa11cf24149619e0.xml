@@ -22,12 +22,11 @@ $btn-default-bg:transparent;&#13;
 $text-muted:#0031FD;&#13;
 </css_variables>
         <default>false</default>
-        <hide_portal_name>false</hide_portal_name>
         <homepage display_value="globoservice_index">1b567a63db40dc10fa11cf241496196e</homepage>
         <icon/>
         <kb_knowledge_base/>
         <kb_knowledge_page/>
-        <login_page/>
+        <login_page display_value="">a6cb1a301b36505094962170f54bcbeb</login_page>
         <logo>e054a27b1ba2d05097c0dca0f54bcb2c</logo>
         <notfound_page/>
         <quick_start_config/>
@@ -41,14 +40,14 @@ $text-muted:#0031FD;&#13;
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 17:20:45</sys_created_on>
         <sys_id>a084feafdb00dc10fa11cf24149619e0</sys_id>
-        <sys_mod_count>62</sys_mod_count>
+        <sys_mod_count>66</sys_mod_count>
         <sys_name>GloboService</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_portal_a084feafdb00dc10fa11cf24149619e0</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-17 18:39:05</sys_updated_on>
+        <sys_updated_by>daniel.gallante@organizecloudlabs.com</sys_updated_by>
+        <sys_updated_on>2020-08-20 19:23:33</sys_updated_on>
         <theme display_value="OCL: ITSM Unification">22547ea3db0c5c105c1163901496196f</theme>
         <title>GloboService</title>
         <ts_index_group/>
