@@ -17,7 +17,7 @@
 
 	$scope.$on('sp_loading_indicator', function(e, value) {
 		if($scope.loadingIndicator && !value){
-				c.isLoading = false;
+			c.isLoading = false;
 		}
 		$scope.loadingIndicator = value;
 	});
@@ -184,6 +184,7 @@
 			c.data.helpfulWidget = response.data.helpfulWidget;
 			var jsonArticle = {articleID : articleID, categoryTitle : c.data.category.title, categoryColor: c.data.color.categoryColor};
 			$rootScope.$broadcast('openArticle', jsonArticle, true);
+
 		});
 
 	}
@@ -263,11 +264,11 @@
 			c.data.relatedArticles.articles[i].description = $sce.trustAsHtml(description);
 		}
 	}
-	
+
 	c.closeModal = function(){
-				$('#catalogQuestionModal').modal("hide");
+		$('#catalogQuestionModal').modal("hide");
 	}
-	
+
 	c.goToItem = function(){
 		$window.location = "?id=globoservice_my_dashboard&item_id=" + c.itemID;
 	}
@@ -775,9 +776,9 @@
 															 "display_cart_on_right": "false",
 															 "show_less_description": "false",
 															 "hide_delivery_time": "false",
-															 "category_color": "color_category5",
-															 "category_bd_color": "bdcolor_category5",
-															 "category_submit_img": "GService_SS_IS.png",
+															 "category_color": "color_category_csc_doubt",
+															 "category_bd_color": "color_category_csc_doubt",
+															 "category_submit_img": "GS_Solicitar_AR.png",
 															 "broadcast_name" : "openModalItem"};
 		data.gserviceCatalogItem = $sp.getWidget('gservice_custom_catalog_item', sc_catalog_item_options);
 	}
@@ -788,14 +789,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-05 12:59:42</sys_created_on>
         <sys_id>2e4ca118db9ddc905c1163901496194f</sys_id>
-        <sys_mod_count>769</sys_mod_count>
+        <sys_mod_count>781</sys_mod_count>
         <sys_name>GService Categories Knowledge Content</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2e4ca118db9ddc905c1163901496194f</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-04 14:13:08</sys_updated_on>
+        <sys_updated_on>2020-08-21 16:47:51</sys_updated_on>
         <template><![CDATA[<div id="widgetKBcategory" class="content" ng-show="data.showWidget">
 
   <div class="header-loader" ng-show="c.isLoading">
