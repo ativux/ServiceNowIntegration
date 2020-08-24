@@ -4,7 +4,8 @@
         <client_script><![CDATA[function ($scope, $timeout, spUtil, $location) {
 	var c = this;
 
-	c.contentOpened2 = true;
+	c.contentOpened2 = false;
+	/*
 	c.openContent = function() {
 		c.contentOpened2 = !c.contentOpened2;
 
@@ -24,6 +25,7 @@
 		}
 		
 	}
+	*/
 
 	//Function created for redirect users to main page and auto-fill the form with informations provided by cart items
 	c.duplicateItem = function(item) {
@@ -46,8 +48,7 @@
         <controller_as>c</controller_as>
         <css>.content {
   background-color: white;
-  padding: 40px 90px;
-  padding-bottom: 0;
+  padding-bottom: 10px;
   margin-bottom: 15px;
 
   .title_category {
@@ -65,7 +66,7 @@
       transition: .8s ease-in-out;
       margin-top: -4px;
       margin-left: 8px;
-      width: 16px;
+      width: 20px;
     }
 
     &amp;:hover {
@@ -78,6 +79,7 @@
     overflow: hidden;
 
     .content_body2 {
+      margin-top : -2000px;
       transition: .8s ease-in-out;
     }
     .content_body_opened {
@@ -90,8 +92,6 @@
   }
 
 }
-
-
 
 /* Table */
 .b-b {
@@ -530,10 +530,32 @@ td {
         <docs/>
         <field_list/>
         <has_preview>false</has_preview>
-        <id/>
+        <id>gservice_my_dashboard_most_req_csc</id>
         <internal>false</internal>
         <link><![CDATA[function link(scope, element, attrs, controller) {
+	var c = controller;
   
+	c.openContent = function() {
+		c.contentOpened2 = !c.contentOpened2;
+		var contentBody = element.find(".content_body2");
+		if(!c.contentOpened2) {
+			contentBody.css("margin-top", "-" + contentBody.outerHeight() + 'px');
+		}
+		else {
+			contentBody.css("margin-top", 0);
+		}
+	}
+
+	c.makeTransition = function(position, newLeft){
+		var slide = element.find('#slide' + position);
+		slide.css('left', newLeft + '%');
+	}
+
+	c.change_z_index = function(position, z_index){
+		var slide = element.find('#slide' + position);
+		slide.css('z-index', z_index);
+	}
+	
 }]]></link>
         <name>GService My Dashboard Most Req CSC</name>
         <option_schema>[{"hint":"Selects the columns to show on the table","name":"table","section":"Presentation","label":"Table","type":"string"},{"name":"table_template","section":"Behavior","label":"Table Template","type":"string"}]</option_schema>
@@ -541,7 +563,7 @@ td {
         <roles/>
         <script><![CDATA[(function() {
 	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
-	var portalUtils = new global.OCLPortalUtils();
+	var portalUtils = new global.OCLPortalUtilsCSC();
 	data.showEmptyMessage = false;
 
 	//Used to get the current user sys_id
@@ -603,14 +625,14 @@ td {
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-10 20:15:09</sys_created_on>
         <sys_id>bce84be91ba6d01097c0dca0f54bcb6f</sys_id>
-        <sys_mod_count>22</sys_mod_count>
+        <sys_mod_count>33</sys_mod_count>
         <sys_name>GService My Dashboard Most Req CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_bce84be91ba6d01097c0dca0f54bcb6f</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-10 21:07:39</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-08-24 17:59:33</sys_updated_on>
         <template><![CDATA[<div class="content">
 
   <div class="title_category" ng-click="c.openContent()">
