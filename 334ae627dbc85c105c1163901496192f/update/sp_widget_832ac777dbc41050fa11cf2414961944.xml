@@ -65,7 +65,7 @@
 				}
 				else{
 					var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
-					if(item.table == "sc_cat_item" || isAllowedRP){
+					if(item.table != "sc_cat_item_guide" || isAllowedRP){
 						c.data.showSelectedItem = true;
 						c.data.showSelectedOrder = false;
 					}
@@ -290,7 +290,7 @@
 				
 				var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
 				
-				if(c.data.arrayItems[i].table == "sc_cat_item" || isAllowedRP){
+				if(c.data.arrayItems[i].table != "sc_cat_item_guide" || isAllowedRP){
 					c.data.showSelectedItem = true;
 					c.data.showSelectedOrder = false;
 				}
@@ -406,6 +406,7 @@
 
       .form-group {
         width: 400px;
+        
         .icon-img {
           width: 50px;
           height: 50px;
@@ -598,7 +599,32 @@
       background: $turquoise;
       .item_title:hover {color: $turquoise; !important}
     }
-
+    
+    .radio-color_category_csc1{
+      background: $esp !important;
+      .item_title:hover {color: $esp; !important}
+    }
+    .radio-color_category_csc2{
+      background: $ac;
+      .item_title:hover {color: $ac; !important}
+    }
+    .radio-color_category_csc3{
+      background: $ape;
+      .item_title:hover {color: $ape; !important}
+    }
+    .radio-color_category_csc4{
+      background: $ar;
+      .item_title:hover {color: $ar; !important}
+    }
+    .radio-color_category_csc5{
+      background: $fs;
+      .item_title:hover {color: $fs; !important}
+    }
+    .radio-color_category_csc6{
+      background: $gcsc;
+      .item_title:hover {color: $gcsc; !important}
+    }
+    
     .hover_color_category1{
       .item_title_current {color: $dodger-blue; !important}
       .item_title:hover {color: $dodger-blue; !important}
@@ -618,6 +644,31 @@
     .hover_color_category5{
       .item_title_current {color: $turquoise; !important}
       .item_title:hover {color: $turquoise; !important}
+    }
+    
+    .hover_color_category_csc1{
+      .item_title_current {color: $esp; !important}
+      .item_title:hover {color: $esp; !important}
+    }
+    .hover_color_category_csc2{
+      .item_title_current {color: $ac; !important}
+      .item_title:hover {color: $ac; !important}
+    }
+    .hover_color_category_csc3{
+      .item_title_current {color: $ape; !important}
+      .item_title:hover {color: $ape; !important}
+    }
+    .hover_color_category_csc4{
+      .item_title_current {color: $ar; !important}
+      .item_title:hover {color: $ar; !important}
+    }
+    .hover_color_category_csc5{
+      .item_title_current {color: $fs; !important}
+      .item_title:hover {color: $fs; !important}
+    }
+    .hover_color_category_csc6{
+      .item_title_current {color: $gcsc; !important}
+      .item_title:hover {color: $gcsc; !important}
     }
   }
 
@@ -870,14 +921,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 13:30:17</sys_created_on>
         <sys_id>832ac777dbc41050fa11cf2414961944</sys_id>
-        <sys_mod_count>1668</sys_mod_count>
+        <sys_mod_count>1677</sys_mod_count>
         <sys_name>GService Categories</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_832ac777dbc41050fa11cf2414961944</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-08-19 13:01:52</sys_updated_on>
+        <sys_updated_on>2020-08-25 20:06:37</sys_updated_on>
         <template><![CDATA[<div id="widget-category" class="content" ng-show="data.showWidget">
   <div>
 
@@ -903,7 +954,7 @@
 
       <div class="categories_title">{{data.subcategoriesTitle}}</div>
 
-      <div ng-repeat="category in c.data.secCategories">
+      <div ng-repeat="category in c.data.secCategories" ng-if="category.show">
         <div class="row text-center">
           <span ng-click="c.selectedSecondCategory(category)" ng-class="category.selected ? '{{data.categoryColor}} selected_category' : 'categories_list'">{{category.title}}</span>
         </div>
@@ -912,7 +963,7 @@
       <div class="line {{data.categoryBgColor}}"></div>
 
       <div id="third-categories">
-        <div ng-repeat="category in c.data.thirdCategories" ng-if="c.data.showThirdCategories">
+        <div ng-repeat="category in c.data.thirdCategories" ng-if="c.data.showThirdCategories && category.show">
           <div class="row text-center">
             <span ng-click="c.selectedThirdCategory(category)" ng-class="category.selected ? '{{data.categoryColor}} selected_category subcategory_list' : 'categories_list subcategory_list'">{{category.title}}</span>
           </div>
