@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>41</height>
+        <image>b821fb9e1b32501097c0dca0f54bcbfb</image>
+        <name>report_lista.png</name>
+        <size_bytes>880</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-30 13:07:12</sys_created_on>
+        <sys_id>83bd5a98db7d50505c1163901496192c</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>report_lista.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_83bd5a98db7d50505c1163901496192c</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-25 17:22:10</sys_updated_on>
+        <thumbnail/>
+        <width>41</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#0</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>dc6ffee50cd6fa850e0ff97b82f2794d5fa0fc20f1d45716090c23e7c959423a</hash>
+        <image_height>41</image_height>
+        <image_width>41</image_width>
+        <size_bytes>880</size_bytes>
+        <size_compressed>903</size_compressed>
+        <state>available</state>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-08-25 17:22:09</sys_created_on>
+        <sys_id>b821fb9e1b32501097c0dca0f54bcbfb</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-25 17:22:10</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>83bd5a98db7d50505c1163901496192c</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="b821fb9e1b32501097c0dca0f54bcbfb">b821fb9e1b32501097c0dca0f54bcbfb</sys_attachment>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-08-25 17:22:09</sys_created_on>
+        <sys_id>f821fb9e1b32501097c0dca0f54bcbfb</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>AXADj/yJUE5HDQoaCgAAAA1JSERSAAAAKQAAACkIBgAAAKhgAPYAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAMiSURBVFiFzVnrcZtAEF6Y/DcdhFSAoAHRQdyBSAVWCbgDdRClgqAOcAOMVUGkCoIKEGRW+U5anTge4oS9MzcYwe1+7PvWTl3X9Nnpyxh8TlR5RDQjohg/qWtJRO/qWhduPkrOUE0C2DMRJUQ0H7B1Q0RZXbjrh4EEuCXWk3i0hdZ2YvlisXa/ivf3RJQOAdsLpBNVLGgthLGgFTTDoLr2+9B8InjwxyV14b53AmCQbYvCY0rhscbaUXhMuvZ08FtSeCwFz05+XQzXghn/7Y0BKPh6FB4zwXt1F0gN4CjttchYCRnpIJCaiR8CUMhKumQ1bYqnAtigUfZVvw/InfLBKQAKuTnk5vozV0sVKVLEAflwSkoga46UdyZXA6FeXNaFW06JEPn2FbepfHZO5k5UMcCfnKjrwvV1Jk5UcSn8bQkTW2qmFwJUtb+4DVWilw3GM66mcpWLLx1LZVOlYus5UfWLiBaw6snlpCZVfQx7laoHkbDYti5c7rD++6Rw1P1HAgSpti6A+c/mVj5obBawgV3BswCkRHNxE5wwOTcfAXrVXEW3AtnWnPqWABL4tPEqxXv9O3O4QdzjVRuUo6FmTWZ6nvyUNOiMo1eCEVR2BOhVntZBGv1EJHsr5ETVt5au/ipGFEj1VTMTAD6TOFHVeVToSY3JvAHkKYBOyRxnkD8A49jS1j3UhMWlS3Hf0yXjfyQpv39TGKRP5qiZDDLTQTpRNcMJ0QYZk7loEc8YZApSABaqHE1NyB4BxF4aHUN33Hp6m6A7vzoV6MlcNZsvMO9khFiYazhuzE0YLG2Uuqcyu2hemF719NRUFhN0zoHFQOkCmGO+tG2SeQMSEafSEAfR4CnYHQADKKYx4o0DK60MblpSxr0AfaQZBTA21XNjF4TR3A/cfufSaavBQJC89wFIfUZ/iPJMjOw2mC8OPmbgI1MRxb3Gf33nkx6Yv4ift4jI1hklPjJGQAbiEUdxato3GKQQ6APsQnt0EJ2UJH1cfYBV0j7D17tACrAeNBNjPbW8fkAEZ9D64OCz8i8SaPhm6sGnzyEaM/K3AfKhRET/AMvHUf/MFpaWAAAAAElFTkSuQmCCk3gRRnADAAA=</data>
+        <length>1192</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="b821fb9e1b32501097c0dca0f54bcbfb">b821fb9e1b32501097c0dca0f54bcbfb</sys_attachment>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-08-25 17:22:09</sys_created_on>
+        <sys_id>7c21fb9e1b32501097c0dca0f54bcbfb</sys_id>
+    </sys_attachment_doc>
+</record_update>
