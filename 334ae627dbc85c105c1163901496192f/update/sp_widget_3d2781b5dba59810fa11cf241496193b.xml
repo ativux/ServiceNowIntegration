@@ -68,8 +68,9 @@
   .header-loader{
     padding: 50px;
     padding-bottom: 100px;
+    
     .sp-loading-indicator{
-      color: $deep-sky-blue !important;
+      color: $blue !important;
     }
   }
 
@@ -82,7 +83,7 @@
         margin-bottom: 30px;
         height: 90px;
         width: 90px;
-        box-shadow: 0 0 0 4px $deep-sky-blue;
+        box-shadow: 0 0 0 4px $blue;
         font-size: 20px !important;
       }
       .avatar-container .avatar.soloAvatar .sub-avatar {
@@ -91,7 +92,7 @@
         line-height: 95px;
         font-family: $text-bold;
         background-color: white;
-        color: $deep-sky-blue;
+        color: $blue;
       }
     }
 
@@ -103,7 +104,7 @@
       .name-properties {
         font-size: 30px;
         font-family: $text-bold;
-        color: $deep-sky-blue;
+        color: $blue;
         letter-spacing: -1px;
       }
       .job-properties {
@@ -170,11 +171,11 @@
             -ms-transform: translateY(-10px);
             -moz-transform: translateY(-10px);
             -o-transform: translateY(-10px);
-            color: $deep-sky-blue;
+            color: $blue;
           }
         }
       }
-      .tab_current { color: $deep-sky-blue; }
+      .tab_current { color: $blue; }
     }
     .categories:nth-child(1) {
       .tab_items {
@@ -200,7 +201,7 @@
 .line {
   width: 100%;
   height: 2px;
-  background-color: $deep-sky-blue;
+  background-color: $blue;
   margin-top: 40px;
 }</css>
         <data_table>sp_instance</data_table>
@@ -270,19 +271,19 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-22 12:24:02</sys_created_on>
         <sys_id>3d2781b5dba59810fa11cf241496193b</sys_id>
-        <sys_mod_count>53</sys_mod_count>
+        <sys_mod_count>56</sys_mod_count>
         <sys_name>GService Manager Tabs</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_3d2781b5dba59810fa11cf241496193b</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 13:08:38</sys_updated_on>
+        <sys_updated_on>2020-08-26 12:41:20</sys_updated_on>
         <template><![CDATA[<div class="content">
   <div class="content_tabs">
     <div class="content_avatar">
       <div>
-        <a title="Avatar Pic" href=""><sn-avatar class="avatar-custom-size" primary="userID" /></a>
+        <a title="Avatar Pic"><sn-avatar class="avatar-custom-size" primary="userID" /></a>
       </div>
       <div class="user-info-properties">
         <div class="name-properties">{{data.name}}</div>
