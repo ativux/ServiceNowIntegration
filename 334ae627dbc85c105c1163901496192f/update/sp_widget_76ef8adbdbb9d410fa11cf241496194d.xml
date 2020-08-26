@@ -48,7 +48,7 @@
   }
 
   .title {
-    color: $deep-sky-blue;
+    color: $blue;
     font-size: 14px;
     font-family: $text-bolder;
     text-transform: uppercase;
@@ -110,7 +110,7 @@
       left: 1px;
       top: 1px;
       border-radius: 50%;
-      background-color: $deep-sky-blue;
+      background-color: $blue;
     }
     .filter_name {
       margin-left: 30px;
@@ -138,7 +138,7 @@
   .confirm_button {
     transition: .4s ease-in-out;
     font-size: 12px;
-    color: $deep-sky-blue;
+    color: $blue;
     font-family: $text-bolder;
     text-decoration: underline;
     text-transform: uppercase;
@@ -172,6 +172,7 @@
       -o-transform: scale(1.1);
     }
   }
+  
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -207,14 +208,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-07-09 19:48:31</sys_created_on>
         <sys_id>76ef8adbdbb9d410fa11cf241496194d</sys_id>
-        <sys_mod_count>41</sys_mod_count>
+        <sys_mod_count>43</sys_mod_count>
         <sys_name>GService Equipment Filter</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_76ef8adbdbb9d410fa11cf241496194d</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 14:04:44</sys_updated_on>
+        <sys_updated_on>2020-08-26 13:32:16</sys_updated_on>
         <template><![CDATA[<div class="content_list col-md-12">
   <div class="col-md-3 filter-padding">
     <div ng-click="c.areaFilterState()" class="filter-click-size">
