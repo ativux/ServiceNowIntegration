@@ -85,7 +85,7 @@
   margin-bottom: 20px;
   height: 100px;
   width: 100px;
-  box-shadow: 0 0 0 4px $deep-sky-blue;
+  box-shadow: 0 0 0 4px $blue;
   font-size: 20px !important;
 }
 
@@ -103,14 +103,14 @@
 
 .hello-stranger {
   font-family: $text-bold;
-  color: $deep-sky-blue;
+  color: $blue;
   font-size: 32px;
   letter-spacing: 0;
 }
 
 .stranger-help {
   font-family: $text-rough;
-  color: $deep-sky-blue;
+  color: $blue;
   font-size: 26px;
   letter-spacing: 0;
   line-height: 1;
@@ -124,7 +124,7 @@
   line-height: 110px;
   font-family: $text-bold;
   background-color: white;
-  color: $deep-sky-blue;
+  color: $blue;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -167,14 +167,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-16 11:08:03</sys_created_on>
         <sys_id>233373c0dbdc5050fa11cf241496194f</sys_id>
-        <sys_mod_count>133</sys_mod_count>
+        <sys_mod_count>147</sys_mod_count>
         <sys_name>GService Main User</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_233373c0dbdc5050fa11cf241496194f</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 14:08:07</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-08-26 22:02:07</sys_updated_on>
         <template><![CDATA[<div ng-if="user.logged_in" class="align-all">
   <div>
     <a title="Avatar Pic">
