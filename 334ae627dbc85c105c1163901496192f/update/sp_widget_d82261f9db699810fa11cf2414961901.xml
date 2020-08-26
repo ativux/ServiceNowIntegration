@@ -119,13 +119,14 @@
 
 	changeQuery = function(){
 		c.data.action = "changeQuery";
+		console.log(c.data.query);
 		c.server.update().then(function(){
 			$timeout(function() {
 				if(!c.data.propertyFilter || !c.data.tableFilter)
 					$scope.$broadcast('data_table.setFilter', '');
 				else
 					$scope.$broadcast('data_table.setFilter', c.data.query);
-			}, 200);
+			}, 500);
 		});
 	}
 
@@ -160,7 +161,7 @@
       select {
         border: 0;
         width: 100%;
-        border-bottom: 2px solid $deep-sky-blue;
+        border-bottom: 2px solid $blue;
         padding: 5px 0;
       }
     }
@@ -173,7 +174,7 @@
     }
 
     .title {
-      color: $deep-sky-blue;
+      color: $blue;
       font-size: 13px;
       font-family: $text-bolder;
       text-transform: uppercase;
@@ -237,7 +238,7 @@
         left: 1px;
         top: 1px;
         border-radius: 50%;
-        background-color: $deep-sky-blue;
+        background-color: $blue;
       }
       .filter_name {
         margin-left: 25px;
@@ -267,7 +268,7 @@
     .confirm_button {
       transition: .4s ease-in-out;
       font-size: 12px;
-      color: $deep-sky-blue;
+      color: $blue;
       font-family: $text-bolder;
       text-decoration: underline;
       text-transform: uppercase;
@@ -394,21 +395,21 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-22 14:21:53</sys_created_on>
         <sys_id>d82261f9db699810fa11cf2414961901</sys_id>
-        <sys_mod_count>358</sys_mod_count>
+        <sys_mod_count>372</sys_mod_count>
         <sys_name>GService List Filter Manager</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_d82261f9db699810fa11cf2414961901</sys_update_name>
-        <sys_updated_by>organize.henrique</sys_updated_by>
-        <sys_updated_on>2020-08-01 15:49:22</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-26 12:51:34</sys_updated_on>
         <template><![CDATA[<div class="content_list_manager">
   <div class="content_list">
     <div class="column">
       <div ng-click="c.hideFilter('property')" class="filter-click-size">
         <div class="title break-line-filter">{{data.propertyFilterTitle}}
         </div>
-        <img class="arrow-size" src="gservice_filter_dashboard_arrow.png" ng-class="c.data.showPropertyFilter ? '' : 'invert-arrow'"/>
+        <img class="arrow-size" src="GS_Seta_PGS.png" ng-class="c.data.showPropertyFilter ? '' : 'invert-arrow'"/>
       </div>
       <div class="mask_filter">
         <div class="content_filters" ng-class="c.data.showPropertyFilter ? 'filter_open' : 'filter_close'">
@@ -434,7 +435,7 @@
       <div ng-click="c.hideFilter('type')" class="filter-click-size">
         <div class="title break-line-filter">{{data.typeFilterTitle}}
         </div>
-        <img class="arrow-size" src="gservice_filter_dashboard_arrow.png" ng-class="c.data.showTypeFilter ? '' : 'invert-arrow'"/>
+        <img class="arrow-size" src="GS_Seta_PGS.png" ng-class="c.data.showTypeFilter ? '' : 'invert-arrow'"/>
       </div>
       <div class="mask_filter">
         <div class="content_filters" ng-class="c.data.showTypeFilter ? 'filter_open' : 'filter_close'">
@@ -460,7 +461,7 @@
       <div ng-click="c.hideFilter('status')" class="filter-click-size">
         <div class="title break-line-filter">{{data.statusFilterTitle}}
         </div>
-        <img class="arrow-size" src="gservice_filter_dashboard_arrow.png" ng-class="c.data.showStatusFilter ? '' : 'invert-arrow'"/>
+        <img class="arrow-size" src="GS_Seta_PGS.png" ng-class="c.data.showStatusFilter ? '' : 'invert-arrow'"/>
       </div>
       <div class="mask_filter">
         <div class="content_filters" ng-class="c.data.showStatusFilter ? 'filter_open' : 'filter_close'">
