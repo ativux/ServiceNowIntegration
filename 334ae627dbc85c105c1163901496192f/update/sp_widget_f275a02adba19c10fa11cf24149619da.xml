@@ -201,7 +201,7 @@ table {
     th i {
       display: inline-block;
       margin-left: 5px;
-      color: $deep-sky-blue;
+      color: $blue;
     }
     th .disabled {
       color:#ddd;
@@ -433,19 +433,20 @@ table {
 		data.table_label = "";
 		return;
 	}
-
-	/*if (!data.fields) {
-		if (data.view)
-			data.fields = $sp.getListColumns(data.table, data.view);
-		else
-			data.fields = $sp.getListColumns(data.table);
-	}*/
 	data.fields = "number,priority,sla_due,short_description,state,assignment_group,assigned_to,opened_by";
 
 	data.title = input.headerTitle;
 	data.view = data.view || 'mobile';
 	data.table = data.table || $sp.getValue('table');
 	data.filter = data.filter || $sp.getValue('filter');
+	var filter = data.filter + "";
+	if(!filter.includes("sys_class_name")){
+		data.table = "x_gmeps_csc_csc";
+		data.fields = "number,priority,sla_due,short_description,u_status_portal,assignment_group,assigned_to,opened_by";
+	}
+	else{
+		data.table = "task";
+	}
 	data.keywords = data.keywords || $sp.getValue('keywords');
 	data.p = data.p || $sp.getValue('p') || 1;
 	data.p = parseInt(data.p);
@@ -531,7 +532,7 @@ table {
 		if (ge == null)
 			continue;
 
-		
+
 		var columnName = ge.getLabel();
 		switch(field){
 			case "short_description":
@@ -548,6 +549,9 @@ table {
 				break;
 			case "assigned_to":
 				columnName = "Responsável pela tarefa";
+				break;
+			case "u_status_portal":
+				columnName = "Status";
 				break;
 			default:
 				break;
@@ -602,16 +606,22 @@ table {
 
 	if(data.list.length > 0){
 		for(i in data.list){
-			data.list[i].colorClass = portalUtils.getColorClass(data.list[i].state.value, data.list[i].targetTable);
+			if(data.table == "x_gmeps_csc_csc"){
+				data.list[i].colorClass = portalUtils.getColorClass(data.list[i].u_status_portal.value, data.list[i].targetTable);
+			}
+			else{
+				data.list[i].colorClass = portalUtils.getColorClass(data.list[i].state.value, data.list[i].targetTable);
+			}
 			for(var j in data.fields_array){
 				if(data.list[i][data.fields_array[j]].type != 'reference'){
 					data.list[i][data.fields_array[j]].limit = 30;
 				} else {
 					data.list[i][data.fields_array[j]].limit = 35;
 				}
-
-				if(data.list[i][data.fields_array[j]].display_value.length > 20){
-					data.list[i][data.fields_array[j]].display_value = portalUtils.getCharacterLength(data.list[i][data.fields_array[j]].display_value);
+				if(data.list[i][data.fields_array[j]].display_value){
+					if(data.list[i][data.fields_array[j]].display_value.length > 20){
+						data.list[i][data.fields_array[j]].display_value = portalUtils.getCharacterLength(data.list[i][data.fields_array[j]].display_value);
+					}
 				}
 			}
 		}
@@ -623,14 +633,14 @@ table {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-24 17:52:22</sys_created_on>
         <sys_id>f275a02adba19c10fa11cf24149619da</sys_id>
-        <sys_mod_count>456</sys_mod_count>
+        <sys_mod_count>498</sys_mod_count>
         <sys_name>GService Data Table</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f275a02adba19c10fa11cf24149619da</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 13:10:06</sys_updated_on>
+        <sys_updated_on>2020-08-26 13:37:14</sys_updated_on>
         <template><![CDATA[<div class="clearfix"/>
 <div>
   <div class="panel-heading form-inline"></div>
@@ -648,7 +658,7 @@ table {
       </thead>
       <tbody>
         <tr ng-repeat="item in data.list track by item.sys_id">
-          <td ng-class="field == 'state' ? item.colorClass : ''" ng-repeat="field in ::data.fields_array">
+          <td ng-class="field == 'state' || field == 'u_status_portal' ? item.colorClass : ''" ng-repeat="field in data.fields_array">
             <span tabindex="0">{{item[field].display_value | limitTo : item[field].limit}}{{item[field].display_value.length > item[field].limit ? '...' : ''}}</span>
             <span class="tooltip tooltip_bottom" ng-show="item[field].value.length > item[field].limit">
               <div class="tooltip_arrow arrow_top"></div>
