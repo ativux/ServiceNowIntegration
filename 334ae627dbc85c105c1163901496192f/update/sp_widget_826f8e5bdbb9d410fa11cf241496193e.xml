@@ -73,11 +73,11 @@
   margin-bottom: 50px;
   overflow: auto;
 
-  .header-loader{
+  .header-loader {
     padding: 50px;
     padding-bottom: 100px;
     .sp-loading-indicator{
-      color: $deep-sky-blue !important;
+      color: $blue !important;
     }
   }
 
@@ -90,7 +90,7 @@
         margin-bottom: 30px;
         height: 90px;
         width: 90px;
-        box-shadow: 0 0 0 4px $deep-sky-blue;
+        box-shadow: 0 0 0 4px $blue;
         font-size: 20px !important;
       }
       .avatar-container .avatar.soloAvatar .sub-avatar {
@@ -99,7 +99,7 @@
         line-height: 95px;
         font-family: $text-bold;
         background-color: white;
-        color: $deep-sky-blue;
+        color: $blue;
       }
     }
 
@@ -111,7 +111,7 @@
       .name-properties {
         font-size: 30px;
         font-family: $text-bold;
-        color: $deep-sky-blue;
+        color: $blue;
         letter-spacing: -1px;
       }
       .job-properties {
@@ -178,12 +178,12 @@
             -ms-transform: translateY(-10px);
             -moz-transform: translateY(-10px);
             -o-transform: translateY(-10px);
-            color: $deep-sky-blue;
+            color: $blue;
           }
         }
       }
       .tab_current {
-        color: $deep-sky-blue;
+        color: $blue;
       }
 
       .count-align {
@@ -221,7 +221,7 @@
 .line {
   width: 100%;
   height: 2px;
-  background-color: $deep-sky-blue;
+  background-color: $blue;
   margin-top: 40px;
 }</css>
         <data_table>sp_instance</data_table>
@@ -240,12 +240,12 @@
         <script><![CDATA[(function() {
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
-	
+
 	var equipmentsUtils = new global.OCLPortalEquipmentsUtil();
 
 	data.equipment_query = gs.getProperty("gservice_equipments_query");
 	data.equipmentsCount = equipmentsUtils.getEquipmentsCount();
-	
+
 	data.employee_role = gs.getMessage("Employee Role").toUpperCase();
 
 	if(!localInput){
@@ -274,17 +274,6 @@
 		data.widgets.push(listWidget);
 	}
 	else{
-		/*
-		if(localInput.action == "selectedTab"){
-			data.widgets = localInput.widgets;
-			for(var i in data.widgets){
-				if(localInput.tabName == "reportsTab" && data.widgets[i].widget.id == "gservice_report_list"){
-					data.widgets[i].widget = $sp.getWidget('gservice_report_list');
-				}
-				data.widgets[i].show = i == localInput.index ? true : false;
-			}
-		}
-		*/
 		if(localInput.action == "equipmentsCount"){
 			data.equipmentsCount = equipmentsUtils.getEquipmentsCount();
 		}
@@ -296,19 +285,19 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-07-09 19:46:18</sys_created_on>
         <sys_id>826f8e5bdbb9d410fa11cf241496193e</sys_id>
-        <sys_mod_count>18</sys_mod_count>
+        <sys_mod_count>21</sys_mod_count>
         <sys_name>GService Equipments Tabs</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_826f8e5bdbb9d410fa11cf241496193e</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-08-04 19:43:31</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-26 13:20:38</sys_updated_on>
         <template><![CDATA[<div class="content">
   <div class="content_tabs">
     <div class="content_avatar">
-      <div class="">
-        <a title="Avatar Pic" href="">
+      <div>
+        <a title="Avatar Pic">
           <sn-avatar class="avatar-custom-size" primary="userID" />
         </a>
       </div>
