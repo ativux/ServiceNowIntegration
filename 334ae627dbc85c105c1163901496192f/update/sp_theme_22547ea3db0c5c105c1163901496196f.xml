@@ -2,13 +2,32 @@
     <sp_theme action="INSERT_OR_UPDATE">
         <css_variables>//============= General Variables =============//&#13;
 &#13;
-$body-bg: $beige;&#13;
+$body-bg: #E3E4E5;&#13;
 $homepage-bg: $beige;&#13;
 $widget-editor-fa-bg: $brand-primary;&#13;
 $sp-navbar-divider-color: #ffffff;&#13;
 &#13;
 &#13;
 //============= Color Variables =============//&#13;
+&#13;
+/* New Colors */&#13;
+$blue: #0031FD;&#13;
+$doubts: #0CC16D;&#13;
+$globo-purple: #8028FF;&#13;
+$tec: #03B6FD;&#13;
+&#13;
+$esp: #A45E3B; // Espaços Corporativos&#13;
+$ac: #E745A5; // Apoio Corporativo&#13;
+$ape: #C8F013; // Apoio a Produções e Eventos&#13;
+$ar: #0CC16D; // Ambiental e Regulatório&#13;
+$fs: #028065; // Financeiro e Suprimentos&#13;
+$gcsc: #C1A8FD; // Gestão Central de Serviços CSC&#13;
+&#13;
+$dodger-blue: #4671FC;&#13;
+$dark-orchid: #8028FF;&#13;
+$tan: #E7C4A6;&#13;
+$orange: #FDA306;&#13;
+$turquoise: #9FE9DC;&#13;
 &#13;
 $gray: #808080;&#13;
 $gray-base: #000;&#13;
@@ -19,14 +38,9 @@ $gray-lighter: #eee;&#13;
 $beige: #F5F5DC;&#13;
 $white: #FFFFFF;&#13;
 $deep-sky-blue: #00BFFF;&#13;
-$dodger-blue: #1E90FF;&#13;
 $slate-gray: #708090;&#13;
 $coral: #FF7F50;&#13;
-$orange: #FFA500;&#13;
-$turquoise: #40E0D0;&#13;
 $yellow-green: #9ACD32;&#13;
-$tan: #D2B48C;&#13;
-$dark-orchid: #68228B;&#13;
 $light-steel-blue: #B0C4DE;&#13;
 &#13;
 $brand-primary: #0076CE;&#13;
@@ -136,7 +150,7 @@ $sp-logo-margin-y: 0 !default;&#13;
 &#13;
 $navbar-height: 80px;&#13;
 $navbar-inverse-color: $white;&#13;
-$navbar-inverse-link-color: $deep-sky-blue;&#13;
+$navbar-inverse-link-color: $blue;&#13;
 $navbar-inverse-link-hover-color: $gray-light !default;&#13;
 $navbar-inverse-bg: $white;&#13;
 $navbar-inverse-link-active-bg: $white;&#13;
@@ -238,25 +252,55 @@ $dropdown-link-active-color: #ffffff;&#13;
 //============= DYNAMIC CATEGORY COLOR =============//&#13;
 &#13;
 .color_category1 { color: $dodger-blue !important; } // Produtos Digitais&#13;
-.color_category2 { color: $dark-orchid !important; } // Produtos TV&#13;
+.color_category2 { color: $globo-purple !important; } // Produtos TV&#13;
 .color_category3 { color: $tan !important; } // Equipamentos Corporativos&#13;
 .color_category4 { color: $orange !important; } // Aplicações Corporativas&#13;
 .color_category5 { color: $turquoise !important; } // Infraestrutura e Segurança&#13;
 .color_category6 { color: $deep-sky-blue !important; } // Portal GService&#13;
 &#13;
+.color_category_csc1 { color: $esp !important; } // Espaços Corporativos&#13;
+.color_category_csc2 { color: $ac !important; } // Apoio Corporativo&#13;
+.color_category_csc3 { color: $ape !important; } // Apoio a Produções e Eventos&#13;
+.color_category_csc4 { color: $ar !important; } // Ambiental e Regulatório&#13;
+.color_category_csc5 { color: $fs !important; } // Financeiro e Suprimentos&#13;
+.color_category_csc6 { color: $gcsc !important; } // Gestão Central de Serviços CSC&#13;
+.color_category_csc_doubt { color: $doubts !important; } // Doubts&#13;
+&#13;
 .bgcolor_category1 { background-color: $dodger-blue; }&#13;
-.bgcolor_category2 { background-color: $dark-orchid; }&#13;
+.bgcolor_category2 { background-color: $globo-purple; }&#13;
 .bgcolor_category3 { background-color: $tan; }&#13;
 .bgcolor_category4 { background-color: $orange; }&#13;
 .bgcolor_category5 { background-color: $turquoise; }&#13;
 .bgcolor_category6 { background-color: $gray-light; }&#13;
 &#13;
+.bgcolor_category_csc1 { background-color: $esp !important; }&#13;
+.bgcolor_category_csc2 { background-color: $ac !important; }&#13;
+.bgcolor_category_csc3 { background-color: $ape !important; }&#13;
+.bgcolor_category_csc4 { background-color: $ar !important; }&#13;
+.bgcolor_category_csc5 { background-color: $fs !important; }&#13;
+.bgcolor_category_csc6 { background-color: $gcsc !important; }&#13;
+.bgcolor_category_csc_doubt { background-color: $doubts !important; }&#13;
+&#13;
 .bdcolor_category1 { border-color: $dodger-blue !important; }&#13;
-.bdcolor_category2 { border-color: $dark-orchid !important; }&#13;
+.bdcolor_category2 { border-color: $globo-purple !important; }&#13;
 .bdcolor_category3 { border-color: $tan !important; }&#13;
 .bdcolor_category4 { border-color: $orange !important; }&#13;
 .bdcolor_category5 { border-color: $turquoise !important; }&#13;
 .bdcolor_category6 { border-color: $gray-light !important; }&#13;
+&#13;
+.bdcolor_category_csc1 { border-color: $esp !important; }&#13;
+.bdcolor_category_csc2 { border-color: $ac !important; }&#13;
+.bdcolor_category_csc3 { border-color: $ape !important; }&#13;
+.bdcolor_category_csc4 { border-color: $ar !important; }&#13;
+.bdcolor_category_csc5 { border-color: $fs !important; }&#13;
+.bdcolor_category_csc6 { border-color: $gcsc !important; }&#13;
+.bdcolor_category_csc_doubt { border-color: $doubts !important; }&#13;
+&#13;
+&#13;
+//============= DYNAMIC CATEGORY COLOR (OLD) =============//&#13;
+&#13;
+.color_category1_old { color: $deep-sky-blue !important; }&#13;
+.bdcolor_category1_old { border-color: $deep-sky-blue !important; }&#13;
 &#13;
 &#13;
 //============= NEW CLASSES =============//&#13;
@@ -265,7 +309,7 @@ $dropdown-link-active-color: #ffffff;&#13;
 .sp-loading-indicator {&#13;
   width: 100px;&#13;
   height: 200px;&#13;
-  color: $deep-sky-blue;&#13;
+  color: $blue;&#13;
 }&#13;
 .header-loader {&#13;
   display: flex;&#13;
@@ -277,23 +321,6 @@ $dropdown-link-active-color: #ffffff;&#13;
     font-size: 16px !important;&#13;
 }&#13;
 &#13;
-//Hide Scrollbar Width&#13;
-body {&#13;
-  overflow: hidden; /* Hide scrollbars */&#13;
-}&#13;
-//Chrome, Safari, Opera&#13;
-body ::-webkit-scrollbar { width: 0 !important }  &#13;
-.example::-webkit-scrollbar {&#13;
-  display: none;&#13;
-}&#13;
-/* Firefox */&#13;
-body { overflow: -moz-scrollbars-none; }&#13;
-/* Internet Explorer, Edge */&#13;
-body { -ms-overflow-style: none; }&#13;
-.example {&#13;
-  -ms-overflow-style: none;&#13;
-}&#13;
-&#13;
 /* NAVBAR */&#13;
 .navbar-nav {  &#13;
   span {&#13;
@@ -302,9 +329,7 @@ body { -ms-overflow-style: none; }&#13;
   }&#13;
 }&#13;
 .navbar-inverse {&#13;
-  width: 88%;&#13;
-  margin-left: 90px;&#13;
-  padding-left: 50px !important;&#13;
+  width: 100%;&#13;
 }&#13;
 &#13;
 /* CONTAINERS */&#13;
@@ -766,13 +791,13 @@ iframe {&#13;
         <sys_created_by>organize.matias</sys_created_by>
         <sys_created_on>2020-04-14 17:17:27</sys_created_on>
         <sys_id>22547ea3db0c5c105c1163901496196f</sys_id>
-        <sys_mod_count>296</sys_mod_count>
+        <sys_mod_count>318</sys_mod_count>
         <sys_name>OCL: ITSM Unification</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_theme_22547ea3db0c5c105c1163901496196f</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-07-31 13:08:26</sys_updated_on>
+        <sys_updated_on>2020-08-26 13:07:39</sys_updated_on>
     </sp_theme>
 </record_update>
