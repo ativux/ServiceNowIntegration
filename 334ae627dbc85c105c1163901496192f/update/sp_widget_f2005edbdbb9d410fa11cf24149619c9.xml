@@ -368,7 +368,7 @@ td {
       font-size: 42px;
     }
     .justify-text{
-      color: $deep-sky-blue;
+      color: $blue;
       font-size: 36px;
       padding-bottom: 15px;
       margin-bottom: 5px;
@@ -391,7 +391,7 @@ td {
         height: 140px;
         width: 90%;
         overflow-wrap: break-word;
-        border: solid 3px $deep-sky-blue;
+        border: solid 3px $blue;
       }
     }
     .resize-img{
@@ -505,7 +505,7 @@ tbody {
   position: relative;
   left: 50%;
   .sp-loading-indicator{
-    color: $deep-sky-blue !important;
+    color: $blue !important;
   }
 }
 
@@ -530,7 +530,7 @@ tbody {
     font-weight: bold;
     font-weight: bold;
     text-transform: uppercase;
-    color: $deep-sky-blue;
+    color: $blue;
   }
   .more_detail {
     text-decoration: underline;
@@ -548,7 +548,7 @@ tbody {
     color: $coral !important;
   }
   .state_blue {
-    color: $deep-sky-blue;
+    color: $blue;
   }
 }
 .column_opened {
@@ -578,7 +578,7 @@ tbody {
     select {
       border: 0;
       width: 100%;
-      border-bottom: 2px solid $deep-sky-blue;
+      border-bottom: 2px solid $blue;
       padding: 5px 0;
     }
   }
@@ -637,7 +637,7 @@ tbody {
     }
     .status_flow_active {
       color: white;
-      background-color: $deep-sky-blue;
+      background-color: $blue;
     }
     .status_flow_empty {
       color: $slate-gray;
@@ -645,7 +645,7 @@ tbody {
       border: 2px solid $slate-gray;
     }
     .status_active {
-      color: $deep-sky-blue;
+      color: $blue;
     }
   }
 }
@@ -657,7 +657,7 @@ tbody {
     font-family: $text-bold;
     font-size: 18px;
     line-height: 1;
-    border-bottom: 2px solid $deep-sky-blue;
+    border-bottom: 2px solid $blue;
   }
   .widget_notifications {
     overflow: auto;
@@ -678,7 +678,7 @@ tbody {
     padding: 60px 100px;
 
     .modal-title {
-      color: $deep-sky-blue;
+      color: $blue;
       font-size: 30px;
     }
     .modal-description {
@@ -728,15 +728,15 @@ tbody {
     padding-left: 12px !important;
 
   }
-  .approvals-buttons{
-    .submit-button{
+  .approvals-buttons {
+    .submit-button {
       margin-left: 20px;
     }
-    .cancel-button{
+    .cancel-button {
       margin-left: 15%;;
     }
   }
-  .modal-body{
+  .modal-body {
     overflow: hidden !important;
     border: 20px solid white;
     padding-left: 50px !important;
@@ -744,26 +744,27 @@ tbody {
       padding: 50px 0 0 50px !important;
       margin-right: -20px;
     }
-    button{
+    button {
       text-align: right;
       font-size: 42px;
     }
-    .justify-text{
-      color: $deep-sky-blue;
+    .justify-text {
+      color: $blue;
       font-size: 36px;
       padding-bottom: 15px;
       margin-bottom: 5px;
     }
-    .no-text-answer{
+    .no-text-answer {
       font-size: 16px;
       color: lightcoral;
       padding: 2px;
     }
-    .form-group{
+    .form-group {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      textarea{
+      
+      textarea {
         margin-top: 5px;
         margin-right: 10% !important;
         resize: none;
@@ -771,7 +772,7 @@ tbody {
         height: 140px;
         width: 90%;
         overflow-wrap: break-word;
-        border: solid 3px $deep-sky-blue;
+        border: solid 3px $blue;
       }
     }
     .resize-img{
@@ -1185,14 +1186,14 @@ input:focus::placeholder{
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-07-09 19:49:04</sys_created_on>
         <sys_id>f2005edbdbb9d410fa11cf24149619c9</sys_id>
-        <sys_mod_count>384</sys_mod_count>
+        <sys_mod_count>386</sys_mod_count>
         <sys_name>GService Equipment List</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f2005edbdbb9d410fa11cf24149619c9</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-03 14:26:40</sys_updated_on>
+        <sys_updated_on>2020-08-26 13:28:00</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   <div class="col-md-12 filter-padding">
     <sp-widget widget="data.equipmentFilter_widget"></sp-widget>
