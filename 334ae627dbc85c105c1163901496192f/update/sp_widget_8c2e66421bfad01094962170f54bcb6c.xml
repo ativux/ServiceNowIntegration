@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function() {
+        <client_script><![CDATA[function($rootScope) {
 	/* widget controller */
 	var c = this;
 
@@ -10,7 +10,8 @@
 	c.selectStars = function(index){
 		if(index === c.selected){
 			for(var i in c.data.stars){
-				c.data.stars[i] = false;
+				c.data.stars[i].state = false;
+				c.data.stars[i].img = 'GloboService_Estrela Survey CSC vazia.png';
 			}
 			c.selected = false;
 		}
@@ -18,79 +19,139 @@
 			c.selected = index;
 			for(var i in c.data.stars){
 				if(i <= index){
-					c.data.stars[i] = true;
+					c.data.stars[i].state = true;
+					c.data.stars[i].img = 'GloboService_Estrela Survey CSC cheia.png';
 				}
 				else{
-					c.data.stars[i] = false
+					c.data.stars[i].state = false
+					c.data.stars[i].img = 'GloboService_Estrela Survey CSC vazia.png';
 				}
 			}
 		}
 	}
-	
+
 	c.sendSurvey = function(){
+		if(c.selected < 2 && c.data.feedback == "" || c.selected === false){
+			return;
+		}
 		c.data.action = "sendSurvey";
 		c.data.stars = parseInt(c.selected) + 1;
 		c.server.update();
+		c.hideSurvey();
+
 	}
 
+	$('#surveyModalCSC').on('hidden.bs.modal', function (e) {
+		$rootScope.$broadcast("surveyClosed");
+	})
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.content {
-  background-color: white;
-  padding: 50px 90px;
-
+        <css>.content_survey_csc {
   .modal {
-    .modal-header {
-      .modal-title {
-        font-family: $text-bold;
-        text-transform: uppercase;
-        color: $blue;
+    .modal-content {
+      padding: 30px 50px;
+
+      .modal-header {
+        border-bottom: 0;
+
+        .modal-title {
+          font-size: 32px;
+          color: $blue;
+        }
+        .close {
+          position: absolute;
+          top: 15px;
+          right: 15px;
+        }
       }
-      .close {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-      }
-    }
 
-    .modal-body {
-      padding: 20px;
+      .modal-body {
+        padding: 20px;
 
-      .description {
-        margin-bottom: 30px;
-      }
-      .question1 {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 30px;
+        .description {
+          font-size: 18px;
+          font-family: $text-bold;
+          margin-top: -25px;
+          margin-bottom: 30px;
+        }
+        .question1 {
+          display: flex;
+          margin-bottom: 60px;
 
-        .fa-star {
-          transition: .2s ease-in-out;
-          color: #ccc;
-          font-size: 48px;
-          margin: 0px 8px;
+          .stars {
+            position: relative;
 
-          &amp;:hover {
-            transform: scale(1.2);
+            .tooltip {
+              top: 85px;
+              left: calc(50% - 33px);
+
+              .tooltip_text {
+                width: 60px;
+                text-align: center;
+              }
+            }
+
+            &amp;:hover {
+              img {
+                transform: scale(1.2);
+              }
+              .tooltip {
+                visibility: visible;
+                opacity: 1;
+              }
+            }
+
+            .icon-star {
+              transition: .2s ease-in-out;
+              height: 70px;
+              margin: 0 6px;
+              cursor: pointer;
+            }
+            .icon-star:first-child {
+              margin-left: 0;
+            }
           }
         }
-        .active-star {
-          color: #FEDB6D;
+        .question2 {
+          .label_text {
+            font-size: 16px;
+            font-family: $text-bold;
+            margin-bottom: 5px;
+          }
+          textarea {
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            min-height: 80px;
+            border-width: 2px;
+            border-color: $blue;
+            margin-top: 5px;
+          }
         }
       }
-      .question2 {
-        .label_text {
-          font-family: $text-bold;
-        }
-        textarea {
-          min-width: 100%;
-          max-width: 100%;
-          width: 100%;
-          min-height: 80px;
+      .modal-footer {
+        border-top : 0;
+        text-align: left;
 
+        .send-button {
+          color: $blue;
+          font-size: 20px;
+          text-transform: uppercase;
+          font-family: $text-bolder;
+          margin-top: -25px;
+          margin-left: 5px;
+          transition: .5s ease-in-out;
+        }
+
+        .disabled-button{
+          opacity: 0.3;
         }
       }
     }
+  }
+
+  .mandatory {
+    color: red;
   }
 }</css>
         <data_table>sp_instance</data_table>
@@ -102,27 +163,43 @@
         <id>gservice_survey_csc</id>
         <internal>false</internal>
         <link><![CDATA[function link(scope, element, attrs, controller) {
-  
+  var c = controller;
+	c.survey = element.find("#surveyModalCSC");
+	
+	if(c.data.hasSurvey){
+		c.survey.modal("show");
+	}
+	
+	c.hideSurvey = function(){
+		c.survey.modal("hide");
+	}
+	
 }]]></link>
         <name>GService Survey CSC</name>
-        <option_schema/>
+        <option_schema>[{"name":"survey_id","section":"Data","label":"Survey ID","type":"string"}]</option_schema>
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
 	/* populate the 'data' object */
 	/* e.g., data.table = $sp.getValue('table'); */
 	var localInput = input;
+	data.survey_title = gs.getMessage("Pesquisa de Satisfação de Serviços de FJ&I");
 
 	if(!localInput){
-		data.stars = [false, false, false, false];
+		data.stars = [];
+		data.stars.push({img : 'GloboService_Estrela Survey CSC vazia.png', state : false, tooltip: "Péssimo"});
+		data.stars.push({img : 'GloboService_Estrela Survey CSC vazia.png', state : false, tooltip: "Ruim"});
+		data.stars.push({img : 'GloboService_Estrela Survey CSC vazia.png', state : false, tooltip: "Bom"});
+		data.stars.push({img : 'GloboService_Estrela Survey CSC vazia.png', state : false, tooltip: "Ótimo"});
 		data.feedback = "";
-		//GERA SURVEY
+		data.survey_id = options.survey_id;
+		data.hasSurvey = true;
 	}
 	else{
 		switch(localInput.action){
 			case "sendSurvey":
 				var grInstance = new GlideRecord("asmt_assessment_instance");
-				grInstance.get("df430fce1b3ed01094962170f54bcb45");
+				grInstance.get(localInput.survey_id);
 
 				var grQuestion = new GlideRecord("asmt_assessment_instance_question");
 				grQuestion.addQuery("instance", grInstance.getUniqueValue());
@@ -151,48 +228,56 @@
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-24 17:51:05</sys_created_on>
         <sys_id>8c2e66421bfad01094962170f54bcb6c</sys_id>
-        <sys_mod_count>72</sys_mod_count>
+        <sys_mod_count>161</sys_mod_count>
         <sys_name>GService Survey CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_8c2e66421bfad01094962170f54bcb6c</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-08-24 19:50:17</sys_updated_on>
-        <template><![CDATA[<div class="content">
-
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Launch Survey Modal
-  </button>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-28 14:15:45</sys_updated_on>
+        <template><![CDATA[<div class="content_survey_csc">
 
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="surveyModalCSC" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
 
         <div class="modal-header">
-          <h3 class="modal-title" id="exampleModalLabel">Survey title</h3>
+          <h3 class="modal-title" id="exampleModalLabel" ng-bind-html="data.survey_title"></h3>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button>  
         </div>
 
         <div class="modal-body">
           <div class="description">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+            Ajude-nos a melhorar nosso atendimento!
           </div>
           <div class="question1">
-            <i ng-repeat="star in data.stars track by $index" class="fa fa-star" ng-class="star ? 'active-star' : ''" ng-click="c.selectStars($index)"></i>
+            <div class="stars" ng-repeat="star in data.stars track by $index">
+              <img class="icon-star" ng-src="{{star.img}}" ng-click="c.selectStars($index)" />
+              <span class="tooltip tooltip_bottom">
+                <div class="tooltip_arrow arrow_top"></div>
+                <div class="tooltip_text">{{star.tooltip}}</div>
+              </span>
+            </div>
           </div>
           <div class="question2">
-            <div class="label_text">Leave us a feedback</div>
+
+            <span class="label_text">Comentário</span>
+            <span class="mandatory" ng-if="c.selected < 2 && c.selected !== false">
+              *
+            </span>
+
             <textarea ng-model="data.feedback"></textarea>
           </div>
         </div>
+
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" ng-click="c.sendSurvey()">Send Survey</button>
+          <div class="send-button" ng-class="c.selected < 2 && data.feedback == '' || c.selected === false ? 'disabled-button' : ''" ng-click="c.sendSurvey()">Enviar</div>
         </div>
+
       </div>
     </div>
   </div>
