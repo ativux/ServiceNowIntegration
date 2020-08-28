@@ -1,0 +1,1910 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope, $timeout, spUtil, $location, $rootScope) {
+	var c = this;
+	c.requestComment = '';
+	c.requestItem = '';
+	c.needComment = false;
+	c.needReason = false;
+	c.modalMessage = '';
+	c.isLoading = true;
+	c.reopeningReason = false;
+	
+	c.contentOpened = false;
+
+	$scope.loadingIndicator = $rootScope.loadingIndicator;
+	//Show widget after loaded
+	$scope.$on('sp_loading_indicator', function(e, value) {
+		if($scope.loadingIndicator && !value){
+			c.isLoading = false;
+		}
+		$scope.loadingIndicator = value;
+	});
+
+
+	spUtil.recordWatch($scope, "x_gmeps_csc_csc", c.data.requestsID, function(event) {
+		if(event.data.record.u_status_portal){
+			c.server.get({
+				action: "stateChangedBackend",
+				itemID: event.data.sys_id,
+				newState: event.data.record.u_status_portal,
+				requests: c.data.requests
+			}).then(function(response) {
+				c.data.requests = response.data.requests;
+			});
+		}
+	});
+
+	spUtil.recordWatch($scope, "sc_req_item", c.data.ritmID, function(event) {
+		if(event.data.record.state){
+			c.server.get({
+				action: "ritmStateChangedBackend",
+				itemID: event.data.sys_id,
+				newState: event.data.record.state,
+				requests: c.data.requests
+			}).then(function(response) {
+				c.data.requests = response.data.requests;
+			});
+		}
+	});
+
+	$scope.$on('applyFilterCSC', function(event, filters) {
+		c.data.statusFilter = filters.statusFilter;
+		c.data.typeFilter = filters.typeFilter;
+		c.isLoading = true;
+		c.data.action = "applyFilter";
+		c.server.update().then(function(response){
+			c.verifyEmptySearch();
+			c.newRecordWatch();
+		});
+	});
+
+	$scope.$on('applyDateCSC', function(event, daysAgo) {
+		c.data.dateFilter = daysAgo;
+		c.data.action = "applyDate";
+		c.server.update().then(function(response){
+			$timeout(function() {
+				scrollTo("list-columns-csc");
+			}, 200);
+			c.verifyEmptySearch();
+			c.newRecordWatch();
+		});
+	});
+
+	$scope.$on('clearAllFiltersCSC', function(event) {
+		c.data.requests = [];
+		for(var i in c.data.typeFilter){
+			c.data.typeFilter[i].selected = false;
+		}
+		for(i in c.data.statusFilter){
+			c.data.statusFilter[i].selected = false;
+		}
+		c.verifyEmptySearch();
+	});
+
+	c.verifyEmptySearch = function(){
+		c.data.showFilterClean = true;
+		if(c.data.requests.length > 0){
+			c.data.showFilterClean = false;
+		}
+	}
+
+	c.itemAction = function(item, action){
+		if(action == "acceptSolution" || action == "acceptCancellation" ||
+			 action == "cancelItem" && item.table == "u_question"){
+			c.server.get({
+				action: 'changeItemState',
+				state: action,
+				item: item,
+				reopeningReason: false
+			}).then(function(response) {
+				item = response.data.item;
+				c.data.show_survey = response.data.show_survey;
+				c.data.gserviceSurveyCSC = response.data.gserviceSurveyCSC;
+			});
+		}
+		else{
+			if(action == "rejectSolution" || action == "rejectCancellation")
+				c.modalMessage = c.data.msgs.reject;
+			else
+				c.modalMessage = c.data.msgs.cancel;
+			for(var i in c.data.reopeningReason){
+				c.data.reopeningReason[i].selected = false;
+			}
+			$('#requestCommentModalCSC').modal("show");
+			c.requestItem = item;
+			c.state = action;
+		}
+	}
+
+	c.submitRequestComment = function(){
+		if(c.state == "rejectSolution"){
+			var stop = false;
+			if(!c.requestComment){
+				c.needComment = true;
+				stop = true;
+			} else if(c.requestComment.length < 100){
+				c.needComment = true;
+				stop = true;
+			} else{
+				c.needComment = false;
+			}
+			if(!c.reopeningReason){
+				c.needReason = true;
+				stop = true
+			} else
+				c.needReason = false;
+			if(stop){
+				return;
+			}
+		} else if(c.state == "cancelItem"){
+			var stop = false;
+			if(!c.requestComment){
+				c.needComment = true;
+				stop = true;
+			} else if(c.requestComment.length < 100){
+				c.needComment = true;
+				stop = true;
+			} else{
+				c.needComment = false;
+			}
+			if(stop){
+				return;
+			}
+		}
+		if(c.state != "rejectSolution"){
+			if(c.requestComment){
+				c.reopeningReason = false;
+				c.needComment = false;
+				c.server.get({
+					action : "changeItemState",
+					state: c.state,
+					item: c.requestItem,
+					comment: c.requestComment,
+					reopeningReason: c.reopeningReason
+				}).then(function(response) {
+					$('#requestCommentModalCSC').modal("hide");
+					c.requestComment = '';
+				});
+			} else
+				c.needComment = true;
+		} else{
+			c.needReason = false;
+			c.needComment = false;
+			c.server.get({
+				action : "changeItemState",
+				state: c.state,
+				item: c.requestItem,
+				comment: c.requestComment,
+				reopeningReason: c.reopeningReason
+			}).then(function(response) {
+				$('#requestCommentModalCSC').modal("hide");
+				c.requestComment = '';
+			});
+		}
+	}
+
+	c.showDetails = function(item){
+		var showDetails = false;
+		var index = 0;
+		for(var i in c.data.requests){
+			if(c.data.requests[i].sys_id == item.sys_id){
+				index = i;
+				c.data.requests[i].showDetails = !c.data.requests[i].showDetails;
+				showDetails = c.data.requests[i].showDetails;
+			}
+			else{
+				c.data.requests[i].showDetails = false;
+			}
+		}
+		if(showDetails){
+			c.server.get({
+				action: 'getTicketConversationWidget',
+				item: item
+			}).then(function(response) {
+				c.data.ticketConversationWidget = response.data.ticketConversationWidget;
+				if(item.table == "sc_request"){
+					c.data.requests[index] = response.data.newItem;
+					c.data.ritm_fields = response.data.ritm_fields;
+				}
+			});
+		}
+
+	}
+
+	c.orderBy = function(order, items){
+		c.data.action = "orderBy";
+		c.data.order = order;
+		c.server.update().then(function(response){
+			c.newRecordWatch();
+		});
+	}
+
+	c.statusColor = function(status){
+		var statusClass = '';
+		if (status == 2){
+			statusClass = 'status_flow_empty';
+		} else if (status == true) {
+			statusClass = 'status_flow_active';
+		} else if (!status) {
+			statusClass = 'status_flow_completed';
+		}
+		return statusClass;
+	}
+
+	$scope.$on("getSearchedItemsFilterCSC", function (event, searchTerm) {
+		c.data.searchTerm = searchTerm;
+		c.data.action = "searchResult";
+		c.server.update().then(function(response){
+			c.verifyEmptySearch();
+			c.newRecordWatch();
+		});
+	});
+
+	$scope.$on("getSearchedItemsFilterCSCClear", function (event) {
+		c.data.action = "applyDefaultFilter";
+		c.server.update().then(function(response){
+			c.verifyEmptySearch();
+			c.newRecordWatch();
+		});
+	});
+
+	$scope.$on('selectRequestCSC', function(event, item_id) {
+		c.data.item_id = item_id;
+		c.data.action = "selectRequest";
+		c.server.update().then(function(response){
+			c.openContent();
+			$timeout(function() {
+				scrollTo("list-columns-csc");
+			}, 200);
+			c.verifyEmptySearch();
+			c.newRecordWatch();
+		});
+	});
+
+	$('#requestCommentModalCSC').on('hide.bs.modal', function () {
+		c.requestComment = "";
+		c.reopeningReason = false;
+		c.needComment = "";
+		c.needReason = false;
+	});
+
+	c.previousPage = function(){
+		c.data.actualPage--;
+		c.updatePageCount();
+
+	}
+	c.nextPage = function(){
+		c.data.actualPage++;
+		c.updatePageCount();
+	}
+
+	c.updatePageCount = function(){
+		c.data.window_start = c.data.actualPage * c.data.items_per_page;
+		c.data.window_end = c.data.window_start + c.data.items_per_page;
+		c.data.action = "changePage";
+		c.server.update().then(function(response){
+			c.newRecordWatch();
+		});
+
+	}
+
+	c.newRecordWatch = function(){
+		spUtil.recordWatch($scope, "x_gmeps_csc_csc", c.data.requestsID, function(event) {
+		if(event.data.record.u_status_portal){
+			c.server.get({
+				action: "stateChangedBackend",
+				itemID: event.data.sys_id,
+				newState: event.data.record.u_status_portal,
+				requests: c.data.requests
+			}).then(function(response) {
+				c.data.requests = response.data.requests;
+			});
+		}
+	});
+	}
+
+	if(c.data.urlItem && c.data.first_load){
+		$timeout(function() {
+			c.openContent();
+			scrollTo("items-content-csc");
+		}, 500);
+	}
+
+	c.selectedChoice = function(index){
+		for(var i in c.data.reopeningReason){
+			c.data.reopeningReason[i].selected = false;
+		}
+		c.data.reopeningReason[index].selected = c.data.reopeningReason[index].label;
+		c.reopeningReason = c.data.reopeningReason[index].label;
+	}
+
+	c.openItem = function(ritm){
+		c.data.showRecordDetails = false;
+		c.server.get({
+			action : "openRITM",
+			ritm : ritm
+		}).then(function(response) {
+			c.data.recordDetailsWidget = response.data.recordDetailsWidget;
+			c.data.showRecordDetails = true;
+			$('#ritmDetails').modal("show");
+		});
+	}
+
+	$scope.$on('surveyClosed', function(event) {
+		c.data.show_survey = false;
+
+	});
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.content_request {
+  background-color: white;
+  padding: 30px 90px;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  
+  .title_category {
+    transition: .2s ease-in-out;
+    color: $dark-orchid;
+    text-transform: uppercase;
+    font-size: 22px;
+    margin-bottom: 15px;
+
+    .invert-arrow {
+      transition: .8s ease-in-out;
+      transform: rotate(180deg);
+    }
+    img {
+      transition: .8s ease-in-out;
+      margin-top: -4px;
+      margin-left: 8px;
+      width: 20px;
+    }
+
+    &amp;:hover {
+      transition: .2s ease-in-out;
+      transform: translate(0, -5px);
+    }
+  }
+  
+  .content_body_mask {
+    overflow: hidden;
+
+    .content_body_req_csc {
+      margin-top : -2000px;
+      transition: .8s ease-in-out;
+    }
+  }
+}
+.cart-mobile {
+  border: 0;
+  box-shadow: none;
+
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    a {
+      text-align: right;
+      display: block !important;
+    }
+  }
+
+  .cart-item-mobile-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px 20px 10px;
+
+    .item-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .item-image {
+      margin: 0;
+    }
+    a {
+      float: none;
+      text-align: center;
+    }
+    select {
+      margin-top: 10px;
+      padding: 0px 5px;
+      text-align-last: center;
+    }
+  }  
+}
+
+td {
+  vertical-align: middle !important;
+}
+
+.a-disabled {
+  cursor: default;
+  color: $btn-link-disabled-color;
+}
+
+.media-body {
+  .btn-link {
+    padding-left: 0;
+    padding-right: 0;
+    color: $primary;
+
+    &amp;:hover {
+      color: darken($primary, 10%);
+    }
+
+    &amp;:focus {
+      color: darken($primary, 10%);
+    }
+  }
+}
+
+.btn-remove {
+  font-size: 18px !important;
+}
+
+.action-btn {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+
+  &amp;.btn-link {
+    color: $primary;
+  }
+}
+
+.list-group {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.list-group-item.ng-enter {
+  transition: all 1s;
+  -webkit-transition: all 1s;
+  background-color: #c0dcfa;
+}
+
+.list-group-item.ng-enter-active {
+  background-color: #fff;
+}
+
+.empty-cart {
+  font-style: italic;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 7px;
+}
+
+.view-carts-link {
+  text-align: center;
+  display: block;
+}
+
+.order-details-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 5px 10px 10px 10px;
+
+  .order-details {
+    padding: 5px;
+
+    textarea {
+      resize: none;
+      flex-basis: 100%;
+      flex-shrink: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .requested-for-details {
+    flex: 1 0 auto;
+    max-width: 100%;
+  }
+  .special-instructions-details {
+    textarea {
+      height: calc(100% - 25px);
+    }
+  }
+}
+
+.item-image {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.empty-state-content {
+  margin-top: 30px;
+
+  &amp;.small-cart {
+    margin-top: 0px;
+    padding: 10px 20px;
+  }
+
+  .fa-shopping-cart {
+    color: $gray-light;
+    font-size: 80px;
+    display: block;
+    text-align: center;
+
+    &amp;.small-cart {
+      font-size: 40px;
+    }
+  }
+
+  .h3 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  .h4 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    max-width: 100%;
+    margin-bottom: 35px;
+  }
+}
+
+.large-checkout {
+  display: inline-block;
+  float: none !important;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.item-row:hover .btn-clear {
+  background-color: #f5f5f5;
+}
+
+.sc-btn {
+  margin-bottom: 10px;
+}
+.sc-btn-group {
+  clear: right;
+}
+
+.sc-remove-btn {
+  &amp;:hover {
+    background-color: $danger;
+    color: #fff;
+    border-color: darken($danger, 10%);
+  }
+}
+
+.btn-group-justified &gt; .btn-group {
+  padding: 0 5px;
+
+  .btn {
+    border-radius: 4px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.cart-table {
+  th {
+    position: sticky;
+    -webkit-position: sticky;
+    top: -1px;
+    z-index: 10;
+    background-color: $panel-bg;
+    box-shadow: 0px 1px 0px $panel-inner-border;
+  }
+}
+
+@media only screen and (max-width : 992px) {
+  .sc-btn, .sc-btn-group {
+    width: 100%;
+  }
+  .item-image {
+    max-width: 70px;
+  }
+}
+
+.without_notification {
+  padding: 30px 0;
+  font-size: 30px;
+}
+
+.content_modal_requests {
+  .modal-body{
+    overflow: auto !important;
+    border: 20px solid white;
+    padding-left: 50px !important;
+    .wrapper-xl {
+      padding: 50px 0 0 50px !important;
+      margin-right: -20px;
+    }
+    button{
+      text-align: right;
+      font-size: 42px;
+    }
+    .justify-text{
+      color: $dark-orchid;
+      font-size: 36px;
+      padding-bottom: 15px;
+      margin-bottom: 5px;
+    }
+    .no-text-answer{
+      font-size: 16px;
+      color: lightcoral;
+      padding: 2px;
+    }
+    .form-group{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+
+      textarea{
+        margin-top: 5px;
+        margin-right: 10% !important;
+        resize: none;
+        overflow: hidden;
+        height: 140px;
+        width: 90%;
+        overflow-wrap: break-word;
+        border: solid 3px $dark-orchid;
+      }
+    }
+    .resize-img{
+      height: 70px;
+      margin-top: 25px;
+      margin-left: -110%;
+    }
+  }
+}
+
+/* Custom Checkout */
+.panel {
+  padding: 30px 100px;
+  box-shadow: 0 0 0 0;
+  -webkit-box-shadow: 0 0 0 0;
+}
+
+.survey_accept {
+  .panel {
+    padding: 0 !important;
+  }
+}
+
+/* Table */
+.h3 {
+  font-size: 28px;
+  color: $dodger-blue;
+  margin-top: 20px !important;
+  margin-bottom: 30px;
+}
+.b-b {
+  border-bottom: 2px solid $slate-gray;
+}
+.b-t {
+  border: 0;
+}
+thead {
+  color: $slate-gray;
+  font-family: $text-bolder;
+  font-size: 13px;
+}
+.table &gt; thead &gt; tr &gt; th {
+  border: 0;
+  vertical-align: middle;
+}
+.table-hover &gt; tbody &gt; tr:hover {
+  background-color: white;
+}
+tbody {
+  img {
+    width: 50px;
+    height: 50px;
+  }
+
+  td:nth-child(1) {
+    width: 20%;
+    padding: 20px;
+  }
+
+  td:nth-child(2) {
+    width: 20%;
+    padding: 20px;
+  }
+
+  td:nth-child(3) {
+    width: 25%;
+  }
+
+  td:nth-child(4) {
+    width: 5%;
+    padding: 20px;
+  }
+
+  td:nth-child(5) {
+    width: 30%;
+    padding: 20px;
+
+    .request_button {
+      margin-right: 50px;
+    }
+  }
+
+}
+
+/* PAGE 1 - My Requests */
+.content_my_requests {
+  .buttons {
+    position: relative;
+
+    &amp;:hover {
+      .tooltip {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    .tooltip_right {
+      top: calc(50% - 15px);
+      left: 60px;
+    }
+    .tooltip_bottom {
+      bottom: -41px;
+      left: -34px;
+    }
+    .arrow_bottom {
+      position: absolute !important;
+      top: 27px !important;
+    }
+  }
+}
+.center-loading {
+  position: relative;
+  left: 50%;
+  .sp-loading-indicator{
+    color: $dark-orchid !important;
+  }
+}
+
+.filter-padding{
+  padding: 10px 0 !important;
+}
+
+.thead_myrequests {
+  border-top: 2px solid $slate-gray;
+}
+.column_product {
+  .number_text {
+    text-transform: uppercase;
+  }
+  .item_text {
+    font-family: $text-bold;
+    font-size: 18px;
+    line-height: 1;
+  }
+  .follow_up_properties{
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: $dark-orchid;
+
+    &amp;:hover {
+      .tooltip{
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    .tooltip_bottom{
+        align-items: flex-start;
+      }
+      .tooltip_arrow{
+        margin-left: 40px;
+      }
+  }
+  .more_detail {
+    text-decoration: underline;
+    font-size: 12px;
+  }
+}
+.column_status {
+  .service_title {
+    text-transform: uppercase;
+    font-family: $text-bold;
+    font-size: 12px;
+
+    .tooltip, .tooltip_{
+      position: relative !important;
+      margin-right: 50% !important;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    &amp;:hover {
+      .tooltip, .tooltip_ {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    .tooltip_right {
+      top: calc(50% - 15px);
+      left: 60px;
+    }
+    .tooltip_bottom {
+      bottom: -41px;
+      left: -34px;
+    }
+    .arrow_bottom {
+      position: absolute !important;
+      top: 27px !important;
+    }
+  }
+  .pending {
+    color: $coral !important;
+  }
+  .inProgress {
+    color: $yellow-green;
+  }
+  .resolved {
+    color: $dark-orchid;
+  }
+}
+.column_opened {
+  .item_opened {
+    font-size: 12px;
+  }
+}
+.column_sla {
+  .sla_description {
+    font-size: 12px;
+  }
+}
+.column_buttons {
+  display: flex;
+  border: 0;
+
+  img {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px !important;
+  }
+  img:last-child {
+    margin-right: 0 !important;
+  }
+}
+.process_flow {
+  position: relative;
+
+  .process_flow_title {
+    text-transform: uppercase;
+    font-family: $text-bolder;
+    margin-bottom: 20px;
+  }
+  .line_flow {
+    background-color: $slate-gray;
+    width: 2px;
+    height: 70%;
+    left: 29px;
+    z-index: 1;
+    position: absolute;
+  } 
+  .items_flow {
+    text-transform: uppercase;
+    font-family: $text-bolder;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    position: inherit;
+
+    .status_flow {
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      border-radius: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+    }
+    .status_flow_completed {
+      color: white;
+      background-color: $slate-gray;
+    }
+    .status_flow_active {
+      color: white;
+      background-color: $dark-orchid;
+    }
+    .status_flow_empty {
+      color: $slate-gray;
+      background-color: white;
+      border: 2px solid $slate-gray;
+    }
+    .status_active {
+      color: $dark-orchid;
+    }
+  }
+}
+
+/* PAGE 2 - Notifications */
+.content_notification {
+  .header_message {
+    padding: 20px 0;
+    font-family: $text-bold;
+    font-size: 18px;
+    line-height: 1;
+    border-bottom: 2px solid $dark-orchid;
+  }
+  .widget_notifications {
+    overflow: auto;
+
+    .border-notification {
+      padding: 20px 0;
+      border-bottom: 2px solid $slate-gray;
+    }
+  }
+
+  .close {
+    font-size: 36px;
+    font-family: $text-light;
+    margin-right: 20px;
+    margin-top: 15px;
+  }
+  .modal-body {
+    padding: 60px 100px;
+
+    .modal-title {
+      color: $dark-orchid;
+      font-size: 30px;
+    }
+    .modal-description {
+      font-size: 24px;
+      font-family: $text-bold;
+    }
+  }
+  .form-control {
+    width: 329px !important;
+  }
+}
+
+/* PAGE 3 - APPROVALS */
+.approval_content {
+  .approval_column_title{
+    h4 {
+      margin: 4px 0 0 0 !important;
+    }
+    .approval_number{
+      font-size: 16px;
+    }
+    .approval_title{
+      font-family: $text-bold;
+    }
+    .approval_more-details{
+      font-size: 12px;
+      text-decoration: underline;
+      color: $slate-gray;
+      cursor: pointer;
+    }
+  }
+  .approval_column_requester{
+    padding-left: 10px !important;
+    .info-size{
+      height: 20px;
+      width: 20px;
+      margin-left: 10px;
+      margin-top: -5px;
+      cursor: pointer;
+    }
+  }
+  .approval_column_opened{
+    padding-left: 20px !important;
+
+  }
+  .approval_column_forecast{
+    padding-left: 12px !important;
+
+  }
+  .approvals-buttons{
+    .submit-button{
+      margin-left: 20px;
+    }
+    .cancel-button{
+      margin-left: 15%;;
+    }
+  }
+  .modal-body{
+    overflow: hidden !important;
+    border: 20px solid white;
+    padding-left: 50px !important;
+    .wrapper-xl {
+      padding: 50px 0 0 50px !important;
+      margin-right: -20px;
+    }
+    button{
+      text-align: right;
+      font-size: 42px;
+    }
+    .justify-text{
+      color: $dark-orchid;
+      font-size: 36px;
+      padding-bottom: 15px;
+      margin-bottom: 5px;
+    }
+    .no-text-answer{
+      font-size: 16px;
+      color: lightcoral;
+      padding: 2px;
+    }
+    .form-group{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      textarea{
+        margin-top: 5px;
+        margin-right: 10% !important;
+        resize: none;
+        overflow: hidden;
+        height: 140px;
+        width: 90%;
+        overflow-wrap: break-word;
+        border: solid 3px $dark-orchid;
+      }
+    }
+    .resize-img{
+      height: 70px;
+      margin-top: 25px;
+      margin-left: -110%;
+    }
+  }
+}
+
+/* PAGE 4 */
+.assets_content {
+  .column_name {
+    .asset_name {
+      font-size: 18px;
+      font-family: $text-bold;
+    }
+  }
+  .service_title {
+    font-size: 12px;
+    color: $slate-gray;
+  }
+}
+
+/* PAGE 5 */
+.page_description {
+  border-bottom: 2px solid $slate-gray;
+  padding: 20px;
+  font-family: $text-bold;
+  font-size: 16px;
+  line-height: 1;
+}
+.column_category {
+  text-align: center;
+
+  h4 {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-family: $text-bolder;
+    color: $dodger-blue;
+    width: 130px;
+    margin: 0 auto;
+    margin-top: 5px;
+  }
+}
+.column_service {
+  color: $dodger-blue;
+
+  .service_title {
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  .service_description {
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+.column_description {
+  .description {
+    font-size: 12px;
+  }
+}
+.column_sla {
+  .sla_text {
+    font-size: 12px;
+  }
+}
+
+.content_pagination {
+  .pag_arrow_left {
+    img {
+      transform: rotate(90deg);
+    }
+  }
+  .pag_arrow_right {
+    img {
+      margin-left: 25px;
+      transform: rotate(-90deg);
+    }
+  }
+  .pag_arrow_left, .pag_arrow_right {
+    img {
+      height: 14px;
+      margin-top: -4px;
+    }
+  }
+  .pag_text {
+    font-family: $text-bold;
+    text-transform: uppercase;
+    margin-left: 25px;
+  }
+}
+
+
+.footer_checkout {
+
+  .continue_shopping {
+    color: $slate-gray;
+    font-size: 10px;
+    font-weight: bold;
+    text-decoration: underline;
+    text-transform: uppercase;
+    padding: 20px 0 !important;
+  }
+
+  .submit_button {
+    .submit_button_content {
+      display: flex;
+      align-items: center;
+
+      .submit_img {
+        width: 50px;
+        height: 50px;
+        margin-right: 5px;
+      }
+      .submit_title {
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1;
+        color: $dodger-blue;
+        width: 90px;
+      }
+    }
+  }
+}
+
+.empty_content {
+  background-color: white;
+  padding: 30px 100px;
+  padding-bottom: 330px;
+  font-size: 30px;
+
+  .empty_title {
+    color: $dodger-blue;
+    margin-bottom: 30px;
+  }
+}
+
+.column_content {
+  img {
+    height: 10px;
+    position: relative;
+    top: -2px;
+    right: -2px;
+  }
+  .invert-arrow{
+    transform: rotateX(180deg);
+  }
+}
+
+.content_conversation {
+  width: 100%;
+
+  .turn_bold{
+    font-weight: bold;
+  }
+
+  .pending {
+    color: $coral !important;
+  }
+  .inProgress {
+    color: $yellow-green;
+  }
+  .resolved {
+    color: $dark-orchid;
+  }
+}
+
+.buttons {
+  img { transition: .4s ease-in-out; }
+  &amp;:hover {
+    img {
+      transition: .2s ease-in-out;
+      transform: scale(1.1);
+      -webkit-transform: scale(1.1);
+      -ms-transform: scale(1.1);
+      -moz-transform: scale(1.1);
+      -o-transform: scale(1.1);
+    }
+  }
+}
+
+.modal_reopen {
+  .modal_title {
+    font-size: 32px;
+    color: $dark-orchid;
+    font-family: $text-bold;
+  }
+  .reason {
+    color: $slate-gray;
+    margin-bottom: 15px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-family: $text-bold;
+  }
+  .mandatory_message {
+    color: $coral;
+    font-family: $text-bold;
+  }
+  label {
+    margin-bottom: 10px;
+    color: gray;
+    font-family: $text-rough;
+  }
+  textarea {
+    border: 2px solid $dark-orchid;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    min-height: 100px;
+  }
+  .btn_submit {
+    display: flex;
+    justify-content: flex-end;
+  }
+  img {
+    width: 60px;
+  }
+}
+
+.modal_ritm_details{
+  .modal-dialog{
+    overflow-y: initial !important
+  }
+  .modal-body{
+    overflow-y: auto;
+  }
+  .modal-body .close {
+    top: 10px !important;
+    right: 18px !important;
+  }
+}
+
+.content_service_pack {
+
+  .pack_title {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-family: $text-bolder;
+    margin-bottom: 20px;
+  }
+  .table_pack {
+    display: flex;
+
+    .column_items, .column_state {
+      font-size: 12px;
+    }
+
+    .column_items {
+      width: 20%;
+      margin-bottom: 10px;
+
+      .item_title {
+        transition: .2s ease-in-out;
+        font-size: 16px;
+        text-decoration: underline;
+        font-family: $text-bold;
+
+        &amp;:hover {
+          transition: .2s ease-in-out;
+          opacity: .7;
+        }
+      }
+    }
+    .column_state {
+      width: 80%;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.modal .modal-content .modal-body {
+  max-height: 510px !important;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_my_dashboard_requests_csc</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+	var c = controller;
+	
+	c.openContent = function() {
+		c.contentOpened = !c.contentOpened;
+		var contentBody = element.find(".content_body_req_csc");
+		if(!c.contentOpened) {
+			contentBody.css("margin-top", "-" + contentBody.outerHeight() + 'px');
+		}
+		else {
+			contentBody.css("margin-top", 0);
+		}
+	}
+}]]></link>
+        <name>GService My Dashboard Requests CSC</name>
+        <option_schema>[{"hint":"Selects the columns to show on the table","name":"table","section":"Presentation","label":"Table","type":"string"},{"name":"table_template","section":"Behavior","label":"Table Template","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
+	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
+	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+	var portalUtils = new global.OCLPortalUtilsCSC();
+
+	data.showContent = false;
+
+	data.showRecordDetails = false;
+	data.requestsID = '';
+	data.showEmptyMessage = false;
+
+	data.show_survey = false;
+
+	data.msgs = {};
+	data.msgs.reject = gs.getMessage("Justifique sua resposta negativa");
+	data.msgs.cancel = gs.getMessage("Justifique o cancelamento");
+
+	data.statusFlow = [];
+	var statusFlow = gs.getProperty("gservice_list_filters_status_csc").split("|");
+	for(var i in statusFlow){
+		statusFlow[i].number = i + 1;
+		statusFlow[i].selected = false;
+		data.statusFlow.push(JSON.parse(statusFlow[i]));
+	}
+
+	data.reopeningReason = [];
+
+	var grReopening = new GlideRecord("sys_choice");
+	grReopening.addEncodedQuery("nameSTARTSWITHsc_req_item^elementSTARTSWITHu_reopening_reason^language=pb");
+	grReopening.query();
+	while(grReopening.next()){
+		data.reopeningReason.push({label : grReopening.getDisplayValue("label"), value : grReopening.getDisplayValue("value"),
+															 selected: false});
+	}
+
+	//Used to get the current user sys_id
+	var userID = gs.getUser().getID();
+	data.user_id = userID;
+
+	data.filter = false;
+	//Get the columns (from property) to show upside the requests
+	data.columns = [];
+	data.order = "opened_at";
+	data.direction = -1;
+	if(!localInput){
+		data.listFilter_widget = $sp.getWidget('gservice_list_filter_csc');
+		prepareDefaultList(true);
+	}
+	else{
+		switch(localInput.action){
+			case "applyFilter":
+				preparePages();
+				data.order = "opened_at";
+				data.direction = -1;
+				data.typeFilter = localInput.typeFilter;
+				data.statusFilter = localInput.statusFilter;
+				data.query = portalUtils.mountQuery(data.typeFilter, data.statusFilter, "", "");
+				var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
+				data.requests = requests.items;
+				prepareColumns();
+				prepareRecordWatch();
+				break;
+
+			case "changeItemState":
+				var comment = localInput.comment ? localInput.comment : false;
+				data.item = portalUtils.changeItemState(localInput.item, localInput.state, comment, localInput.reopeningReason);
+				if(localInput.state == "acceptSolution"){
+					var surveyUtils = new global.OCLPortalSurveyUtils();
+					var survey_id = surveyUtils.createSurvey("6f71cfca1b3ed01094962170f54bcb40");
+					data.show_survey = true;
+					var survey_options = {"survey_id": survey_id};
+					data.gserviceSurveyCSC = $sp.getWidget('gservice_survey_csc', survey_options);
+				}
+				break;
+			case "stateChangedBackend":
+				var state = localInput.newState;
+				var itemID = localInput.itemID;
+				data.requests = localInput.requests;
+				for(i in data.requests){
+					if(data.requests[i].sys_id == itemID){
+						data.requests[i].statusValue = state.value;
+						/*if(state.value == "-5" || state.value == "3"){
+							var objHold = portalUtils.getHoldReason(data.requests[i].table, data.requests[i].sys_id);
+							data.requests[i].hold_reason = objHold.hold_reason;
+							data.requests[i].forecast = objHold.forecast;
+						}*/
+						data.requests[i].statusLabel = state.display_value;
+						data.requests[i] = portalUtils.verifyButtons(data.requests[i]);
+						data.requests[i].colorClass = portalUtils.getColorClass(data.requests[i].statusValue,data.requests[i].table);
+						data.requests[i].processFlow = portalUtils.getProcessFlow(data.requests[i].table, data.requests[i].statusValue);
+					}
+				}
+				break;
+
+			case "ritmStateChangedBackend":
+				var state = localInput.newState;
+				var itemID = localInput.itemID;
+				data.newItem = localInput.requests;
+				for(i in data.newItem){
+					if(data.newItem[i].table == "sc_request"){
+						for(var j in data.newItem[i].ritms){
+							if(data.newItem[i].ritms[j].sys_id == itemID){
+								data.newItem[i].ritms[j].state = state.display_value;
+								data.newItem[i].ritms[j].colorClass = portalUtils.getColorClass(state.value,"sc_req_item");
+							}
+						}
+					}
+				}
+				data.requests = data.newItem;
+				break;
+
+			case "applyDate":
+				preparePages();
+				data.order = "opened_at";
+				data.direction = -1;
+				data.dateFilter = localInput.dateFilter;
+				data.typeFilter = localInput.typeFilter;
+				data.statusFilter = localInput.statusFilter;
+				data.query = portalUtils.mountQuery(data.typeFilter, data.statusFilter, data.dateFilter, "");
+				var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
+				data.requests = requests.items;
+				prepareColumns();
+				prepareRecordWatch();
+				break;
+			case "getTicketConversationWidget":
+				var hide_new_comments = false;
+				var gservice_ticket_conversation_options = {table : localInput.item.table,
+																										sys_id : localInput.item.sys_id,
+																										item_status : localInput.item.colorClass,
+																										hide_new_comments : hide_new_comments,
+																										send_image : "GService_SS_TV.png",
+																										comment_image : "GS_Resposta_Roxo.png",
+																										color_class : "color_category2",
+																										bd_color_class : "bdcolor_category2"
+																									 };
+				data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
+				break;
+
+			case "orderBy":
+				preparePages();
+				data.order = localInput.order;
+				data.columns = localInput.columns;
+				prepareOrderBy();
+
+				data.query = localInput.query;
+				var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
+				data.requests = requests.items;
+				prepareRecordWatch();
+				break;
+			case "searchResult":
+				data.searchTerm = localInput.searchTerm;
+				prepareColumns();
+				data.query = portalUtils.mountQuery("", "", "", data.searchTerm);
+				preparePages();
+				var requests = portalUtils.getRequests("", "", data.query, data.window_start, data.window_end);
+				data.requests = requests.items;
+				preparePages();
+				prepareRecordWatch();
+				break;
+			case "changePage":
+				//
+				data.items_per_page = localInput.items_per_page;
+				data.actualPage = localInput.actualPage;
+				data.window_start = localInput.window_start;
+				data.window_end = localInput.window_end;
+				//
+				data.query = localInput.query;
+				data.columns = localInput.columns;
+				data.order = localInput.order;
+				data.direction = localInput.direction;
+				var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
+				data.requests = requests.items;
+				prepareRecordWatch();
+				break;
+			case "applyDefaultFilter":
+				prepareDefaultList();
+				break;
+			case "selectRequest":
+				prepareDefaultList("", localInput.item_id);
+				break;
+			case "openRITM":
+				var ritm = localInput.ritm;
+				var gservice_record_details_options = {table : ritm.table,
+																							 sys_id : ritm.sys_id};
+				data.recordDetailsWidget = $sp.getWidget('gservice_record_details', gservice_record_details_options);
+				break;
+		}
+	}
+
+	function prepareDefaultList(first_load, item_id){
+		preparePages();
+		prepareColumns();
+		data.statusFilter = [];
+		var statusFilter = gs.getProperty("gservice_list_filters_status_csc").split("|");
+		for(var i in statusFilter){
+			data.statusFilter.push(JSON.parse(statusFilter[i]));
+		}
+		if(first_load){
+			data.first_load = true;
+			data.urlItem = $sp.getParameter("item_id_csc");
+			if(data.urlItem){
+				data.showContent = true;
+				var request_for = "";
+				var grTask = new GlideRecord("task");
+				grTask.get(data.urlItem);
+				if(grTask.getValue("sys_class_name") == "sc_req_item"){
+					var grRitm = new GlideRecord("sc_req_item");
+					grRitm.get(data.urlItem);
+					request_for = grRitm.request.requested_for;
+				}
+				var watchList = "";
+
+				if(grTask.getValue('watch_list')){
+					watchList = grTask.getValue('watch_list');
+				}
+
+				if(data.user_id == grTask.getValue('opened_by') || data.user_id == request_for || watchList.includes(data.user_id)){
+					data.query = portalUtils.mountQuery("", data.statusFilter, "", "", data.urlItem);
+				} else{
+					data.showFilterClean = true;
+					data.query = portalUtils.mountQuery("", data.statusFilter);
+				}
+			} else{
+				data.query = portalUtils.mountQuery("", data.statusFilter);
+			}
+		}
+		else if(item_id){
+			data.query = portalUtils.mountQuery("", data.statusFilter, "", "", item_id);
+		}
+		else{
+			data.query = portalUtils.mountQuery("", data.statusFilter);
+		}
+		var requests = portalUtils.getRequests("opened_at", "-1", data.query, data.window_start, data.window_end);
+		if(data.urlItem && first_load){
+			requests.items[0].showDetails = true;
+			var item = requests.items[0];
+			var hide_new_comments = false;
+			var gservice_ticket_conversation_options = {table : item.table,
+																									sys_id : item.sys_id,
+																									item_status : item.colorClass,
+																									hide_new_comments : hide_new_comments,
+																									send_image : "GService_SS_TV.png",
+																									comment_image : "GS_Resposta_Roxo.png",
+																									color_class : "color_category2",
+																									bd_color_class : "bdcolor_category2"
+																								 };
+			data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
+		}
+		data.requests = requests.items;
+		if(data.requests.length == 0){
+			data.showEmptyMessage = true;
+		}
+		prepareRecordWatch();
+	}
+
+	function prepareRecordWatch(){
+		data.actualPageCount = data.actualPage + 1;
+		data.actualItemsCount = data.items_per_page * data.actualPageCount;
+		data.requestsID = 'sys_idIN';
+		var reqIDs = [];
+		for(var i in data.requests){
+			reqIDs.push(data.requests[i].sys_id);
+		}
+		data.requestsID += reqIDs.join();
+		data.totalItems = portalUtils.getTotalRequests(data.query);
+		data.actualItemsCount = data.items_per_page * data.actualPageCount;
+		if(data.actualItemsCount > data.totalItems){
+			data.actualItemsCount = data.totalItems;
+		}
+	}
+
+	function preparePages(){
+		data.items_per_page = 6;
+		data.actualPage = 0;
+
+
+		data.window_start = 0;
+		data.window_end = 6;
+	}
+
+	function prepareColumns(){
+		//You need to select the columns name on the property
+		//Using checkout as a test, but it`ll change to a dinamic way when you call the widget you send the option
+		var columns_property = gs.getProperty("gservice_dashboard_columns");
+
+		var parse = JSON.parse(columns_property);
+		var columns = parse["requestsTab"].columns;
+
+		data.columns = columns;
+		for(i in columns){
+			data.columns[i].name = gs.getMessage(columns[i].name);
+		}
+	}
+
+	function prepareOrderBy(){
+		for(i in data.columns){
+			if(data.order == data.columns[i].order){
+				data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
+				data.direction = data.columns[i].direction;
+			}
+			else{
+				data.columns[i].direction = false;
+			}
+		}
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-08-17 17:40:05</sys_created_on>
+        <sys_id>2988eebf1ba2d05097c0dca0f54bcba7</sys_id>
+        <sys_mod_count>111</sys_mod_count>
+        <sys_name>GService My Dashboard Requests CSC</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_2988eebf1ba2d05097c0dca0f54bcba7</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-28 15:09:57</sys_updated_on>
+        <template><![CDATA[<div class="content_request">
+  <div class="title_category" ng-click="c.openContent()">
+    ${Solicitações de Finanças, Jurídico e Infraestrutura}
+    <span><img src="GService_Seta_PTV.png" ng-class="c.contentOpened ? '' : 'invert-arrow'"/></span>
+  </div>
+
+  <div class="content_body_mask">
+    <div class="content_body_req_csc">
+
+      <div class="col-md-12 filter-padding">
+        <sp-widget widget="data.listFilter_widget"></sp-widget>
+      </div>
+      <div ng-if="data.showFilterClean" class="without_notification">${Ops! Não encontramos resultados para essa busca.}</div>
+      <div ng-if="!data.showFilterClean" class="content_my_requests">
+        <div>
+          <table class="table table-hover b-t table-condensed cart-table">
+            <div class="center-loading">
+              <div class="col-md-12" ng-show="c.isLoading">
+                <div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+            </div>
+            <thead ng-show="!c.isLoading" class="thead_myrequests" id="list-columns-csc">
+              <tr>
+                <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
+                  <div ng-click="c.orderBy(column.order, data.requests)">
+                    {{column.name}}
+                    <span ng-if="column.order">
+                      <span ng-if="!column.direction"></span>
+                      <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
+                    </span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="items-content-csc" ng-show="!c.isLoading" ng-repeat="item in data.requests track by item.sys_id">
+              <tr class="item-row b-b">
+                <td data-th="Product" class="column_product">
+                  <div>
+                    <div>
+                      <div class="number_text">#{{item.number}}</div>
+                      <div class="item_text">{{item.title}}</div>
+                      <div ng-if="item.watch" class="follow_up_properties">{{item.watch}}
+                        <span ng-if="item.watchTooltip" class="tooltip tooltip_bottom">
+                          <div class="tooltip_arrow arrow_top"></div>
+                          <div class="tooltip_text">{{item.watchTooltip}}</div>
+                        </span>
+                      </div>
+                      <div class="more_detail" ng-click="c.showDetails(item)">${GService Details}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="column_status">
+                  <div class="row">
+                    <div>
+                      <div class="service_title {{item.colorClass}}">{{item.statusLabel}}
+                        <span class="tooltip tooltip_bottom" ng-if="item.hold_reason">
+                          <div class="tooltip_arrow arrow_top"></div>
+                          <div class="tooltip_text">{{item.hold_reason}}</div>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="column_opened">
+                  <div class="item_opened">{{item.opened}}</div>
+                </td>
+                <td class="column_sla">
+                  <p class="sla_description" ng-if="item.forecast">{{item.forecast}}</p>
+                </td>
+                <td class="column_buttons">
+                  <div ng-if="item.eraseButton" class="buttons" ng-click="c.itemAction(item, 'cancelItem')">
+                    <img src="trash.png"/>
+                    <span class="tooltip tooltip_right">
+                      <div class="tooltip_arrow arrow_left"></div>
+                      <div class="tooltip_text">${Cancel Request}</div>
+                    </span>
+                  </div>
+                  <div ng-if="item.acceptButton" class="buttons" ng-click="c.itemAction(item, 'acceptSolution')"><img src="GS_Confirmar_PB.png"/>
+                    <span class="tooltip tooltip_bottom">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">${Accept Solution}</div>
+                    </span>
+                  </div>
+                  <div ng-if="item.reopenButton" class="buttons" ng-click="c.itemAction(item, 'rejectSolution')"><img src="GS_Reabrir_Roxo.png"/>
+                    <span class="tooltip tooltip_bottom">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">${Reopen Request}</div>
+                    </span>
+                  </div>
+                  <div ng-if="item.cancelButton" class="buttons" ng-click="c.itemAction(item, 'acceptCancellation')"><img src="GS_Confirmar_PB.png"/>
+                    <span class="tooltip tooltip_bottom">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">${Accept Cancellation}</div>
+                    </span>
+                  </div>
+                  <div ng-if="item.rejectButton" class="buttons" ng-click="c.itemAction(item, 'rejectCancellation')"><img src="GS_Reabrir_Roxo.png"/>
+                    <span class="tooltip tooltip_bottom">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">${Reopen Request}</div>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td ng-if="item.showDetails && item.table == 'sc_request'" class="content_conversation content_service_pack" colspan='5'>
+
+                  <div class="pack_title">${Serviços do Pacote}</div>
+
+                  <div ng-repeat="ritm in item.ritms" class="table_pack">
+
+                    <div class="column_items">
+                      <div>#{{ritm.number}}</div>
+                      <div ng-click="c.openItem(ritm)" class="item_title">{{ritm.title}}</div>  
+                    </div>
+
+                    <div class="column_state service_title turn_bold {{ritm.colorClass}}">{{ritm.state}}</div>
+
+                    <span class="tooltip tooltip_bottom" ng-if="ritm.hold_reason">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">{{ritm.hold_reason}}</div>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td ng-if="item.showDetails" class="content_conversation" colspan='5'>
+                  <div ng-if="item.table != 'sc_request' && item.table != 'u_question'" class="col-md-5 process_flow">
+                    <div class="process_flow_title">${Etapas do Atendimento}</div>
+                    <div class="line_flow"></div>
+                    <div ng-repeat="status in item.processFlow" class="items_flow">
+                      <div class="status_flow" ng-class="c.statusColor(status.selected)">{{$index+1}}</div>
+                      <div ng-class="{'status_active' : status.selected == true}">{{status.name}}</div>
+                    </div>
+                  </div>
+                  <div class="col-md-7">
+                    <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="content_pagination">
+            <span class="pag_arrow_left" ng-click="c.previousPage()" ng-if="data.actualPage > 0"><img src="gservice_column_dashboard_arrow.png"/></span>
+            <span class="pag_arrow_right" ng-click="c.nextPage()" ng-if="data.actualItemsCount < data.totalItems"><img src="gservice_column_dashboard_arrow.png"/></span>
+            <span class="pag_text">Página {{data.actualPageCount}} - {{data.actualItemsCount}} de {{data.totalItems}} RESULTADOS</span>
+          </div>
+        </div>
+
+        <div class="modal_reopen modal fade" style="z-index: 1041" id="requestCommentModalCSC" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+
+                <div class="panel-body wrapper-xl wrapper-sc-cat-item">
+                  <div class="modal_title">{{c.modalMessage}}</div>
+
+                  <div>
+                    <div ng-if="c.state == 'rejectSolution'">
+
+                      <div class="reason">${Motivo de rejeição}</div>
+
+                      <span class="mandatory_message" ng-if="c.needReason"> ${Favor preencher a razão da rejeição} </span>
+                      <div class="radio_content" ng-repeat="reopeningReason in data.reopeningReason track by $index">
+                        <span method="get" class="radio-properties">
+                          <label for="{{reopeningReason.label}}">
+                            <input type="radio"
+                                   id="{{reopeningReason.label}}"
+                                   name="selectedChoice"
+                                   value="{{reopeningReason.label}}"
+                                   ng-model="reopeningReason.selected"
+                                   ng-click="c.selectedChoice($index)">
+                            {{reopeningReason.label}}
+                            <span class="new-radio"></span>
+                          </label>
+                        </span>
+                      </div>
+                    </div>
+
+                    <span class="mandatory_message" ng-if="c.needComment"> ${Favor preencher o comentário com mais de 100 caracteres antes de submeter} </span>
+                    <textarea class="form-control" ng-model="c.requestComment" maxlength="255"></textarea>
+                    <div class="btn_submit" style="cursor: pointer;" ng-click="c.submitRequestComment()" title="">
+                      <img class="resize-img" src="GService_SS_TV.png"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <now-message key="Done" value="${Done}"/>
+  </div>
+</div>
+
+<div class="modal_ritm_details modal fade" id="ritmDetails" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div ng-if="data.showRecordDetails">
+          <sp-widget widget="data.recordDetailsWidget"></sp-widget>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-if="data.show_survey" class="survey_accept">
+  <sp-widget widget="data.gserviceSurveyCSC"></sp-widget>
+</div>]]></template>
+    </sp_widget>
+</record_update>
