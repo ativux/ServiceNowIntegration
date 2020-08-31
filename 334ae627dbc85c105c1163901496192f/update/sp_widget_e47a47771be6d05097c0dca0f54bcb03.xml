@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope, $timeout, categorySubscribe) {
+	var c = this;
+
+	$scope.showWidget = "";
+	c.disableControl = false;
+
+	// Esperando o evento "showHideWidget" acontecer no GService Icon Link
+	$rootScope.$on('showHideWidget', function(event,data) {
+
+		$('.content-category-items').css('display', 'block');
+
+		if(data == "service"){
+			c.data.showWidget = true;
+			if(!categorySubscribe.getItemID()){
+				if(c.data.title == "Produtos Digitais"){
+					$("html, body").stop();
+					$timeout(function(){
+						$('html,body').animate({scrollTop: $("#widget-category-items").offset().top},'slow');
+					});
+					$(window).bind("mousewheel", function() {
+						$("html, body").stop();
+					});
+				}
+			}
+		}
+		else{
+			c.data.showWidget = false;
+			$rootScope.$broadcast("hideCategory", true);
+		}
+	});
+
+	// Comunicando com o widget GService Categories para enviar o SysID da categoria selecionada
+	$scope.selectedCategory = function(selection){
+		c.selectedCategory = selection;
+		categorySubscribe.setCategoryID(selection);
+	};
+
+	c.back = function(){
+		if(!c.disableControl){
+			for(var i in c.data.slides){
+				c.change_z_index(i, 50);
+				c.data.slides[i].position++;
+				if(c.data.slides[i].position > c.data.slides.length - 1){
+					c.change_z_index(i, 0);
+					c.data.slides[i].position = 0;
+				}
+				var newLeft = c.data.left * c.data.slides[i].position;
+				c.makeTransition(i, newLeft);
+			}
+			c.disableControl = true;
+			$timeout(function(){
+				c.disableControl = false;
+			}, 500);
+		}
+	}
+
+	c.next = function(){
+		if(!c.disableControl){
+			for(var i in c.data.slides){
+				c.change_z_index(i, 50);
+				c.data.slides[i].position--;
+				if(c.data.slides[i].position < 0){
+					c.change_z_index(i, 0);
+					c.data.slides[i].position = c.data.slides.length -1;
+				}
+				var newLeft = c.data.left * c.data.slides[i].position;
+				c.makeTransition(i, newLeft);
+			}
+			c.disableControl = true;
+			$timeout(function(){
+				c.disableControl = false;
+			}, 500);
+		}
+	}
+	
+	function changeItemNumber(x) {
+		if (x.matches) {
+			if(c.data.items_number != c.data.original_number){
+				c.data.items_number = c.data.original_number;
+				preparePosition();
+			}
+		} else {
+			c.data.items_number = Math.floor(c.data.original_number / 2);
+			preparePosition();
+		}
+	}
+
+	function preparePosition(){
+		c.data.left = 100 / c.data.items_number;
+		for(var i in c.data.slides){
+			c.data.slides[i].left = c.data.slides[i].position * c.data.left;
+		}
+	}
+
+	var x = window.matchMedia("(min-width: 992px)")
+	changeItemNumber(x) // Call listener function at run time
+	x.addListener(changeItemNumber) // Attach listener function on state changes
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-title {
+  text-align: center;
+  padding-bottom: 30px;
+  font-size: 28px;
+  font-family: $text-bold;
+  color: $deep-sky-blue;
+  background-color: white;
+  text-transform: uppercase;
+}
+
+.content {
+  background-color: white;
+  position: relative;
+  padding-bottom: 50px;
+
+  .control {
+    font-family: $text-bold;
+    position: absolute;
+    top: 40px;
+    z-index: 200;
+    width: 100% !important;
+
+    .back, .next {
+      transition: .2s ease-in-out;
+      position: absolute;
+      width: 70px;
+      height: 70px;
+
+      &amp;:hover {opacity: .75;}
+      img {height: 70px;}
+    }
+    .back {left: 40px;}
+    .next {right: 40px;}
+  }
+
+  .slide_content_mask {
+    overflow: hidden;
+    height: 310px;
+    width: 84%;
+
+    .slide_content {
+      display: flex;
+      position: relative;
+    }
+  }
+
+  .item {
+    transition: .5s ease-in-out;
+    position: absolute;
+    background-color: white;
+    padding: 0 12px;
+    min-height: 310px;
+
+    &amp;:hover {
+
+      img {
+        transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        -o-transform: scale(1.1);
+      }
+      .title {
+        transform: translateY(-10px);
+        -webkit-transform: translateY(-10px);
+        -ms-transform: translateY(-10px);
+        -moz-transform: translateY(-10px);
+        -o-transform: translateY(-10px);
+      }
+    }
+
+    .item_ {
+      text-align: center;
+    }
+
+    img {
+      transition: .3s ease-in-out;
+      height: 110px;
+      margin-bottom: 15px;
+    }
+    .title {
+      transition: .3s ease-in-out;
+      font-size: 18px;
+      line-height: 1.2;
+      font-family: $text-bolder;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      padding: 0 12px;
+    }
+    .description {
+      font-size: 14px;
+      font-family: $text-bold;
+      line-height: 1.2;
+    }
+  }
+  .item:nth-child(3) {
+    padding: 0;
+
+    .title {
+      padding: 0;
+      width: 188px;
+      margin: 0 auto;
+    }
+  }
+
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>gservice_category_items_csc</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+	controller.makeTransition = function(position, newLeft){
+		var slide = element.find('#slide' + position);
+		slide.css('left', newLeft + '%');
+	}
+	controller.change_z_index = function(position, z_index){
+		var slide = element.find('#slide' + position);
+		slide.css('z-index', z_index);
+	}
+}]]></link>
+        <name>GService Category Items CSC</name>
+        <option_schema>[{"displayValue":"Category","hint":"Selecione a categoria que deseja exibir","name":"selected_category","display_value_list":[],"section":"Data","label":"Category","type":"glide_list","value":"sc_category","ed":{"reference":"sc_category"}},{"name":"items_number","section":"Behavior","default_value":"5","label":"Items Number","type":"integer"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var portalUtils = new global.OCLPortalUtilsCSC();
+	var localInput = input;
+	
+	if(!localInput){
+		var categoriesID = options.selected_category.split(",");
+		data.slides = portalUtils.getSelectableCategories(categoriesID);
+		data.items_number = data.slides.length > options.items_number ? options.items_number : data.slides.length - 1;
+		data.original_number = data.items_number;
+		data.left = 100 / data.items_number;
+		for(var i in data.slides){
+			data.slides[i].position = i;
+			data.slides[i].left = i * data.left;
+		}
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-08-17 20:08:18</sys_created_on>
+        <sys_id>e47a47771be6d05097c0dca0f54bcb03</sys_id>
+        <sys_mod_count>265</sys_mod_count>
+        <sys_name>GService Category Items CSC</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_e47a47771be6d05097c0dca0f54bcb03</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-31 13:02:26</sys_updated_on>
+        <template><![CDATA[<h1 class="category-title">${Serviços de Finanças, Jurídico e Infraestrutura}</h1>
+<div class="content center">
+  <div class="control">
+    <div class="back center" ng-click="c.back()"><img src="GS_Carrosel_ESQ.png"/></div>
+    <div class="next center" ng-click="c.next()"><img src="GS_Carrosel_DIR.png"/></div>
+  </div>
+  <div class="slide_content_mask">
+    <div class="slide_content">
+      <div class="item" id="slide{{$index}}"
+           ng-repeat="slide in data.slides"
+           style="left: {{slide.left}}%; width: {{data.left}}%;"
+           ng-click="selectedCategory(slide.sys_id)">
+        <div class="item_">
+          <img src="{{slide.img}}"/>
+          <div class="{{slide.color}}">
+            <div class="title">{{slide.title}}</div>
+            <div class="description">{{slide.description}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>
