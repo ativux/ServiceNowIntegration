@@ -6,27 +6,7 @@
 	c.approvalComment = '';
 	c.approvalItem = false;
 	c.needComment = false;
-	
-	c.contentOpened = true;
-	c.openContent = function() {
-		c.contentOpened = !c.contentOpened;
-
-		if(!c.contentOpened) {
-			$('.content_body_app_csc').each(function(){
-				$(this).css({
-					'margin-top' : '-' + $(this).outerHeight() + 'px'
-				});
-			});
-		}
-		else {
-			$('.content_body_app_csc').each(function(){
-				$(this).css({
-					'margin-top' : 0
-				});
-			});
-		}
-		
-	}
+	c.contentOpened = false;
 
 	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
 		var changes = event.data.changes;
@@ -113,7 +93,7 @@
 			});
 		}
 		else{
-			$('#approvalCommentModal').modal("show");
+			$('#approvalCommentModalCSC').modal("show");
 		}
 	}
 
@@ -127,7 +107,7 @@
 				comment : c.approvalComment,
 				approval : false
 			}).then(function(response) {
-				$('#approvalCommentModal').modal("hide");
+				$('#approvalCommentModalCSC').modal("hide");
 				c.data.approvals = response.data.approvals;
 				c.approvalComment = '';
 			});
@@ -137,7 +117,7 @@
 		}
 	}
 	
-	$('#approvalCommentModal').on('hide.bs.modal', function () {
+	$('#approvalCommentModalCSC').on('hide.bs.modal', function () {
 		c.needComment = "";
 	});
 }]]></client_script>
@@ -148,7 +128,7 @@
   padding: 30px 90px;
   padding-bottom: 10px;
   margin-bottom: 15px;
-  
+
   .title_category {
     transition: .2s ease-in-out;
     color: $dark-orchid;
@@ -164,7 +144,7 @@
       transition: .8s ease-in-out;
       margin-top: -4px;
       margin-left: 8px;
-      width: 16px;
+      width: 20px;
     }
 
     &amp;:hover {
@@ -172,7 +152,19 @@
       transform: translate(0, -5px);
     }
   }
-  
+  .items_length {
+    color: white;
+    text-align: center;
+    background-color: $coral;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    font-family: $text-bolder;
+    font-size: 14px;
+    display: inline-block;
+    margin-left: 10px;
+  }
+
   .content_body_mask {
     overflow: hidden;
 
@@ -180,7 +172,7 @@
       transition: .8s ease-in-out;
     }
   }
-  
+
   .approval_column_title{
     h4 {
       margin: 4px 0 0 0 !important;
@@ -253,7 +245,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      
+
       textarea{
         margin-top: 5px;
         margin-right: 10% !important;
@@ -589,7 +581,7 @@ tbody {
       margin-right: 50px;
     }
   }
-  
+
   td:nth-child(6) {
     width: 20%;
     padding: 20px;
@@ -671,6 +663,32 @@ tbody {
       -o-transform: scale(1.1);
     }
   }
+}
+
+.modal_approvals_csc {
+  .modal_title {
+    font-size: 32px;
+    color: $dark-orchid;
+    font-family: $text-bold;
+  }
+  .form-group {
+    textarea {
+      border: 2px solid $dark-orchid;
+      margin-top: 10px;
+      margin-bottom: 30px;
+      min-height: 100px;
+      min-width: 100%;
+      max-width: 100%;
+    }
+  }
+  .btn_submit {
+    display: flex;
+    justify-content: flex-end;
+    
+    img {
+      width: 60px;
+    }
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -678,10 +696,32 @@ tbody {
         <docs/>
         <field_list/>
         <has_preview>false</has_preview>
-        <id/>
+        <id>gservice_my_dashboard_approvals_csc</id>
         <internal>false</internal>
         <link><![CDATA[function link(scope, element, attrs, controller) {
+	var c = controller;
   
+	c.openContent = function() {
+		c.contentOpened = !c.contentOpened;
+		var contentBody = element.find(".content_body_app_csc");
+		if(!c.contentOpened) {
+			contentBody.css("margin-top", "-" + (contentBody.outerHeight() + 30) + 'px');
+		}
+		else {
+			contentBody.css("margin-top", 0);
+		}
+	}
+
+	c.makeTransition = function(position, newLeft){
+		var slide = element.find('#slide' + position);
+		slide.css('left', newLeft + '%');
+	}
+
+	c.change_z_index = function(position, z_index){
+		var slide = element.find('#slide' + position);
+		slide.css('z-index', z_index);
+	}
+	
 }]]></link>
         <name>GService My Dashboard Approvals CSC</name>
         <option_schema>[{"hint":"Selects the columns to show on the table","name":"table","section":"Presentation","label":"Table","type":"string"},{"name":"table_template","section":"Behavior","label":"Table Template","type":"string"}]</option_schema>
@@ -689,7 +729,7 @@ tbody {
         <roles/>
         <script><![CDATA[(function() {
 	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
-	var portalUtils = new global.OCLPortalUtils();
+	var portalUtils = new global.OCLPortalUtilsCSC();
 	data.showEmptyMessage = false;
 	data.user_id = gs.getUserID();
 	data.columns = [];
@@ -704,7 +744,7 @@ tbody {
 		for(i in columns){
 			data.columns[i].name = gs.getMessage(columns[i].name).toUpperCase();
 		}
-		data.approverQuery = "state=requested^source_table=sc_req_item^ORsource_table=change_request^approver.sys_idIN" + gs.getUserID();
+		data.approverQuery = "state=requested^source_tableSTARTSWITHx_gmeps_csc^approver.sys_idIN" + gs.getUserID();
 
 		var delegateUsers = [];
 		var grDelegate = new GlideRecord("sys_user_delegate");
@@ -722,8 +762,13 @@ tbody {
 		}
 
 		data.approvals = portalUtils.getApprovals(data.user_id);
+		data.approvalsCount = data.approvals.length;
 		if(data.approvals.length == 0){
 			data.showEmptyMessage = true;
+		}
+		data.margin_top = -150 * data.approvals.length;
+		if(data.margin_top == 0){
+			data.margin_top = -150;
 		}
 	}
 
@@ -752,6 +797,7 @@ tbody {
 				var items = localInput.items;
 				var itemsSort = portalUtils.sortList(items, localInput.order, direction);
 				data.approvals = itemsSort;
+				data.approvalsCount = data.approvals.length;
 				break;
 			case "submitApproval":
 				data.approvals = localInput.approvals;
@@ -765,6 +811,7 @@ tbody {
 					}
 				}
 				data.approvals = newApprovals;
+				data.approvalsCount = data.approvals.length;
 				break;
 
 			case "getNewApproval":
@@ -775,6 +822,7 @@ tbody {
 				}
 
 				data.approvals.push(portalUtils.getNewApproval(localInput.approvalID));
+				data.approvalsCount = data.approvals.length;
 				break;
 			case "deleteApprovals":
 				var newObject = [];
@@ -788,6 +836,7 @@ tbody {
 						}
 					}
 					data.approvals = newObject;
+					data.approvalsCount = data.approvals.length;
 				}
 				break;
 		}
@@ -799,141 +848,142 @@ tbody {
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-11 18:05:20</sys_created_on>
         <sys_id>c5c47bb51b62541097c0dca0f54bcb6a</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>41</sys_mod_count>
         <sys_name>GService My Dashboard Approvals CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_c5c47bb51b62541097c0dca0f54bcb6a</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-11 18:14:17</sys_updated_on>
+        <sys_updated_on>2020-08-31 14:01:17</sys_updated_on>
         <template><![CDATA[<div class="approval_content">
-  
+
   <div class="title_category" ng-click="c.openContent()">
     ${Aprovações de Finanças, Jurídico e Infraestrutura}
     <span><img src="GService_Seta_PTV.png" ng-class="c.contentOpened ? '' : 'invert-arrow'"/></span>
+    <span class="items_length">{{data.approvalsCount}}</span>
   </div>
 
   <div class="content_body_mask">
-    <div class="content_body_app_csc">
-  
-  <div class="page_description">${My Dashboard Approvals 1}<br>${My Dashboard Approvals 2}</div>
-  <div>
-    <div ng-if="data.approvals.length == 0" class="without_notification">
-      ${Oba! Não existem aprovações pendentes.}
+    <div class="content_body_app_csc"
+         style="margin-top : {{data.margin_top}}px;">
+
+      <div class="page_description">${My Dashboard Approvals 1}<br>${My Dashboard Approvals 2}</div>
+      <div>
+        <div ng-if="data.approvals.length == 0" class="without_notification">
+          ${Oba! Não existem aprovações pendentes.}
+        </div>
+        <table ng-if="data.approvals.length > 0" class="table table-hover b-t table-condensed cart-table">
+          <thead>
+            <tr>
+              <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
+                <div ng-click="c.orderBy(column.order, data.approvals)">
+                  {{column.name}}
+                  <span ng-if="column.order">
+                    <span ng-if="!column.direction"></span>
+                    <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
+                  </span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody ng-repeat="item in data.approvals">
+            <tr class="item-row b-b">
+              <td data-th="Product">
+                <div class="approval_column_title">
+                  <div class="">
+                    <h4 class="approval_number">#{{item.number}}</h4>
+                    <h4 class="approval_title">{{item.title}}</h4>
+                    <a class="approval_more-details" ng-click="c.showDetails(item)">${GService Details}</a>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="row approval_column_requester">
+                  <div>
+                    <span class="service_title">{{item.requester}}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="row approval_column_requester">
+                  <div>
+                    <span class="service_title">{{item.price}}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="row approval_column_opened">
+                  <div>
+                    <span class="">{{item.opened}}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="row approval_column_forecast">
+                  <div>
+                    <span class="" ng-if="item.forecast">{{item.forecast}}</span>
+                    <span class="" ng-if="!item.forecast">${Não há SLA para esse item}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="row approvals-buttons">
+                  <!-- Button to request a service again -->
+                  <a class="submit-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, true)" aria-label="" title="">
+                    <img src="GS_Confirmar_PB.png"/>
+                  </a>
+                  <a class="cancel-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, false)" aria-label="" title="">
+                    <img src="GService_DASH_Cancelar.png"/>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <!-- Requests End -->
+              <td ng-if="item.showDetails" class="content_conversation" colspan='6'>
+
+                <!-- Process Flow -->
+                <div class="col-md-3">
+                  <div ng-repeat="status in item.processFlow">
+                    <div ng-class="status.selected ? 'text-uppercase' : text-lowercase">{{status.name}}</div>
+                  </div>
+                </div>
+
+                <!-- Ticket Conversation -->
+                <div class="col-md-9">
+                  <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <table ng-if="data.approvals.length > 0" class="table table-hover b-t table-condensed cart-table">
-      <thead>
-        <tr>
-          <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
-            <div ng-click="c.orderBy(column.order, data.approvals)">
-              {{column.name}}
-              <span ng-if="column.order">
-                <span ng-if="!column.direction"></span>
-                <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
-              </span>
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody ng-repeat="item in data.approvals">
-        <tr class="item-row b-b">
-          <td data-th="Product">
-            <div class="approval_column_title">
-              <div class="">
-                <h4 class="approval_number">#{{item.number}}</h4>
-                <h4 class="approval_title">{{item.title}}</h4>
-                <a class="approval_more-details" ng-click="c.showDetails(item)">${GService Details}</a>
-              </div>
-            </div>
-          </td>
-          <td>
-            <div class="row approval_column_requester">
-              <div>
-                <span class="service_title">{{item.requester}}</span>
-              </div>
-            </div>
-          </td>
-          <td>
-            <div class="row approval_column_requester">
-              <div>
-                <span class="service_title">{{item.price}}</span>
-              </div>
-            </div>
-          </td>
-          <td>
-            <div class="row approval_column_opened">
-              <div>
-                <span class="">{{item.opened}}</span>
-              </div>
-            </div>
-          </td>
-          <td>
-            <div class="row approval_column_forecast">
-              <div>
-                <span class="" ng-if="item.forecast">{{item.forecast}}</span>
-                <span class="" ng-if="!item.forecast">${Não há SLA para esse item}</span>
-              </div>
-            </div>
-          </td>
-          <td>
-            <div class="row approvals-buttons">
-              <!-- Button to request a service again -->
-              <a class="submit-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, true)" aria-label="" title="">
-                <img src="gservice_dashboard_confirm.png"/>
-              </a>
-              <a class="cancel-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, false)" aria-label="" title="">
-                <img src="GService_DASH_Cancelar.png"/>
-              </a>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <!-- Requests End -->
-          <td ng-if="item.showDetails" class="content_conversation" colspan='6'>
-
-            <!-- Process Flow -->
-            <div class="col-md-3">
-              <div ng-repeat="status in item.processFlow">
-                <div ng-class="status.selected ? 'text-uppercase' : text-lowercase">{{status.name}}</div>
-              </div>
-            </div>
-
-            <!-- Ticket Conversation -->
-            <div class="col-md-9">
-              <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 
-  <div class="modal fade" style="z-index: 1041" id="approvalCommentModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <div class="panel-body wrapper-xl wrapper-sc-cat-item">
-            <div class="justify-text">${Justifique sua resposta negativa:}</div>
-            <span class="notification-align no-text-answer" ng-if="c.needComment"> ${Favor preencher o comentário antes de submeter} </span>
-            <div class="form-group">
-              <textarea class="form-control" ng-model="c.approvalComment" maxlength="255"></textarea>
-              <a class="" style="cursor: pointer;" ng-click="c.submitCommentApproval()" aria-label="" title="">
-                <img class="resize-img" src="gservice_dashboard_submit.png"/>
-              </a>
+</div>
+
+<div class="modal fade modal_approvals_csc" style="z-index: 1041" id="approvalCommentModalCSC" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="panel-body wrapper-xl wrapper-sc-cat-item">
+          <div class="modal_title">${Justifique sua resposta negativa:}</div>
+          <span class="notification-align no-text-answer" ng-if="c.needComment"> ${Favor preencher o comentário antes de submeter} </span>
+          <div class="form-group">
+            <textarea class="form-control" ng-model="c.approvalComment" maxlength="255"></textarea>
+            <div class="btn_submit" ng-click="c.submitCommentApproval()">
+              <img src="GService_SS_TV.png"/>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-      
-    </div>
-  </div>
-      
 </div>
 
 <now-message key="Done" value="${Done}"/>]]></template>
