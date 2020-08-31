@@ -11,8 +11,16 @@
 	spUtil.recordWatch($scope, "incident", c.data.incidentQuery, function(event) {
 		c.refreshDashboardcount();
 	});
+	
+	spUtil.recordWatch($scope, "x_gmeps_csc_csc", c.data.cscQuery, function(event) {
+		c.refreshDashboardcount();
+	});
 
 	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
+		c.refreshDashboardcount();
+	});
+	
+	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQueryCSC, function(event) {
 		c.refreshDashboardcount();
 	});
 
@@ -21,7 +29,9 @@
 			action: "dashboardCount",
 			taskQuery: c.data.taskQuery,
 			incidentQuery : c.data.incidentQuery,
-			approverQuery : c.data.approverQuery
+			cscQuery : c.data.cscQuery,
+			approverQuery : c.data.approverQuery,
+			approverQueryCSC : c.data.approverQueryCSC
 		}).then(function(response) {
 			c.data.dashboardCount = response.data.dashboardCount;
 		});
@@ -296,6 +306,7 @@
         <script><![CDATA[(function(){
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
+	var portalUtilsCSC = new global.OCLPortalUtilsCSC();
 	var equipmentsUtils = new global.OCLPortalEquipmentsUtil();
 
 	var delegateUsersNotification = [];
@@ -315,25 +326,35 @@
 			}
 		} while(grDelegate.next());
 	}
+	delegateUsersNotification.push(gs.getUserID());
+	var users = delegateUsersNotification.join();
 
-	data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by.sys_id=" + gs.getUserID() + "^ORrequest.requested_for.sys_id=" + gs.getUserID();
-	data.incidentQuery = "state=3^hold_reason=1^u_requested_for.sys_id=" + gs.getUserID() + "^ORcaller_id.sys_id=" + gs.getUserID();
+	var queries = portalUtils.getNotificationQuery();
+	data.taskQuery = queries.taskQuery;
+	data.incidentQuery = queries.incidentQuery;
+	data.approverQuery = portalUtils.getApproverQuery();
+	data.cscQuery = "u_status_portal=3^requester.sys_idIN"+ users +"^ORopened_by.sys_idIN"+ users;
 	data.equipment_query = gs.getProperty("gservice_equipments_query");
-	data.approverQuery = "state=requested^source_table=sc_req_item^ORsource_table=change_request^approver.sys_idIN" + gs.getUserID();
+	data.approverQueryCSC = "state=requested^source_tableSTARTSWITHx_gmeps_csc^approver.sys_idIN" + gs.getUserID();
 
-	if(delegateUsersNotification.length > 0){
+	/*if(delegateUsersNotification.length > 0){
 		data.taskQuery += "," + delegateUsersNotification.join(",");
 		data.incidentQuery += "," + delegateUsersNotification.join(",");
-	}
+		data.cscQuery += 
+	}*/
 	if(delegateUsersApproval.length > 0){
 		data.approverQuery += "," + delegateUsersApproval.join(",");
 	}
 
 	data.dashboardCount = portalUtils.setDashboardCount(data.taskQuery, data.incidentQuery, data.approverQuery);
+	data.dashboardCount += portalUtilsCSC.setNotificationsCount(data.cscQuery);
+	data.dashboardCount += portalUtils.setApprovalsCount(data.approverQueryCSC);
 	data.equipmentsCount = equipmentsUtils.getEquipmentsCount();
 	if(localInput){
 		if(localInput.action == "dashboardCount"){
 			data.dashboardCount = portalUtils.setDashboardCount(localInput.taskQuery, localInput.incidentQuery, localInput.approverQuery);
+			data.dashboardCount += portalUtilsCSC.setNotificationsCount(localInput.cscQuery);
+			data.dashboardCount += portalUtils.setApprovalsCount(localInput.approverQueryCSC);
 		}
 		else if(localInput.action == "equipmentsCount"){
 			data.equipmentsCount = equipmentsUtils.getEquipmentsCount();
@@ -380,14 +401,14 @@
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 17:35:57</sys_created_on>
         <sys_id>8ed872e7db40dc10fa11cf241496192b</sys_id>
-        <sys_mod_count>228</sys_mod_count>
+        <sys_mod_count>246</sys_mod_count>
         <sys_name>GService Header Menu</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_8ed872e7db40dc10fa11cf241496192b</sys_update_name>
-        <sys_updated_by>organize.matias</sys_updated_by>
-        <sys_updated_on>2020-08-15 17:04:51</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-08-31 14:24:22</sys_updated_on>
         <template><![CDATA[<ul class="nav navbar-nav" role="menubar">
   <div class="header-loader" ng-class="{'invisible': !loadingIndicator}">
     <div class="hidden-xs sp-loading-indicator la-sm">
