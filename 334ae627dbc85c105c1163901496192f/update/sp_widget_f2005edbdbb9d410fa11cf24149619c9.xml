@@ -39,7 +39,7 @@
 
 	c.accept = function(index){
 		c.data.acceptedOrder = c.data.orders[index];
-		if(c.data.acceptedOrder.assigned_to.value == false){
+		if(c.data.acceptedOrder.u_responsible.value == false){
 			spUtil.addErrorMessage(c.data.msgs.needAssigned);
 		}
 		else{
@@ -1186,14 +1186,14 @@ input:focus::placeholder{
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-07-09 19:49:04</sys_created_on>
         <sys_id>f2005edbdbb9d410fa11cf24149619c9</sys_id>
-        <sys_mod_count>387</sys_mod_count>
+        <sys_mod_count>390</sys_mod_count>
         <sys_name>GService Equipment List</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f2005edbdbb9d410fa11cf24149619c9</sys_update_name>
         <sys_updated_by>thiago.ferreira.silva_O2B@prestador.glob</sys_updated_by>
-        <sys_updated_on>2020-08-27 20:09:29</sys_updated_on>
+        <sys_updated_on>2020-08-27 20:40:53</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   <div class="col-md-12 filter-padding">
     <sp-widget widget="data.equipmentFilter_widget"></sp-widget>
