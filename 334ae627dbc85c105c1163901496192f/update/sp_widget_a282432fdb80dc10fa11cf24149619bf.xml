@@ -3,14 +3,7 @@
         <category>custom</category>
         <client_script><![CDATA[function() {  /* widget controller */  var c = this;}]]></client_script>
         <controller_as>c</controller_as>
-        <css>.margin-top{
-  padding-top: 0px;
-  margin-top: 0px;
-}
-.container{
-  margin-left: 90px;
-  width: 88%;
-}</css>
+        <css/>
         <data_table>sp_instance_carousel</data_table>
         <demo_data/>
         <description/>
@@ -30,18 +23,18 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-14 18:18:18</sys_created_on>
         <sys_id>a282432fdb80dc10fa11cf24149619bf</sys_id>
-        <sys_mod_count>21</sys_mod_count>
+        <sys_mod_count>27</sys_mod_count>
         <sys_name>GService Portal Banner</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_a282432fdb80dc10fa11cf24149619bf</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-01 14:07:13</sys_updated_on>
+        <sys_updated_on>2020-09-01 12:33:04</sys_updated_on>
         <template><![CDATA[<div class="pull-in">
   <uib-carousel interval="options.interval">
     <uib-slide ng-repeat="slide in ::data.slides" ng-if="slide.u_make_it_current == 'true'" active="slide.active">
-      <div class="container margin-top">
+      <div class="container">
         <a href="{{::slide.url}}">
           <img ng-src="{{::slide.background}}" style="margin:auto; width:100%;" role="presentation">
         </a>
