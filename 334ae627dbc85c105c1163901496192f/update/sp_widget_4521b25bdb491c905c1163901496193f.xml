@@ -844,7 +844,9 @@ ul {
 			}
 		}
 
-		data.gservice_ticket_attachment = $sp.getWidget('gservice_ticket_attachments');
+		data.attachmentOptions = {show_always : true, record_id : data.sys_id, record_table : data.table};
+		data.gservice_ticket_attachment = $sp.getWidget('gservice_ticket_attachments', data.attachmentOptions);
+		
 		var grVariables = new GlideRecord(data.table);
 		grVariables.get(data.sys_id);
 
@@ -897,14 +899,14 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-02 15:30:08</sys_created_on>
         <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
-        <sys_mod_count>392</sys_mod_count>
+        <sys_mod_count>441</sys_mod_count>
         <sys_name>GService Custom Conversation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
-        <sys_updated_by>gabriel@organizecloudlabs.com</sys_updated_by>
-        <sys_updated_on>2020-08-27 20:11:44</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-09-01 21:55:44</sys_updated_on>
         <template><![CDATA[<div class="content_conversation_all">
   <div ng-if="data.hide_title == false" class="conversation_title">${GService Conversation Request History}</div>
   <div>
@@ -1001,8 +1003,8 @@ ul {
     </div>
   </div>
   
-  <div ng-if="!data.hide_new_comments">
-    <widget id="gservice_ticket_attachments"></widget>  
+  <div ng-show="!data.hide_new_comments">
+    <sp-widget widget="data.gservice_ticket_attachment"></sp-widget>
   </div>
   
   <div class="modal fade modal_article" id="moreDetails{{data.sys_id}}" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
