@@ -837,14 +837,14 @@ tbody {
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-11 16:52:01</sys_created_on>
         <sys_id>36f3e7311bee141097c0dca0f54bcb9a</sys_id>
-        <sys_mod_count>30</sys_mod_count>
+        <sys_mod_count>34</sys_mod_count>
         <sys_name>GService My Dashboard Approvals v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_36f3e7311bee141097c0dca0f54bcb9a</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-31 13:59:47</sys_updated_on>
+        <sys_updated_on>2020-09-02 14:36:11</sys_updated_on>
         <template><![CDATA[<div class="approval_content">
 
   <div class="title_category" ng-click="c.openContent()">
@@ -856,7 +856,6 @@ tbody {
   <div class="content_body_mask">
     <div class="content_body_app"
          style="margin-top : {{data.margin_top}}px;">
-
       <div class="page_description">${My Dashboard Approvals 1}<br>${My Dashboard Approvals 2}</div>
       <div>
         <div ng-if="data.approvals.length == 0" class="without_notification">
@@ -880,7 +879,7 @@ tbody {
             <tr class="item-row b-b">
               <td data-th="Product">
                 <div class="approval_column_title">
-                  <div class="">
+                  <div>
                     <h4 class="approval_number">#{{item.number}}</h4>
                     <h4 class="approval_title">{{item.title}}</h4>
                     <a class="approval_more-details" ng-click="c.showDetails(item)">${GService Details}</a>
@@ -904,25 +903,25 @@ tbody {
               <td>
                 <div class="row approval_column_opened">
                   <div>
-                    <span class="">{{item.opened}}</span>
+                    <span>{{item.opened}}</span>
                   </div>
                 </div>
               </td>
               <td>
                 <div class="row approval_column_forecast">
                   <div>
-                    <span class="" ng-if="item.forecast">{{item.forecast}}</span>
-                    <span class="" ng-if="!item.forecast">${Não há SLA para esse item}</span>
+                    <span ng-if="item.forecast">{{item.forecast}}</span>
+                    <span ng-if="!item.forecast">${Não há SLA para esse item}</span>
                   </div>
                 </div>
               </td>
               <td>
                 <div class="row approvals-buttons">
                   <!-- Button to request a service again -->
-                  <a class="submit-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, true)" aria-label="" title="">
-                    <img src="gservice_dashboard_confirm.png"/>
+                  <a class="submit-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, true)">
+                    <img src="GS_Confirmar_TEC.png"/>
                   </a>
-                  <a class="cancel-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, false)" aria-label="" title="">
+                  <a class="cancel-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, false)">
                     <img src="GService_DASH_Cancelar.png"/>
                   </a>
                 </div>
@@ -950,7 +949,7 @@ tbody {
       </div>
     </div>
   </div>
-  
+
 </div>
 
 <div class="modal fade" style="z-index: 1041" id="approvalCommentModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
