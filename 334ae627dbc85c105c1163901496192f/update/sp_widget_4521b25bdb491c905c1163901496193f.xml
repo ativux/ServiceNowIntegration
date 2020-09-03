@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function($scope, $timeout, spUtil, $rootScope, nowAttachmentHandler, $sce) {
+        <client_script><![CDATA[function($scope, $timeout, spUtil, $rootScope, nowAttachmentHandler, $sce, $uibModal) {
 	/* widget controller */
 	var c = this;
 	c.conversation_open = false;
@@ -294,7 +294,7 @@
       }
     }
   }
-  
+
   .history-name-size {
     font-family: $text-bold;
   }
@@ -760,10 +760,43 @@ ul {
   transition: .2s ease-in-out;
   top: 15px !important;
   right: 23px !important;
-  
+
   &amp;:hover {
     transition: .2s ease-in-out;
     opacity: .5;
+  }
+}
+
+.dynamic_color_category2 {
+  .conversation_entries:first-child {
+    .conversation_action {
+      text-decoration: underline;
+      color: $dark-orchid !important;
+    }
+  }
+  .new_radio_mark, .conversation_mark{
+    border: 1px solid $dark-orchid !important;
+  }
+  .conversation_entries:last-child {
+    .conversation_mark {
+      background-color: $dark-orchid !important;
+    }
+  }
+  .conversation_form textarea {
+    border: 2px solid $dark-orchid !important;
+  }
+  .submit_name, .glyphicon-paperclip, .attach_text {
+    color: $dark-orchid !important;
+  }
+
+  .modal {
+    .color_change {
+      color: $globo-purple !important;
+    }
+  }
+  
+  .view_more_color, .conversation_action, .simple_conversation_title, strong, .file-name a {
+    color: $globo-purple !important;
   }
 }</css>
         <data_table>sp_instance</data_table>
@@ -778,7 +811,7 @@ ul {
   
 }]]></link>
         <name>GService Custom Conversation</name>
-        <option_schema>[{"hint":"Enter key behavior is specified by system property (glide.service_portal.comment.enter_adds_newline) unless overridden here","name":"enter_key_behavior","section":"Behavior","default_value":"System property","label":"Enter key behavior","type":"choice","choices":[{"label":"System property","value":"System property"},{"label":"Submit","value":"Submit"},{"label":"New line","value":"New line"}]},{"hint":"What is the table of the record?","name":"table","section":"Data","label":"Table","type":"string"},{"hint":"What is the sys_id of the record?","name":"sys_id","section":"Data","label":"Sys_ID","type":"string"},{"hint":"Placeholder text shows selected journal field","name":"use_dynamic_placeholder","section":"Behavior","label":"Use dynamic placeholder","type":"boolean"},{"hint":"Message to show when record has no readable journal field","name":"no_readable_journal_field_message","default_value":"","section":"Presentation","label":"No readable journal field message","type":"string"},{"hint":"Get the template based on the tab","name":"tab","section":"Behavior","label":"Tab Template","type":"string"},{"name":"item_status","section":"Behavior","label":"Item Status","type":"string"},{"hint":"Used to allow the user to add new comments or attachments","name":"hide_new_comments","section":"Behavior","default_value":"","label":"Hide new comments","type":"boolean"},{"hint":"Check this to hide the title","name":"hide_title","section":"Presentation","label":"Hide Title","type":"boolean"}]</option_schema>
+        <option_schema>[{"hint":"Enter key behavior is specified by system property (glide.service_portal.comment.enter_adds_newline) unless overridden here","name":"enter_key_behavior","section":"Behavior","default_value":"System property","label":"Enter key behavior","type":"choice","choices":[{"label":"System property","value":"System property"},{"label":"Submit","value":"Submit"},{"label":"New line","value":"New line"}]},{"hint":"What is the table of the record?","name":"table","section":"Data","label":"Table","type":"string"},{"hint":"What is the sys_id of the record?","name":"sys_id","section":"Data","label":"Sys_ID","type":"string"},{"hint":"Placeholder text shows selected journal field","name":"use_dynamic_placeholder","section":"Behavior","label":"Use dynamic placeholder","type":"boolean"},{"hint":"Message to show when record has no readable journal field","name":"no_readable_journal_field_message","default_value":"","section":"Presentation","label":"No readable journal field message","type":"string"},{"hint":"Get the template based on the tab","name":"tab","section":"Behavior","label":"Tab Template","type":"string"},{"name":"item_status","section":"Behavior","label":"Item Status","type":"string"},{"hint":"Used to allow the user to add new comments or attachments","name":"hide_new_comments","section":"Behavior","default_value":"","label":"Hide new comments","type":"boolean"},{"hint":"Check this to hide the title","name":"hide_title","section":"Presentation","label":"Hide Title","type":"boolean"},{"name":"color_class","section":"Presentation","label":"Color Class","type":"string"},{"name":"bd_color_class","section":"Presentation","label":"BD Color Class","type":"string"},{"name":"comment_image","section":"Presentation","label":"Comment Image","type":"string"},{"name":"send_image","section":"Presentation","label":"Send Image","type":"string"}]</option_schema>
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
@@ -794,6 +827,10 @@ ul {
 	data.hide_new_comments = options.hide_new_comments || false;
 	data.hide_title = options.hide_title || false;
 	data.moreDetails = false;
+	data.color_class = options.color_class || "color_category1_old";
+	data.bd_color_class = options.bd_color_class || "bdcolor_category1_old";
+	data.send_image = options.send_image || "gservice_dashboard_submit.png";
+	data.comment_image = options.comment_image || "gservice_message.png";
 
 	data.article_widget_options = {"broadcast_name": "openKbModal"};
 	data.articleWidget = $sp.getWidget("gservice_knowledge_article_content", data.article_widget_options);
@@ -808,14 +845,15 @@ ul {
 		data.statusEntries = [];
 		data.sys_id = options.sys_id;
 		data.table = options.table;
-
+		
 		var grItem = portalUtils.getRecord(data.table, data.sys_id);
-
+		
 		var created_on = grItem.getDisplayValue('sys_created_on');
 		created_on = created_on.split(' ');
 		data.createdDate = created_on[0].replace(/-/g, "/");
 		data.createdTime = created_on[1];
 
+		//data.stream = $sp.getStream(data.table, data.sys_id);
 		data.stream = portalUtils.getStream(data.table, data.sys_id);
 		var entries = data.stream.entries;
 		var statusEntries = portalUtils.getStateChange(data.sys_id, data.table);
@@ -844,12 +882,10 @@ ul {
 			}
 		}
 
-		data.attachmentOptions = {show_always : true, record_id : data.sys_id, record_table : data.table};
-		data.gservice_ticket_attachment = $sp.getWidget('gservice_ticket_attachments', data.attachmentOptions);
-
+		data.gservice_ticket_attachment = $sp.getWidget('gservice_ticket_attachments');
 		var grVariables = new GlideRecord(data.table);
 		grVariables.get(data.sys_id);
-
+		
 		switch(data.table){
 			case "sc_req_item":
 			case "u_question":
@@ -869,7 +905,7 @@ ul {
 				break;
 
 			default:
-				data.variables = [];
+				data.variables = portalUtils.getVariablesForTask(grVariables, true);
 				break;
 
 		}
@@ -898,15 +934,15 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-02 15:30:08</sys_created_on>
         <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
-        <sys_mod_count>443</sys_mod_count>
+        <sys_mod_count>457</sys_mod_count>
         <sys_name>GService Custom Conversation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
-        <sys_updated_by>organize.matias</sys_updated_by>
-        <sys_updated_on>2020-09-03 14:53:02</sys_updated_on>
-        <template><![CDATA[<div class="content_conversation_all">
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-09-03 20:26:44</sys_updated_on>
+        <template><![CDATA[<div class="content_conversation_all dynamic_{{data.color_class}}">
   <div ng-if="data.hide_title == false" class="conversation_title">${GService Conversation Request History}</div>
   <div>
     <div class="panel-body">
@@ -916,7 +952,7 @@ ul {
             <div class="conversation_mark"></div><span class="hide_timeline_property"></span><span class="new_radio_mark"></span>
             <div class="conversation_fixed_text">
               <div ng-if="data.table != 'sc_request' && !data.hide_title" class="conversation_action" data-toggle="modal" data-target="#moreDetails{{data.sys_id}}">
-                <div class="fixed_title">${Abertura da Solicitação}</div>
+                <div class="fixed_title {{data.color_class}}">${Abertura da Solicitação}</div>
                 <span class="tooltip tooltip_right">
                   <div class="tooltip_arrow arrow_left"></div>
                   <div class="tooltip_text">${See summary}</div>
@@ -931,7 +967,7 @@ ul {
           <li class="conversation_entries conversation_dynamic" ng-if="data.mergedEntries.length > 0" ng-repeat="e in data.mergedEntries">
             <div class="conversation_mark"></div>
             <div ng-style="{'border-color': getFieldColor(e.element)}">
-              <div class="conversation_action">{{e.name}}</div>
+              <div class="conversation_action {{data.color_class}}">{{e.name}}</div>
               <div class="conversation_description">{{e.field_label}}</div>
               <div class="">
                 <div class="conversation_description" ng-if="(e.element != 'attachment')" ng-bind-html=e.display_value><span ng-if="e.showAll">...</span></div>
@@ -982,11 +1018,11 @@ ul {
           </li>
         </ul>
       </div>
-      
+
       <div class="conversation_form" ng-if="!data.hide_new_comments">
         <form ng-if="data.item_status != 'resolved'" ng-submit="c.postEntry(data.journalEntry)" id="sand">
           <div class="conversation_user">
-            <img src="gservice_message.png"/>
+            <img src="{{data.comment_image}}"/>
             <span class="user_name">{{data.username}}</span>
           </div>
           <div>
@@ -994,18 +1030,18 @@ ul {
             <span class="journal-field-indicator" ng-style="({'background-color': data.useSecondaryJournalField ? data.secondaryJournalField.color : data.primaryJournalField.color})"></span>
           </div>
           <div class="buttons button_size" ng-click="c.postEntry(data.journalEntry)">
-            <img src="gservice_dashboard_submit.png"/>
+            <img src="{{data.send_image}}"/>
             <span class="submit_name">Enviar</span>
           </div>
         </form>
       </div>
     </div>
   </div>
-  
-  <div ng-show="!data.hide_new_comments">
-    <sp-widget widget="data.gservice_ticket_attachment"></sp-widget>
+
+  <div ng-if="!data.hide_new_comments">
+    <widget id="gservice_ticket_attachments"></widget>  
   </div>
-  
+
   <div class="modal fade modal_article" id="moreDetails{{data.sys_id}}" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -1026,13 +1062,13 @@ ul {
       </div>
     </div>
   </div>
-  
+
   <div class="bg_content_feedback" id="conversationModalBG" ng-if="c.conversation_open" ng-click="c.hideConversation()"></div>
-  
+
   <div class="content_feedback_" ng-if="c.conversation_open" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
     <div class="content_feedback" role="document">
-      <div class="">
-        <div class="">
+      <div>
+        <div>
 
           <button class="close close_feedback" type="button" ng-click="c.hideConversation()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
