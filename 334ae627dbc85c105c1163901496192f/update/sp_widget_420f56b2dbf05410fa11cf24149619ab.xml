@@ -479,567 +479,534 @@
 	}
 
 	c.goToItem = function(){
-		if(c.data.table != "sc_task" && c.data.table != "incident"){
-			$scope.$emit("selectTabRequest", c.data.item_id, "csc");
-		}
-		else{
-			$scope.$emit("selectTabRequest", c.data.item_id, "it");
-		}
+		$scope.$emit("selectTabRequest", c.data.item_id);
 	}
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.content_conversation_all {
-  .conversation_title {
-    text-transform: uppercase;
-    font-size: 14px;
-    font-family: '$text-bolder';
-  }
-  .activity_content {
-    height: 260px;
-    overflow: auto;
-    margin-bottom: 20px;
-    margin-left: -4px;
-    padding-left: 4px;
-  }
-  .timeline {
-    padding-top: 0;
-  }
-  .timeline:before {
-    top: 8px;
-    border-right: 2px solid $slate-gray;
-    right: 100%;
-    height: calc(100% - 80px);
-    z-index: 2;
-  }
-  .conversation_entries {
-    padding-left: 30px;
-
-    .conversation_mark {
-      width: 10px;
-      height: 10px;
-      border-radius: 5px;
-      background-color: white;
-      border: 1px solid $deep-sky-blue;
-      position: absolute;
-      top: 5px;
-      left: -4px;
-      z-index: 3;
-    }
-    .hide_timeline_property{
-      background: white;
-      height: 100%;
-      width: 10px;
-      z-index: 4;
-      position: absolute;
-      left: -4px;
-    }
-    .new_radio_mark{
-      width: 10px;
-      height: 10px;
-      border-radius: 5px;
-      background-color: white;
-      border: 1px solid $deep-sky-blue;
-      position: absolute;
-      top: 5px;
-      left: -4px;
-      z-index: 5;
-    }
-  }
-  .conversation_entries:first-child {
-    .conversation_action {
-      text-decoration: underline;
-    }
-  }
-  .conversation_entries:last-child {
-    .conversation_mark {
-      background-color: $deep-sky-blue;
-    }
-  }
-  .conversation_fixed {
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 1;
-  }
-  .content_conversation_dynamic {
-    height: 260px;
-    overflow: auto;
-  }
-
-  .conversation_action {
-    font-size: 12px;
-    color: $deep-sky-blue;
-    font-family: $text-bold;
-  }
-  .conversation_description {
-    font-size: 12px;
-    color: $slate-gray;
-  }
-  .conversation_date {
-    font-size: 10px;
-  }
-
-  .conversation_form {
-    margin-left: 30px;
-
-    .conversation_user {
-      margin-left: -46px;
-
-      img {
-        width: 36px;
-        height: 36px;
-      }
-      .user_name {
-        margin-left: 7px;
-        font-family: $text-bold;
-      }
-    }
-
-    .submit_name {
-      text-transform: uppercase;
-      margin-left: 8px;
-      color: $deep-sky-blue;
-      font-size: 18px;
-      font-family: $text-bold;
-    }
-
-    textarea {
-      min-height: 80px;
-      margin-bottom: 20px;
-      border: 2px solid $deep-sky-blue;
-    }
-  }
-}
-
-.content_conversation {
-  padding-bottom: 50px;
-
-  .number_title {
-    .ticket_number {
-      font-size: 12px;
-    }
-    .ticket_title {
-      font-size: 16px;
-      text-decoration: underline;
-      font-family: $text-bold;
-    }
-  }
-
-  .avatar_list {
-    padding-left: 15px;
-  }
-  .avatar-custom-size {
-    float: left;
-  }
-
-  .avatar-container {
-    cursor: default;
-  }
-  .avatar {
-    height: 40px !important;
-    width: 40px !important;
-    margin-top: -10px;
-  }
-  .avatar-container.avatar-large .avatar.soloAvatar .sub-avatar{
-    background: white;
-    border: solid 2px $deep-sky-blue;
-    border-radius: 50%;
-    line-height: 4rem;
-
-    span {
-      font-family: $text-bold;
-      color: $deep-sky-blue;
-    }
-  }
-  .all-avatar {
-    .avatar-container .avatar.soloAvatar {
-      .sub-avatar {
-        color: white !important;
-        background: white !important;
-        border: solid 2px $deep-sky-blue !important;
-        border-radius: 50% !important;
-      }
-    }
-  }
-
-
-  .history-name-size {
-    font-family: $text-bold;
-  }
-
-
-  .time-text {
-    font-size: 10px;
-    margin-left: 49px;
-    margin-top: -8px;
-  }
-
-  .message_user {
-    img {
-      height: 40px;
-    }
-    .user_name {
-      font-family: $text-bold;
-      margin-left: 5px;
-    }
-  }
-
-  .form-control {
-    overflow-x: hidden !important;
-    overflow-wrap: break-word !important;
-    height: 120px !important;
-    width: 400px;
-    border: solid 2px #00BFFF;
-    margin: 0 66px !important;
-  }
-
-  .conversation_form {
-
-    input[type="image"] {
-      width: 50px;
-      height: 50px;
-      margin-right: 65px;
-      margin-top: 10px;
-    }
-  }
-
-  .attach_button {
-    float: left;
-    margin-left: 42px;
-    margin-right: -18px;
-    transform: scaleX(-1);
-
-    .glyphicon-paperclip {
-      color: $deep-sky-blue;
-      transform: rotate(135deg);
-      font-size: 22px;
-    }
-  }
-  .attach_title {
-    margin-left: 5px;
-    margin-top: -40px;
-    color: $deep-sky-blue;
-    font-family: $text-bold;
-    text-transform: uppercase;
-  }
-}
-
-
-.panel-title {
-  display: inline;
-}
-
-.panel-title-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.panel-title-icons {
-
-  ul {
-    display: flex;
-    align-items: center;
-    padding: 0;
-    margin: 0;
-  }
-  li {
-    padding: 0;
-    margin: 0;
-
-    .panel-button {
-      display: flex;
-      align-items: center;
-      margin: 0 0 0 15px;
-      line-height: initial;
-
-      &amp;:hover, &amp;:focus {
-        text-decoration: none;
-      }
-    }
-  }
-}
-
-
-.timeline-heading test {
-  float:right;
-}
-
-.timeline-body &gt; p {
-  white-space: pre-wrap;
-  overflow-x: hidden;
-}
-
-.timeline-body ul &gt; li {
-  float: none;
-}
-
-.no-resize {
-  resize: none;
-}
-
-.journal-field-indicator {
-  width: 5px;
-  left: 5px;
-  top: 5px;
-  bottom: 5px;
-  z-index: 3;
-}
-
-.panel-heading {
-  word-wrap: break-word;
-}
-
-ul {
-  list-style: none;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
-
-.timeline-badge-wrap {
-  margin: auto;
-  max-width: 115px;
-}
-
-.timeline-badge.success {
-  background-color: $success;
-}
-
-.timeline-badge {
-  position: relative;
-  left:25%;
-  width:50%;
-  padding-bottom:50%;
-  border-radius:50%;
-}
-
-.timeline-badge span {
-  top:50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size:13px;
-  color: #fff;
-}
-
-.journal-type {
-  display: inline-flex;
-  display: -ms-inline-flexbox;
-  flex-wrap: wrap;
-  -webkit-justify-content: flex-end;
-}
-
-.fa-circle {
-  font-size: 4px;
-  padding: 7px;
-}
-
-@media (max-width: 768px) {
-  .timeline-badge-wrap {
-    margin: 0;
-  }
-  .timeline-badge {
-    left: 10%;
-  }
-}
-
-.translation-font {
-  font-size: 12px;
-}
-
-.translate-link {
-  cursor: pointer;
-  @extend .translation-font;
-}
-
-.translation-credits {
-  font-style: italic;
-}
-
-.translation-message {
-  padding-top: 10px;
-  font-size: 14px;
-  white-space: pre-wrap;
-}
-
-.toggle-link-show {
-  display: none;
-}
-
-.translation-credits {
-  font-style: italic;
-}
-
-.translation-icon {
-  width: 12px;
-  height: 12px;
-  padding-right: 4px;
-  @extend .translation-font;
-}
-
-.translation-container {
-  border: 1px solid $well-border;
-  border-radius: 3px;
-  background-color: $well-bg;
-  padding: 10px;
-  color: $text-color;
-  margin-top: 10px;
-  @extend .translation-font;
-}
-
-.translation-delimiter {
-  padding: 7px;
-  @extend .translation-font;
-}
-
-.translate-wrap {
-  white-space: nowrap;
-}
-
-//Changed, not OOTB
-.white-circle{
-  height: 40px !important;
-  width: 40px !important;
-  line-height: 4.8rem;
-  background: white;
-  border: solid 2px $deep-sky-blue;
-  border-radius: 50%;
-  left: 25px !important;
-}
-
-.request-history-title {
-  color: #708090;
-  font-family: $text-bold;
-  font-size: 24px;
-}
-
-.title-info {
-  color: $deep-sky-blue;
-  font-family: $text-bold;
-  font-size: 16px;
-}
-
-.modal-body{
-  overflow: hidden !important;
-  border: 20px solid white;
-  .wrapper-xl {
-    padding: 50px 0 50px 80px !important
-      margin-right: -20px;
-  }
-  button{
-    text-align: right;
-    font-size: 42px;
-  }
-  .title_property{
-    font-size: 32px;
-  }
-  .turn_bold{
-    font-weight: bold;
-  }
-  .color_change{
-    color: $deep-sky-blue;
-  }
-}
-
-/* Template Notifications */
-.content_notifications {
-  .content_conversation {
-    .attach_button {
-      margin-left: 60px;
-    }
-    .attach_title {
-      margin-top: 20px;
-    }
-    .submit_button {
-      position: absolute;
-      left: 360px;
-    }
-  }
-}
-
-/* Tooltips */
-.tooltip {
-  position: absolute;
-  visibility: hidden;
-  opacity: 0;
-  transition: .2s ease-in-out;
-  padding: 5px 10px;
-  white-space: nowrap;
-  z-index: 1;
-}
-.tooltip_right {
-  top: calc(50% - 15px);
-  right: 40%;
-}
-
-//Hover
-.conversation_action:hover {
-  .tooltip {
-    visibility: visible;
-    opacity: 1;
-    color: white;
-    background-color: $slate-gray;
-  }
-}
-
-.submit_button {
-  transition: .4s ease-in-out;
-  &amp;:hover {
-    transition: .2s ease-in-out;
-    transform: scale(1.1);
-    -webkit-transform: scale(1.1);
-    -ms-transform: scale(1.1);
-    -moz-transform: scale(1.1);
-    -o-transform: scale(1.1);
-  }
-}
-
-.sub-avatar {
-  background-size: contain !important;
-}
-
-.mandatory_message {
-  color: $coral;
-  font-family: $text-bold;
-}
-
-.mask_submitting{
-  background: white;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  opacity: 0.5;
-  z-index: 10;
-}
-
-.no_merged_entries {
-  height: 56px;
-}
-
-.conversation_attach {
-  display: flex;
-
-  .img-responsive {
-    max-height: 40px;
-    margin-right: 5px;
-  }
-}
-
-.dynamic_color_category2 {
-  .sub-avatar {
-    border: solid 2px $globo-purple !important;
-    span{ color: $globo-purple !important; }
-  }
-  strong {
-    color: $globo-purple !important;
-  }
-}
-.color_category2 {
-  .glyphicon-paperclip {
-    color: $globo-purple !important;
-  }
+        <css>.content_conversation_all {&#13;
+  .conversation_title {&#13;
+    text-transform: uppercase;&#13;
+    font-size: 14px;&#13;
+    font-family: '$text-bolder';&#13;
+  }&#13;
+  .activity_content {&#13;
+    height: 260px;&#13;
+    overflow: auto;&#13;
+    margin-bottom: 20px;&#13;
+    margin-left: -4px;&#13;
+    padding-left: 4px;&#13;
+  }&#13;
+  .timeline {&#13;
+    padding-top: 0;&#13;
+  }&#13;
+  .timeline:before {&#13;
+    top: 8px;&#13;
+    border-right: 2px solid $slate-gray;&#13;
+    right: 100%;&#13;
+    height: calc(100% - 80px);&#13;
+    z-index: 2;&#13;
+  }&#13;
+  .conversation_entries {&#13;
+    padding-left: 30px;&#13;
+&#13;
+    .conversation_mark {&#13;
+      width: 10px;&#13;
+      height: 10px;&#13;
+      border-radius: 5px;&#13;
+      background-color: white;&#13;
+      border: 1px solid $deep-sky-blue;&#13;
+      position: absolute;&#13;
+      top: 5px;&#13;
+      left: -4px;&#13;
+      z-index: 3;&#13;
+    }&#13;
+    .hide_timeline_property{&#13;
+      background: white;&#13;
+      height: 100%;&#13;
+      width: 10px;&#13;
+      z-index: 4;&#13;
+      position: absolute;&#13;
+      left: -4px;&#13;
+    }&#13;
+    .new_radio_mark{&#13;
+      width: 10px;&#13;
+      height: 10px;&#13;
+      border-radius: 5px;&#13;
+      background-color: white;&#13;
+      border: 1px solid $deep-sky-blue;&#13;
+      position: absolute;&#13;
+      top: 5px;&#13;
+      left: -4px;&#13;
+      z-index: 5;&#13;
+    }&#13;
+  }&#13;
+  .conversation_entries:first-child {&#13;
+    .conversation_action {&#13;
+      text-decoration: underline;&#13;
+    }&#13;
+  }&#13;
+  .conversation_entries:last-child {&#13;
+    .conversation_mark {&#13;
+      background-color: $deep-sky-blue;&#13;
+    }&#13;
+  }&#13;
+  .conversation_fixed {&#13;
+    position: sticky;&#13;
+    top: 0;&#13;
+    background: white;&#13;
+    z-index: 1;&#13;
+  }&#13;
+  .content_conversation_dynamic {&#13;
+    height: 260px;&#13;
+    overflow: auto;&#13;
+  }&#13;
+&#13;
+  .conversation_action {&#13;
+    font-size: 12px;&#13;
+    color: $deep-sky-blue;&#13;
+    font-family: $text-bold;&#13;
+  }&#13;
+  .conversation_description {&#13;
+    font-size: 12px;&#13;
+    color: $slate-gray;&#13;
+  }&#13;
+  .conversation_date {&#13;
+    font-size: 10px;&#13;
+  }&#13;
+&#13;
+  .conversation_form {&#13;
+    margin-left: 30px;&#13;
+&#13;
+    .conversation_user {&#13;
+      margin-left: -46px;&#13;
+&#13;
+      img {&#13;
+        width: 36px;&#13;
+        height: 36px;&#13;
+      }&#13;
+      .user_name {&#13;
+        margin-left: 7px;&#13;
+        font-family: $text-bold;&#13;
+      }&#13;
+    }&#13;
+&#13;
+    .submit_name {&#13;
+      text-transform: uppercase;&#13;
+      margin-left: 8px;&#13;
+      color: $deep-sky-blue;&#13;
+      font-size: 18px;&#13;
+      font-family: $text-bold;&#13;
+    }&#13;
+&#13;
+    textarea {&#13;
+      min-height: 80px;&#13;
+      margin-bottom: 20px;&#13;
+      border: 2px solid $deep-sky-blue;&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.content_conversation {&#13;
+  padding-bottom: 50px;&#13;
+&#13;
+  .number_title {&#13;
+    .ticket_number {&#13;
+      font-size: 12px;&#13;
+    }&#13;
+    .ticket_title {&#13;
+      font-size: 16px;&#13;
+      text-decoration: underline;&#13;
+      font-family: $text-bold;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .avatar_list {&#13;
+    padding-left: 15px;&#13;
+  }&#13;
+  .avatar-custom-size {&#13;
+    float: left;&#13;
+  }&#13;
+&#13;
+  .avatar-container {&#13;
+    cursor: default;&#13;
+  }&#13;
+  .avatar {&#13;
+    height: 40px !important;&#13;
+    width: 40px !important;&#13;
+    margin-top: -10px;&#13;
+  }&#13;
+  .avatar-container.avatar-large .avatar.soloAvatar .sub-avatar{&#13;
+    background: white;&#13;
+    border: solid 2px $deep-sky-blue;&#13;
+    border-radius: 50%;&#13;
+    line-height: 4rem;&#13;
+&#13;
+    span {&#13;
+      font-family: $text-bold;&#13;
+      color: $deep-sky-blue;&#13;
+    }&#13;
+  }&#13;
+  .all-avatar {&#13;
+    .avatar-container .avatar.soloAvatar {&#13;
+      .sub-avatar {&#13;
+        color: white !important;&#13;
+        background: white !important;&#13;
+        border: solid 2px $deep-sky-blue !important;&#13;
+        border-radius: 50% !important;&#13;
+      }&#13;
+    }&#13;
+  }&#13;
+&#13;
+&#13;
+  .history-name-size {&#13;
+    font-family: $text-bold;&#13;
+  }&#13;
+&#13;
+&#13;
+  .time-text {&#13;
+    font-size: 10px;&#13;
+    margin-left: 49px;&#13;
+    margin-top: -8px;&#13;
+  }&#13;
+&#13;
+  .message_user {&#13;
+    img {&#13;
+      height: 40px;&#13;
+    }&#13;
+    .user_name {&#13;
+      font-family: $text-bold;&#13;
+      margin-left: 5px;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .form-control {&#13;
+    overflow-x: hidden !important;&#13;
+    overflow-wrap: break-word !important;&#13;
+    height: 120px !important;&#13;
+    width: 400px;&#13;
+    border: solid 2px #00BFFF;&#13;
+    margin: 0 66px !important;&#13;
+  }&#13;
+&#13;
+  .conversation_form {&#13;
+&#13;
+    input[type="image"] {&#13;
+      width: 50px;&#13;
+      height: 50px;&#13;
+      margin-right: 65px;&#13;
+      margin-top: 10px;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .attach_button {&#13;
+    float: left;&#13;
+    margin-left: 42px;&#13;
+    margin-right: -18px;&#13;
+    transform: scaleX(-1);&#13;
+&#13;
+    .glyphicon-paperclip {&#13;
+      color: $deep-sky-blue;&#13;
+      transform: rotate(135deg);&#13;
+      font-size: 22px;&#13;
+    }&#13;
+  }&#13;
+  .attach_title {&#13;
+    margin-left: 5px;&#13;
+    margin-top: -40px;&#13;
+    color: $deep-sky-blue;&#13;
+    font-family: $text-bold;&#13;
+    text-transform: uppercase;&#13;
+  }&#13;
+}&#13;
+&#13;
+&#13;
+.panel-title {&#13;
+  display: inline;&#13;
+}&#13;
+&#13;
+.panel-title-container {&#13;
+  display: flex;&#13;
+  justify-content: space-between;&#13;
+  align-items: center;&#13;
+}&#13;
+&#13;
+.panel-title-icons {&#13;
+&#13;
+  ul {&#13;
+    display: flex;&#13;
+    align-items: center;&#13;
+    padding: 0;&#13;
+    margin: 0;&#13;
+  }&#13;
+  li {&#13;
+    padding: 0;&#13;
+    margin: 0;&#13;
+&#13;
+    .panel-button {&#13;
+      display: flex;&#13;
+      align-items: center;&#13;
+      margin: 0 0 0 15px;&#13;
+      line-height: initial;&#13;
+&#13;
+      &amp;:hover, &amp;:focus {&#13;
+        text-decoration: none;&#13;
+      }&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+&#13;
+.timeline-heading test {&#13;
+  float:right;&#13;
+}&#13;
+&#13;
+.timeline-body &gt; p {&#13;
+  white-space: pre-wrap;&#13;
+  overflow-x: hidden;&#13;
+}&#13;
+&#13;
+.timeline-body ul &gt; li {&#13;
+  float: none;&#13;
+}&#13;
+&#13;
+.no-resize {&#13;
+  resize: none;&#13;
+}&#13;
+&#13;
+.journal-field-indicator {&#13;
+  width: 5px;&#13;
+  left: 5px;&#13;
+  top: 5px;&#13;
+  bottom: 5px;&#13;
+  z-index: 3;&#13;
+}&#13;
+&#13;
+.panel-heading {&#13;
+  word-wrap: break-word;&#13;
+}&#13;
+&#13;
+ul {&#13;
+  list-style: none;&#13;
+}&#13;
+&#13;
+.overflow-hidden {&#13;
+  overflow: hidden;&#13;
+}&#13;
+&#13;
+&#13;
+.timeline-badge-wrap {&#13;
+  margin: auto;&#13;
+  max-width: 115px;&#13;
+}&#13;
+&#13;
+.timeline-badge.success {&#13;
+  background-color: $success;&#13;
+}&#13;
+&#13;
+.timeline-badge {&#13;
+  position: relative;&#13;
+  left:25%;&#13;
+  width:50%;&#13;
+  padding-bottom:50%;&#13;
+  border-radius:50%;&#13;
+}&#13;
+&#13;
+.timeline-badge span {&#13;
+  top:50%;&#13;
+  left: 50%;&#13;
+  transform: translate(-50%, -50%);&#13;
+  font-size:13px;&#13;
+  color: #fff;&#13;
+}&#13;
+&#13;
+.journal-type {&#13;
+  display: inline-flex;&#13;
+  display: -ms-inline-flexbox;&#13;
+  flex-wrap: wrap;&#13;
+  -webkit-justify-content: flex-end;&#13;
+}&#13;
+&#13;
+.fa-circle {&#13;
+  font-size: 4px;&#13;
+  padding: 7px;&#13;
+}&#13;
+&#13;
+@media (max-width: 768px) {&#13;
+  .timeline-badge-wrap {&#13;
+    margin: 0;&#13;
+  }&#13;
+  .timeline-badge {&#13;
+    left: 10%;&#13;
+  }&#13;
+}&#13;
+&#13;
+.translation-font {&#13;
+  font-size: 12px;&#13;
+}&#13;
+&#13;
+.translate-link {&#13;
+  cursor: pointer;&#13;
+  @extend .translation-font;&#13;
+}&#13;
+&#13;
+.translation-credits {&#13;
+  font-style: italic;&#13;
+}&#13;
+&#13;
+.translation-message {&#13;
+  padding-top: 10px;&#13;
+  font-size: 14px;&#13;
+  white-space: pre-wrap;&#13;
+}&#13;
+&#13;
+.toggle-link-show {&#13;
+  display: none;&#13;
+}&#13;
+&#13;
+.translation-credits {&#13;
+  font-style: italic;&#13;
+}&#13;
+&#13;
+.translation-icon {&#13;
+  width: 12px;&#13;
+  height: 12px;&#13;
+  padding-right: 4px;&#13;
+  @extend .translation-font;&#13;
+}&#13;
+&#13;
+.translation-container {&#13;
+  border: 1px solid $well-border;&#13;
+  border-radius: 3px;&#13;
+  background-color: $well-bg;&#13;
+  padding: 10px;&#13;
+  color: $text-color;&#13;
+  margin-top: 10px;&#13;
+  @extend .translation-font;&#13;
+}&#13;
+&#13;
+.translation-delimiter {&#13;
+  padding: 7px;&#13;
+  @extend .translation-font;&#13;
+}&#13;
+&#13;
+.translate-wrap {&#13;
+  white-space: nowrap;&#13;
+}&#13;
+&#13;
+//Changed, not OOTB&#13;
+.white-circle{&#13;
+  height: 40px !important;&#13;
+  width: 40px !important;&#13;
+  line-height: 4.8rem;&#13;
+  background: white;&#13;
+  border: solid 2px $deep-sky-blue;&#13;
+  border-radius: 50%;&#13;
+  left: 25px !important;&#13;
+}&#13;
+&#13;
+.request-history-title {&#13;
+  color: #708090;&#13;
+  font-family: $text-bold;&#13;
+  font-size: 24px;&#13;
+}&#13;
+&#13;
+.title-info {&#13;
+  color: $deep-sky-blue;&#13;
+  font-family: $text-bold;&#13;
+  font-size: 16px;&#13;
+}&#13;
+&#13;
+.modal-body{&#13;
+  overflow: hidden !important;&#13;
+  border: 20px solid white;&#13;
+  .wrapper-xl {&#13;
+    padding: 50px 0 50px 80px !important&#13;
+      margin-right: -20px;&#13;
+  }&#13;
+  button{&#13;
+    text-align: right;&#13;
+    font-size: 42px;&#13;
+  }&#13;
+  .title_property{&#13;
+    font-size: 32px;&#13;
+  }&#13;
+  .turn_bold{&#13;
+    font-weight: bold;&#13;
+  }&#13;
+  .color_change{&#13;
+    color: $deep-sky-blue;&#13;
+  }&#13;
+}&#13;
+&#13;
+/* Template Notifications */&#13;
+.content_notifications {&#13;
+  .content_conversation {&#13;
+    .attach_button {&#13;
+      margin-left: 60px;&#13;
+    }&#13;
+    .attach_title {&#13;
+      margin-top: 20px;&#13;
+    }&#13;
+    .submit_button {&#13;
+      position: absolute;&#13;
+      left: 360px;&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+/* Tooltips */&#13;
+.tooltip {&#13;
+  position: absolute;&#13;
+  visibility: hidden;&#13;
+  opacity: 0;&#13;
+  transition: .2s ease-in-out;&#13;
+  padding: 5px 10px;&#13;
+  white-space: nowrap;&#13;
+  z-index: 1;&#13;
+}&#13;
+.tooltip_right {&#13;
+  top: calc(50% - 15px);&#13;
+  right: 40%;&#13;
+}&#13;
+&#13;
+//Hover&#13;
+.conversation_action:hover {&#13;
+  .tooltip {&#13;
+    visibility: visible;&#13;
+    opacity: 1;&#13;
+    color: white;&#13;
+    background-color: $slate-gray;&#13;
+  }&#13;
+}&#13;
+&#13;
+.submit_button {&#13;
+  transition: .4s ease-in-out;&#13;
+  &amp;:hover {&#13;
+    transition: .2s ease-in-out;&#13;
+    transform: scale(1.1);&#13;
+    -webkit-transform: scale(1.1);&#13;
+    -ms-transform: scale(1.1);&#13;
+    -moz-transform: scale(1.1);&#13;
+    -o-transform: scale(1.1);&#13;
+  }&#13;
+}&#13;
+&#13;
+.sub-avatar {&#13;
+  background-size: contain !important;&#13;
+}&#13;
+&#13;
+.mandatory_message {&#13;
+  color: $coral;&#13;
+  font-family: $text-bold;&#13;
+}&#13;
+&#13;
+.mask_submitting{&#13;
+  background: white;&#13;
+  position: absolute;&#13;
+  height: 100%;&#13;
+  width: 100%;&#13;
+  opacity: 0.5;&#13;
+  z-index: 10;&#13;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data>{"options": {
@@ -1062,7 +1029,7 @@ ul {
 	}
 }]]></link>
         <name>GService Ticket Conversations</name>
-        <option_schema>[{"hint":"Enter key behavior is specified by system property (glide.service_portal.comment.enter_adds_newline) unless overridden here","name":"enter_key_behavior","section":"Behavior","default_value":"System property","label":"Enter key behavior","type":"choice","choices":[{"label":"System property","value":"System property"},{"label":"Submit","value":"Submit"},{"label":"New line","value":"New line"}]},{"hint":"What is the table of the record?","name":"table","section":"Data","label":"Table","type":"string"},{"hint":"What is the sys_id of the record?","name":"sys_id","section":"Data","label":"Sys_ID","type":"string"},{"hint":"Placeholder text shows selected journal field","name":"use_dynamic_placeholder","section":"Behavior","label":"Use dynamic placeholder","type":"boolean"},{"hint":"Message to show when record has no readable journal field","name":"no_readable_journal_field_message","default_value":"","section":"Presentation","label":"No readable journal field message","type":"string"},{"hint":"Get the template based on the tab","name":"tab","section":"Behavior","label":"Tab Template","type":"string"},{"name":"item_status","section":"Behavior","label":"Item Status","type":"string"},{"name":"color_class","section":"Presentation","label":"Color Class","type":"string"},{"name":"bd_color_class","section":"Presentation","label":"BD Color Class","type":"string"},{"name":"comment_image","section":"Presentation","label":"Comment Image","type":"string"},{"name":"send_image","section":"Presentation","label":"Send Image","type":"string"}]</option_schema>
+        <option_schema>[{"hint":"Enter key behavior is specified by system property (glide.service_portal.comment.enter_adds_newline) unless overridden here","name":"enter_key_behavior","section":"Behavior","default_value":"System property","label":"Enter key behavior","type":"choice","choices":[{"label":"System property","value":"System property"},{"label":"Submit","value":"Submit"},{"label":"New line","value":"New line"}]},{"hint":"What is the table of the record?","name":"table","section":"Data","label":"Table","type":"string"},{"hint":"What is the sys_id of the record?","name":"sys_id","section":"Data","label":"Sys_ID","type":"string"},{"hint":"Placeholder text shows selected journal field","name":"use_dynamic_placeholder","section":"Behavior","label":"Use dynamic placeholder","type":"boolean"},{"hint":"Message to show when record has no readable journal field","name":"no_readable_journal_field_message","default_value":"","section":"Presentation","label":"No readable journal field message","type":"string"},{"hint":"Get the template based on the tab","name":"tab","section":"Behavior","label":"Tab Template","type":"string"},{"name":"item_status","section":"Behavior","label":"Item Status","type":"string"}]</option_schema>
         <public>false</public>
         <roles>snc_external,snc_internal</roles>
         <script><![CDATA[(function() {
@@ -1075,11 +1042,6 @@ ul {
 	data.user_id = userID;
 	data.username = gs.getUserDisplayName();
 	data.statusEntries = [];
-	
-	data.color_class = options.color_class || "color_category1_old";
-	data.bd_color_class = options.bd_color_class || "bdcolor_category1_old";
-	data.send_image = options.send_image || "gservice_dashboard_submit.png";
-	data.comment_image = options.comment_image || "gservice_message.png";
 
 	data.currentUserID = gs.getUserID();
 	data.maxAttachmentSize = parseInt(gs.getProperty("com.glide.attachment.max_size", 1024));
@@ -1144,13 +1106,7 @@ ul {
 	else if (options.enter_key_behavior == "New line")
 		data.enterKeyAddsNewLine = true;
 
-	var gr = new GlideRecord(data.table);
-	if (!gr.isValid())
-		return;
-
-	gr.get(data.sys_id);
-	if (!gr.canRead())
-		return;
+	var gr = portalUtils.getRecord(data.table, data.sys_id);
 	
 	data.variables = new global.GlobalServiceCatalogUtil().getVariablesForTask(gr, true);
 
@@ -1200,15 +1156,16 @@ ul {
 	data.canWrite = gr.canWrite();
 	data.canAttach = userCanAttach(gr);
 	data.canRead = gr.canRead();
-	data.hasWritableJournalField = false;
+	data.hasWritableJournalField = true;
 	data.hasReadableJournalField = false;
 
 	if (data.canRead && !data.isNewRecord) {
-		data.stream = $sp.getStream(data.table, data.sys_id);
+		data.stream = portalUtils.getStream(data.table, data.sys_id, $sp);
 		// Journal fields come in correct order already
 		// so grab the first 2 writeable fields
 		if ('journal_fields' in data.stream) {
 			var jf = data.stream.journal_fields;
+			data.test = jf;
 			for(var i=0; i < jf.length; i++){
 				if (jf[i].can_read === true)
 					data.hasReadableJournalField = true;
@@ -1255,15 +1212,15 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-19 14:34:49</sys_created_on>
         <sys_id>420f56b2dbf05410fa11cf24149619ab</sys_id>
-        <sys_mod_count>456</sys_mod_count>
+        <sys_mod_count>420</sys_mod_count>
         <sys_name>GService Ticket Conversations</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_420f56b2dbf05410fa11cf24149619ab</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-31 12:46:37</sys_updated_on>
-        <template><![CDATA[<div class="content_notifications dynamic_{{data.color_class}}" ng-if="data.canRead && !data.isNewRecord && !data.hide">
+        <sys_updated_by>organize.matias</sys_updated_by>
+        <sys_updated_on>2020-09-03 20:13:15</sys_updated_on>
+        <template><![CDATA[<div class="content_notifications" ng-if="data.canRead && !data.isNewRecord && !data.hide">
   <div class="mask_submitting" ng-show="c.submitting"/>
   <div class="content_conversation">
     <div class="panel-heading panel-title-container">
@@ -1274,18 +1231,16 @@ ul {
     </div>
 
     <div class="panel-body">
-      <div class="no_merged_entries" ng-if="data.mergedEntries.length == 0">
-      </div>
       <div ng-if="data.hasReadableJournalField">
         <div class="row">
           <ul role="list" class="avatar_list" aria-label="${Ticket history}">
-            <li ng-repeat="e in data.mergedEntries | limitTo : 1">
+            <li class="" ng-repeat="e in data.mergedEntries | limitTo : 1">
               <sn-avatar ng-if="hasLiveProfile(e.user_sys_id)" primary="getLiveProfileByUserId(e.user_sys_id)" class="avatar-large avatar-custom-size" show-presence="false" enable-context-menu="false">
               </sn-avatar>
               <div class="history-name-size">{{e.name}}</div>
-              <div>
+              <div class="">
                 <p ng-if="(e.element != 'attachment')" ng-bind-html="e.value"></p>
-                <div class="conversation_attach" ng-if="(e.element == 'attachment')">
+                <div ng-if="(e.element == 'attachment')">
                   <a ng-if="(e.attachment.state == 'available')" target="_blank" href="/sys_attachment.do?view=true&sys_id={{e.attachment.sys_id}}" title="${View}">
                     <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/>
                   </a>
@@ -1312,25 +1267,30 @@ ul {
             </li>
           </ul>
         </div>
+
         <div class="message_user">
-          <img src="{{data.comment_image}}">
+          <img src="gservice_message.png">
           <span class="user_name">{{data.username}}</span>
         </div>
+
         <form ng-submit="postEntry(data.journalEntry)">
           <div ng-show="data.hasWritableJournalField" class="conversation_form">
             <span ng-if="c.needComment" class="mandatory_message">${É necessário um comentário para responder a essa pendência}</span>
-            <textarea ng-keypress="keyPress($event)" sn-resize-height="trim" rows="1" class="form-control no-resize overflow-hidden {{data.bd_color_class}}" ng-model='data.journalEntry' ng-model-options='{debounce: 250}' ng-attr-placeholder="{{getPlaceholder()}}" aria-label="{{getPlaceholder()}}" autocomplete="off" ng-change="userTyping(data.journalEntry)"/>
+            <textarea ng-keypress="keyPress($event)" sn-resize-height="trim" rows="1" class="form-control no-resize overflow-hidden" ng-model='data.journalEntry' ng-model-options='{debounce: 250}' ng-attr-placeholder="{{getPlaceholder()}}" aria-label="{{getPlaceholder()}}" autocomplete="off" ng-change="userTyping(data.journalEntry)"/>
             <span class="journal-field-indicator" ng-style="({'background-color': data.useSecondaryJournalField ? data.secondaryJournalField.color : data.primaryJournalField.color})"></span>
-            <input class="submit_button" ng-disabled="c.submitting" type="image" src="{{data.send_image}}" ng-disabled="data.isPosting" value="{{data.btnLabel}}" style="cursor: pointer"/>
+            <input class="submit_button" ng-disabled="c.submitting" type="image" src="gservice_dashboard_submit.png" ng-disabled="data.isPosting" value="{{data.btnLabel}}" style="cursor: pointer"/>
           </div>
         </form>
+
         <div ng-if="(!data.hideAttachmentBtn)" class="attach_text">
-          <sp-attachment-button ng-if="data.canWrite && data.canAttach" class="attach_button {{data.color_class}}">
+          <sp-attachment-button ng-if="data.canWrite && data.canAttach" class="attach_button">
           </sp-attachment-button>
-          <div class="attach_title {{data.color_class}}">${Add attachments}</div>
+
+          <div class="attach_title">${Add attachments}</div>
           <now-attachments-list class="attachment-list" template="sp_attachment_single_line" >
           </now-attachments-list>
         </div>
+
       </div>  
     </div>
 

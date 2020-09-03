@@ -112,21 +112,12 @@
 	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
 		c.refreshApprovalsCount();
 	});
-	
-	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQueryCSC, function(event) {
-		c.refreshApprovalsCount();
-	});
-	
-	spUtil.recordWatch($scope, "x_gmeps_csc_csc", c.data.cscQuery, function(event) {
-		c.refreshNotificationsCount(event.data);
-	});
 
 	c.refreshNotificationsCount = function(item){
 		c.server.get({
 			action: "notificationsCount",
 			taskQuery: c.data.taskQuery,
-			incidentQuery : c.data.incidentQuery,
-			cscQuery : c.data.cscQuery
+			incidentQuery : c.data.incidentQuery
 		}).then(function(response) {
 			c.data.notificationsCount = response.data.notificationsCount;
 			c.refreshNotifications(item);
@@ -148,8 +139,7 @@
 	c.refreshApprovalsCount = function(){
 		c.server.get({
 			action: "approvalsCount",
-			approverQuery : c.data.approverQuery,
-			approverQueryCSC : c.data.approverQueryCSC
+			approverQuery : c.data.approverQuery
 		}).then(function(response) {
 			c.data.approvalsCount = response.data.approvalsCount;
 		});
@@ -178,7 +168,7 @@
 		});
 	}
 
-	$scope.$on('selectTabRequest', function(event, item_id, source) {
+	$scope.$on('selectTabRequest', function(event, item_id) {
 		c.index = 0;
 		c.isLoading = true;
 		c.data.newNotificationAvailable = false;
@@ -198,13 +188,7 @@
 		}).then(function(response) {
 			c.data.widgets = response.data.widgets;
 			$timeout(function(){
-				if(source == "csc"){
-					$scope.$broadcast("selectRequestCSC", item_id);
-				}
-				else{
-					$scope.$broadcast("selectRequest", item_id);
-				}
-				
+				$scope.$broadcast("selectRequest", item_id);
 			}, 100);
 		});
 	});
@@ -216,57 +200,53 @@
   padding: 0 90px;
   padding-top: 30px;
   padding-bottom: 30px;
-  margin-bottom: 15px;
+  margin-bottom: 50px;
 
   .header-loader{
     padding: 50px;
     padding-bottom: 100px;
     .sp-loading-indicator{
-      color: $blue !important;
+      color: $deep-sky-blue !important;
     }
   }
 
   .content_avatar {
     display: flex;
 
-    .avatar-image {
-      margin-top: -10px;
+    a {
+      .avatar-custom-size {
+        margin-top: 15px;
+        margin-bottom: 30px;
+        height: 90px;
+        width: 90px;
+        box-shadow: 0 0 0 4px $deep-sky-blue;
+        font-size: 20px !important;
 
-      a {
-        .avatar-custom-size {
-          margin-top: 15px;
-          margin-bottom: 30px;
-          height: 90px;
-          width: 90px;
-          box-shadow: 0 0 0 4px $blue;
-          font-size: 20px !important;
-
-          &amp;:hover {
-            .tooltip {
-              visibility: visible;
-              opacity: 1;
-            }
+        &amp;:hover {
+          .tooltip {
+            visibility: visible;
+            opacity: 1;
           }
         }
-        .avatar-container .avatar.soloAvatar .sub-avatar {
-          border-radius: 0;
-          font-size: 50px;
-          line-height: 95px;
-          font-family: $text-bold;
-          background-color: white;
-          color: $blue;
-        }
+      }
+      .avatar-container .avatar.soloAvatar .sub-avatar {
+        border-radius: 0;
+        font-size: 50px;
+        line-height: 95px;
+        font-family: $text-bold;
+        background-color: white;
+        color: $deep-sky-blue;
       }
     }
 
     .user-info-properties {
-      margin-left: 5px;
+      margin-left: 100px;
       color: $slate-gray;
 
       .name-properties {
         font-size: 30px;
         font-family: $text-bold;
-        color: $blue;
+        color: $deep-sky-blue;
         letter-spacing: -1px;
       }
       .job-properties {
@@ -281,6 +261,7 @@
 
   .tabs-align {
     display: flex;
+    justify-content: center;
 
     .categories {
       display: inline-block;
@@ -296,14 +277,6 @@
           height: 80px;
           display: flex;
           justify-content: center;
-
-          .coffee {
-            transition: 1s ease-out !important;
-            background: white;
-            width: 100%;
-            height: 34px;
-            z-index: 1;
-          }
 
           .icon-img {
             transition: .4s ease-in-out;
@@ -340,13 +313,14 @@
             -ms-transform: translateY(-10px);
             -moz-transform: translateY(-10px);
             -o-transform: translateY(-10px);
-            color: $blue;
+            color: $deep-sky-blue;
           }
         }
       }
       .tab_current {
-        color: $blue;
+        color: $deep-sky-blue;
       }
+
     }
     .categories:nth-child(1) {
       .tab_items {
@@ -356,14 +330,6 @@
     .categories:nth-child(4) {
       .tab_items {
         .tab_title { width: 155px; }
-
-        &amp;:hover {
-          .tab_images {
-            .coffee {
-              height: 0;
-            }
-          }
-        }
       }
     }
   }
@@ -395,7 +361,7 @@
   font-size: 12px;
   font-family: $text-bold;
   line-height: 1;
-
+  
   .tooltip {
     visibility: visible;
     opacity: 1;
@@ -409,7 +375,7 @@
 .line {
   width: 100%;
   height: 2px;
-  background-color: $blue;
+  background-color: $deep-sky-blue;
   margin-top: 30px;
 }
 
@@ -433,25 +399,20 @@
         <script><![CDATA[(function() {
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
-	var portalUtilsCSC = new global.OCLPortalUtilsCSC(); 
 
 	if(!localInput){
 
 		data.widgets = [];
 		var requestWidget = {show : true,
-												 widget1 : $sp.getWidget('gservice_my_dashboard_requests'),
-												 widget2 : $sp.getWidget('gservice_my_dashboard_requests_csc')};
+												 widget : $sp.getWidget('gservice_my_dashboard_requests')};
 		var notificationWidget = {show : false,
-															widget1 : $sp.getWidget('gservice_my_dashboard_notification_v2'),
-															widget2 : $sp.getWidget("gservice_my_dashboard_notification")};
+															widget : $sp.getWidget('gservice_my_dashboard_notification')};
 		var approvalsWidget = {show : false,
-													 widget1 : $sp.getWidget('gservice_my_dashboard_approvals_v2'),
-													 widget2 : $sp.getWidget("gservice_my_dashboard_approvals_csc")};
+													 widget : $sp.getWidget('gservice_my_dashboard_approvals')};
 		var assetsWidget = {show : false,
-												widget1 : $sp.getWidget('gservice_my_dashboard_assets')};
+												widget : $sp.getWidget('gservice_my_dashboard_assets')};
 		var mostReqWidget = {show : false,
-												 widget1 : $sp.getWidget('gservice_my_dashboard_most_req_v2'),
-												 widget2 : $sp.getWidget("gservice_my_dashboard_most_req_csc")};
+												 widget : $sp.getWidget('gservice_my_dashboard_most_req')};
 		data.widgets.push(requestWidget);
 		data.widgets.push(notificationWidget);
 		data.widgets.push(approvalsWidget);
@@ -500,12 +461,12 @@
 
 			} while(grDelegate.next());
 		}
+
 		var queries = portalUtils.getNotificationQuery();
 		data.taskQuery = queries.taskQuery;
 		data.incidentQuery = queries.incidentQuery;
 		data.approverQuery = portalUtils.getApproverQuery();
-		data.approverQueryCSC = "state=requested^source_tableSTARTSWITHx_gmeps_csc^approver.sys_idIN" + gs.getUserID();
-		data.cscQuery = "requester="+ gs.getUserID() +"^ORopened_by="+ gs.getUserID() +"^u_status_portal=3";
+
 		if(delegateUsersNotification.length > 0){
 			data.taskQuery += "," + delegateUsersNotification.join(",");
 			data.incidentQuery += "," + delegateUsersNotification.join(",");
@@ -513,11 +474,9 @@
 		if(delegateUsersApproval.length > 0){
 			data.approverQuery += "," + delegateUsersApproval.join(",");
 		}
-		
+
 		data.notificationsCount = portalUtils.setNotificationsCount(data.taskQuery, data.incidentQuery);
-		data.notificationsCount += portalUtilsCSC.setNotificationsCount(data.cscQuery);
 		data.approvalsCount = portalUtils.setApprovalsCount(data.approverQuery);
-		data.approvalsCount += portalUtils.setApprovalsCount(data.approverQueryCSC);
 	}
 
 	else{
@@ -529,18 +488,15 @@
 				}
 				if(localInput.index == 1){
 					var notificationWidget = {show : true,
-															widget1 : $sp.getWidget('gservice_my_dashboard_notification_v2'),
-															widget2 : $sp.getWidget("gservice_my_dashboard_notification_csc")};
+																		widget : $sp.getWidget('gservice_my_dashboard_notification')};
 					data.widgets[1] = notificationWidget;
 				}
 				break;
 			case "notificationsCount":
 				data.notificationsCount = portalUtils.setNotificationsCount(localInput.taskQuery, localInput.incidentQuery);
-				data.notificationsCount += portalUtilsCSC.setNotificationsCount(localInput.cscQuery);
 				break;
 			case "approvalsCount":
 				data.approvalsCount = portalUtils.setApprovalsCount(localInput.approverQuery);
-				data.approvalsCount += portalUtils.setApprovalsCount(localInput.approverQueryCSC);
 				break;
 		}
 	}
@@ -574,17 +530,17 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>210</sys_mod_count>
+        <sys_mod_count>146</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-08-31 14:23:07</sys_updated_on>
+        <sys_updated_by>organize.matias</sys_updated_by>
+        <sys_updated_on>2020-09-03 20:23:05</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
   <div class="content_avatar">
-    <div class="avatar-image">
+    <div class="">
       <input ng-show="false" type="file" ng-file-select="attachFiles({files: $files})" 
              accept="image/jpeg,image/png,image/bmp,image/x-windows-bmp,image/gif,image/x-icon,image/svg+xml"/>
       <a title="Avatar Pic" ng-click="uploadNewProfilePicture($event)"
@@ -600,11 +556,12 @@
     <div class="user-info-properties">
       <div class="name-properties">{{data.name}}</div>
       <div class="job-properties">{{data.title}}</div>
-      <div>{{data.email}}</div>
-      <div>{{data.phone}}</div>
+      <div class="">{{data.email}}</div>
+      <div class="">{{data.phone}}</div>
       <div class="location-properties">{{data.location}}</div>
     </div>
   </div>
+
   <div class="tabs-align">
     <div class="categories" ng-repeat="tab in data.tabs" ng-if="tab.show">
       <div class="tab_items" ng-class="{'tab_current': tab.selected}" ng-click="c.selectTab(tab, $index)">
@@ -615,7 +572,6 @@
           </span>
         </span>
         <div class="tab_images">
-          <div class="coffee" ng-if="$index == 4" ng-hide="tab.selected"></div>
           <img ng-show="!tab.selected" src="{{tab.img}}" class="icon-img"/>
           <img ng-show="tab.selected" src="{{tab.imgSelected}}" class="icon-img"/>
         </div>
@@ -625,6 +581,8 @@
       </div>
     </div>
   </div>
+
+  <div class="line"></div>
   <div class="header-loader" ng-show="c.isLoading">
     <div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator">
       <div></div>
@@ -632,12 +590,11 @@
       <div></div>
     </div>
   </div>
-</div>
 
-<div ng-if="!c.isLoading">
-  <div id="show-selected-item" ng-repeat='widget in data.widgets'>
-    <sp-widget ng-if='widget.show' widget="widget.widget1"></sp-widget>
-    <sp-widget ng-if='widget.show' widget="widget.widget2"></sp-widget>
+  <div ng-if="!c.isLoading">
+    <div id="show-selected-item" ng-repeat='widget in data.widgets'>
+      <sp-widget ng-if='widget.show' widget="widget.widget"></sp-widget>
+    </div>
   </div>
 </div>]]></template>
     </sp_widget>
