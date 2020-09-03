@@ -404,15 +404,15 @@
 
 		data.widgets = [];
 		var requestWidget = {show : true,
-												 widget : $sp.getWidget('gservice_my_dashboard_requests')};
+							 widget : $sp.getWidget('gservice_my_dashboard_requests')};
 		var notificationWidget = {show : false,
-															widget : $sp.getWidget('gservice_my_dashboard_notification')};
+								  widget : $sp.getWidget('gservice_my_dashboard_notification')};
 		var approvalsWidget = {show : false,
-													 widget : $sp.getWidget('gservice_my_dashboard_approvals')};
+							   widget : $sp.getWidget('gservice_my_dashboard_approvals')};
 		var assetsWidget = {show : false,
-												widget : $sp.getWidget('gservice_my_dashboard_assets')};
+							widget : $sp.getWidget('gservice_my_dashboard_assets')};
 		var mostReqWidget = {show : false,
-												 widget : $sp.getWidget('gservice_my_dashboard_most_req')};
+							 widget : $sp.getWidget('gservice_my_dashboard_most_req')};
 		data.widgets.push(requestWidget);
 		data.widgets.push(notificationWidget);
 		data.widgets.push(approvalsWidget);
@@ -443,43 +443,15 @@
 			data.tabs[i].label = gs.getMessage(tab.label);
 		}
 
-		var delegateUsersNotification = [];
-		var delegateUsersApproval = [];
-		var grDelegate = new GlideRecord("sys_user_delegate");
-		grDelegate.addQuery("delegate", gs.getUserID());
-		var qc = grDelegate.addQuery("u_pending_requests", true);
-		qc.addOrCondition("approvals", true);
-		grDelegate.query();
-		if(grDelegate.next()){
-			do{
-				if(grDelegate.getValue("u_pending_requests") == 1){
-					delegateUsersNotification.push(grDelegate.getValue("user"));
-				}
-				if(grDelegate.getValue("approvals") == 1){
-					delegateUsersApproval.push(grDelegate.getValue("user"));
-				}
-
-			} while(grDelegate.next());
-		}
-
 		var queries = portalUtils.getNotificationQuery();
 		data.taskQuery = queries.taskQuery;
 		data.incidentQuery = queries.incidentQuery;
 		data.approverQuery = portalUtils.getApproverQuery();
-
-		if(delegateUsersNotification.length > 0){
-			data.taskQuery += "," + delegateUsersNotification.join(",");
-			data.incidentQuery += "," + delegateUsersNotification.join(",");
-		}
-		if(delegateUsersApproval.length > 0){
-			data.approverQuery += "," + delegateUsersApproval.join(",");
-		}
-
 		data.notificationsCount = portalUtils.setNotificationsCount(data.taskQuery, data.incidentQuery);
 		data.approvalsCount = portalUtils.setApprovalsCount(data.approverQuery);
 	}
 
-	else{
+	else {
 		switch(localInput.action){
 			case "selectedTab":
 				data.widgets = localInput.widgets;
@@ -488,7 +460,7 @@
 				}
 				if(localInput.index == 1){
 					var notificationWidget = {show : true,
-																		widget : $sp.getWidget('gservice_my_dashboard_notification')};
+											  widget : $sp.getWidget('gservice_my_dashboard_notification')};
 					data.widgets[1] = notificationWidget;
 				}
 				break;
@@ -530,14 +502,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>146</sys_mod_count>
+        <sys_mod_count>153</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
         <sys_updated_by>organize.matias</sys_updated_by>
-        <sys_updated_on>2020-09-03 20:23:05</sys_updated_on>
+        <sys_updated_on>2020-09-03 23:53:32</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
   <div class="content_avatar">
     <div class="">
