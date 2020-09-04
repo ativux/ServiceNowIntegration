@@ -11,8 +11,16 @@
 	spUtil.recordWatch($scope, "incident", c.data.incidentQuery, function(event) {
 		c.refreshDashboardcount();
 	});
+	
+	spUtil.recordWatch($scope, "x_gmeps_csc_csc", c.data.cscQuery, function(event) {
+		c.refreshDashboardcount();
+	});
 
 	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
+		c.refreshDashboardcount();
+	});
+	
+	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQueryCSC, function(event) {
 		c.refreshDashboardcount();
 	});
 
@@ -21,7 +29,9 @@
 			action: "dashboardCount",
 			taskQuery: c.data.taskQuery,
 			incidentQuery : c.data.incidentQuery,
-			approverQuery : c.data.approverQuery
+			cscQuery : c.data.cscQuery,
+			approverQuery : c.data.approverQuery,
+			approverQueryCSC : c.data.approverQueryCSC
 		}).then(function(response) {
 			c.data.dashboardCount = response.data.dashboardCount;
 		});
@@ -142,7 +152,7 @@
   position: absolute;
   top: 10px;
   padding: 1px 6.5px !important;
-  margin-left: -18px;
+  margin-left: -6px;
   font-family: $text-bolder;
 }
 
@@ -296,19 +306,56 @@
         <script><![CDATA[(function(){
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
+	var portalUtilsCSC = new global.OCLPortalUtilsCSC();
 	var equipmentsUtils = new global.OCLPortalEquipmentsUtil();
+
+	/*var delegateUsersNotification = [];
+	var delegateUsersApproval = [];
+	var grDelegate = new GlideRecord("sys_user_delegate");
+	grDelegate.addQuery("delegate", gs.getUserID());
+	var qc = grDelegate.addQuery("u_pending_requests", true);
+	qc.addOrCondition("approvals", true);
+	grDelegate.query();
+	if(grDelegate.next()){
+		do{
+			if(grDelegate.getValue("u_pending_requests") == 1){
+				delegateUsersNotification.push(grDelegate.getValue("user"));
+			}
+			if(grDelegate.getValue("approvals") == 1){
+				delegateUsersApproval.push(grDelegate.getValue("user"));
+			}
+		} while(grDelegate.next());
+	}
+	delegateUsersNotification.push(gs.getUserID());
+	var users = delegateUsersNotification.join();
+*/
 
 	var queries = portalUtils.getNotificationQuery();
 	data.taskQuery = queries.taskQuery;
 	data.incidentQuery = queries.incidentQuery;
 	data.approverQuery = portalUtils.getApproverQuery();
+	data.cscQuery = "u_status_portal=3^requester.sys_idIN"+ gs.getUserID() +"^ORopened_by.sys_idIN"+ gs.getUserID();
 	data.equipment_query = gs.getProperty("gservice_equipments_query");
+	data.approverQueryCSC = "state=requested^source_tableSTARTSWITHx_gmeps_csc^approver.sys_idIN" + gs.getUserID();
+
+	/*if(delegateUsersNotification.length > 0){
+		data.taskQuery += "," + delegateUsersNotification.join(",");
+		data.incidentQuery += "," + delegateUsersNotification.join(",");
+		data.cscQuery += 
+	}*/
+	/*if(delegateUsersApproval.length > 0){
+		data.approverQuery += "," + delegateUsersApproval.join(",");
+	}*/
 
 	data.dashboardCount = portalUtils.setDashboardCount(data.taskQuery, data.incidentQuery, data.approverQuery);
+	data.dashboardCount += portalUtilsCSC.setNotificationsCount(data.cscQuery);
+	data.dashboardCount += portalUtils.setApprovalsCount(data.approverQueryCSC);
 	data.equipmentsCount = equipmentsUtils.getEquipmentsCount();
 	if(localInput){
 		if(localInput.action == "dashboardCount"){
 			data.dashboardCount = portalUtils.setDashboardCount(localInput.taskQuery, localInput.incidentQuery, localInput.approverQuery);
+			data.dashboardCount += portalUtilsCSC.setNotificationsCount(localInput.cscQuery);
+			data.dashboardCount += portalUtils.setApprovalsCount(localInput.approverQueryCSC);
 		}
 		else if(localInput.action == "equipmentsCount"){
 			data.equipmentsCount = equipmentsUtils.getEquipmentsCount();
@@ -355,14 +402,14 @@
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 17:35:57</sys_created_on>
         <sys_id>8ed872e7db40dc10fa11cf241496192b</sys_id>
-        <sys_mod_count>234</sys_mod_count>
+        <sys_mod_count>250</sys_mod_count>
         <sys_name>GService Header Menu</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_8ed872e7db40dc10fa11cf241496192b</sys_update_name>
-        <sys_updated_by>organize.matias</sys_updated_by>
-        <sys_updated_on>2020-09-03 23:53:50</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-09-04 20:29:07</sys_updated_on>
         <template><![CDATA[<ul class="nav navbar-nav" role="menubar">
   <div class="header-loader" ng-class="{'invisible': !loadingIndicator}">
     <div class="hidden-xs sp-loading-indicator la-sm">
