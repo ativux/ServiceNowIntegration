@@ -263,17 +263,14 @@
 
   /* GSERVICE HEADER TEXT */
   padding-left: 10%;
-  padding-top: 30px;
   font-family: $text-bold;
   transition-property: padding-top;
   transition-duration: .2s;
-  
+
   min-height: 120px;
 }
 
 /* scroll-line */
-.navbar.scroll-navbar {}
-
 .navbar-fade {
   opacity: .4;
 }
@@ -286,9 +283,8 @@ header[role="banner"],
 .nav &gt; li &gt; a {
   max-height: 60px;
 }
-
-.nav &gt; li &gt; a {
-  padding: 10px 0 !important;
+.navbar-nav span {
+  padding: 20px 0;
 }
 
 @media screen and (max-width: 768px){
@@ -357,7 +353,7 @@ nav {
 }
 .navbar-nav {
   margin: 0;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 // PRB711244: Dropdown menu is scrollable when too many items
@@ -724,14 +720,14 @@ nav {
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 18:00:53</sys_created_on>
         <sys_id>578e7263db80dc10fa11cf24149619e7</sys_id>
-        <sys_mod_count>911</sys_mod_count>
+        <sys_mod_count>920</sys_mod_count>
         <sys_name>GService Stock Header</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_header_footer_578e7263db80dc10fa11cf24149619e7</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-04 17:22:38</sys_updated_on>
+        <sys_updated_on>2020-09-04 20:33:57</sys_updated_on>
         <template><![CDATA[<div class="content">
 
   <!-- SIDE BAR -->
