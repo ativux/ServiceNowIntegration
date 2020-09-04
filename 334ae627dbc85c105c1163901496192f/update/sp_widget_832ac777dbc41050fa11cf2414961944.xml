@@ -385,9 +385,11 @@
         text-align: center;
       }
       .title {
+        width: 400px;
+        margin: 0 auto;
+        margin-top: 40px;
         font-size: 46px;
         text-transform: uppercase;
-        margin-top: 40px;
         line-height: 1;
       }
       .description {
@@ -418,7 +420,7 @@
 
       .form-group {
         width: 400px;
-        
+
         .icon-img {
           width: 50px;
           height: 50px;
@@ -516,7 +518,7 @@
         }
 
         .icon_yourself {
-          
+
           img {
             height: 25px;
             margin-left: 5px;
@@ -611,7 +613,7 @@
       background: $turquoise;
       .item_title:hover {color: $turquoise; !important}
     }
-    
+
     .radio-color_category_csc1{
       background: $esp !important;
       .item_title:hover {color: $esp; !important}
@@ -636,7 +638,7 @@
       background: $gcsc;
       .item_title:hover {color: $gcsc; !important}
     }
-    
+
     .hover_color_category1{
       .item_title_current {color: $dodger-blue; !important}
       .item_title:hover {color: $dodger-blue; !important}
@@ -657,7 +659,7 @@
       .item_title_current {color: $turquoise; !important}
       .item_title:hover {color: $turquoise; !important}
     }
-    
+
     .hover_color_category_csc1{
       .item_title_current {color: $esp; !important}
       .item_title:hover {color: $esp; !important}
@@ -966,14 +968,14 @@ data.arrayItems = total;
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 13:30:17</sys_created_on>
         <sys_id>832ac777dbc41050fa11cf2414961944</sys_id>
-        <sys_mod_count>1687</sys_mod_count>
+        <sys_mod_count>1689</sys_mod_count>
         <sys_name>GService Categories</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_832ac777dbc41050fa11cf2414961944</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-04 19:29:53</sys_updated_on>
+        <sys_updated_on>2020-09-04 23:20:59</sys_updated_on>
         <template><![CDATA[<div id="widget-category" class="content" ng-show="data.showWidget">
   <div>
 
