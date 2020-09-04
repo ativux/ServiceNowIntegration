@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>126</height>
+        <image>f33697611b0f9c1097c0dca0f54bcb57</image>
+        <name>doItYourself.png</name>
+        <size_bytes>3721</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 12:18:39</sys_created_on>
+        <sys_id>09b976f3db441050fa11cf2414961957</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>doItYourself.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_09b976f3db441050fa11cf2414961957</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-09-04 17:44:55</sys_updated_on>
+        <thumbnail/>
+        <width>141</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#fda306</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>c7764819a7b682a706ff0a6e42725ee4f720cb51f60e509b1616738db78a51eb</hash>
+        <image_height>126</image_height>
+        <image_width>141</image_width>
+        <size_bytes>3721</size_bytes>
+        <size_compressed>3744</size_compressed>
+        <state>available</state>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-09-04 17:44:55</sys_created_on>
+        <sys_id>f33697611b0f9c1097c0dca0f54bcb57</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-09-04 17:44:55</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>09b976f3db441050fa11cf2414961957</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="f33697611b0f9c1097c0dca0f54bcb57">f33697611b0f9c1097c0dca0f54bcb57</sys_attachment>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-09-04 17:44:55</sys_created_on>
+        <sys_id>373697611b0f9c1097c0dca0f54bcb57</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>AYkOdvGJUE5HDQoaCgAAAA1JSERSAAAAjQAAAH4IBgAAABlYkhIAAAAJcEhZcwAACxIAAAsSAdLdfvwAAA47SURBVHic7V1LTiPJFo22WnLPqJ715Al6BWVWAKwA99wSZgWYFeBaQblWgJE8L/ttAHvWM8zszR6oJ/1GjWfPE1cr0LnU7SAzPnZmfNJxJItykU7CGSfuL+698cO3b99ERoYLWvlpZbjix317YptJ+7TkVy+t3nrpeThJorHqCeSQr44Q4kgI8dHyoyshxJK/Mpn+icaQZjNpfxBCdPE611z6LIR4Kvh/Sa4DzWfmQohpq7eeVjTkZJE8aSBR+kKIC+VXNNFvUqPVW79Y3O8IkolLKk4mKYnGQohRq7cuIl/jkSxpNpO2JMpAUTuPmNB5lSoFxOyCnJxAd0KI4b6RJznSYAKHQogT9t93WPm12x6bSbsLsqp/f2/IkwxpYLOMmBpa4f3IRu3UMJ4jkPcf42n11kPfY/GNJEiD1T1mqkGu7EEIsqgokHxSRfab7HFFT5rNpC2lyRXePmNC5oGH9Q6bSXsA8hxA6khSjyMbZiWIljRQR3Nm6H6B3eAkXXCfDjwh8ozKsIQ7vtyGmFBZUz7mVm89cL1P7IiSNMrDd161m0m7A0/n1CGoV4QFxjF1MXIV6XjX6q37O4whOkRHGkz4nIn5U1v7oMQNF7Az5D1f8LMIJJHodahcM4OhayWBMJZbvJXk68Zgg1WBqEgDCbMEYR7xoI0rHBM0VCb6DlJivs1kYSwUm+EkXEBNGsmDcY3wfWat3rrrOo4YEQ1pFBvmERJGO9nwXMaMLM+YpHGVq5q513LSyYObQW1qSY0x3uNtI1RVTKSZw22VKqljMRncblhh9Y9qHmNRrMhobymq6lPqsZwoSMMIYLRhCryqGdxwb/YC7K4xG4NRgijE+S3ljc/gpEHg7iveXupWbYGR3A/58DeTtpQYN3hrVKmbSXsMKSXHfpSqYRw0cw9Sg0jyxYEwNEFBVyvUzG8ggZQ6c3ynMgww9gP2vZND6HRP8iyeYWgWooQwUYTpQdxTG+JAspAaO4eUTQ7B1JPiVZyVubCYgCeFMNu40Dwq3Cm4ZI6/M99mt1oh9qLVW5ellXK19gyjPyk1FZI05C1pjcjNpL10ccOVzx5BJXQLgnU6UF6Ok+sO4jzgbekWAhbCEmNKzpsKQhomZbTutYtXpXxOTVsQuAfP5ONk4Nl6J8pnnNIvFC9JJ0HpuuSM4lCkISlTusoU9WXtoiq7zQIu+djh85RrPFSChta768xL0qqfzaT9lKK08W4Igwy0mnUeBAXqZjYTLid7M2nL6z6TXSGEOJahexcvS06w9OJavbWUPJeYeDmx97BFbDBgn9N9hn6X1E54CO+J7Jc7jVrqsx1uY9idBfyoCuFaGqK7elgIAXSwjyVxAyli+hz3kq6gLsvuL8l1gO+cBLySBpNLdoYu5E8r0GhLKBHiFaRLZdsJkDx9SB2JC0vizCHthEHa0L2Scb99Sxp6MM9lUgAr7hDX2KiDMSNMbfEbSAVOHBuVQuO/KJM2jDTnhsBgNAhFGp2NQZNhXM2YOFJJtQf8QJxrvP0MF1t3PZc2heoHKvoRb5OQNr5JQwGvQkJgEmgTUKtimFstYMN4iRBD9c3w1mYrgK7R2SxJqShvpAEhXjcaNRNMD21mEbcYsuhrrSkRBRjQtoHJgIV0ktceaiQTufKlUeSY4FPS0APRxTps1BdJGTKoneIb0uWXrrOMFeE1lWpOY3O8A1QKEdXm79P3KZQkbBEduIwjFHyShlZZmQH8gakmU1yF7J6FQ8DtFMG0e+z7nOB1jtjOf6VX5GCMjpgEMUkIG0lCto/WTooBPklDK6hskulhPVqoJlqxVmoJKuQeXtkKcReZ0nAGw5Ym7AK71MbVjjESuU0xFvrOJ5praDFl0jDQAyvbQaZVqDVoYRccwjayiRR32V7QDPs8r8lbUkpJewg70mcItElpN7WUOPT3tZIG6mzFxl8Eei6ZNO/+YHnaAU2SKS1Bq+Y4WE6vQAS6tIwEaq7D8mKMcRhG2kML6UTjLSOj6ffRwAtpLI07WzKY1BwHpUQ8W5Lgham+gaW0IdVm+o60GJLwkHTwJWnogS4M1wklZaEI9NBtEqXI1rBObYDEoZRMmwmm+5rUimm8tFh0dk8USLm7pw1paCJd67Lpehv7ohK1klI+TdNbwr7m1GwRLW5E+WxdyH2EM5zhmzRVeAaxuaZWoQITmCu+qnW0FcAXaeiB2rT9sPVCYgm30zhMKo1IYQo5RN9BywtpLI08Mj5t4x3BXVe45K95xBbbGbZxqOjhUz3JWEkVEVGanI8RbO5RTOfRcJ2oKiIeA3ySxqRWrPZeILViSVqiOJCpa8SbvaKJiNuqueDwSRotKeAWm/JOCLQ1ECyLH1KOpIdpD8wmLWTbmJJ3hCCNzhaxTUaaMoKFyuLne1omO8WGNOQkZPXEYJMeYJVqABVFkzbynZANKUO5yTZJWHRtoURi+Tg2aSHB4Y00WI1kDJfZIvRQP1okbQ+pZsh32w58lwVyk228oRmqKMuuXbLWb9HD9yFhU9Rmd4tWnVxlm0n7DslQA4vkpi4K7mX5x6nPptS6rhAF12oNdkiX6NM8Cb4jwjZZ93SNrlboFTCeL7Hq836RJ3glDSZZW4bqUJlI14+rKMHNsEeIDUubOiBemZh80lLTEJI0J2WEgLShovskjMN9gvfTcqUHwYzdoSYmQx2spCc1Cn0wBetbQ82PXuD1TE2qEZ5glzVPWrLPJmeLhcqnIfWjkzZqu45grTjQl+YJVQ03rF5K/vtB1lMVfQ9JFjRwesC1F/jsFe71l1wQqRT+E4KQBvEKo/pBtv8XvL212F6oGj9h0m9YF9JPqJm6xHdYsaZHb8TGv+csmHmHGqsz3IP2z64sWslGhZCNGnnXzmtdPTY6XJ1v0Xvv9cu1eusfHMfGu28e6troF7S+v4TqoYaNC7ReexfYg3Sa7tq51DeCpXvi4ZCaGhpiMn1WITD36FEdMqIWkpo1PeKS89/49wzhgMJIMAz+I1ZrlUTfvaA5wpiIBchQulMMgp0y4tx7tHGGNpINxKHx/cu29ZtSa3WVgpqKIbG8z9p2lO4hYUXz/ne36PhQx0P+BT/Xjm1MuKTYptZKpNCjJjhpILppRV5Y9Hvpw5AUsHOeamgXT6RxSs1Uastd98Hos29qWj4LtEP5xl4vWCzBgp5RlLDgYVNbslsL4sgVfcx2ub9W/BB/ws8/t73BLpuncNXJxVdTSQ6wWO5BKO/qLJq6J6gBrnpMxFmi1+8ny3JfF/yOa3+v5nZO+AVSioxwuZh+lR4gvMBjFoY4CeGue48I6yBVz2bSFnBfJXGE6dS2mjt9/7/Ge5dBLpZ2mQsOo3wA+49a4U59VmdEV2GpuK+3lq1Xm4Q21K42ZgPy0JFBJz6PAYqyLFchzucavaRYYXW8IohD3p23bZZoa7mVLuHS8Fs2PE2CvKaVoxH91ry6hjEVIuoGALBnjpVDLZLb4LMEeWxO2whKazYvKaPRd42ACO6whs9XiM0kf761AiLLNh4bRawzaQiIBndZM8UDGMl1kWep/PQBign9x+Pf3ApJ9adBN06KzVBKwi2ipJWpLAQbf0357Ow6kWRTI8RmjhD4esZ/V2okb3P46b4gquCeC1iVZWw5xNE3JdoVyZImYmwr8UaQntEn0mfSVIxt66+UnOioESVp2MHr3Lg1Zv1n+EFUpEHEd1jSWUIeOvraeTx7NWERDWmUQ9AFgnk8aEUt67+ibmqQYs1QExAFaRTCFBICcZgBqx+S5zd1s8ryj+BxGuyXEGGucazOOwmCqPAQUWEK7D3sYepEcMQQ3KMkKquzKFnZB+1FfQ6V9riviIE0lDxknYHH9qKuKQkJm5i5w4QHBCUNVBMdeuGciA3JpNZD5S4TNSO0pHE5B6oQLO2Rkq1lwdkyQN333iA0acjg3SkPBOpqgMJ8KnGNvh9vqghdlkvuss0ZkDb3myJhi0p9M2pADIYweUGV7LvIlAZ03pQ5N/8TQvxRxX0zviNYqxECSi++4u1xDta5A9WYMm71s48oeQy13FNmCM+zAbsV6PggL9sqsWTudZnb/ICmQhmRIpYGANR/huybG7jNyXTxDoV9bwBAUd5L5jYvG1iqUjVInVfdBKEUMdZyjxW3uc7mRU3A/koaDsVtFqx5Ud5beg/vh4vFXparNi/Ke0vvQaTxlpCWUllu3lsqBj0Hb/Gt4ME9FyAQOGZbBNr+w00H7Ly/xBa9kndBamW5U2xukqew7wlYLkc8V4bkynLhmp+yxo4nNXX4TAE2B6pWjiRrucX3BKxjFkmWVQrjPZM6tFC8lvQkZdOUAR7VFX4tPa3GVymwjV7ZOcvrQklW0nAgAeuMdczah/2rIFJGNEXSEKCaxqz/3COkTqPahnCvKUQ6SSMkDUGzf9W02ij6PosQarhRkoYDO+RjVhc+s221GjOUc7IuTc2560CjJA1Hg/evhiDMIgRhRJMlDQe2HMZQVwJbEsPUpA4If4+3Z7sc2rELGitpOIpqo1JLLWVGvsSXUIQR+yJpOJRzIyU+1Xwox84AYejwjOBnXe4daURirrlCGKeDX+vCXpKGgFTSEaRO6Ym4oQAPcBoTYcS+k0YUu+alRyJ7HhdPA4mGMCKT5jsQAByySRq5HF5a4TiiV52ZNAwFUucZKstLPEQhrojVSM+kKQBsnSFVLjLJM656xUOydJW/94i+g1F2vsik0aCAPBIzGKfzXQgE178PwpBk8SrZtkUmjQVAnn5Bf+NHJHTT66mISAgifkCAkRpr81YoSZCFkEnjANg8XbyKGmS7YAWJNY5VDZUhk2ZLwBbpMOnxQUOkFUki/JynnFmYSZPhjL3YsMyoFpk0Gc7IpMlwgxDib3cqNfkyVVsAAAAAAElFTkSuQmCCsXMVy4kOAAA=</data>
+        <length>4980</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="f33697611b0f9c1097c0dca0f54bcb57">f33697611b0f9c1097c0dca0f54bcb57</sys_attachment>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-09-04 17:44:55</sys_created_on>
+        <sys_id>b73697611b0f9c1097c0dca0f54bcb57</sys_id>
+    </sys_attachment_doc>
+</record_update>
