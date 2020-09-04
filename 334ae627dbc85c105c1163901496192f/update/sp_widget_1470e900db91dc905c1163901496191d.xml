@@ -123,7 +123,7 @@
 
         .categories {
           font-family: $text-bolder;
-          font-size: 18px;
+          font-size: 17px;
           line-height: 1;
           margin-bottom: 13px;
           width: 160px;
@@ -149,7 +149,7 @@
           text-decoration: underline;
         }
       }
-      .category_items:nth-child(1), .category_items:nth-child(3) {
+      .category_items:nth-child(1) {
         .categories {
           width: 110px;
         }
@@ -217,14 +217,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-04 17:30:49</sys_created_on>
         <sys_id>1470e900db91dc905c1163901496191d</sys_id>
-        <sys_mod_count>426</sys_mod_count>
+        <sys_mod_count>428</sys_mod_count>
         <sys_name>GService Categories Knowledge</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_1470e900db91dc905c1163901496191d</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-28 14:23:51</sys_updated_on>
+        <sys_updated_on>2020-09-04 18:06:47</sys_updated_on>
         <template><![CDATA[<div class="content_categories_knowledge" id="categoriesKnowledge" ng-class="c.categorySelected ? 'content_margin' : 'content_margin_bottom'">
   <div class="content">
 
