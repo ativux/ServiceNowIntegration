@@ -319,7 +319,7 @@
 	var userID = gs.getUser().getID();
 	data.user_id = userID;
 
-	var user_id = localInput ? localInput.userID : data.user_id;
+	var user_id = data.user_id;
 	data.notifications = portalUtils.getNotifications(user_id);
 	
 	var queries = portalUtils.getNotificationQuery();
@@ -333,8 +333,6 @@
 		var jsonWidget = {instance : gservice_ticket_notification, show : true, sys_id : data.notifications[i].sys_id};
 		data.notificationWidget.push(jsonWidget);
 	}
-	
-	data.notificationsCount = data.notificationWidget.length;
 	
 	if(data.notificationWidget.length == 0){
 		data.showEmptyMessage = true;
@@ -362,7 +360,6 @@
 				data.notificationWidget[i].position = i;
 				data.notificationWidget[i].left = i * data.left;
 			}
-			data.notificationsCount = data.notificationWidget.length;
 		}
 	}
 
@@ -372,19 +369,19 @@
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-11 12:07:09</sys_created_on>
         <sys_id>02c26e791b6a141097c0dca0f54bcb4f</sys_id>
-        <sys_mod_count>71</sys_mod_count>
+        <sys_mod_count>73</sys_mod_count>
         <sys_name>GService My Dashboard Notification v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_02c26e791b6a141097c0dca0f54bcb4f</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-08-31 14:12:38</sys_updated_on>
+        <sys_updated_on>2020-09-04 16:31:17</sys_updated_on>
         <template><![CDATA[<div class="content_notification">
   <div class="title_category" ng-click="c.openContent()">
     ${Notificações de Tecnologia}
     <span><img src="GService_Seta_PD_Transparent.png" ng-class="c.contentOpened ? '' : 'invert-arrow'"/></span>
-    <span class="items_length">{{data.notificationsCount}}</span>
+    <span class="items_length">{{data.notificationWidget.length}}</span>
   </div>
   <div class="content_body_mask">
     <div class="content_body_ntf">
