@@ -144,7 +144,7 @@
 
   .slide_content_mask {
     overflow: hidden;
-    height: 310px;
+    height: 390px;
     width: 84%;
 
     .slide_content {
@@ -184,12 +184,12 @@
 
     img {
       transition: .3s ease-in-out;
-      height: 110px;
+      height: 80px;
       margin-bottom: 15px;
     }
     .title {
       transition: .3s ease-in-out;
-      font-size: 18px;
+      font-size: 17px;
       line-height: 1.2;
       font-family: $text-bolder;
       text-transform: uppercase;
@@ -200,6 +200,7 @@
       font-size: 14px;
       font-family: $text-bold;
       line-height: 1.2;
+      min-height: 230px;
     }
   }
   .item:nth-child(3) {
@@ -209,6 +210,10 @@
       padding: 0;
       width: 188px;
       margin: 0 auto;
+      margin-bottom: 10px;
+    }
+    .description {
+      padding: 0 12px;
     }
   }
 
@@ -256,14 +261,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 20:08:18</sys_created_on>
         <sys_id>e47a47771be6d05097c0dca0f54bcb03</sys_id>
-        <sys_mod_count>265</sys_mod_count>
+        <sys_mod_count>272</sys_mod_count>
         <sys_name>GService Category Items CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_e47a47771be6d05097c0dca0f54bcb03</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-31 13:02:26</sys_updated_on>
+        <sys_updated_on>2020-09-04 18:02:07</sys_updated_on>
         <template><![CDATA[<h1 class="category-title">${Serviços de Finanças, Jurídico e Infraestrutura}</h1>
 <div class="content center">
   <div class="control">
