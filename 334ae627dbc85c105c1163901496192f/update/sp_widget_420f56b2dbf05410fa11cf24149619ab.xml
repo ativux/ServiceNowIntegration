@@ -695,7 +695,6 @@
     height: 120px !important;
     width: 400px;
     border: solid 2px #00BFFF;
-    margin: 0 66px !important;
   }
 
   .conversation_form {
@@ -710,7 +709,7 @@
 
   .attach_button {
     float: left;
-    margin-left: 42px;
+    margin-left: -5px;
     margin-right: -18px;
     transform: scaleX(-1);
 
@@ -951,15 +950,12 @@ ul {
 /* Template Notifications */
 .content_notifications {
   .content_conversation {
-    .attach_button {
-      margin-left: 60px;
-    }
     .attach_title {
       margin-top: 20px;
     }
     .submit_button {
       position: absolute;
-      left: 360px;
+      left: 280px !important;
     }
   }
 }
@@ -991,6 +987,7 @@ ul {
 
 .submit_button {
   transition: .4s ease-in-out;
+  
   &amp;:hover {
     transition: .2s ease-in-out;
     transform: scale(1.1);
@@ -1071,16 +1068,17 @@ ul {
         <public>false</public>
         <roles>snc_external,snc_internal</roles>
         <script><![CDATA[(function() {
+	
 	//Code not OOTB
 	data.hide = false;
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
+	
 	//Used to get the current user sys_id
 	var userID = gs.getUser().getID();
 	data.user_id = userID;
 	data.username = gs.getUserDisplayName();
 	data.statusEntries = [];
-	
 	
 	data.color_class = options.color_class || "color_category1_old";
 	data.bd_color_class = options.bd_color_class || "bdcolor_category1_old";
@@ -1100,11 +1098,14 @@ ul {
 	data.attachAddedMsg = gs.getMessage("Attachment added");
 	data.attachFailMsg = gs.getMessage("Failed to add attachment");
 	data.scanFailedMsg = gs.getMessage("File failed security scan");
+	
 	//Sys_ID of the record producer - EDITION MADE BELOW
 	data.sys_id = (input && input.sys_id) || options.sys_id || $sp.getParameter("sys_id");
 	data.item_status = options.item_status;
+	
 	//Table of the record producer - EDITION MADE BELOW
 	data.table = (input && input.table) || options.table || $sp.getParameter("table");
+	
 	// don't use options.title unless sys_id and table also come from options
 	if (options && options.sys_id && options.table)
 		data.ticketTitle = options.title;
@@ -1257,14 +1258,14 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-19 14:34:49</sys_created_on>
         <sys_id>420f56b2dbf05410fa11cf24149619ab</sys_id>
-        <sys_mod_count>491</sys_mod_count>
+        <sys_mod_count>498</sys_mod_count>
         <sys_name>GService Ticket Conversations</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_420f56b2dbf05410fa11cf24149619ab</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-09-04 17:05:55</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-09-10 19:36:27</sys_updated_on>
         <template><![CDATA[<div class="content_notifications dynamic_{{data.color_class}}" ng-if="data.canRead && !data.isNewRecord && !data.hide">
   <div class="mask_submitting" ng-show="c.submitting"/>
   <div class="content_conversation">
