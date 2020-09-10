@@ -212,12 +212,10 @@
   text-align: center;
   padding-bottom: 30px;
 }
-
 .margin-align {
   margin: 0 auto;
   text-align: center;
 }
-
 .line {
   width: 100%;
   height: 2px;
@@ -285,14 +283,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-07-09 19:46:18</sys_created_on>
         <sys_id>826f8e5bdbb9d410fa11cf241496193e</sys_id>
-        <sys_mod_count>22</sys_mod_count>
+        <sys_mod_count>23</sys_mod_count>
         <sys_name>GService Equipments Tabs</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_826f8e5bdbb9d410fa11cf241496193e</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-04 18:11:07</sys_updated_on>
+        <sys_updated_on>2020-09-10 20:22:23</sys_updated_on>
         <template><![CDATA[<div class="content">
   <div class="content_tabs">
     <div class="content_avatar">
