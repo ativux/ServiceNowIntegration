@@ -436,38 +436,25 @@ thead {
 .table &gt; thead &gt; tr &gt; th {
   border: 0;
   vertical-align: middle;
+  padding: 10px 0 !important;
 }
 .table-hover &gt; tbody &gt; tr:hover {
   background-color: white;
 }
 tbody {
+  font-size: 12px;
+  
   img {
     width: 50px;
     height: 50px;
   }
 
-  td:nth-child(1) {
-    width: 20%;
-    padding: 20px;
-  }
-
-  td:nth-child(2) {
-    width: 20%;
-    padding: 20px;
-  }
-
-  td:nth-child(3) {
-    width: 25%;
-  }
-
-  td:nth-child(4) {
-    width: 5%;
-    padding: 20px;
-  }
-
+  td:nth-child(1) { width: 20%; }
+  td:nth-child(2) { width: 20%; }
+  td:nth-child(3) { width: 25%; }
+  td:nth-child(4) { width: 5%; }
   td:nth-child(5) {
     width: 30%;
-    padding: 20px;
 
     .request_button {
       margin-right: 50px;
@@ -740,6 +727,7 @@ tbody {
     overflow: hidden !important;
     border: 20px solid white;
     padding-left: 50px !important;
+    
     .wrapper-xl {
       padding: 50px 0 0 50px !important;
       margin-right: -20px;
@@ -1186,14 +1174,14 @@ input:focus::placeholder{
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-07-09 19:49:04</sys_created_on>
         <sys_id>f2005edbdbb9d410fa11cf24149619c9</sys_id>
-        <sys_mod_count>390</sys_mod_count>
+        <sys_mod_count>398</sys_mod_count>
         <sys_name>GService Equipment List</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f2005edbdbb9d410fa11cf24149619c9</sys_update_name>
-        <sys_updated_by>thiago.ferreira.silva_O2B@prestador.glob</sys_updated_by>
-        <sys_updated_on>2020-08-27 20:40:53</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-09-11 17:53:28</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   <div class="col-md-12 filter-padding">
     <sp-widget widget="data.equipmentFilter_widget"></sp-widget>
@@ -1224,7 +1212,7 @@ input:focus::placeholder{
                 {{column.name}}
                 <span ng-if="column.order">
                   <span ng-if="!column.direction"></span>
-                  <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"/></span>
+                  <span ng-if="column.direction"><img src="gservice_filter_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"/></span>
                 </span>
               </div>
             </th>
