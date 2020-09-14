@@ -101,7 +101,7 @@
 	}
 
 	c.submitSearch = function(){
-		if(c.data.broadcast_name == "getSearchedItemsFilter" || c.data.broadcast_name == "getSearchedItemsReport" || c.data.broadcast_name == "getSearchedItemsFilterCSC"){
+		if(c.data.broadcast_name == "getSearchedItemsFilter" || c.data.broadcast_name == "getSearchedItemsReport"){
 			c.data.showClear = true;
 			$rootScope.$broadcast(c.data.broadcast_name, c.data.searchTerm);
 		}
@@ -303,11 +303,11 @@ ul.dropdown-menu i.ta-icon, i.ta-img {
 }
 
 .input-group {
-  border-bottom: 2px solid $blue;
+  border-bottom: 2px solid $dodger-blue;
 }
 
 .input-group-dashboard {
-  border-bottom: 2px solid $blue;
+  border-bottom: 2px solid $deep-sky-blue;
 }
 .margins{
   margin: 32px 30px 40px 50px;
@@ -330,6 +330,7 @@ input[name='q']:focus {
   outline: none;
   box-shadow: none;
 }
+
 input[type="reset"]{
   border: 0;
   position: absolute;
@@ -342,7 +343,7 @@ input[type="reset"]{
 
 .default_properties{
   input[type='text'] {
-    width: calc(100% - 46px) !important;
+    width: 90% !important;
   }
   .close_result-default {
     display: block;
@@ -404,6 +405,11 @@ input[type="reset"]{
         <public>true</public>
         <roles/>
         <script><![CDATA[(function() {
+	/*if (input && input.action === "GlideSPSearchAnalyticsUpdateRank") {
+		input.action = "";
+		var textSearchAnalytics = new GlideSPSearchAnalytics().publish(JSON.stringify(input.payload));
+		return ;
+	}*/
 	var localInput = input;
 	data.searchSourceID = options.contextual_search_sources;
 	data.broadcast_name = options.broadcast_name;
@@ -425,10 +431,6 @@ input[type="reset"]{
 			data.htmlTemplate = "gservice_typeahead_default";
 			break;
 		case "getSearchedItemsFilter":
-			data.htmlTemplate = "gservice_typeahead_dashboard";
-			data.dynamicPlaceholder = gs.getMessage("Busca detalhada por serviço");
-			break;
-		case "getSearchedItemsFilterCSC":
 			data.htmlTemplate = "gservice_typeahead_dashboard";
 			data.dynamicPlaceholder = gs.getMessage("Busca detalhada por serviço");
 			break;
@@ -512,14 +514,14 @@ input[type="reset"]{
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 15:27:43</sys_created_on>
         <sys_id>d1156733dbc81050fa11cf2414961952</sys_id>
-        <sys_mod_count>319</sys_mod_count>
+        <sys_mod_count>314</sys_mod_count>
         <sys_name>GService Typeahead Search</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_d1156733dbc81050fa11cf2414961952</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-10 12:35:45</sys_updated_on>
+        <sys_updated_by>organize.matias</sys_updated_by>
+        <sys_updated_on>2020-09-14 14:34:05</sys_updated_on>
         <template><![CDATA[<div ng-include="data.htmlTemplate"></div>]]></template>
     </sp_widget>
 </record_update>
