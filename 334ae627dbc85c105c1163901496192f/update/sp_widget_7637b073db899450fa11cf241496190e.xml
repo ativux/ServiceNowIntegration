@@ -297,6 +297,30 @@
           display: flex;
           justify-content: center;
 
+          .sound {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            text-align: center;
+
+            .sound_left, .sound_right {
+              transition: .5s ease-out !important;
+              background: white;
+              position: absolute;
+              width: 20px;
+              height: 58px;
+              z-index: 1;
+            }
+            .sound_left {
+              top: 0;
+              left: 0;
+            }
+            .sound_right {
+              top: 0;
+              right: 0;
+            }
+          }
+
           .coffee {
             transition: 1s ease-out !important;
             background: white;
@@ -353,6 +377,22 @@
         .tab_title { width: 90px; }
       }
     }
+    .categories:nth-child(2) {
+      .tab_items {
+        &amp;:hover {
+          .tab_images {
+            .sound {
+              .sound_left {
+                left: -14px;
+              }
+              .sound_right {
+                right: -14px;
+              }
+            }
+          }
+        }
+      }
+    }
     .categories:nth-child(4) {
       .tab_items {
         .tab_title { width: 155px; }
@@ -379,16 +419,17 @@
 }
 
 .count-align {
-  text-align: center;
-  background: $coral;
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  color: white;
-  font-family: $text-bolder;
+  z-index: 1;
   position: absolute;
+  width: 20px;
+  height: 20px;
   bottom: 95px;
   right: 20px;
+  color: white;
+  background: $coral;
+  border-radius: 50%;
+  text-align: center;
+  font-family: $text-bolder;
 }
 
 .notification-align {
@@ -405,14 +446,12 @@
     left: -17px;
   }
 }
-
 .line {
   width: 100%;
   height: 2px;
   background-color: $blue;
   margin-top: 30px;
 }
-
 .tooltip_top {
   top: -46px;
   left: -37px;
@@ -568,14 +607,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>218</sys_mod_count>
+        <sys_mod_count>241</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-04 18:53:40</sys_updated_on>
+        <sys_updated_on>2020-09-16 20:30:17</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
   <div class="content_avatar">
     <div class="avatar-image">
@@ -609,6 +648,10 @@
           </span>
         </span>
         <div class="tab_images">
+          <div class="sound" ng-if="$index == 1" ng-hide="true"> <!-- tab.selected -->
+            <div class="sound_left"></div>
+            <div class="sound_right"></div>
+          </div>
           <div class="coffee" ng-if="$index == 4" ng-hide="tab.selected"></div>
           <img ng-show="!tab.selected" src="{{tab.img}}" class="icon-img"/>
           <img ng-show="tab.selected" src="{{tab.imgSelected}}" class="icon-img"/>
