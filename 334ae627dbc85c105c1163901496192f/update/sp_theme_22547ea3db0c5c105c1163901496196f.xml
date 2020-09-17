@@ -145,7 +145,6 @@ $sc-field-error-color: #1a424b;&#13;
 &#13;
 //============= Navbar Variables =============//&#13;
 &#13;
-$sp-logo-margin-x: 20px !default;&#13;
 $sp-logo-margin-y: 0 !default;&#13;
 &#13;
 $navbar-height: 80px;&#13;
@@ -306,15 +305,16 @@ $dropdown-link-active-color: #ffffff;&#13;
 //============= NEW CLASSES =============//&#13;
 &#13;
 //Loading&#13;
-.sp-loading-indicator {&#13;
-  width: 100px;&#13;
-  height: 200px;&#13;
-  color: $blue;&#13;
-}&#13;
 .header-loader {&#13;
   display: flex;&#13;
   justify-content: center;&#13;
   height: 20px;&#13;
+  &#13;
+  .sp-loading-indicator {&#13;
+    width: 100px;&#13;
+    height: 200px;&#13;
+    color: $blue;&#13;
+  }&#13;
 }&#13;
 &#13;
 .form-control {&#13;
@@ -781,6 +781,17 @@ iframe {&#13;
 &#13;
 .sn-cs-header .chat-title .recipient-title{&#13;
   margin-left: .9375rem !important;&#13;
+}&#13;
+&#13;
+/* Responsive layout */&#13;
+@media only screen and (max-width: 768px) {&#13;
+  .container {&#13;
+    width: 100%;&#13;
+    margin-left: 0;&#13;
+  }&#13;
+  .container.index-catalog-content {&#13;
+    margin-left: 0;&#13;
+  }&#13;
 }</css_variables>
         <footer/>
         <footer_fixed>true</footer_fixed>
@@ -791,13 +802,13 @@ iframe {&#13;
         <sys_created_by>organize.matias</sys_created_by>
         <sys_created_on>2020-04-14 17:17:27</sys_created_on>
         <sys_id>22547ea3db0c5c105c1163901496196f</sys_id>
-        <sys_mod_count>321</sys_mod_count>
+        <sys_mod_count>326</sys_mod_count>
         <sys_name>OCL: ITSM Unification</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_theme_22547ea3db0c5c105c1163901496196f</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-01 12:40:05</sys_updated_on>
+        <sys_updated_on>2020-09-17 00:44:19</sys_updated_on>
     </sp_theme>
 </record_update>
