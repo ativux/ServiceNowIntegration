@@ -83,7 +83,8 @@
 				preparePosition();
 			}
 		} else {
-			c.data.items_number = Math.floor(c.data.original_number / 2);
+			//c.data.items_number = Math.floor(c.data.original_number / 2);
+			c.data.items_number = 1;
 			preparePosition();
 		}
 	}
@@ -170,11 +171,11 @@
         -o-transform: scale(1.1);
       }
       .title {
-        transform: translateY(-10px);
-        -webkit-transform: translateY(-10px);
-        -ms-transform: translateY(-10px);
-        -moz-transform: translateY(-10px);
-        -o-transform: translateY(-10px);
+        transform: translateY(-5px);
+        -webkit-transform: translateY(-5px);
+        -ms-transform: translateY(-5px);
+        -moz-transform: translateY(-5px);
+        -o-transform: translateY(-5px);
       }
     }
 
@@ -261,14 +262,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 20:08:18</sys_created_on>
         <sys_id>e47a47771be6d05097c0dca0f54bcb03</sys_id>
-        <sys_mod_count>272</sys_mod_count>
+        <sys_mod_count>274</sys_mod_count>
         <sys_name>GService Category Items CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_e47a47771be6d05097c0dca0f54bcb03</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-04 18:02:07</sys_updated_on>
+        <sys_updated_on>2020-09-21 15:11:00</sys_updated_on>
         <template><![CDATA[<h1 class="category-title">${Serviços de Finanças, Jurídico e Infraestrutura}</h1>
 <div class="content center">
   <div class="control">
