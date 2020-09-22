@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function($scope, $location, $rootScope, $timeout, $sce, spModal, categorySubscribe) {
+        <client_script><![CDATA[function($scope, $location, $rootScope, $timeout, $sce, spModal, categorySubscribe, $window) {
 	/* widget controller */
 	var c = this;
 
@@ -25,15 +25,38 @@
 
 	//When a second category is clicked
 	c.selectedSecondCategory = function(category){
-		if(categorySubscribe.getSecondCat()){
-			if(categorySubscribe.getSecondCat().sys_id != category.sys_id){
-				categorySubscribe.setSecondCatOnly(category);
+		c.data.showSelectedItem = false;
+		c.data.showSelectedProducer = false;
+		c.data.showSelectedOrder = false;
+		c.data.showLinkItem = false;
+		if(category.url){
+			c.data.categoryURL = category.url;
+			for(var i in c.data.secCategories){
+				if(c.data.secCategories[i].sys_id == category.sys_id){
+					c.data.secCategories[i].selected = true;
+				}
+				else{
+					c.data.secCategories[i].selected = false;
+				}
 			}
+			c.data.showItems = false;
+			$timeout(function() {
+				scrollTo("external_link");
+			});
 		}
 		else{
-			categorySubscribe.setSecondCatOnly(category);
+			c.data.categoryURL = false;
+			if(categorySubscribe.getSecondCat()){
+				if(categorySubscribe.getSecondCat().sys_id != category.sys_id){
+					categorySubscribe.setSecondCatOnly(category);
+				}
+			}
+			else{
+				categorySubscribe.setSecondCatOnly(category);
+			}
+			selectedSecondCategory(category);
 		}
-		selectedSecondCategory(category);
+
 	}
 
 	//When a third category is clicked
@@ -51,47 +74,68 @@
 
 	//When a item is clicked
 	c.selectItem = function(itemID, item){
-		c.selected_item = item;
-		if(categorySubscribe.getItemID()){
-			if(categorySubscribe.getItemID().sys_id != itemID.sys_id){
-				categorySubscribe.setSelectedItemOnly(itemID);
-			}
-		}
+		if(item.table == "x_gmeps_csc_link_catalog_item"){
+			c.data.showLinkItem = true;
+			c.data.linkItem = item;
+			c.data.showSelectedItem = false; 
+			c.data.showSelectedProducer = false;
+			c.data.showSelectedOrder = false;
 
-		for(i in c.data.arrayItems){
-			if(c.data.arrayItems[i].sys_id == itemID){
-				if(!c.data.arrayItems[i].selected){
-					c.data.showSelectedItem = false;
+			for(var i in c.data.arrayItems){
+				if(c.data.arrayItems[i].sys_id == itemID){
+					c.data.arrayItems[i].selected = true;
 				}
 				else{
-					var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
-					if(item.table == "sc_cat_item_producer"){
-						c.data.showSelectedItem = false;
-						c.data.showSelectedOrder = false;
-						c.data.showSelectedProducer = true;
-					}
-					else if(item.table != "sc_cat_item_guide" || isAllowedRP){
-						c.data.showSelectedItem = true;
-						c.data.showSelectedOrder = false;
-						c.data.showSelectedProducer = false;
-					}
-					else{
-						c.data.showSelectedOrder = true;
-						c.data.showSelectedItem = false;
-						c.data.showSelectedProducer = false;
-						$rootScope.$broadcast("selectedOrder", itemID);
-					}
-
-					c.data.itemDescription = item.short_description || item.description;
+					c.data.arrayItems[i].selected = false;
 				}
 			}
-			else{
-				c.data.arrayItems[i].selected = false;
+		}
+		else{
+			c.data.showLinkItem = false;
+			c.selected_item = item;
+			if(categorySubscribe.getItemID()){
+				if(categorySubscribe.getItemID().sys_id != itemID.sys_id){
+					categorySubscribe.setSelectedItemOnly(itemID);
+				}
 			}
+
+			for(i in c.data.arrayItems){
+				if(c.data.arrayItems[i].sys_id == itemID){
+					if(!c.data.arrayItems[i].selected){
+						c.data.showSelectedItem = false;
+					}
+					else{
+						var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
+						if(item.table == "sc_cat_item_producer"){
+							c.data.showSelectedItem = false;
+							c.data.showSelectedOrder = false;
+							c.data.showSelectedProducer = true;
+						}
+						else if(item.table != "sc_cat_item_guide" || isAllowedRP){
+							c.data.showSelectedItem = true;
+							c.data.showSelectedOrder = false;
+							c.data.showSelectedProducer = false;
+						}
+						else{
+							c.data.showSelectedOrder = true;
+							c.data.showSelectedItem = false;
+							c.data.showSelectedProducer = false;
+							$rootScope.$broadcast("selectedOrder", itemID);
+						}
+
+						c.data.itemDescription = item.short_description || item.description;
+					}
+				}
+				else{
+					c.data.arrayItems[i].selected = false;
+				}
+			}
+
+			var jsonItem = {itemID: itemID, breadcrumb: c.data.breadcrumb, table: "sc_cat_item", duplicatedItemID : false};
+			$rootScope.$broadcast('openItem', jsonItem, "openItem");
 		}
 
-		var jsonItem = {itemID: itemID, breadcrumb: c.data.breadcrumb, table: "sc_cat_item", duplicatedItemID : false};
-		$rootScope.$broadcast('openItem', jsonItem, "openItem");
+
 	}
 
 	//When a broadcast is sended from GService Catalog Navigation
@@ -166,11 +210,13 @@
 	//Is used either by selecting directly a second category or by selecting an item (when selecting an item, need to show
 	//the parent category in the previous steps of the widget)
 	function selectedSecondCategory(category){
-		c.server.get({
-			action: "selectedSecondCategory",
-			secCategory: category
-		}).then(function(response) {
-			for(i in c.data.secCategories){
+		c.data.showSelectedItem = false;
+		c.data.showSelectedProducer = false;
+		c.data.showSelectedOrder = false;
+		c.data.showLinkItem = false;
+		if(category.url){
+			c.data.categoryURL = category.url;
+			for(var i in c.data.secCategories){
 				if(c.data.secCategories[i].sys_id == category.sys_id){
 					c.data.secCategories[i].selected = true;
 				}
@@ -178,47 +224,66 @@
 					c.data.secCategories[i].selected = false;
 				}
 			}
+			c.data.showItems = false;
+			$timeout(function() {
+				scrollTo("external_link");
+			});
+		}
+		else{
+			c.data.categoryURL = false;
+			c.server.get({
+				action: "selectedSecondCategory",
+				secCategory: category
+			}).then(function(response) {
+				for(i in c.data.secCategories){
+					if(c.data.secCategories[i].sys_id == category.sys_id){
+						c.data.secCategories[i].selected = true;
+					}
+					else{
+						c.data.secCategories[i].selected = false;
+					}
+				}
 
-			c.data.thirdCategories = response.data.thirdCategories;
-			c.data.showThirdCategories = response.data.showThirdCategories;
+				c.data.thirdCategories = response.data.thirdCategories;
+				c.data.showThirdCategories = response.data.showThirdCategories;
 
-			c.data.showItems = response.data.showItems;
+				c.data.showItems = response.data.showItems;
 
-			c.data.subcategorySelected = response.data.subcategorySelected;
+				c.data.subcategorySelected = response.data.subcategorySelected;
 
-			hideItem();
-			c.categorySelect = false;
+				hideItem();
+				c.categorySelect = false;
 
-			c.data.arrayItems = response.data.arrayItems;
+				c.data.arrayItems = response.data.arrayItems;
 
-			c.data.categoryTitle = category.title;
-			c.data.breadcrumb = c.data.title + " > " + category.title;
-			c.originalBreadcrumb = c.data.breadcrumb;
+				c.data.categoryTitle = category.title;
+				c.data.breadcrumb = c.data.title + " > " + category.title;
+				c.originalBreadcrumb = c.data.breadcrumb;
 
-			//If this function is called when selecting an item, need to select the item using the function below
-			if(c.selectedItemID){
-				selectedItem(c.selectedItemID);
-			}
-			else{
-				if(c.data.showThirdCategories){
-					scrollThirdCategory();
+				//If this function is called when selecting an item, need to select the item using the function below
+				if(c.selectedItemID){
+					selectedItem(c.selectedItemID);
 				}
 				else{
-					scrollAllItems();
+					if(c.data.showThirdCategories){
+						scrollThirdCategory();
+					}
+					else{
+						scrollAllItems();
+					}
 				}
-			}
-			c.selectedItemID = false;
-			c.scrollSelect = false;
-		});
+				c.selectedItemID = false;
+				c.scrollSelect = false;
+			});
+		}
+
 	}
 
 	//Used to show the selected third category
 	function selectedThirdCategory(category){
-		c.server.get({
-			action: "selectedThirdCategory",
-			thirdCategory: category
-		}).then(function(response) {
-			for(i in c.data.thirdCategories){
+		if(category.url){
+			c.data.categoryURL = category.url;
+			for(var i in c.data.thirdCategories){
 				if(c.data.thirdCategories[i].sys_id == category.sys_id){
 					c.data.thirdCategories[i].selected = true;
 				}
@@ -226,27 +291,51 @@
 					c.data.thirdCategories[i].selected = false;
 				}
 			}
-			c.data.subcategorySelected = response.data.subcategorySelected;
-			c.data.arrayItems = response.data.arrayItems;
-			c.data.showItems = response.data.showItems;
-			hideItem();
-			c.data.categoryTitle = category.title;
-			c.data.breadcrumb = c.originalBreadcrumb;
-			c.data.breadcrumb += " > " + category.title;
-			scrollAllItems();
-		});
+			c.data.showItems = false;
+			$timeout(function() {
+				scrollTo("external_link");
+			});
+		}
+		else{
+			c.server.get({
+				action: "selectedThirdCategory",
+				thirdCategory: category
+			}).then(function(response) {
+				for(i in c.data.thirdCategories){
+					if(c.data.thirdCategories[i].sys_id == category.sys_id){
+						c.data.thirdCategories[i].selected = true;
+					}
+					else{
+						c.data.thirdCategories[i].selected = false;
+					}
+				}
+				c.data.subcategorySelected = response.data.subcategorySelected;
+				c.data.arrayItems = response.data.arrayItems;
+				c.data.showItems = response.data.showItems;
+				hideItem();
+				c.data.categoryTitle = category.title;
+				c.data.breadcrumb = c.originalBreadcrumb;
+				c.data.breadcrumb += " > " + category.title;
+				scrollAllItems();
+			});
+		}
+
 	}
 
 	//Used to show the selected category and his parent second category
 	//Is used when selecting the third category or an item in a search or another widget (when selecting a third category by this way,
 	//need to show the parent category in the previous steps of the widget)
 	function showThirdCategory(secCategory, thirdCategory){
+		//else{
 		c.server.get({
 			action: "showThirdCategory",
 			secCategory: secCategory,
 			thirdCategory : thirdCategory
 		}).then(function(response) {
 			c.data.thirdCategories = response.data.thirdCategories;
+
+
+
 
 			for(i in c.data.secCategories){
 				if(c.data.secCategories[i].sys_id == secCategory.sys_id){
@@ -260,31 +349,45 @@
 				}
 			}
 
-
-			c.data.showThirdCategories = response.data.showThirdCategories;
-
-			c.data.subcategorySelected = response.data.subcategorySelected;
-			c.data.arrayItems = response.data.arrayItems;
-
-			c.data.showItems = response.data.showItems;
-			hideItem();
-
-			c.categorySelect = false;
-
-			c.data.categoryTitle = thirdCategory.title;
-			c.originalBreadcrumb = c.data.title + " > " + secCategory.title;
-			c.data.breadcrumb = c.data.title + " > " + secCategory.title + " > " + thirdCategory.title;
-
-			//If this function is called when selecting an item, need to select the item using the function below
-			if(c.selectedItemID){
-				selectedItem(c.selectedItemID);
+			if(thirdCategory.url){
+				c.data.showThirdCategories = true;
+				c.data.categoryURL = thirdCategory.url;
+				c.data.showItems = false;
+				$timeout(function() {
+					scrollTo("external_link");
+				});
 			}
 			else{
-				scrollAllItems();
+				c.data.showThirdCategories = response.data.showThirdCategories;
+
+				c.data.subcategorySelected = response.data.subcategorySelected;
+				c.data.arrayItems = response.data.arrayItems;
+
+				c.data.showItems = response.data.showItems;
+				hideItem();
+
+				c.categorySelect = false;
+
+				c.data.categoryTitle = thirdCategory.title;
+				c.originalBreadcrumb = c.data.title + " > " + secCategory.title;
+				c.data.breadcrumb = c.data.title + " > " + secCategory.title + " > " + thirdCategory.title;
+
+				//If this function is called when selecting an item, need to select the item using the function below
+				if(c.selectedItemID){
+					selectedItem(c.selectedItemID);
+				}
+				else{
+					scrollAllItems();
+				}
+				c.selectedItemID = false;
+				c.scrollSelect = false;
 			}
-			c.selectedItemID = false;
-			c.scrollSelect = false;
+
+
+
 		});
+		//}
+
 	}
 
 	//When selected an item in another widget or search, use this function to show the selected item
@@ -292,27 +395,49 @@
 		for(i in c.data.arrayItems){
 			c.data.arrayItems[i].selected = false;
 			if(c.data.arrayItems[i].sys_id == itemID){
-				c.selected_item = c.data.arrayItems[i];
-				c.data.arrayItems[i].selected = c.data.arrayItems[i].title;
-
-				var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
-				if(c.data.arrayItems[i].table == "sc_cat_item_producer"){
-					c.data.showSelectedItem = false;
-					c.data.showSelectedOrder = false;
-					c.data.showSelectedProducer = true;
-				}
-				else if(c.data.arrayItems[i].table != "sc_cat_item_guide" || isAllowedRP){
-					c.data.showSelectedItem = true;
-					c.data.showSelectedOrder = false;
+				var item = c.data.arrayItems[i];
+				if(item.table == "x_gmeps_csc_link_catalog_item"){
+					c.data.showLinkItem = true;
+					c.data.linkItem = item;
+					c.data.showSelectedItem = false; 
 					c.data.showSelectedProducer = false;
+					c.data.showSelectedOrder = false;
+
+					for(var i in c.data.arrayItems){
+						if(c.data.arrayItems[i].sys_id == itemID){
+							c.data.arrayItems[i].selected = true;
+						}
+						else{
+							c.data.arrayItems[i].selected = false;
+						}
+					}
+					$timeout(function() {
+						scrollTo("external_link_item");
+					});
 				}
 				else{
-					c.data.showSelectedOrder = true;
-					c.data.showSelectedItem = false;
-					c.data.showSelectedProducer = false;
-					$rootScope.$broadcast("selectedOrder", itemID);
+					c.selected_item = c.data.arrayItems[i];
+					c.data.arrayItems[i].selected = c.data.arrayItems[i].title;
+
+					var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
+					if(c.data.arrayItems[i].table == "sc_cat_item_producer"){
+						c.data.showSelectedItem = false;
+						c.data.showSelectedOrder = false;
+						c.data.showSelectedProducer = true;
+					}
+					else if(c.data.arrayItems[i].table != "sc_cat_item_guide" || isAllowedRP){
+						c.data.showSelectedItem = true;
+						c.data.showSelectedOrder = false;
+						c.data.showSelectedProducer = false;
+					}
+					else{
+						c.data.showSelectedOrder = true;
+						c.data.showSelectedItem = false;
+						c.data.showSelectedProducer = false;
+						$rootScope.$broadcast("selectedOrder", itemID);
+					}
+					c.data.itemDescription = c.data.arrayItems[i].short_description || c.data.arrayItems[i].description;
 				}
-				c.data.itemDescription = c.data.arrayItems[i].short_description || c.data.arrayItems[i].description;
 			}
 		}
 		var duplicatedItemID = false;
@@ -359,6 +484,10 @@
 
 	function replaceHtml(string) {
 		return string.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g,'"');
+	}
+
+	c.openExternalLink = function(){
+		$window.open(c.data.categoryURL,'_blank');
 	}
 }]]></client_script>
         <controller_as>c</controller_as>
@@ -411,6 +540,12 @@
       width: 100%;
       height: 2px;
       margin: 30px 0;
+    }
+
+    .without_services {
+      text-align: center;
+      font-size: 20px;
+      font-family: 'globorounded_bd';
     }
 
     .content-form-group {
@@ -722,6 +857,11 @@
         <script><![CDATA[(function() {
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
+	
+	data.showLinkItem = false;
+	data.linkItem = false;
+	
+	data.categoryURL = false;
 
 	data.showWidget = false;
 
@@ -968,14 +1108,14 @@ data.arrayItems = total;
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 13:30:17</sys_created_on>
         <sys_id>832ac777dbc41050fa11cf2414961944</sys_id>
-        <sys_mod_count>1689</sys_mod_count>
+        <sys_mod_count>1741</sys_mod_count>
         <sys_name>GService Categories</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_832ac777dbc41050fa11cf2414961944</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-04 23:20:59</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-09-22 16:46:16</sys_updated_on>
         <template><![CDATA[<div id="widget-category" class="content" ng-show="data.showWidget">
   <div>
 
@@ -999,7 +1139,11 @@ data.arrayItems = total;
         <sp-widget widget="data.searchResultWidget"></sp-widget>
       </div>
 
-      <div class="categories_title">{{data.subcategoriesTitle}}</div>
+      <div class="categories_title" ng-if="c.data.secCategories != 0">{{data.subcategoriesTitle}}</div>
+
+      <div class="without_services" ng-if="c.data.secCategories == 0">
+        ${Aguarde! Em breve ofereceremos serviços para atender às suas necessidades.}
+      </div>
 
       <div ng-repeat="category in c.data.secCategories" ng-if="category.show">
         <div class="row text-center">
@@ -1019,6 +1163,10 @@ data.arrayItems = total;
 
       <div class="line {{data.categoryBgColor}}" id="line-breadcrumb" ng-if="c.data.showThirdCategories"></div>
 
+      <a id="external_link" ng-href="{{data.categoryURL}}" target="_blank" ng-if="data.categoryURL">
+        Teste
+      </a>
+
       <div class="content_breadcrumb_items">
         <div id="show-items" ng-show="data.showItems">
           <div class="breadcrumb_item">{{data.breadcrumb}}</div>
@@ -1036,11 +1184,20 @@ data.arrayItems = total;
                          ng-click="c.selectItem(item.sys_id, item)">
                   <div class="item_title" ng-class="{'item_title_current':item == c.selected_item}">{{item.title}}
 
-                    <span class="icon_yourself" ng-if="item.do_yourself != 0">
+                    <span class="icon_yourself" ng-if="item.do_yourself != 0 && item.do_yourself != null">
                       <img src="Do_Yourself_icon.png"/>
                       <span class="tooltip">
                         <div class="tooltip_arrow arrow_left"></div>
                         <div class="tooltip_text">${Do it yourself}</div>
+                      </span>
+                    </span>
+
+                    <!-- COLOCAR AQUI O ICONE DE SERVIÇOS DO TIPO LINK -->
+                    <span class="icon_yourself" ng-if="item.table == 'x_gmeps_csc_link_catalog_item'">
+                      <img src="Do_Yourself_icon.png"/>
+                      <span class="tooltip">
+                        <div class="tooltip_arrow arrow_left"></div>
+                        <div class="tooltip_text">${Link Externo}</div>
                       </span>
                     </span>
 
@@ -1052,7 +1209,16 @@ data.arrayItems = total;
               </span>
             </div>
           </div>
+
+
+          <a id="external_link_item" ng-href="{{data.linkItem.url}}" target="_blank" ng-if="data.showLinkItem">
+            Teste
+          </a>
         </div>
+      </div>
+
+      <div>
+
       </div>
 
       <div class="description_item" ng-show="data.showSelectedItem || data.showSelectedProducer " ng-bind-html="c.data.itemDescription"></div>
