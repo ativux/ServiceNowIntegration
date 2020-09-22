@@ -142,7 +142,7 @@
   float: left;
   width: 24px;
   position: relative;
-  top: 24px;
+  top: 35px;
 }
 
 .radio-cart {
@@ -154,10 +154,6 @@
   padding: 1px 6.5px !important;
   margin-left: -6px;
   font-family: $text-bolder;
-}
-
-.navbar-nav span{
-  padding: 20px 0 0 20px;
 }
 
 .cart-dropdown, .wishlist-menu, .gtd-dropdown-container .empty-dropdown {
@@ -217,6 +213,7 @@
   }
   p.quantity-price {
     padding-top: 0.5rem;
+
     span {
       color: $text-muted;
       padding-right: 0.5rem;
@@ -258,6 +255,17 @@
   .header-menu-item ul {
     right: auto;
     left: auto;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .header-loader {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+  }
+  .radio-cart {
+    margin-top: -2px;
+    margin-left: 6px;
   }
 }</css>
         <data_table>sp_instance_menu</data_table>
@@ -363,7 +371,8 @@
 	}
 
 	var gestorGroup = gs.getProperty("gservice_gestor_page_group");
-	data.isManager = gs.getUser().isMemberOf(gestorGroup);
+	var cscManager = gs.getProperty("gservice_csc_manager_group");
+	data.isManager = gs.getUser().isMemberOf(gestorGroup) || gs.getUser().isMemberOf(cscManager);
 	data.isAdmin = gs.getUser().hasRole('admin');
 	data.showEquipments = false;
 	if(data.isAdmin || gs.getUser().hasRole('wm_initiator') || gs.getUser().hasRole('wm_initiator_qualifier')){
@@ -402,15 +411,16 @@
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 17:35:57</sys_created_on>
         <sys_id>8ed872e7db40dc10fa11cf241496192b</sys_id>
-        <sys_mod_count>250</sys_mod_count>
+        <sys_mod_count>282</sys_mod_count>
         <sys_name>GService Header Menu</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_8ed872e7db40dc10fa11cf241496192b</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-04 20:29:07</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-09-22 20:21:49</sys_updated_on>
         <template><![CDATA[<ul class="nav navbar-nav" role="menubar">
+  
   <div class="header-loader" ng-class="{'invisible': !loadingIndicator}">
     <div class="hidden-xs sp-loading-indicator la-sm">
       <div></div>
@@ -420,6 +430,7 @@
   </div>
 
   <li ng-repeat="item in visibleItems" ng-class="{dropdown: item.items.length > 0, 'header-menu-item': true}" ng-include="'gserviceMenuTemplate'" role="presentation"></li>
+  
   <!-- Wishlist menu -->
   <li ng-if="options.enable_wishlist && data.isLoggedIn && data.showWishlist" ng-show="!accessibilityEnabled" class="dropdown hidden-xs" role="presentation">
     <a role="menuitem" href="javascript:void(0)"

@@ -16,14 +16,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-27 14:00:45</sys_created_on>
         <sys_id>fc4489f7db185010fa11cf241496197a</sys_id>
-        <sys_mod_count>13</sys_mod_count>
+        <sys_mod_count>16</sys_mod_count>
         <sys_name/>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_instance_fc4489f7db185010fa11cf241496197a</sys_update_name>
-        <sys_updated_by>organize.willian</sys_updated_by>
-        <sys_updated_on>2020-09-17 21:00:18</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-09-22 17:04:06</sys_updated_on>
         <title/>
         <url/>
         <widget_parameters><![CDATA[{
@@ -48,8 +48,8 @@
 		"displayValue": ""
 	},
 	"contextual_search_sources": {
-		"value": "e1806577db985010fa11cf2414961920,c98a9dffdb585010fa11cf24149619e4,803b1133db985010fa11cf24149619eb,3985a773dbc81050fa11cf24149619af",
-		"displayValue": "GService KB Test, GService Request Item Test, GService Catalog Item Test, GService Categories Test"
+		"value": "e1806577db985010fa11cf2414961920,c98a9dffdb585010fa11cf24149619e4,803b1133db985010fa11cf24149619eb,3985a773dbc81050fa11cf24149619af,13d63f931b97545094962170f54bcb09",
+		"displayValue": "GService KB Test, GService Request Item Test, GService Catalog Item Test, GService Categories Test,Solicite Serviços (Externos)"
 	},
 	"broadcast_name": {
 		"value": "getSearchedItems",
@@ -68,8 +68,8 @@
 		"displayValue": ""
 	},
 	"category_search_img": {
-		"value": "searchGlass.png",
-		"displayValue": "searchGlass.png"
+		"value": "GS_Busca_PGS.png",
+		"displayValue": "GS_Busca_PGS.png"
 	}
 }]]></widget_parameters>
     </sp_instance>
