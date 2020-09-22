@@ -43,9 +43,32 @@
 				else if(c.data.item_selected){	
 					categorySubscribe.setSelectedItem(c.data.category, c.data.secondCategory, c.data.thirdCategory,c.data.itemID);
 				}
+				else if(c.data.do_yourself){
+					$rootScope.$broadcast('showHideWidget', "do_yourself");
+				}
+				else if(c.data.kb_selected){
+					$rootScope.$broadcast("kb_category", c.data.knowledge_id);
+				}
+				else if(c.data.category_selected){
+					if(c.data.secondSelected){
+						categorySubscribe.setSecondCat(c.data.category_id, c.data.secondCategory);
+					}
+					else{
+						categorySubscribe.setThirdCat(c.data.category_id, c.data.secondCategory, c.data.thirdCategory);
+					}
+				}
 			});
 		}, 500);
 	}
+	
+	$scope.$on('goToSecondCategory', function (event, category, secondCategory) {
+		categorySubscribe.setSecondCat(category, secondCategory);
+	});
+	
+	$scope.$on('goToThirdCategory', function (event, category, secondCategory, thirdCategory) {
+		categorySubscribe.setThirdCat(category, secondCategory, thirdCategory);
+	});
+	
 }]]></client_script>
         <controller_as>c</controller_as>
         <css/>
@@ -71,6 +94,10 @@
 
 	data.refresh = true;
 	data.cart_item_id = false;
+	data.kb_selected = false;
+	data.do_yourself = false;
+	data.category_selected = false;
+	data.secondSelected = false;
 
 	if(localInput){
 		if(localInput.action == "openCategoryItem"){
@@ -89,22 +116,65 @@
 			data.item_selected = false;
 
 			var item_id = $sp.getParameter("item_id");
+			data.do_yourself = $sp.getParameter("do_yourself");
+			data.knowledge_id = $sp.getParameter("knowledge_id");
+			data.category_id = $sp.getParameter("category_id");
 			if(item_id){
 				getItemCategory(item_id);
 				data.item_selected = true;
+			}
+			else if(data.knowledge_id){
+				data.kb_selected = true;
+			}
+			else if(data.category_id){
+				data.category_selected = true;
+				var grCategory = new GlideRecord("sc_category");
+				grCategory.get(data.category_id);
+
+				var grCategoryParent = new GlideRecord("sc_category");
+				grCategoryParent.get(grCategory.getValue("parent"));
+				if(grCategoryParent.getValue("parent")){
+					data.secondCategory = {sys_id : grCategoryParent.getUniqueValue()};
+					data.category_id = grCategoryParent.getValue("parent");
+
+					var portalUtils = new global.OCLPortalUtils();
+					var thirdCategories = portalUtils.getSubcategories(grCategoryParent.getUniqueValue(), grCategoryParent.getValue("title"));
+					for(i in thirdCategories){
+						if(thirdCategories[i].sys_id == grCategory.getUniqueValue()){
+							data.thirdCategory = thirdCategories[i];
+						}
+					}
+				}
+				else{
+					data.secondCategory = {sys_id : data.category_id, url : grCategory.getValue("u_portal_redirect_url")};
+					data.category_id = grCategory.getValue("parent");
+					data.secondSelected = true;
+				}
+
+
 
 			}
 		}
 
 	}
+
 	function getItemCategory (itemID, categoryID){
 		data.itemID = itemID;
 		if(itemID){
 			data.showItem = true;
 
 			var grItem = new GlideRecord("sc_cat_item");
-			grItem.get(itemID);
-			categoryID = grItem.getValue("category");
+			if(grItem.get(itemID)){
+				categoryID = grItem.getValue("category");
+			}
+			else{
+				var grLinkItem = new GlideRecord("x_gmeps_csc_link_catalog_item");
+				grLinkItem.get(itemID);
+				categoryID = grLinkItem.getValue("category");
+				
+			}
+
+
 		}
 
 		var portalUtils = new global.OCLPortalUtils();
@@ -164,14 +234,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-27 16:02:31</sys_created_on>
         <sys_id>05002d37db985010fa11cf2414961998</sys_id>
-        <sys_mod_count>131</sys_mod_count>
+        <sys_mod_count>166</sys_mod_count>
         <sys_name>GService Catalog Navigation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_05002d37db985010fa11cf2414961998</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-05-21 16:34:55</sys_updated_on>
+        <sys_updated_on>2020-09-22 16:18:24</sys_updated_on>
         <template/>
     </sp_widget>
 </record_update>
