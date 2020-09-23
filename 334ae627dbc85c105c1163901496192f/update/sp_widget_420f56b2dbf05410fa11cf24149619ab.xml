@@ -1068,22 +1068,25 @@ ul {
         <public>false</public>
         <roles>snc_external,snc_internal</roles>
         <script><![CDATA[(function() {
-	
+
 	//Code not OOTB
 	data.hide = false;
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
-	
+
 	//Used to get the current user sys_id
 	var userID = gs.getUser().getID();
 	data.user_id = userID;
 	data.username = gs.getUserDisplayName();
 	data.statusEntries = [];
-	
-	data.color_class = options.color_class || "color_category1_old";
-	data.bd_color_class = options.bd_color_class || "bdcolor_category1_old";
-	data.send_image = options.send_image || "gservice_dashboard_submit.png";
-	data.comment_image = options.comment_image || "gservice_message.png";
+
+	if(!localInput){
+		data.color_class = options.color_class || "color_category1_old";
+		data.bd_color_class = options.bd_color_class || "bdcolor_category1_old";
+		data.send_image = options.send_image || "gservice_dashboard_submit.png";
+		data.comment_image = options.comment_image || "gservice_message.png";
+	}
+
 
 	data.currentUserID = gs.getUserID();
 	data.maxAttachmentSize = parseInt(gs.getProperty("com.glide.attachment.max_size", 1024));
@@ -1098,14 +1101,14 @@ ul {
 	data.attachAddedMsg = gs.getMessage("Attachment added");
 	data.attachFailMsg = gs.getMessage("Failed to add attachment");
 	data.scanFailedMsg = gs.getMessage("File failed security scan");
-	
+
 	//Sys_ID of the record producer - EDITION MADE BELOW
 	data.sys_id = (input && input.sys_id) || options.sys_id || $sp.getParameter("sys_id");
 	data.item_status = options.item_status;
-	
+
 	//Table of the record producer - EDITION MADE BELOW
 	data.table = (input && input.table) || options.table || $sp.getParameter("table");
-	
+
 	// don't use options.title unless sys_id and table also come from options
 	if (options && options.sys_id && options.table)
 		data.ticketTitle = options.title;
@@ -1115,7 +1118,7 @@ ul {
 	data.includeExtended = options.includeExtended || false;
 	data.use_dynamic_placeholder = options.use_dynamic_placeholder;
 	data.hideAttachmentBtn = options.hideAttachmentBtn;
-	
+
 	var translationLuaParameters = {
 		'event': {
 			'eventName': 'Activity Stream - Portal'
@@ -1150,9 +1153,9 @@ ul {
 		data.enterKeyAddsNewLine = gs.getProperty("glide.service_portal.comment.enter_adds_newline") == "true";
 	else if (options.enter_key_behavior == "New line")
 		data.enterKeyAddsNewLine = true;
-	
+
 	var gr = portalUtils.getRecord(data.table, data.sys_id);
-	
+
 	data.variables = new global.GlobalServiceCatalogUtil().getVariablesForTask(gr, true);
 
 	data.isNewRecord = data.sys_id == -1 || gr.isNewRecord();
@@ -1192,7 +1195,7 @@ ul {
 				data.ticketTitle = gr.getDisplayValue("short_description");
 			if (!data.ticketTitle)
 				data.ticketTitle = data.number;
-			
+
 		}
 
 		$sp.logStat('Task View', data.table, data.sys_id);
@@ -1201,7 +1204,7 @@ ul {
 	data.canWrite = gr.canWrite();
 	data.canAttach = userCanAttach(gr);
 	data.canRead = gr.canRead();
-	
+
 	data.hasWritableJournalField = false;
 	data.hasReadableJournalField = false;
 
@@ -1258,14 +1261,14 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-19 14:34:49</sys_created_on>
         <sys_id>420f56b2dbf05410fa11cf24149619ab</sys_id>
-        <sys_mod_count>498</sys_mod_count>
+        <sys_mod_count>500</sys_mod_count>
         <sys_name>GService Ticket Conversations</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_420f56b2dbf05410fa11cf24149619ab</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-10 19:36:27</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-09-23 17:17:01</sys_updated_on>
         <template><![CDATA[<div class="content_notifications dynamic_{{data.color_class}}" ng-if="data.canRead && !data.isNewRecord && !data.hide">
   <div class="mask_submitting" ng-show="c.submitting"/>
   <div class="content_conversation">
