@@ -4,6 +4,8 @@
         <client_script><![CDATA[function ($rootScope, $scope, snRecordWatcher, spUtil, $location, $uibModal, cabrillo, $timeout, $window) {
 	var c = this;
 	c.sendKBCategories = true;
+	c.categoryID = false;
+	c.secondCategory = false;
 	//Redirect users that aren`t managers
 	if(c.data.redirect){
 		$window.location = "?id=globoservice_index";
@@ -13,11 +15,11 @@
 		return c.data.sendKBCategories;
 	}, function(value) {
 		if(c.data.sendKBCategories){
-		$timeout(function(){
-			$rootScope.$broadcast("getKBCategoriesInfo", c.data.kb_categories);
-			c.data.sendKBCategories = false;
-		}, 500);
-	}
+			$timeout(function(){
+				$rootScope.$broadcast("getKBCategoriesInfo", c.data.kb_categories);
+				c.data.sendKBCategories = false;
+			}, 500);
+		}
 	});
 
 	$scope.collapse = function() {
@@ -92,35 +94,61 @@
 		return false;
 	};
 
-	c.selectedSecondCategory = function(category, index){
-		c.server.get({
-			action: "selectedSecondCategory",
-			category: category
-		}).then(function(response) {
-			for(i in c.data.categories[index].secondCategories){
-				c.data.categories[index].secondCategories[i].selected = false;
+	c.selectedSecondCategory = function(category, secCategory, index){
+		if(secCategory.url){
+			c.data.menuSelected = 0;
+			if(c.data.page_id == null || c.data.page_id == "globoservice_index"){
+				$rootScope.$broadcast('goToSecondCategory', category.sys_id, secCategory);
 			}
-			category.selected = true;
-			c.data.thirdCategories = response.data.thirdCategories;
-			c.data.showThirdCategories = response.data.showThirdCategories;
-			c.data.showItems = response.data.showItems;
-			c.data.subcategorySelected = response.data.subcategorySelected;
-			c.data.items = response.data.items;
+			else{
+				$location.search("id=globoservice_index&category_id=" + secCategory.sys_id);
+			}
 
-		});
+		}
+		else{
+			c.server.get({
+				action: "selectedSecondCategory",
+				category: secCategory
+			}).then(function(response) {
+				for(i in c.data.categories[index].secondCategories){
+					c.data.categories[index].secondCategories[i].selected = false;
+				}
+				secCategory.selected = true;
+				c.data.thirdCategories = response.data.thirdCategories;
+				c.data.showThirdCategories = response.data.showThirdCategories;
+				c.data.showItems = response.data.showItems;
+				c.data.subcategorySelected = response.data.subcategorySelected;
+				c.data.items = response.data.items;
+				c.secondCategory = secCategory;
+				c.categoryID = category.sys_id;
+			});
+		}
+
 	}
 
-	c.selectedThirdCategory = function(category){
-		c.server.get({
-			action: "selectedThirdCategory",
-			category: category
-		}).then(function(response) {
-			cleanSelection("clearThird");
-			category.selected = true;
-			c.data.subcategorySelected = response.data.subcategorySelected;
-			c.data.items = response.data.items;
-			c.data.showItems = response.data.showItems;
-		});
+	c.selectedThirdCategory = function(thirdCategory){
+		if(thirdCategory.url){
+			c.data.menuSelected = 0;
+			if(c.data.page_id == null || c.data.page_id == "globoservice_index"){
+				$rootScope.$broadcast('goToThirdCategory', c.categoryID, c.secondCategory, thirdCategory);
+			}
+			else{
+				$location.search("id=globoservice_index&category_id=" + thirdCategory.sys_id);
+			}
+
+		}
+		else{
+			c.server.get({
+				action: "selectedThirdCategory",
+				category: thirdCategory
+			}).then(function(response) {
+				cleanSelection("clearThird");
+				thirdCategory.selected = true;
+				c.data.subcategorySelected = response.data.subcategorySelected;
+				c.data.items = response.data.items;
+				c.data.showItems = response.data.showItems;
+			});
+		}
 	}
 
 	c.showItem = function(itemID){
@@ -266,7 +294,6 @@
   font-family: $text-bold;
   transition-property: padding-top;
   transition-duration: .2s;
-
   min-height: 120px;
 }
 
@@ -278,19 +305,20 @@
 .navbar-inverse .navbar-toggle {
   border-color: rgba(255, 255, 255, 0.25);
 }
+.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+  background-color: white !important;
+}
+.navbar-inverse .navbar-toggle:hover {
+  .context_menu {
+    div {
+      margin: 6px 0;
+    }
+  }
+}
 
 header[role="banner"],
 .nav &gt; li &gt; a {
   max-height: 60px;
-}
-.navbar-nav span {
-  padding: 20px 0;
-}
-
-@media screen and (max-width: 768px){
-  .nav &gt; li &gt; a {
-    padding: 10px 0 !important;
-  }
 }
 
 .navbar-brand {
@@ -331,6 +359,21 @@ header[role="banner"],
 
 .breadcrumb-container {
   background-color: $panel-bg;
+}
+
+/* Responsive */
+.context_menu {
+  width: 30px;
+  height: 30px;
+
+  div {
+    transition: .2s ease-in-out;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background-color: $blue;
+    margin: 5px 0;
+  }
 }
 
 /* for mobile app */
@@ -377,7 +420,7 @@ nav {
 }
 
 /* SIDEBAR STYLES */
-.icon-bar {
+.sidebar_menu {
   width: 90px;
   position: fixed;
   left: 0;
@@ -434,7 +477,7 @@ nav {
     margin-left: 20px;
     padding-left: 20px;
     margin-right: 10px;
-    border-left: 2px solid $dodger-blue;
+    border-left: 2px solid $tec;
 
     .separate_services {
       width: 100%;
@@ -486,7 +529,7 @@ nav {
       }
     }
     .category-selected {
-      color: $dodger-blue;
+      color: $tec;
     }
 
   }
@@ -540,6 +583,25 @@ nav {
 @media screen and (min-width: 768px) {
   .navbar-right {
     display: flex !important;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .nav &gt; li &gt; a {
+    padding: 10px 0 !important;
+  }
+}
+@media only screen and (max-width: 992px) {
+  .navbar-brand {
+    left: 100px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .sidebar_menu, .content-avatar {
+    display: none;
+  }
+  .navbar-brand {
+    left: 50px;
   }
 }</css>
         <data_table>sp_instance</data_table>
@@ -633,7 +695,7 @@ nav {
 		data.menuSelected = 0;
 		data.page_id = $sp.getParameter("id");
 
-		data.isManager = gs.getUser().isMemberOf(gs.getProperty("gservice_gestor_page_group"));
+		data.isManager = gs.getUser().isMemberOf(gs.getProperty("gservice_gestor_page_group")) || gs.getUser().isMemberOf(gs.getProperty("gservice_csc_manager_group"));
 		data.isAdmin = gs.getUser().hasRole('admin');
 		if(data.page_id == 'globoservice_manager'){
 			if(!data.isManager){
@@ -720,18 +782,18 @@ nav {
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 18:00:53</sys_created_on>
         <sys_id>578e7263db80dc10fa11cf24149619e7</sys_id>
-        <sys_mod_count>920</sys_mod_count>
+        <sys_mod_count>978</sys_mod_count>
         <sys_name>GService Stock Header</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_header_footer_578e7263db80dc10fa11cf24149619e7</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-04 20:33:57</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-09-23 13:50:39</sys_updated_on>
         <template><![CDATA[<div class="content">
 
   <!-- SIDE BAR -->
-  <div class="icon-bar">
+  <div class="icon-bar sidebar_menu">
     <div ng-click="c.openDropDown(2)"><img src="GS_ACESSORAPIDO_ERRO.png"></div>
     <div ng-click="c.openDropDown(3)"><img src="GS_ACESSORAPIDO_SERVICO.png"></div>
     <div ng-click="c.doYourself()"><img src="GS_ACESSORAPIDO_AUTO.png"></div>
@@ -756,7 +818,7 @@ nav {
           <img class="arrow-size" src="GS_Seta_TEC.png" ng-class="category.showAll ? '' : 'invert-arrow'"/>
         </div>
         <div ng-repeat="secCategory in category.secondCategories" ng-if="category.showAll && secCategory.showSec">
-          <div ng-class="secCategory.selected ? 'category-selected' : 'subcategory'" ng-click="c.selectedSecondCategory(secCategory, parentIndex)">{{secCategory.title}}</div>
+          <div ng-class="secCategory.selected ? 'category-selected' : 'subcategory'" ng-click="c.selectedSecondCategory(category, secCategory, parentIndex)">{{secCategory.title}}</div>
         </div>
       </div>
       
@@ -768,7 +830,7 @@ nav {
           <img class="arrow-size" src="GS_Seta_TEC.png" ng-class="category.showAll ? '' : 'invert-arrow'"/>
         </div>
         <div ng-repeat="secCategory in category.secondCategories" ng-if="category.showAll && secCategory.showSec">
-          <div ng-class="secCategory.selected ? 'category-selected' : 'subcategory'" ng-click="c.selectedSecondCategory(secCategory, parentIndex)">{{secCategory.title}}</div>
+          <div ng-class="secCategory.selected ? 'category-selected' : 'subcategory'" ng-click="c.selectedSecondCategory(category, secCategory, parentIndex)">{{secCategory.title}}</div>
         </div>
       </div>
     </div>
@@ -813,9 +875,14 @@ nav {
         </a>
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sp-nav-bar">
           <span class="sr-only">${Toggle navigation}</span>
+          <div class="context_menu">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <!--<span class="icon-bar"></span>
           <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>-->
         </button>
       </div>
 
@@ -825,7 +892,9 @@ nav {
         <ul ng-if="(!user.logged_in && page.id != portal.login_page_dv && !data.hasLogin)" class="nav navbar-nav" role="presentation">
           <li role="presentation"><a href ng-click="::openLogin()">${Login}</a></li>
         </ul>
-        <ul ng-if="user.logged_in" class="nav navbar-nav" role="menubar">
+        
+        <ul ng-if="user.logged_in" class="nav navbar-nav content-avatar" role="menubar">
+          
           <!-- chat, avatar, and logout -->
           <li ng-if="::(data.connect_support_queue_id && !isAgentChatConfigured)" role="presentation"><a href ng-click="openPopUp()" role="menuitem">${Live Chat}</a></li>
           <li ng-if="showXSAvatar" class="visible-xs-block" role="presentation"><a role="menuitem" ng-href="?id=user_profile&sys_id={{::user.sys_id}}" ng-click="collapse()">
@@ -838,7 +907,7 @@ nav {
   </div>
 </div>
 
-<div class="mobile_message" ng-if="data.device == 'm'">
+<div class="mobile_message" ng-if="false"> <!-- data.device == 'm' -->
   <img class="mobile_service_icon" src="mobile_service_icon.png" />
   <div class="message_title">Esse portal não foi configurado para uso mobile.</div>
   <div class="message no_margin">Recomendamos que você acesse ele pela versão desktop ou baixe o app Now Mobile para o seu celular.</div>
