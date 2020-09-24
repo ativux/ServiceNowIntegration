@@ -60,7 +60,7 @@
 
 	//When an article searched by the "GService Typeahead Search" widget is clicked, we send the data to the widget embedded
 	//in this widget and show this widget in a modal.
-	c.showResult = function(resultID, table){
+	c.showResult = function(resultID, table, taskType, csc_question){
 		if(table == "kb_knowledge"){
 			var jsonArticle = {articleID : resultID, categoryTitle : c.title, categoryColor: c.categoryColor};
 			var showCategory = false;
@@ -72,11 +72,16 @@
 			var modalID = "#" + c.data.articleModalID;
 			$(modalID).modal("show");
 		}
-		else if(table == "sc_cat_item"){
+		else if(table == "sc_cat_item" || table == "x_gmeps_csc_link_catalog_item"){
 			$rootScope.$broadcast('openSelectedCategoryItem', false, resultID);
 		}
 		else if(table == "task"){
-			$window.location = "?id=globoservice_my_dashboard&item_id=" + resultID;
+			if(taskType == "x_gmeps_csc_csc" || csc_question){
+				$window.location = "?id=globoservice_my_dashboard&item_id_csc=" + resultID;
+			}
+			else{
+				$window.location = "?id=globoservice_my_dashboard&item_id=" + resultID;
+			}
 		}
 		else if(table == "sc_category"){
 			$rootScope.$broadcast('openSelectedCategoryItem', resultID, false);
@@ -219,26 +224,30 @@
 				data.showArticles = true;
 				var results = searchResults.results;
 				for(i in results){
+					var taskType = "";
+					var csc_question = false;
+					if(results[i].table == "task"){
+						taskType = results[i].fields[1].value;
+						var grQuestion = new GlideRecord("u_question");
+						if(grQuestion.get(results[i].sys_id)){
+							if(grQuestion.getValue("u_area") == "financas"){
+								csc_question = true;
+							}
+						}
+					}
+					
 					var jsonArticle = {"title": results[i].primary, 
 														 "id": results[i].sys_id,
 														 "description" : results[i].fields[0].display_value,
-														 "table" : results[i].table};
-
-					// verify SC Catalog Item user access 
-					if(jsonArticle.table == 'sc_cat_item'){
-						var validatedItem = new sn_sc.CatItem('' + jsonArticle.id);
-						if (!validatedItem.canView() || !validatedItem.isVisibleServicePortal()) {
-							continue;
-						}
-					}
-
+														 "taskType" : taskType,
+														 "table" : results[i].table,
+														 "csc_question" : csc_question};
 					if(jsonArticle.description == '(empty)'){
 						jsonArticle.description = '';
 					}
 					var searchID = results[i].__search_source_id__;
 					for(var j in data.searchSources){
 						if(data.searchSources[j].id == searchID){
-
 							data.searchSources[j].results.push(jsonArticle);
 						}
 					}
@@ -262,15 +271,15 @@
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f609c53fdb185010fa11cf24149619a4</sys_update_name>
-        <sys_updated_by>organize.willian</sys_updated_by>
-        <sys_updated_on>2020-09-17 21:44:34</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-09-24 14:01:52</sys_updated_on>
         <template><![CDATA[<div class="col-lg-12 col-md-12 col-sm-12" ng-if="data.hasResults">
   <div class="articles">
     <div class="article" ng-if="c.showArticles" ng-repeat="searchSource in data.searchSources">
       <div ng-if="searchSource.results.length > 0">
         <div class="article_title">{{searchSource.name}} <span>({{searchSource.results.length}})</span></div>
         <div  ng-repeat="results in searchSource.results | limitTo: searchSource.resultLimit">
-          <div class="article_list" ng-click="c.showResult(results.id, results.table)">{{results.title}}</div>
+          <div class="article_list" ng-click="c.showResult(results.id, results.table, results.taskType, results.csc_question)">{{results.title}}</div>
           <div>{{results.description}}</div>
         </div>
         <div class="article_all" ng-if="searchSource.results.length > 2" ng-click="c.seeAll(searchSource)">{{searchSource.seeAllMsg}}</div>
