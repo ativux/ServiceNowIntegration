@@ -547,6 +547,19 @@
       font-size: 20px;
       font-family: 'globorounded_bd';
     }
+    .external_services {
+      font-size: 16px;
+      font-family: 'globorounded_bd';
+      
+      a {
+        transition: .2s ease-in-out;
+        text-decoration: underline;
+      }
+      
+      a:hover {
+        opacity: .6;
+      }
+    }
 
     .content-form-group {
       display: flex;
@@ -857,14 +870,11 @@
         <script><![CDATA[(function() {
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
-	
+
 	data.showLinkItem = false;
 	data.linkItem = false;
-	
 	data.categoryURL = false;
-
 	data.showWidget = false;
-
 
 	data.categoryColor = '';
 	data.categoryBgColor = '';
@@ -943,13 +953,10 @@
 
 	data.itemSelectMessage = gs.getMessage("Item Select Message");
 
-
-
 	if(localInput){
 		//When selected the category in the previous widget
 		//In this case we get the categories above the first category and others values to show in the widget (Title, subtitle, etc)
 		if(localInput.action == "selectedCategory") {
-
 			selectedCategory();
 		}
 
@@ -972,7 +979,6 @@
 		}
 	}
 
-
 	function selectedCategory(){
 		data.category_id = localInput.selectedCategory;
 		var jsonCategory = portalUtils.selectedCategory(localInput.selectedCategory);
@@ -992,6 +998,7 @@
 		data.categoryImgRight = parse[localInput.selectedCategory].imgright;
 		data.categorySearchImg = parse[localInput.selectedCategory].searchImg;
 		data.categorySubmitImg = parse[localInput.selectedCategory].submitImg;
+		data.categoryLinkImg = parse[localInput.selectedCategory].linkImg;
 
 		if(data.categorySearchImg == localInput.typeaheadWidget.options.category_search_img){
 			data.typeaheadWidget = localInput.typeaheadWidget;
@@ -1008,8 +1015,6 @@
 
 			data.typeaheadWidget = $sp.getWidget('gservice_typeahead_search', typeahead_search_options);
 		}
-
-
 
 		sc_catalog_item_options = {"show_add_cart_button": "true",
 															 "show_field_validation_messages": "false",
@@ -1044,62 +1049,62 @@
 																				"broadcast_name" : "openItem",
 																				"show_category_modal" : true};
 
-	data.gserviceRecordProducer = $sp.getWidget('gservice_custom_catalog_item_incident', custom_catalog_item_incident);
+		data.gserviceRecordProducer = $sp.getWidget('gservice_custom_catalog_item_incident', custom_catalog_item_incident);
 
-	data.kb_most_viewed_options = {"max_number": "4", "title" : gs.getMessage("Artigos mais visitados"),
-																 "category_bg_color" : data.categoryBgColor};
+		data.kb_most_viewed_options = {"max_number": "4", "title" : gs.getMessage("Artigos mais visitados"),
+																	 "category_bg_color" : data.categoryBgColor};
 
-	data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful");
+		data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful");
 
-}
-
- function selectedSecondCategory(){
-	data.thirdCategories = portalUtils.getSubcategories(localInput.secCategory.sys_id, localInput.secCategory.title);
-
-	if(data.thirdCategories.length != 0){
-		data.showThirdCategories = true;
-		data.showItems = false;
 	}
-	else{
-		data.showThirdCategories = false;
-		data.subcategorySelected = true;
 
-		data.arrayItems = portalUtils.getItems(localInput.secCategory.sys_id);
+	function selectedSecondCategory(){
+		data.thirdCategories = portalUtils.getSubcategories(localInput.secCategory.sys_id, localInput.secCategory.title);
+
+		if(data.thirdCategories.length != 0){
+			data.showThirdCategories = true;
+			data.showItems = false;
+		}
+		else{
+			data.showThirdCategories = false;
+			data.subcategorySelected = true;
+
+			data.arrayItems = portalUtils.getItems(localInput.secCategory.sys_id);
+			if(data.arrayItems.length > 0){
+				data.showItems = true;
+			}
+		}
+
+	}
+
+	function selectedThirdCategory(){
+		data.subcategorySelected = true;
+		data.arrayItems = portalUtils.getItems(localInput.thirdCategory.sys_id);
 		if(data.arrayItems.length > 0){
 			data.showItems = true;
 		}
 	}
 
-}
-
-function selectedThirdCategory(){
-	data.subcategorySelected = true;
-	data.arrayItems = portalUtils.getItems(localInput.thirdCategory.sys_id);
-	if(data.arrayItems.length > 0){
-		data.showItems = true;
+	var half = Math.ceil(data.arrayItems.length/2);
+	var minor = [];
+	var major = [];
+	//Utilizado para deixar primeiros do lado esquerdo
+	for(var i in data.arrayItems){
+		if (i<half){
+			minor.push(data.arrayItems[i]);
+		} 
+		if (i>=half){
+			major.push(data.arrayItems[i]);
+		}
 	}
-}
-
-var half = Math.ceil(data.arrayItems.length/2);
-var minor = [];
-var major = [];
-//Utilizado para deixar primeiros do lado esquerdo
-for(i in data.arrayItems){
-	if (i<half){
-		minor.push(data.arrayItems[i]);
-	} 
-	if (i>=half){
-		major.push(data.arrayItems[i]);
+	var total = [];	
+	for(i in minor){
+		total.push(minor[i]);
+		if (major[i]){
+			total.push(major[i]);
+		}
 	}
-}
-var total = [];	
-for(i in minor){
-	total.push(minor[i]);
-	if (major[i]){
-		total.push(major[i]);
-	}
-}
-data.arrayItems = total;
+	data.arrayItems = total;
 
 
 })();]]></script>
@@ -1108,14 +1113,14 @@ data.arrayItems = total;
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 13:30:17</sys_created_on>
         <sys_id>832ac777dbc41050fa11cf2414961944</sys_id>
-        <sys_mod_count>1741</sys_mod_count>
+        <sys_mod_count>1766</sys_mod_count>
         <sys_name>GService Categories</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_832ac777dbc41050fa11cf2414961944</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-09-22 16:46:16</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-09-24 18:13:58</sys_updated_on>
         <template><![CDATA[<div id="widget-category" class="content" ng-show="data.showWidget">
   <div>
 
@@ -1163,9 +1168,14 @@ data.arrayItems = total;
 
       <div class="line {{data.categoryBgColor}}" id="line-breadcrumb" ng-if="c.data.showThirdCategories"></div>
 
-      <a id="external_link" ng-href="{{data.categoryURL}}" target="_blank" ng-if="data.categoryURL">
-        Teste
-      </a>
+      <div class="external_services" ng-if="data.categoryURL">
+        <span>${Este serviço acontece em outro sistema.} </span>
+        <a class="{{data.categoryColor}}" id="external_link" ng-href="{{data.categoryURL}}" target="_blank">
+          Clique aqui para ser redirecionado.
+        </a>
+      </div>
+      
+      <div class="line {{data.categoryBgColor}}" ng-if="data.categoryURL"></div>
 
       <div class="content_breadcrumb_items">
         <div id="show-items" ng-show="data.showItems">
@@ -1191,10 +1201,9 @@ data.arrayItems = total;
                         <div class="tooltip_text">${Do it yourself}</div>
                       </span>
                     </span>
-
-                    <!-- COLOCAR AQUI O ICONE DE SERVIÇOS DO TIPO LINK -->
+                    
                     <span class="icon_yourself" ng-if="item.table == 'x_gmeps_csc_link_catalog_item'">
-                      <img src="Do_Yourself_icon.png"/>
+                      <img src="{{data.categoryLinkImg}}"/>
                       <span class="tooltip">
                         <div class="tooltip_arrow arrow_left"></div>
                         <div class="tooltip_text">${Link Externo}</div>
@@ -1210,15 +1219,16 @@ data.arrayItems = total;
             </div>
           </div>
 
-
-          <a id="external_link_item" ng-href="{{data.linkItem.url}}" target="_blank" ng-if="data.showLinkItem">
-            Teste
-          </a>
         </div>
       </div>
-
-      <div>
-
+      
+      <div class="description_item" ng-if="data.showLinkItem">{{data.linkItem.short_description}}</div>
+      <div class="line {{data.categoryBgColor}}" ng-if="data.showLinkItem"></div>
+      <div class="external_services" ng-if="data.showLinkItem">
+        <span>${Este serviço acontece em outro sistema.} </span>
+        <a class="{{data.categoryColor}}" id="external_link_item" ng-href="{{data.linkItem.url}}" target="_blank">
+          Clique aqui para ser redirecionado.
+        </a>
       </div>
 
       <div class="description_item" ng-show="data.showSelectedItem || data.showSelectedProducer " ng-bind-html="c.data.itemDescription"></div>
