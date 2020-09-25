@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_category">
+    <sc_category action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <description>Solicitação de viagens e afins</description>
+        <entitlement_script/>
+        <header_icon/>
+        <homepage_image/>
+        <homepage_renderer display_value="Category Items">47ebe8aa3742300054b6a3549dbe5dfa</homepage_renderer>
+        <icon/>
+        <image/>
+        <location/>
+        <mobile_hide_description>false</mobile_hide_description>
+        <mobile_picture/>
+        <mobile_subcategory_render_type>list</mobile_subcategory_render_type>
+        <module/>
+        <order>0</order>
+        <parent display_value="Apoio Corporativo">e39a260c1b321c1094962170f54bcbc3</parent>
+        <roles/>
+        <sc_catalog display_value="CSC">04f80b68dbe590105c116390149619eb</sc_catalog>
+        <sys_class_name>sc_category</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-09-25 14:07:08</sys_created_on>
+        <sys_id>d39de6501b27585094962170f54bcb8f</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Viagens</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sc_category_d39de6501b27585094962170f54bcb8f</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-09-25 14:10:42</sys_updated_on>
+        <title>Viagens</title>
+        <u_portal_redirect_url>https://www.argoit.com.br/kontik/globo - Para TV e Globo.com</u_portal_redirect_url>
+        <u_related_faq_kb_category/>
+        <u_short_description>Solicitação de viagens e afins</u_short_description>
+        <u_show_portal>false</u_show_portal>
+    </sc_category>
+    <sys_translated_text action="delete_multiple" query="documentkey=d39de6501b27585094962170f54bcb8f"/>
+    <sys_translated_text action="INSERT_OR_UPDATE">
+        <documentkey>d39de6501b27585094962170f54bcb8f</documentkey>
+        <fieldname>description</fieldname>
+        <language>pb</language>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-09-25 14:07:08</sys_created_on>
+        <sys_id>9acdaa501b27585094962170f54bcb38</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-09-25 14:08:03</sys_updated_on>
+        <tablename>sc_category</tablename>
+        <value>Solicitação de viagens e afins</value>
+    </sys_translated_text>
+    <sys_translated_text action="INSERT_OR_UPDATE">
+        <documentkey>d39de6501b27585094962170f54bcb8f</documentkey>
+        <fieldname>title</fieldname>
+        <language>pb</language>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-09-25 14:07:08</sys_created_on>
+        <sys_id>d6cdaa501b27585094962170f54bcb3b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-09-25 14:07:08</sys_updated_on>
+        <tablename>sc_category</tablename>
+        <value>Viagens</value>
+    </sys_translated_text>
+</record_update>
