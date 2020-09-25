@@ -126,6 +126,7 @@
 	}
 
 	c.submitRequestComment = function(){
+		c.disableAction = true;
 		if(c.state == "rejectSolution"){
 			var stop = false;
 			if(!c.requestComment){
@@ -173,7 +174,9 @@
 				}).then(function(response) {
 					$('#requestCommentModalCSC').modal("hide");
 					c.requestComment = '';
-					c.disableAction = false;
+					$timeout(function() {
+						c.disableAction = false;
+					}, 1500);
 				});
 			} else
 				c.needComment = true;
@@ -189,7 +192,9 @@
 			}).then(function(response) {
 				$('#requestCommentModalCSC').modal("hide");
 				c.requestComment = '';
-				c.disableAction = false;
+				$timeout(function() {
+						c.disableAction = false;
+					}, 1500);
 			});
 		}
 	}
@@ -1371,7 +1376,7 @@ tbody {
 		c.contentOpened = !c.contentOpened;
 		var contentBody = element.find(".content_body_req_csc");
 		if(!c.contentOpened) {
-			contentBody.css("margin-top", "-" + contentBody.outerHeight() + 'px');
+			contentBody.css("margin-top", '-2000px');
 		}
 		else {
 			contentBody.css("margin-top", 0);
@@ -1702,14 +1707,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 17:40:05</sys_created_on>
         <sys_id>2988eebf1ba2d05097c0dca0f54bcba7</sys_id>
-        <sys_mod_count>129</sys_mod_count>
+        <sys_mod_count>134</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2988eebf1ba2d05097c0dca0f54bcba7</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-25 15:31:58</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-09-25 18:00:41</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   <div class="title_category" ng-click="c.openContent()">
     ${Solicitações de Finanças, Jurídico e Infraestrutura}

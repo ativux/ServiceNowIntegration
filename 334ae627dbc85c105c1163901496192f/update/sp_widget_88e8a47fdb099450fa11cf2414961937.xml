@@ -94,10 +94,10 @@
 
 	c.itemAction = function(item, action){
 		c.disableAction = true;
-		
+
 		if(action == "acceptSolution" || action == "acceptCancellation" ||
 			 action == "cancelItem" && item.table == "u_question"){
-			
+
 			c.server.get({
 				action: 'changeItemState',
 				state: action,
@@ -128,6 +128,7 @@
 	}
 
 	c.submitRequestComment = function(){
+		c.disableAction = true;
 		if(c.state == "rejectSolution"){
 			var stop = false;
 			if(!c.requestComment){
@@ -175,7 +176,9 @@
 				}).then(function(response) {
 					$('#requestCommentModal').modal("hide");
 					c.requestComment = '';
-					c.disableAction = false;
+					$timeout(function() {
+						c.disableAction = false;
+					}, 3000);
 				});
 			} else
 				c.needComment = true;
@@ -191,7 +194,9 @@
 			}).then(function(response) {
 				$('#requestCommentModal').modal("hide");
 				c.requestComment = '';
-				c.disableAction = false;
+				$timeout(function() {
+						c.disableAction = false;
+					}, 3000);
 			});
 		}
 	}
@@ -1359,7 +1364,7 @@ tbody {
 		c.contentOpened = !c.contentOpened;
 		var contentBody = element.find(".content_body_req");
 		if(!c.contentOpened) {
-			contentBody.css("margin-top", "-" + contentBody.outerHeight() + 'px');
+			contentBody.css("margin-top", '-2000px');
 		}
 		else {
 			contentBody.css("margin-top", 0);
@@ -1738,14 +1743,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 18:48:13</sys_created_on>
         <sys_id>88e8a47fdb099450fa11cf2414961937</sys_id>
-        <sys_mod_count>717</sys_mod_count>
+        <sys_mod_count>722</sys_mod_count>
         <sys_name>GService My Dashboard Requests</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_88e8a47fdb099450fa11cf2414961937</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-25 15:31:31</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-09-25 18:14:59</sys_updated_on>
         <template><![CDATA[<div class="content_request">
 
   <div class="title_category" ng-click="c.openContent()">
