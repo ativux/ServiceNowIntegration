@@ -10,6 +10,7 @@
 	c.modalMessage = '';
 	c.isLoading = true;
 	c.reopeningReason = false;
+	c.disableAction = false;
 	
 	c.contentOpened = false;
 
@@ -91,6 +92,8 @@
 	}
 
 	c.itemAction = function(item, action){
+		c.disableAction = true;
+		
 		if(action == "acceptSolution" || action == "acceptCancellation" ||
 			 action == "cancelItem" && item.table == "u_question"){
 			c.server.get({
@@ -102,6 +105,7 @@
 				item = response.data.item;
 				c.data.show_survey = response.data.show_survey;
 				c.data.gserviceSurveyCSC = response.data.gserviceSurveyCSC;
+				c.disableAction = false;
 			});
 		}
 		else{
@@ -115,6 +119,9 @@
 			$('#requestCommentModalCSC').modal("show");
 			c.requestItem = item;
 			c.state = action;
+			$timeout(function() {
+				c.disableAction = false;
+			}, 1000);
 		}
 	}
 
@@ -166,6 +173,7 @@
 				}).then(function(response) {
 					$('#requestCommentModalCSC').modal("hide");
 					c.requestComment = '';
+					c.disableAction = false;
 				});
 			} else
 				c.needComment = true;
@@ -181,6 +189,7 @@
 			}).then(function(response) {
 				$('#requestCommentModalCSC').modal("hide");
 				c.requestComment = '';
+				c.disableAction = false;
 			});
 		}
 	}
@@ -264,6 +273,7 @@
 	});
 
 	$('#requestCommentModalCSC').on('hide.bs.modal', function () {
+		c.disableAction = false;
 		c.requestComment = "";
 		c.reopeningReason = false;
 		c.needComment = "";
@@ -701,11 +711,12 @@ td {
 thead {
   color: $slate-gray;
   font-family: $text-bolder;
-  font-size: 13px;
+  font-size: 12px;
 }
 .table &gt; thead &gt; tr &gt; th {
   border: 0;
   vertical-align: middle;
+  padding: 15px 0 !important;
 }
 .table-hover &gt; tbody &gt; tr:hover {
   background-color: white;
@@ -718,7 +729,7 @@ tbody {
 
   td:nth-child(1) {
     width: 20%;
-    padding: 20px;
+    padding: 20px 0;
   }
 
   td:nth-child(2) {
@@ -732,12 +743,12 @@ tbody {
 
   td:nth-child(4) {
     width: 5%;
-    padding: 20px;
+    padding: 20px 0;
   }
 
   td:nth-child(5) {
     width: 30%;
-    padding: 20px;
+    padding: 20px 0;
 
     .request_button {
       margin-right: 50px;
@@ -874,8 +885,18 @@ tbody {
   }
 }
 .column_buttons {
+  position: relative;
   display: flex;
   border: 0;
+  
+  .disable_buttons {    
+    width: 241px;
+    height: 72px;
+    background-color: white;
+    position: absolute;
+    z-index: 1040;
+    opacity: 0;
+  }
 
   img {
     width: 50px;
@@ -1594,7 +1615,14 @@ tbody {
 		else{
 			data.query = portalUtils.mountQuery("", data.statusFilter);
 		}
-		var requests = portalUtils.getRequests("opened_at", "-1", data.query, data.window_start, data.window_end);
+		var requests;
+		if(data.urlItem && first_load){
+			requests = portalUtils.getRequests("opened_at", "-1", data.query, data.window_start, data.window_end, data.urlItem);
+		}
+		else{
+			requests = portalUtils.getRequests("opened_at", "-1", data.query, data.window_start, data.window_end);
+		}
+		
 		if(data.urlItem && first_load){
 			requests.items[0].showDetails = true;
 			var item = requests.items[0];
@@ -1674,14 +1702,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 17:40:05</sys_created_on>
         <sys_id>2988eebf1ba2d05097c0dca0f54bcba7</sys_id>
-        <sys_mod_count>111</sys_mod_count>
+        <sys_mod_count>129</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2988eebf1ba2d05097c0dca0f54bcba7</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-28 15:09:57</sys_updated_on>
+        <sys_updated_on>2020-09-25 15:31:58</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   <div class="title_category" ng-click="c.openContent()">
     ${Solicitações de Finanças, Jurídico e Infraestrutura}
@@ -1756,6 +1784,7 @@ tbody {
                   <p class="sla_description" ng-if="item.forecast">{{item.forecast}}</p>
                 </td>
                 <td class="column_buttons">
+                  <div class="disable_buttons" ng-show="c.disableAction"></div>
                   <div ng-if="item.eraseButton" class="buttons" ng-click="c.itemAction(item, 'cancelItem')">
                     <img src="trash.png"/>
                     <span class="tooltip tooltip_right">
