@@ -753,9 +753,9 @@ tbody {
 		if(data.approvals.length == 0){
 			data.showEmptyMessage = true;
 		}
-		data.margin_top = -150 * data.approvals.length;
+		data.margin_top = -200 * data.approvals.length;
 		if(data.margin_top == 0){
-			data.margin_top = -150;
+			data.margin_top = -200;
 		}
 		
 		data.approvalsCount = data.approvals.length;
@@ -837,14 +837,14 @@ tbody {
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-11 16:52:01</sys_created_on>
         <sys_id>36f3e7311bee141097c0dca0f54bcb9a</sys_id>
-        <sys_mod_count>36</sys_mod_count>
+        <sys_mod_count>37</sys_mod_count>
         <sys_name>GService My Dashboard Approvals v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_36f3e7311bee141097c0dca0f54bcb9a</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-25 13:57:47</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-09-25 15:32:40</sys_updated_on>
         <template><![CDATA[<div class="approval_content">
 
   <div class="title_category" ng-click="c.openContent()">
