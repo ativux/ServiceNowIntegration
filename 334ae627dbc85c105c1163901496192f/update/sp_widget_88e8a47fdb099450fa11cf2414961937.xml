@@ -10,6 +10,10 @@
 	c.modalMessage = '';
 	c.isLoading = true;
 	c.reopeningReason = false;
+	c.disableAction = false;
+
+	c.contentOpened = false;
+
 
 	$scope.loadingIndicator = $rootScope.loadingIndicator;
 	//Show widget after loaded
@@ -64,7 +68,7 @@
 		c.server.update().then(function(response){
 			$timeout(function() {
 				scrollTo("list-columns");
-			});
+			}, 200);
 			c.verifyEmptySearch();
 			c.newRecordWatch();
 		});
@@ -87,17 +91,13 @@
 			c.data.showFilterClean = false;
 		}
 	}
-	
-	c.disableAction = false;
 
 	c.itemAction = function(item, action){
+		c.disableAction = true;
 		
-		if(c.disableAction)
-			return;
-					
 		if(action == "acceptSolution" || action == "acceptCancellation" ||
 			 action == "cancelItem" && item.table == "u_question"){
-			c.disableAction = true;
+			
 			c.server.get({
 				action: 'changeItemState',
 				state: action,
@@ -121,7 +121,9 @@
 			$('#requestCommentModal').modal("show");
 			c.requestItem = item;
 			c.state = action;
-			c.disableAction = false;
+			$timeout(function() {
+				c.disableAction = false;
+			}, 1000);
 		}
 	}
 
@@ -173,6 +175,7 @@
 				}).then(function(response) {
 					$('#requestCommentModal').modal("hide");
 					c.requestComment = '';
+					c.disableAction = false;
 				});
 			} else
 				c.needComment = true;
@@ -188,6 +191,7 @@
 			}).then(function(response) {
 				$('#requestCommentModal').modal("hide");
 				c.requestComment = '';
+				c.disableAction = false;
 			});
 		}
 	}
@@ -261,15 +265,17 @@
 		c.data.item_id = item_id;
 		c.data.action = "selectRequest";
 		c.server.update().then(function(response){
+			c.openContent();
 			$timeout(function() {
 				scrollTo("list-columns");
-			});
+			}, 200);
 			c.verifyEmptySearch();
 			c.newRecordWatch();
 		});
 	});
 
 	$('#requestCommentModal').on('hide.bs.modal', function () {
+		c.disableAction = false;
 		c.requestComment = "";
 		c.reopeningReason = false;
 		c.needComment = "";
@@ -314,7 +320,8 @@
 	if(c.data.urlItem && c.data.first_load){
 		$timeout(function() {
 			scrollTo("items-content");
-		});
+			c.openContent();
+		}, 500);
 	}
 
 	c.selectedChoice = function(index){
@@ -344,7 +351,43 @@
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.content_request {
-  margin-bottom: 10px;
+  background-color: white;
+  padding: 30px 90px;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+
+  .title_category {
+    transition: .2s ease-in-out;
+    color: $deep-sky-blue;
+    text-transform: uppercase;
+    font-size: 22px;
+    margin-bottom: 15px;
+
+    .invert-arrow {
+      transition: .8s ease-in-out;
+      transform: rotate(180deg);
+    }
+    img {
+      transition: .8s ease-in-out;
+      margin-top: -4px;
+      margin-left: 8px;
+      width: 16px;
+    }
+
+    &amp;:hover {
+      transition: .2s ease-in-out;
+      transform: translate(0, -5px);
+    }
+  }
+
+  .content_body_mask {
+    overflow: hidden;
+
+    .content_body_req {
+      margin-top : -2000px;
+      transition: .8s ease-in-out;
+    }
+  }
 }
 .cart-mobile {
   border: 0;
@@ -352,7 +395,6 @@
 
   .cart-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
 
@@ -670,11 +712,12 @@ td {
 thead {
   color: $slate-gray;
   font-family: $text-bolder;
-  font-size: 13px;
+  font-size: 12px;
 }
 .table &gt; thead &gt; tr &gt; th {
   border: 0;
   vertical-align: middle;
+  padding: 15px 0 !important;
 }
 .table-hover &gt; tbody &gt; tr:hover {
   background-color: white;
@@ -687,7 +730,7 @@ tbody {
 
   td:nth-child(1) {
     width: 20%;
-    padding: 20px;
+    padding: 20px 0;
   }
 
   td:nth-child(2) {
@@ -701,12 +744,12 @@ tbody {
 
   td:nth-child(4) {
     width: 5%;
-    padding: 20px;
+    padding: 20px 0;
   }
 
   td:nth-child(5) {
     width: 30%;
-    padding: 20px;
+    padding: 20px 0;
 
     .request_button {
       margin-right: 50px;
@@ -777,11 +820,11 @@ tbody {
       }
     }
     .tooltip_bottom{
-        align-items: flex-start;
-      }
-      .tooltip_arrow{
-        margin-left: 40px;
-      }
+      align-items: flex-start;
+    }
+    .tooltip_arrow{
+      margin-left: 40px;
+    }
   }
   .more_detail {
     text-decoration: underline;
@@ -843,8 +886,18 @@ tbody {
   }
 }
 .column_buttons {
+  position: relative;
   display: flex;
   border: 0;
+
+  .disable_buttons {    
+    width: 241px;
+    height: 72px;
+    background-color: white;
+    position: absolute;
+    z-index: 1040;
+    opacity: 0;
+  }
 
   img {
     width: 50px;
@@ -1183,20 +1236,10 @@ tbody {
 
 .content_conversation {
   width: 100%;
-
-  .turn_bold{
-    font-weight: bold;
-  }
-
-  .pending {
-    color: $coral !important;
-  }
-  .inProgress {
-    color: $yellow-green;
-  }
-  .resolved {
-    color: $deep-sky-blue;
-  }
+  .turn_bold{ font-weight: bold; }
+  .pending { color: $coral !important; }
+  .inProgress { color: $yellow-green; }
+  .resolved { color: $deep-sky-blue; }
 }
 
 .buttons {
@@ -1245,9 +1288,7 @@ tbody {
     display: flex;
     justify-content: flex-end;
   }
-  img {
-    width: 60px;
-  }
+  img { width: 60px; }
 }
 
 .modal_ritm_details{
@@ -1264,7 +1305,6 @@ tbody {
 }
 
 .content_service_pack {
-
   .pack_title {
     font-size: 14px;
     text-transform: uppercase;
@@ -1313,7 +1353,18 @@ tbody {
         <id>gservice_my_dashboard_requests</id>
         <internal>false</internal>
         <link><![CDATA[function link(scope, element, attrs, controller) {
-  
+	var c = controller;
+	
+	c.openContent = function() {
+		c.contentOpened = !c.contentOpened;
+		var contentBody = element.find(".content_body_req");
+		if(!c.contentOpened) {
+			contentBody.css("margin-top", "-" + contentBody.outerHeight() + 'px');
+		}
+		else {
+			contentBody.css("margin-top", 0);
+		}
+	}
 }]]></link>
         <name>GService My Dashboard Requests</name>
         <option_schema>[{"hint":"Selects the columns to show on the table","name":"table","section":"Presentation","label":"Table","type":"string"},{"name":"table_template","section":"Behavior","label":"Table Template","type":"string"}]</option_schema>
@@ -1336,11 +1387,13 @@ tbody {
 
 	data.statusFlow = [];
 	var statusFlow = gs.getProperty("gservice_list_filters_status").split("|");
+	
 	for(var i in statusFlow){
 		statusFlow[i].number = i + 1;
 		statusFlow[i].selected = false;
 		data.statusFlow.push(JSON.parse(statusFlow[i]));
 	}
+	
 
 	data.reopeningReason = [];
 
@@ -1361,12 +1414,13 @@ tbody {
 	data.columns = [];
 	data.order = "opened_at";
 	data.direction = -1;
+	
 	if(!localInput){
 		data.listFilter_widget = $sp.getWidget('gservice_list_filter');
 		prepareDefaultList(true);
 	}
-	else{
-		switch(localInput.action){
+	else{		
+		switch(localInput.action){				
 			case "applyFilter":
 				preparePages();
 				data.order = "opened_at";
@@ -1475,16 +1529,6 @@ tbody {
 						hide_new_comments = true;
 					}
 				}
-				else if(localInput.item.table == "wm_order"){
-					if(item.statusValue == "3" || item.statusValue == "4" || item.statusValue == "7"){
-						hide_new_comments = true;
-					}
-				}
-				else if(localInput.item.table == "change_request"){
-					if(item.statusValue == "3" || item.statusValue == "4"){
-						hide_new_comments = true;
-					}
-				}
 				var gservice_ticket_conversation_options = {table : localInput.item.table,
 																										sys_id : localInput.item.sys_id,
 																										item_status : localInput.item.colorClass,
@@ -1555,6 +1599,7 @@ tbody {
 		if(first_load){
 			data.first_load = true;
 			data.urlItem = $sp.getParameter("item_id");
+			
 			if(data.urlItem){
 				var request_for = "";
 				var grTask = new GlideRecord("task");
@@ -1564,13 +1609,6 @@ tbody {
 					grRitm.get(data.urlItem);
 					request_for = grRitm.request.requested_for;
 				}
-				
-				if(grTask.getValue("sys_class_name") == "wm_order"){
-					var grWO = new GlideRecord("wm_order");
-					grWO.get(data.urlItem);
-					request_for = grWO.opened_for;
-				}
-
 				var watchList = "", delegateUsers = "";
 
 				if(grTask.getValue('watch_list')){
@@ -1588,6 +1626,7 @@ tbody {
 			} else{
 				data.query = portalUtils.mountQuery("", data.statusFilter);
 			}
+			
 		}
 		else if(item_id){
 			data.query = portalUtils.mountQuery("", data.statusFilter, "", "", item_id);
@@ -1596,6 +1635,9 @@ tbody {
 			data.query = portalUtils.mountQuery("", data.statusFilter);
 		}
 		var requests = portalUtils.getRequests("opened_at", "-1", data.query, data.window_start, data.window_end);
+		
+				console.log( "Aqui:"+ data.window_start +" - "+data.window_end);
+		
 		if(data.urlItem && first_load){
 			requests.items[0].showDetails = true;
 			var item = requests.items[0];
@@ -1615,16 +1657,6 @@ tbody {
 				prepareRitmWatch(data.newItem.ritms);
 			}else if(item.table == "u_question"){
 				hide_new_comments = true;
-			}
-			else if(item.table == "wm_order"){
-				if(item.statusValue == "3" || item.statusValue == "4" || item.statusValue == "7"){
-					hide_new_comments = true;
-				}
-			}
-			else if(item.table == "change_request"){
-				if(item.statusValue == "3" || item.statusValue == "4"){
-					hide_new_comments = true;
-				}
 			}
 			var gservice_ticket_conversation_options = {table : item.table,
 																									sys_id : item.sys_id,
@@ -1706,211 +1738,219 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 18:48:13</sys_created_on>
         <sys_id>88e8a47fdb099450fa11cf2414961937</sys_id>
-        <sys_mod_count>628</sys_mod_count>
+        <sys_mod_count>717</sys_mod_count>
         <sys_name>GService My Dashboard Requests</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_88e8a47fdb099450fa11cf2414961937</sys_update_name>
-        <sys_updated_by>organize.willian</sys_updated_by>
-        <sys_updated_on>2020-09-21 20:49:32</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-09-25 15:31:31</sys_updated_on>
         <template><![CDATA[<div class="content_request">
-  <div class="col-md-12 filter-padding">
-    <sp-widget widget="data.listFilter_widget"></sp-widget>
+
+  <div class="title_category" ng-click="c.openContent()">
+    ${Solicitações de Tecnologia}
+    <span><img src="GService_Seta_PD_Transparent.png" ng-class="c.contentOpened ? '' : 'invert-arrow'"/></span>
   </div>
-  <div ng-if="data.showFilterClean" class="without_notification">${Ops! Não encontramos resultados para essa busca.}</div>
-  <div ng-if="!data.showFilterClean" class="content_my_requests">
-    <div>
-      <table class="table table-hover b-t table-condensed cart-table">
-        <div class="center-loading">
-          <div class="col-md-12" ng-show="c.isLoading">
-            <div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator">
-              <div></div>
-              <div></div>
-              <div></div>
+
+  <div class="content_body_mask">
+    <div class="content_body_req">
+
+      <div class="col-md-12 filter-padding">
+        <sp-widget widget="data.listFilter_widget"></sp-widget>
+      </div>
+      <div ng-if="data.showFilterClean" class="without_notification">${Ops! Não encontramos resultados para essa busca.}</div>
+      <div ng-if="!data.showFilterClean" class="content_my_requests">
+        <div>
+          <table class="table table-hover b-t table-condensed cart-table">
+            <div class="center-loading">
+              <div class="col-md-12" ng-show="c.isLoading">
+                <div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+            </div>
+            <thead ng-show="!c.isLoading" class="thead_myrequests" id="list-columns">
+              <tr>
+                <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
+                  <div ng-click="c.orderBy(column.order, data.requests)">
+                    {{column.name}}
+                    <span ng-if="column.order">
+                      <span ng-if="!column.direction"></span>
+                      <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
+                    </span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="items-content" ng-show="!c.isLoading" ng-repeat="item in data.requests track by item.sys_id">
+              <tr class="item-row b-b">
+                <td data-th="Product" class="column_product">
+                  <div>
+                    <div>
+                      <div class="number_text">#{{item.number}}</div>
+                      <div class="item_text">{{item.title}}</div>
+                      <div ng-if="item.watch" class="follow_up_properties">{{item.watch}}
+                        <span ng-if="item.watchTooltip" class="tooltip tooltip_bottom">
+                          <div class="tooltip_arrow arrow_top"></div>
+                          <div class="tooltip_text">{{item.watchTooltip}}</div>
+                        </span>
+                      </div>
+                      <div class="more_detail" ng-click="c.showDetails(item)">${GService Details}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="column_status">
+                  <div class="row">
+                    <div>
+                      <div class="service_title {{item.colorClass}}">{{item.statusLabel}}
+                        <span class="tooltip tooltip_bottom" ng-if="item.hold_reason">
+                          <div class="tooltip_arrow arrow_top"></div>
+                          <div class="tooltip_text">{{item.hold_reason}}</div>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="column_opened">
+                  <div class="item_opened">{{item.opened}}</div>
+                </td>
+                <td class="column_sla">
+                  <p class="sla_description" ng-if="item.forecast">{{item.forecast}}</p>
+                </td>
+                
+                <td class="column_buttons">
+                  <div class="disable_buttons" ng-show="c.disableAction"></div>
+                  <div ng-if="item.eraseButton" class="buttons" ng-click="c.itemAction(item, 'cancelItem')">
+                    <img src="trash.png"/>
+                    <span class="tooltip tooltip_right">
+                      <div class="tooltip_arrow arrow_left"></div>
+                      <div class="tooltip_text">${Cancel Request}</div>
+                    </span>
+                  </div>
+                  <div ng-if="item.acceptButton" class="buttons" ng-click="c.itemAction(item, 'acceptSolution')"><img src="GS_Confirmar_TEC.png"/>
+                    <span class="tooltip tooltip_bottom">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">${Accept Solution}</div>
+                    </span>
+                  </div>
+                  <div ng-if="item.reopenButton" class="buttons" ng-click="c.itemAction(item, 'rejectSolution')"><img src="GS_Reabrir_TEC.png"/>
+                    <span class="tooltip tooltip_bottom">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">${Reopen Request}</div>
+                    </span>
+                  </div>
+                  <div ng-if="item.cancelButton" class="buttons" ng-click="c.itemAction(item, 'acceptCancellation')"><img src="GS_Confirmar_TEC.png"/>
+                    <span class="tooltip tooltip_bottom">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">${Accept Cancellation}</div>
+                    </span>
+                  </div>
+                  <div ng-if="item.rejectButton" class="buttons" ng-click="c.itemAction(item, 'rejectCancellation')"><img src="GS_Reabrir_TEC.png"/>
+                    <span class="tooltip tooltip_bottom">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">${Reopen Request}</div>
+                    </span>
+                  </div>
+                </td>
+                
+              </tr>
+
+              <tr>
+                <td ng-if="item.showDetails && item.table == 'sc_request'" class="content_conversation content_service_pack" colspan='5'>
+
+                  <div class="pack_title">${Serviços do Pacote}</div>
+                  <div ng-repeat="ritm in item.ritms" class="table_pack">
+                    <div class="column_items">
+                      <div>#{{ritm.number}}</div>
+                      <div ng-click="c.openItem(ritm)" class="item_title">{{ritm.title}}</div>  
+                    </div>
+
+                    <div class="column_state service_title turn_bold {{ritm.colorClass}}">{{ritm.state}}</div>
+                    <span class="tooltip tooltip_bottom" ng-if="ritm.hold_reason">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">{{ritm.hold_reason}}</div>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td ng-if="item.showDetails" class="content_conversation" colspan='5'>
+                  <div ng-if="item.table != 'sc_request' && item.table != 'u_question'" class="col-md-5 process_flow">
+                    <div class="process_flow_title">${Etapas do Atendimento}</div>
+                    <div class="line_flow"></div>
+                    <div ng-repeat="status in item.processFlow" class="items_flow">
+                      <div class="status_flow" ng-class="c.statusColor(status.selected)">{{$index+1}}</div>
+                      <div ng-class="{'status_active' : status.selected == true}">{{status.name}}</div>
+                    </div>
+                  </div>
+                  <div class="col-md-7">
+                    <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="content_pagination">
+            <span class="pag_arrow_left" ng-click="c.previousPage()" ng-if="data.actualPage > 0"><img src="gservice_column_dashboard_arrow.png"/></span>
+            <span class="pag_arrow_right" ng-click="c.nextPage()" ng-if="data.actualItemsCount < data.totalItems"><img src="gservice_column_dashboard_arrow.png"/></span>
+            <span class="pag_text">Página {{data.actualPageCount}} - {{data.actualItemsCount}} de {{data.totalItems}} RESULTADOS</span>
+          </div>
+        </div>
+
+        <div class="modal_reopen modal fade" style="z-index: 1041" id="requestCommentModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+
+                <div class="panel-body wrapper-xl wrapper-sc-cat-item">
+                  <div class="modal_title">{{c.modalMessage}}:</div>
+
+                  <div class="">
+                    <div ng-if="c.state == 'rejectSolution'">
+                      
+                      <div class="reason">${Motivo de rejeição}</div>
+
+                      <span class="mandatory_message" ng-if="c.needReason"> ${Favor preencher a razão da rejeição} </span>
+                      <div class="radio_content" ng-repeat="reopeningReason in data.reopeningReason track by $index">
+                        <span method="get" class="radio-properties">
+                          <label for="{{reopeningReason.label}}">
+                            <input type="radio"
+                                   id="{{reopeningReason.label}}"
+                                   name="selectedChoice"
+                                   value="{{reopeningReason.label}}"
+                                   ng-model="reopeningReason.selected"
+                                   ng-click="c.selectedChoice($index)">
+                            {{reopeningReason.label}}
+                            <span class="new-radio"></span>
+                          </label>
+                        </span>
+                      </div>
+                    </div>
+
+                    <span class="mandatory_message" ng-if="c.needComment"> ${Favor preencher o comentário com mais de 100 caracteres antes de submeter} </span>
+                    <textarea class="form-control" ng-model="c.requestComment" maxlength="255"></textarea>
+                    <div class="btn_submit" style="cursor: pointer;" aria-label="" ng-click="c.submitRequestComment()" title="">
+                      <img class="resize-img" src="gservice_dashboard_submit.png"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <thead ng-show="!c.isLoading" class="thead_myrequests" id="list-columns">
-          <tr>
-            <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
-              <div ng-click="c.orderBy(column.order, data.requests)">
-                {{column.name}}
-                <span ng-if="column.order">
-                  <span ng-if="!column.direction"></span>
-                  <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
-                </span>
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody id="items-content" ng-show="!c.isLoading" ng-repeat="item in data.requests track by item.sys_id">
-          <tr class="item-row b-b">
-            <td data-th="Product" class="column_product">
-              <div>
-                <div>
-                  <div class="number_text">#{{item.number}}</div>
-                  <div class="item_text">{{item.title}}</div>
-                  <div ng-if="item.watch" class="follow_up_properties">{{item.watch}}
-                    <span ng-if="item.watchTooltip" class="tooltip tooltip_bottom">
-                      <div class="tooltip_arrow arrow_top"></div>
-                      <div class="tooltip_text">{{item.watchTooltip}}</div>
-                    </span>
-                  </div>
-                  <div class="more_detail" ng-click="c.showDetails(item)">${GService Details}</div>
-                </div>
-              </div>
-            </td>
-            <td class="column_status">
-              <div class="row">
-                <div>
-                  <div class="service_title {{item.colorClass}}">{{item.statusLabel}}
-                    <span class="tooltip tooltip_bottom" ng-if="item.hold_reason">
-                      <div class="tooltip_arrow arrow_top"></div>
-                      <div class="tooltip_text">{{item.hold_reason}}</div>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td class="column_opened">
-              <div class="item_opened">{{item.opened}}</div>
-            </td>
-            <td class="column_sla">
-              <p class="sla_description" ng-if="item.forecast">{{item.forecast}}</p>
-            </td>
-            <td class="column_buttons">
-              <div ng-if="item.eraseButton" class="buttons" ng-click="c.itemAction(item, 'cancelItem')">
-                <img src="trash.png"/>
-                <span class="tooltip tooltip_right">
-                  <div class="tooltip_arrow arrow_left"></div>
-                  <div class="tooltip_text">${Cancel Request}</div>
-                </span>
-              </div>
-              <div ng-if="item.acceptButton" class="buttons" ng-click="c.itemAction(item, 'acceptSolution')"><img src="gservice_dashboard_confirm.png"/>
-                <span class="tooltip tooltip_bottom">
-                  <div class="tooltip_arrow arrow_top"></div>
-                  <div class="tooltip_text">${Accept Solution}</div>
-                </span>
-              </div>
-              <div ng-if="item.reopenButton" class="buttons" ng-click="c.itemAction(item, 'rejectSolution')"><img src="gservice_reopen.png"/>
-                <span class="tooltip tooltip_right">
-                  <div class="tooltip_arrow arrow_left"></div>
-                  <div class="tooltip_text">${Reopen Request}</div>
-                </span>
-              </div>
-              <div ng-if="item.cancelButton" class="buttons" ng-click="c.itemAction(item, 'acceptCancellation')"><img src="gservice_dashboard_confirm.png"/>
-                <span class="tooltip tooltip_bottom">
-                  <div class="tooltip_arrow arrow_top"></div>
-                  <div class="tooltip_text">${Accept Cancellation}</div>
-                </span>
-              </div>
-              <div ng-if="item.rejectButton" class="buttons" ng-click="c.itemAction(item, 'rejectCancellation')"><img src="gservice_reopen.png"/>
-                <span class="tooltip tooltip_right">
-                  <div class="tooltip_arrow arrow_left"></div>
-                  <div class="tooltip_text">${Reopen Request}</div>
-                </span>
-              </div>
-            </td>
-          </tr>
-
-
-          <tr>
-            <td ng-if="item.showDetails && item.table == 'sc_request'" class="content_conversation content_service_pack" colspan='5'>
-
-              <div class="pack_title">${Serviços do Pacote}</div>
-
-              <div ng-repeat="ritm in item.ritms" class="table_pack">
-
-                <div class="column_items">
-                  <div>#{{ritm.number}}</div>
-                  <div ng-click="c.openItem(ritm)" class="item_title">{{ritm.title}}</div>  
-                </div>
-
-                <div class="column_state service_title turn_bold {{ritm.colorClass}}">{{ritm.state}}</div>
-
-                <span class="tooltip tooltip_bottom" ng-if="ritm.hold_reason">
-                  <div class="tooltip_arrow arrow_top"></div>
-                  <div class="tooltip_text">{{ritm.hold_reason}}</div>
-                </span>
-              </div>
-            </td>
-          </tr>
-
-
-          <tr>
-            <td ng-if="item.showDetails" class="content_conversation" colspan='5'>
-              <div ng-if="item.table != 'sc_request' && item.table != 'u_question'" class="col-md-5 process_flow">
-                <div class="process_flow_title">${Etapas do Atendimento}</div>
-                <div class="line_flow"></div>
-                <div ng-repeat="status in item.processFlow" class="items_flow">
-                  <div class="status_flow" ng-class="c.statusColor(status.selected)">{{$index+1}}</div>
-                  <div ng-class="{'status_active' : status.selected == true}">{{status.name}}</div>
-                </div>
-              </div>
-              <div class="col-md-7">
-                <sp-widget widget="data.ticketConversationWidget"></sp-widget>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="content_pagination">
-        <span class="pag_arrow_left" ng-click="c.previousPage()" ng-if="data.actualPage > 0"><img src="gservice_column_dashboard_arrow.png"/></span>
-        <span class="pag_arrow_right" ng-click="c.nextPage()" ng-if="data.actualItemsCount < data.totalItems"><img src="gservice_column_dashboard_arrow.png"/></span>
-        <span class="pag_text">Página {{data.actualPageCount}} - {{data.actualItemsCount}} de {{data.totalItems}} RESULTADOS</span>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="modal_reopen modal fade" style="z-index: 1041" id="requestCommentModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-
-          <div class="panel-body wrapper-xl wrapper-sc-cat-item">
-            <div class="modal_title">{{c.modalMessage}}:</div>
-
-            <div class="">
-              <div ng-if="c.state == 'rejectSolution'">
-
-                <div class="reason">${Reject Reason}</div>
-
-                <span class="mandatory_message" ng-if="c.needReason"> ${Favor preencher a razão da rejeição} </span>
-                <div class="radio_content" ng-repeat="reopeningReason in data.reopeningReason track by $index">
-                  <span method="get" class="radio-properties">
-                    <label for="{{reopeningReason.label}}">
-                      <input type="radio"
-                             id="{{reopeningReason.label}}"
-                             name="selectedChoice"
-                             value="{{reopeningReason.label}}"
-                             ng-model="reopeningReason.selected"
-                             ng-click="c.selectedChoice($index)">
-                      {{reopeningReason.label}}
-                      <span class="new-radio"></span>
-                    </label>
-                  </span>
-                </div>
-              </div>
-
-              <span class="mandatory_message" ng-if="c.needComment"> ${Favor preencher o comentário com mais de 100 caracteres antes de submeter} </span>
-              <textarea class="form-control" ng-model="c.requestComment" maxlength="255"></textarea>
-              <div class="btn_submit" style="cursor: pointer;" aria-label="" ng-click="c.submitRequestComment()" title="">
-                <img class="resize-img" src="gservice_dashboard_submit.png"/>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
-  </div>
 
-  <now-message key="Done" value="${Done}"/>
+    <now-message key="Done" value="${Done}"/>
+  </div>
 </div>
 
 <div class="modal_ritm_details modal fade" id="ritmDetails" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
