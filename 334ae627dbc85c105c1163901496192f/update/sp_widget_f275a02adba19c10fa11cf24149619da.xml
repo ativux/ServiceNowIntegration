@@ -607,8 +607,8 @@ table {
 
 	if(data.list.length > 0){
 		for(i in data.list){
-			if(data.table == "x_gmeps_csc_csc"){
-				data.list[i].colorClass = portalUtils.getColorClass(data.list[i].u_status_portal.value, data.list[i].targetTable);
+			if(data.table.includes("x_gmeps_csc")){
+				data.list[i].colorClass = portalUtils.getColorClass(data.list[i].u_status_portal.value, "x_gmeps_csc_csc");
 			}
 			else{
 				data.list[i].colorClass = portalUtils.getColorClass(data.list[i].state.value, data.list[i].targetTable);
@@ -634,15 +634,16 @@ table {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-24 17:52:22</sys_created_on>
         <sys_id>f275a02adba19c10fa11cf24149619da</sys_id>
-        <sys_mod_count>501</sys_mod_count>
+        <sys_mod_count>506</sys_mod_count>
         <sys_name>GService Data Table</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f275a02adba19c10fa11cf24149619da</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-04 18:25:56</sys_updated_on>
-        <template><![CDATA[<div class="clearfix"/>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-09-27 21:17:42</sys_updated_on>
+        <template><![CDATA[<pre>{{data.filter}}</pre>
+<div class="clearfix"/>
 <div>
   <div class="panel-heading form-inline"></div>
   <div class="alert alert-info" ng-if="data.list.length == 0">${Ops! Não encontramos resultados para essa busca.}</div>
