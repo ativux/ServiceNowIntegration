@@ -798,6 +798,9 @@ ul {
   .view_more_color, .conversation_action, .simple_conversation_title, strong, .file-name a {
     color: $globo-purple !important;
   }
+}
+.teste{
+  padding-left: 2em;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -934,14 +937,14 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-02 15:30:08</sys_created_on>
         <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
-        <sys_mod_count>458</sys_mod_count>
+        <sys_mod_count>490</sys_mod_count>
         <sys_name>GService Custom Conversation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-09-24 20:15:03</sys_updated_on>
+        <sys_updated_on>2020-09-29 14:18:17</sys_updated_on>
         <template><![CDATA[<div class="content_conversation_all dynamic_{{data.color_class}}">
   <div ng-if="data.hide_title == false" class="conversation_title">${GService Conversation Request History}</div>
   <div>
@@ -1055,7 +1058,19 @@ ul {
             <div><span class="turn_bold">${Resumo da solicitação}: </span>{{data.ticketInfo.summary}}</div>
             <div class="turn_bold color_change">${Detalhes da solicitação}:</div>
             <div ng-repeat="variable in data.variables">
-              <span class="turn_bold">{{variable.label}} : </span>{{variable.display_value}}
+              <div ng-if="!variable.multi_row">
+                <span class="turn_bold">{{variable.label}} : </span><span>{{variable.display_value}}</span>
+              </div>
+              <div ng-if="variable.multi_row">
+                <span class="turn_bold">{{variable.label}} : </span>
+                <div ng-repeat="table_variables in variable.table_variable">
+                  <div ng-repeat="table_variable in table_variables track by $index">
+                    <span class="turn_bold teste">{{table_variable.label}} : </span><span>{{table_variable.display_value}}</span>
+                  </div>
+                  <br ng-if="($index + 1) < variable.table_variable.length">
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
