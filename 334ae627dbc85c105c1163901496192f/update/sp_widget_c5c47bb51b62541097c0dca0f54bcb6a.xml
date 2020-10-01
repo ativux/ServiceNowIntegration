@@ -853,20 +853,20 @@ tbody {
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-11 18:05:20</sys_created_on>
         <sys_id>c5c47bb51b62541097c0dca0f54bcb6a</sys_id>
-        <sys_mod_count>49</sys_mod_count>
+        <sys_mod_count>52</sys_mod_count>
         <sys_name>GService My Dashboard Approvals CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_c5c47bb51b62541097c0dca0f54bcb6a</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-09-25 15:23:44</sys_updated_on>
+        <sys_updated_on>2020-10-01 18:24:08</sys_updated_on>
         <template><![CDATA[<div class="approval_content">
 
   <div class="title_category" ng-click="c.openContent()">
     ${Aprovações de Finanças, Jurídico e Infraestrutura}
     <span><img src="GService_Seta_PTV.png" ng-class="c.contentOpened ? '' : 'invert-arrow'"/></span>
-    <span class="items_length">{{data.approvalsCount}}</span>
+    <span class="items_length">{{data.approvals.length}}</span>
   </div>
 
   <div class="content_body_mask">
