@@ -76,7 +76,7 @@
 			$rootScope.$broadcast('openSelectedCategoryItem', false, resultID);
 		}
 		else if(table == "task"){
-			if(taskType == "x_gmeps_csc_csc" || csc_question){
+			if(taskType.includes("x_gmeps_csc") || csc_question){
 				$window.location = "?id=globoservice_my_dashboard&item_id_csc=" + resultID;
 			}
 			else{
@@ -275,14 +275,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-27 14:21:58</sys_created_on>
         <sys_id>f609c53fdb185010fa11cf24149619a4</sys_id>
-        <sys_mod_count>320</sys_mod_count>
+        <sys_mod_count>321</sys_mod_count>
         <sys_name>GService Search Result</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f609c53fdb185010fa11cf24149619a4</sys_update_name>
-        <sys_updated_by>organize.matias</sys_updated_by>
-        <sys_updated_on>2020-09-24 16:39:13</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-10-06 13:23:44</sys_updated_on>
         <template><![CDATA[<div class="col-lg-12 col-md-12 col-sm-12" ng-if="data.hasResults">
   <div class="articles">
     <div class="article" ng-if="c.showArticles" ng-repeat="searchSource in data.searchSources">
