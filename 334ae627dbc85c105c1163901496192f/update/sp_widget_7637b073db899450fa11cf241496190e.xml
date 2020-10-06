@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function($scope, $rootScope, $timeout, snAttachmentHandler, $http, i18n, categorySubscribe, $element, spUtil) {
+        <client_script><![CDATA[function($scope, $rootScope, $timeout, snAttachmentHandler, $http, i18n, categorySubscribe, $element, spUtil, $window) {
 
 	var c = this;
 	c.isLoading = true;
@@ -17,23 +17,31 @@
 	});
 
 	//Upload user image
-	$scope.userID = $scope.user.sys_id;
+	$scope.avatarProfile = {
+		userID: $scope.user.sys_id,
+		name: $scope.user.name,
+		initials: $window.NOW.user_initials
+	};
+
+	if ($window.NOW.user_avatar) {
+		$scope.avatarProfile.userImage = $window.NOW.user_avatar;
+	}
+
 	$rootScope.$on('sp.avatar_changed', function() {
-		$scope.userID = "";
-		$timeout(function(){
-			$scope.userID = $scope.user.sys_id;
-		});
+		if ($window.NOW.user_avatar) {
+			$scope.avatarProfile.userImage = $window.NOW.user_avatar;
+		}
 	});
 
 	var fieldExcludes = {
 		sys_user: [ 'name', 
-					'introduction', 
-					'title', 
-				    'department',
-				    'location',
-				    'photo',
-					'manager',
-				    'company'],
+							 'introduction', 
+							 'title', 
+							 'department',
+							 'location',
+							 'photo',
+							 'manager',
+							 'company'],
 		live_profile: ['short_description', 'photo']
 	}
 
@@ -112,11 +120,11 @@
 	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
 		c.refreshApprovalsCount();
 	});
-	
+
 	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQueryCSC, function(event) {
 		c.refreshApprovalsCount();
 	});
-	
+
 	spUtil.recordWatch($scope, "x_gmeps_csc_csc", c.data.cscQuery, function(event) {
 		c.refreshNotificationsCount(event.data);
 	});
@@ -204,7 +212,7 @@
 				else{
 					$scope.$broadcast("selectRequest", item_id);
 				}
-				
+
 			}, 100);
 		});
 	});
@@ -607,14 +615,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>244</sys_mod_count>
+        <sys_mod_count>246</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-10-01 18:22:10</sys_updated_on>
+        <sys_updated_on>2020-10-06 14:03:58</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
   <div class="content_avatar">
     <div class="avatar-image">
@@ -622,7 +630,7 @@
              accept="image/jpeg,image/png,image/bmp,image/x-windows-bmp,image/gif,image/x-icon,image/svg+xml"/>
       <a title="Avatar Pic" ng-click="uploadNewProfilePicture($event)"
          ng-keypress="uploadNewProfilePicture($event)" class="btn btn-default send-message avatar-custom-size">
-        <sn-avatar class="avatar-custom-size" primary="userID">
+        <sn-avatar class="avatar-custom-size" primary="avatarProfile">
           <span class="tooltip tooltip_top">
             <div class="tooltip_text">${Clique para alterar seu avatar}</div>
             <div class="tooltip_arrow arrow_bottom"></div>
