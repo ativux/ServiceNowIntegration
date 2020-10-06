@@ -11,7 +11,7 @@
 	c.isLoading = true;
 	c.reopeningReason = false;
 	c.disableAction = false;
-	
+
 	c.contentOpened = false;
 
 	$scope.loadingIndicator = $rootScope.loadingIndicator;
@@ -93,7 +93,7 @@
 
 	c.itemAction = function(item, action){
 		c.disableAction = true;
-		
+
 		if(action == "acceptSolution" || action == "acceptCancellation" ||
 			 action == "cancelItem" && item.table == "u_question"){
 			c.server.get({
@@ -126,7 +126,6 @@
 	}
 
 	c.submitRequestComment = function(){
-		c.disableAction = true;
 		if(c.state == "rejectSolution"){
 			var stop = false;
 			if(!c.requestComment){
@@ -161,6 +160,7 @@
 				return;
 			}
 		}
+		c.disableAction = true;
 		if(c.state != "rejectSolution"){
 			if(c.requestComment){
 				c.reopeningReason = false;
@@ -193,8 +193,8 @@
 				$('#requestCommentModalCSC').modal("hide");
 				c.requestComment = '';
 				$timeout(function() {
-						c.disableAction = false;
-					}, 1500);
+					c.disableAction = false;
+				}, 1500);
 			});
 		}
 	}
@@ -307,23 +307,25 @@
 
 	c.newRecordWatch = function(){
 		spUtil.recordWatch($scope, "x_gmeps_csc_csc", c.data.requestsID, function(event) {
-		if(event.data.record.u_status_portal){
-			c.server.get({
-				action: "stateChangedBackend",
-				itemID: event.data.sys_id,
-				newState: event.data.record.u_status_portal,
-				requests: c.data.requests
-			}).then(function(response) {
-				c.data.requests = response.data.requests;
-			});
-		}
-	});
+			if(event.data.record.u_status_portal){
+				c.server.get({
+					action: "stateChangedBackend",
+					itemID: event.data.sys_id,
+					newState: event.data.record.u_status_portal,
+					requests: c.data.requests
+				}).then(function(response) {
+					c.data.requests = response.data.requests;
+				});
+			}
+		});
 	}
 
 	if(c.data.urlItem && c.data.first_load){
 		$timeout(function() {
 			c.openContent();
-			scrollTo("items-content-csc");
+			$timeout(function() {
+				scrollTo("items-content-csc");
+			}, 500);
 		}, 500);
 	}
 
@@ -1710,14 +1712,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 17:40:05</sys_created_on>
         <sys_id>2988eebf1ba2d05097c0dca0f54bcba7</sys_id>
-        <sys_mod_count>138</sys_mod_count>
+        <sys_mod_count>147</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2988eebf1ba2d05097c0dca0f54bcba7</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-09-29 19:58:32</sys_updated_on>
+        <sys_updated_on>2020-10-06 13:30:32</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   <div class="title_category" ng-click="c.openContent()">
     ${Solicitações de Finanças, Jurídico e Infraestrutura}
