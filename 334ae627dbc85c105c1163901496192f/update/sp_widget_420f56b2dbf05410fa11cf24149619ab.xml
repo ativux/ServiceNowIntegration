@@ -1191,10 +1191,16 @@ ul {
 	} else {
 		data.statusEntries = portalUtils.getStateChange(data.sys_id);
 		if (!data.ticketTitle) {
-			if (gr.short_description.canRead())
-				data.ticketTitle = gr.getDisplayValue("short_description");
-			if (!data.ticketTitle)
-				data.ticketTitle = data.number;
+			if(data.table.includes("x_gmeps_csc")){
+				data.ticketTitle = gr.getDisplayValue("service");
+			}
+			else{
+				if (gr.short_description.canRead())
+					data.ticketTitle = gr.getDisplayValue("short_description");
+				if (!data.ticketTitle)
+					data.ticketTitle = data.number;
+			}
+
 
 		}
 
@@ -1261,14 +1267,14 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-19 14:34:49</sys_created_on>
         <sys_id>420f56b2dbf05410fa11cf24149619ab</sys_id>
-        <sys_mod_count>500</sys_mod_count>
+        <sys_mod_count>502</sys_mod_count>
         <sys_name>GService Ticket Conversations</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_420f56b2dbf05410fa11cf24149619ab</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-09-23 17:17:01</sys_updated_on>
+        <sys_updated_on>2020-10-09 14:07:37</sys_updated_on>
         <template><![CDATA[<div class="content_notifications dynamic_{{data.color_class}}" ng-if="data.canRead && !data.isNewRecord && !data.hide">
   <div class="mask_submitting" ng-show="c.submitting"/>
   <div class="content_conversation">
