@@ -550,12 +550,12 @@
     .external_services {
       font-size: 16px;
       font-family: 'globorounded_bd';
-      
+
       a {
         transition: .2s ease-in-out;
         text-decoration: underline;
       }
-      
+
       a:hover {
         opacity: .6;
       }
@@ -633,6 +633,12 @@
       .content_cat_items {
         margin: 3px 0;
         padding: 0;
+        min-height: 64px;
+        margin-bottom: -20px;
+
+        .item_title {
+          display: flex;
+        }
 
         .cat_item {
           color: $slate-gray;
@@ -686,6 +692,10 @@
               opacity: 1;
             }
           }
+        }
+        .icon_empty {
+          width: 5px;
+          height: 25px;
         }
       }
 
@@ -1113,14 +1123,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 13:30:17</sys_created_on>
         <sys_id>832ac777dbc41050fa11cf2414961944</sys_id>
-        <sys_mod_count>1772</sys_mod_count>
+        <sys_mod_count>1785</sys_mod_count>
         <sys_name>GService Categories</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_832ac777dbc41050fa11cf2414961944</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-10-09 14:23:19</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-10-09 17:46:51</sys_updated_on>
         <template><![CDATA[<div id="widget-category" class="content" ng-show="data.showWidget">
   <div>
 
@@ -1181,8 +1191,8 @@
         <div id="show-items" ng-show="data.showItems">
           <div class="breadcrumb_item">{{data.breadcrumb}}</div>
           <h3 class="request_title {{data.categoryColor}}">{{data.itemSelectMessage}} {{data.categoryTitle}}?</h3>
-
-          <div class="m-b-s col-md-6 content_cat_items hover_{{data.categoryColor}}" ng-repeat="item in data.arrayItems" ng-if="item.show">
+          
+          <div class="col-md-6 content_cat_items hover_{{data.categoryColor}}" ng-repeat="item in data.arrayItems" ng-if="item.show">
             <div class="text-left ">
               <span method="get" class="radio-properties">
                 <label for="{{item.title}}" class="cat_item">
@@ -1194,6 +1204,8 @@
                          ng-click="c.selectItem(item.sys_id, item)">
                   <div class="item_title" ng-class="{'item_title_current':item == c.selected_item}">{{item.title}}
 
+                    <span class="icon_empty"></span>
+                    
                     <span class="icon_yourself" ng-if="item.do_yourself != 0 && item.do_yourself != null">
                       <img src="Do_Yourself_icon.png"/>
                       <span class="tooltip">
