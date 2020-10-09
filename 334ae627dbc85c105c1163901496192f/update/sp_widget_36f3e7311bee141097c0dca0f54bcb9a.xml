@@ -131,7 +131,7 @@
         <css>/* PAGE 3 - APPROVALS */
 .approval_content {
   background-color: white;
-  padding: 30px 90px;
+  padding: 30px 0;
   padding-bottom: 10px;
   margin-bottom: 15px;
 
@@ -141,6 +141,7 @@
     text-transform: uppercase;
     font-size: 22px;
     margin-bottom: 15px;
+    padding: 0 90px;
 
     .invert-arrow {
       transition: .8s ease-in-out;
@@ -173,6 +174,7 @@
 
   .content_body_mask {
     overflow: hidden;
+    padding: 0 90px;
 
     .content_body_app {
       margin-top : -2000px;
@@ -843,14 +845,14 @@ tbody {
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-11 16:52:01</sys_created_on>
         <sys_id>36f3e7311bee141097c0dca0f54bcb9a</sys_id>
-        <sys_mod_count>39</sys_mod_count>
+        <sys_mod_count>40</sys_mod_count>
         <sys_name>GService My Dashboard Approvals v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_36f3e7311bee141097c0dca0f54bcb9a</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-10-09 14:45:54</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-10-09 17:03:36</sys_updated_on>
         <template><![CDATA[<div class="approval_content">
 
   <div class="title_category" ng-click="c.openContent()">
