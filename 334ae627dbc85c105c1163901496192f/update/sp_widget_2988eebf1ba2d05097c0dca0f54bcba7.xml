@@ -66,7 +66,7 @@
 		c.data.action = "applyDate";
 		c.server.update().then(function(response){
 			$timeout(function() {
-				scrollTo("list-columns-csc");
+				items-content-csc("list-columns-csc");
 			}, 200);
 			c.verifyEmptySearch();
 			c.newRecordWatch();
@@ -93,7 +93,10 @@
 
 	c.itemAction = function(item, action){
 		c.disableAction = true;
-
+		c.requestComment = "";
+		c.needReason = false;
+		c.needComment = false;
+		
 		if(action == "acceptSolution" || action == "acceptCancellation" ||
 			 action == "cancelItem" && item.table == "u_question"){
 			c.server.get({
@@ -109,8 +112,14 @@
 			});
 		}
 		else{
-			if(action == "rejectSolution" || action == "rejectCancellation")
+			if(action == "rejectSolution" || action == "rejectCancellation"){
 				c.modalMessage = c.data.msgs.reject;
+				for(var i in c.data.reopeningReason){
+					c.data.reopeningReason[i].selected = false;
+					c.requestComment = "";
+				}
+			}
+				
 			else
 				c.modalMessage = c.data.msgs.cancel;
 			for(var i in c.data.reopeningReason){
@@ -324,7 +333,7 @@
 		$timeout(function() {
 			c.openContent();
 			$timeout(function() {
-				scrollTo("items-content-csc");
+				scrollToRow("items-content-csc-row0");
 			}, 500);
 		}, 500);
 	}
@@ -1519,6 +1528,10 @@ tbody {
 				break;
 			case "getTicketConversationWidget":
 				var hide_new_comments = false;
+				var state = localInput.item.statusValue;
+				if(state == "5" || state == "7" || state == "8" || state == "9"){
+					hide_new_comments = true;
+				}
 				var gservice_ticket_conversation_options = {table : localInput.item.table,
 																										sys_id : localInput.item.sys_id,
 																										item_status : localInput.item.colorClass,
@@ -1712,14 +1725,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 17:40:05</sys_created_on>
         <sys_id>2988eebf1ba2d05097c0dca0f54bcba7</sys_id>
-        <sys_mod_count>147</sys_mod_count>
+        <sys_mod_count>154</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2988eebf1ba2d05097c0dca0f54bcba7</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-10-06 13:30:32</sys_updated_on>
+        <sys_updated_on>2020-10-13 14:24:20</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   <div class="title_category" ng-click="c.openContent()">
     ${Solicitações de Finanças, Jurídico e Infraestrutura}
@@ -1759,7 +1772,7 @@ tbody {
               </tr>
             </thead>
             <tbody id="items-content-csc" ng-show="!c.isLoading" ng-repeat="item in data.requests track by item.sys_id">
-              <tr class="item-row b-b">
+              <tr class="item-row b-b" id="items-content-csc-row{{$index}}">
                 <td data-th="Product" class="column_product">
                   <div>
                     <div>
