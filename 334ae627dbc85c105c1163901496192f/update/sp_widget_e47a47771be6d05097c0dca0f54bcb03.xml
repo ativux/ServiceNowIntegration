@@ -3,6 +3,7 @@
         <category>custom</category>
         <client_script><![CDATA[function($scope, $rootScope, $timeout, categorySubscribe) {
 	var c = this;
+	c.is_ie = navigator.userAgent.indexOf("MSIE ") > -1 || navigator.userAgent.indexOf("Trident/") > -1; 
 
 	$scope.showWidget = "";
 	c.disableControl = false;
@@ -218,6 +219,61 @@
     }
   }
 
+}
+
+/* IE */
+.content_ie {
+  padding: 0 90px;
+
+  .category_items {
+    display: flex;
+
+    .categories {
+      text-align: center;
+      padding-bottom: 30px;
+
+      img {
+        transition: .3s ease-in-out;
+        display: block;
+        margin: 30px auto;
+        height: 80px;
+      }
+      .title {
+        transition: .3s ease-in-out;
+        font-size: 16px;
+        line-height: 1.2;
+        font-family: globorounded_bk, globorounded_bk_ie;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        padding: 0 12px;
+      }
+      .description {
+        font-size: 12px;
+        padding: 0 10px;
+        font-family: globorounded_bd, globorounded_bd_ie;
+        line-height: 1.2;
+        min-height: 230px;
+      }
+
+      &amp;:hover {
+
+        img {
+          transform: scale(1.1);
+          -webkit-transform: scale(1.1);
+          -ms-transform: scale(1.1);
+          -moz-transform: scale(1.1);
+          -o-transform: scale(1.1);
+        }
+        .title {
+          transform: translateY(-10px);
+          -webkit-transform: translateY(-10px);
+          -ms-transform: translateY(-10px);
+          -moz-transform: translateY(-10px);
+          -o-transform: translateY(-10px);
+        }
+      }
+    }
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -262,16 +318,16 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 20:08:18</sys_created_on>
         <sys_id>e47a47771be6d05097c0dca0f54bcb03</sys_id>
-        <sys_mod_count>274</sys_mod_count>
+        <sys_mod_count>312</sys_mod_count>
         <sys_name>GService Category Items CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_e47a47771be6d05097c0dca0f54bcb03</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-21 15:11:00</sys_updated_on>
-        <template><![CDATA[<h1 class="category-title">${Serviços de Finanças, Jurídico e Infraestrutura}</h1>
-<div class="content center">
+        <sys_updated_on>2020-10-13 19:46:04</sys_updated_on>
+        <template><![CDATA[<h1 ng-if="!c.is_ie" class="category-title">${Serviços de Finanças, Jurídico e Infraestrutura}</h1>
+<div ng-if="!c.is_ie" class="content center">
   <div class="control">
     <div class="back center" ng-click="c.back()"><img src="GS_Carrosel_ESQ.png"/></div>
     <div class="next center" ng-click="c.next()"><img src="GS_Carrosel_DIR.png"/></div>
@@ -288,6 +344,21 @@
             <div class="title">{{slide.title}}</div>
             <div class="description">{{slide.description}}</div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content_ie" id="widget-category-items" ng-if="c.is_ie">
+  <h1 class="category-title">${Serviços de Finanças, Jurídico e Infraestrutura}</h1>
+  <div class="category_items">
+    <div ng-repeat="item in data.slides" class="categories">
+      <div ng-click="selectedCategory(item.sys_id)" class="item_">
+        <img src="{{item.img}}" class="icon-img">
+        <div class="{{item.color}}">
+          <div class="title">{{item.title}}</div>
+          <div class="description">{{item.description}}</div>
         </div>
       </div>
     </div>
