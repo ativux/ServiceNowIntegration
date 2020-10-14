@@ -5,6 +5,7 @@
 	var c = this;
 
 	c.contentOpened = false;
+	c.is_ie = navigator.userAgent.indexOf("MSIE ") > -1 || navigator.userAgent.indexOf("Trident/") > -1; 
 
 	$scope.$on('refreshNotificationList', function(event, notificationID) {
 		c.server.get({
@@ -117,7 +118,7 @@
   .content_body_mask {
     overflow: hidden;
 
-    .content_body_ntf {
+    .content_body_ntf, .content_body_ntf_ie {
       margin-top : -2000px;
       transition: .8s ease-in-out;
     }
@@ -284,18 +285,36 @@
         <internal>false</internal>
         <link><![CDATA[function link(scope, element, attrs, controller) {
 	var c = controller;
-	
-  c.openContent = function() {
+
+	c.openContent = function() {
+		var contentBody;
+		var height;
+
+		if(c.is_ie){
+			contentBody = element.find(".content_body_ntf_ie");
+			var count = Math.round(c.data.notificationWidget.length / 2);
+			height = count * 390;
+
+			if(height == 0) {
+				height = 176;
+			}else {
+				height += 154;
+			}
+			
+		} else {
+			contentBody = element.find(".content_body_ntf");
+			height = contentBody.outerHeight();
+		}
 		c.contentOpened = !c.contentOpened;
-		var contentBody = element.find(".content_body_ntf");
+
 		if(!c.contentOpened) {
-			contentBody.css("margin-top", "-" + contentBody.outerHeight() + 'px');
+			contentBody.css("margin-top", "-" + height + 'px');
 		}
 		else {
 			contentBody.css("margin-top", 0);
 		}
 	}
-	
+
 	c.makeTransition = function(position, newLeft){
 		var slide = element.find('#slide' + position);
 		slide.css('left', newLeft + '%');
@@ -369,21 +388,21 @@
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-11 12:07:09</sys_created_on>
         <sys_id>02c26e791b6a141097c0dca0f54bcb4f</sys_id>
-        <sys_mod_count>73</sys_mod_count>
+        <sys_mod_count>84</sys_mod_count>
         <sys_name>GService My Dashboard Notification v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_02c26e791b6a141097c0dca0f54bcb4f</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-09-04 16:31:17</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-10-13 19:16:09</sys_updated_on>
         <template><![CDATA[<div class="content_notification">
   <div class="title_category" ng-click="c.openContent()">
     ${Notificações de Tecnologia}
     <span><img src="GService_Seta_PD_Transparent.png" ng-class="c.contentOpened ? '' : 'invert-arrow'"/></span>
     <span class="items_length">{{data.notificationWidget.length}}</span>
   </div>
-  <div class="content_body_mask">
+  <div class="content_body_mask" ng-if="!c.is_ie">
     <div class="content_body_ntf">
       <div class="header_message">${My Dashboard Notification 1}<br>${My Dashboard Notification 2}</div>
       <div ng-if="data.notificationWidget.length == 0" ng-show="!c.isLoading" class="without_notification">
@@ -409,6 +428,35 @@
       </div>
     </div>
   </div>
+
+  <!-- Just IE -->
+  <div class="content_body_mask" ng-if="c.is_ie">
+    <div class="content_body_ntf_ie">
+      <div class="header_message">${My Dashboard Notification 1}<br>${My Dashboard Notification 2}</div>
+      <div ng-if="data.notificationWidget.length == 0" ng-show="!c.isLoading" class="without_notification">
+        ${GService Without Notifications}
+      </div>
+      <div class="content widget_notifications" ng-if='data.notificationWidget.length > 0'>
+        <div class="col-md-6 border-notification" ng-repeat="widget in data.notificationWidget" ng-if="widget.show">
+          <sp-widget widget="widget.instance"></sp-widget>
+        </div>
+      </div>
+      <div class="modal fade" style="z-index: 1041" id="pendingResponse" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal-body">
+              <div class="modal-title">${Sua resposta foi enviada com sucesso!}</div>
+              <div class="modal-description">${Acompanhe o andamento no Histórico da Solicitação.}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <div class="modal fade" style="z-index: 1041" id="pendingResponse" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
