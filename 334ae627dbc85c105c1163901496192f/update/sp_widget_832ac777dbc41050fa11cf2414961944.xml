@@ -98,14 +98,14 @@
 					categorySubscribe.setSelectedItemOnly(itemID);
 				}
 			}
-
-			for(i in c.data.arrayItems){
+			for(var i in c.data.arrayItems){
 				if(c.data.arrayItems[i].sys_id == itemID){
 					if(!c.data.arrayItems[i].selected){
 						c.data.showSelectedItem = false;
 					}
 					else{
-						var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
+						//var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
+						var isAllowedRP = c.data.allowed_record_producers.indexOf(itemID) > -1;
 						if(item.table == "sc_cat_item_producer" && !isAllowedRP){
 							c.data.showSelectedItem = false;
 							c.data.showSelectedOrder = false;
@@ -127,6 +127,7 @@
 					}
 				}
 				else{
+					console.log(c.data.arrayItems[i].sys_id);
 					c.data.arrayItems[i].selected = false;
 				}
 			}
@@ -419,7 +420,8 @@
 					c.selected_item = c.data.arrayItems[i];
 					c.data.arrayItems[i].selected = c.data.arrayItems[i].title;
 
-					var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
+					//var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
+					var isAllowedRP = c.data.allowed_record_producers.indexOf(itemID) > -1;
 					if(c.data.arrayItems[i].table == "sc_cat_item_producer"){
 						c.data.showSelectedItem = false;
 						c.data.showSelectedOrder = false;
@@ -1123,14 +1125,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 13:30:17</sys_created_on>
         <sys_id>832ac777dbc41050fa11cf2414961944</sys_id>
-        <sys_mod_count>1785</sys_mod_count>
+        <sys_mod_count>1799</sys_mod_count>
         <sys_name>GService Categories</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_832ac777dbc41050fa11cf2414961944</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-10-09 17:46:51</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-10-13 15:27:34</sys_updated_on>
         <template><![CDATA[<div id="widget-category" class="content" ng-show="data.showWidget">
   <div>
 
