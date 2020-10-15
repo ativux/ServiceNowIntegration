@@ -86,7 +86,7 @@
 
 	if(c.data.mergedEntries){
 		for(var i in c.data.mergedEntries){
-			if(c.data.mergedEntries[i].has_link){
+			//if(c.data.mergedEntries[i].has_link){
 				var display_value = c.data.mergedEntries[i].display_value + "";
 				var value = c.data.mergedEntries[i].value + "";
 				do{
@@ -102,7 +102,7 @@
 				value = $sce.trustAsHtml(value);
 				c.data.mergedEntries[i].display_value = display_value;
 				c.data.mergedEntries[i].value = value;
-			}
+			//}
 
 		}
 	}
@@ -937,14 +937,14 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-02 15:30:08</sys_created_on>
         <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
-        <sys_mod_count>491</sys_mod_count>
+        <sys_mod_count>503</sys_mod_count>
         <sys_name>GService Custom Conversation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-10-13 17:27:48</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-10-15 16:56:58</sys_updated_on>
         <template><![CDATA[<div class="content_conversation_all dynamic_{{data.color_class}}">
   <div ng-if="data.hide_title == false" class="conversation_title">${GService Conversation Request History}</div>
   <div>
@@ -973,7 +973,7 @@ ul {
               <div class="conversation_action {{data.color_class}}">{{e.name}}</div>
               <div class="conversation_description">{{e.field_label}}</div>
               <div class="">
-                <div class="conversation_description" ng-if="(e.element != 'attachment')" ng-bind-html=e.display_value><span ng-if="e.showAll">...</span></div>
+                <div class="conversation_description" ng-if="(e.element != 'attachment')" ng-bind-html="e.display_value"><span ng-if="e.showAll">...</span></div>
                 <div ng-if="(e.element == 'attachment')">
                   <a ng-if="(e.attachment.state == 'available')" target="_blank" href="/sys_attachment.do?view=true&sys_id={{e.attachment.sys_id}}" title="${View}">
                     <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/>
