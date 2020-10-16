@@ -701,7 +701,7 @@ tbody {
 		c.contentOpened = !c.contentOpened;
 		var contentBody = element.find(".content_body_app");
 		if(!c.contentOpened) {
-			contentBody.css("margin-top", "-" + (contentBody.outerHeight() + 30) + 'px');
+			contentBody.css("margin-top", "-" + (contentBody.outerHeight() + 100) + 'px');
 		}
 		else {
 			contentBody.css("margin-top", 0);
@@ -761,9 +761,9 @@ tbody {
 		if(data.approvals.length == 0){
 			data.showEmptyMessage = true;
 		}
-		data.margin_top = -200 * data.approvals.length;
+		data.margin_top = -300 * data.approvals.length;
 		if(data.margin_top == 0){
-			data.margin_top = -200;
+			data.margin_top = -300;
 		}
 		
 		data.approvalsCount = data.approvals.length;
@@ -845,14 +845,14 @@ tbody {
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-11 16:52:01</sys_created_on>
         <sys_id>36f3e7311bee141097c0dca0f54bcb9a</sys_id>
-        <sys_mod_count>40</sys_mod_count>
+        <sys_mod_count>42</sys_mod_count>
         <sys_name>GService My Dashboard Approvals v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_36f3e7311bee141097c0dca0f54bcb9a</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-10-09 17:03:36</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-10-16 12:30:30</sys_updated_on>
         <template><![CDATA[<div class="approval_content">
 
   <div class="title_category" ng-click="c.openContent()">
