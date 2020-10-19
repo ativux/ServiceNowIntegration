@@ -235,6 +235,7 @@
   .header-loader{
     padding: 50px;
     padding-bottom: 100px;
+
     .sp-loading-indicator{
       color: $blue !important;
     }
@@ -312,6 +313,21 @@
           height: 80px;
           display: flex;
           justify-content: center;
+          position: relative;
+
+          .count-align {
+            z-index: 1;
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 0;
+            left: 70px;
+            color: white;
+            background: $coral;
+            border-radius: 50%;
+            text-align: center;
+            font-family: $text-bolder;
+          }
 
           .sound {
             width: 80px;
@@ -432,20 +448,6 @@
 .margin-align {
   margin: 0 auto;
   text-align: center;
-}
-
-.count-align {
-  z-index: 1;
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  bottom: 95px;
-  right: 20px;
-  color: white;
-  background: $coral;
-  border-radius: 50%;
-  text-align: center;
-  font-family: $text-bolder;
 }
 
 .notification-align {
@@ -642,14 +644,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>267</sys_mod_count>
+        <sys_mod_count>270</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-10-13 18:14:02</sys_updated_on>
+        <sys_updated_on>2020-10-19 21:18:18</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
   <div class="content_avatar">
     <div class="avatar-image">
@@ -674,11 +676,11 @@
     </div>
   </div>
   <div class="tabs-align">
-    
+
     <div class="categories" ng-repeat="tab in data.tabs" ng-if="tab.show">
-      
+
       <div class="tab_items" ng-class="{'tab_current': tab.selected}" ng-click="c.selectTab(tab, $index)">
-        
+
         <span class="notification-align" ng-if="c.data.newNotificationAvailable && tab.name == 'notificationsTab'">
           <span class="tooltip tooltip_top">
             <div class="tooltip_text">${Você possui novas notificações, atualize a página ou reabra o menu}</div>
@@ -686,6 +688,8 @@
           </span>
         </span>
         <div class="tab_images">
+          <span class="count-align" ng-if="data.notificationsCount > 0 && tab.name == 'notificationsTab'"> {{data.notificationsCount}} </span>
+          <span class="count-align" ng-if="data.approvalsCount > 0 && tab.name == 'approvalsTab'"> {{data.approvalsCount}} </span>
           <div class="sound" ng-if="$index == 1" ng-hide="true"> <!-- tab.selected -->
             <div class="sound_left"></div>
             <div class="sound_right"></div>
@@ -694,16 +698,13 @@
           <img ng-show="!tab.selected" src="{{tab.img}}" class="icon-img"/>
           <img ng-show="tab.selected" src="{{tab.imgSelected}}" class="icon-img"/>
         </div>
-        
-        <span class="count-align" ng-if="data.notificationsCount > 0 && tab.name == 'notificationsTab'"> {{data.notificationsCount}} </span>
-        <span class="count-align" ng-if="data.approvalsCount > 0 && tab.name == 'approvalsTab'"> {{data.approvalsCount}} </span>
-        
+
         <div class="tab_title">{{tab.label}}</div>
-        
+
       </div>
-      
+
     </div>
-    
+
   </div>
   <div class="header-loader" ng-show="c.isLoading">
     <div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator">
