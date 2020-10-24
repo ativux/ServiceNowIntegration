@@ -318,6 +318,8 @@
 	var portalUtilsCSC = new global.OCLPortalUtilsCSC();
 	var equipmentsUtils = new global.OCLPortalEquipmentsUtil();
 
+	data.page_id = $sp.getParameter("id");
+	
 	var queries = portalUtils.getNotificationQuery();
 	data.taskQuery = queries.taskQuery;
 	data.incidentQuery = queries.incidentQuery;
@@ -381,14 +383,14 @@
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 17:35:57</sys_created_on>
         <sys_id>8ed872e7db40dc10fa11cf241496192b</sys_id>
-        <sys_mod_count>294</sys_mod_count>
+        <sys_mod_count>295</sys_mod_count>
         <sys_name>GService Header Menu</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_8ed872e7db40dc10fa11cf241496192b</sys_update_name>
-        <sys_updated_by>organize.matias</sys_updated_by>
-        <sys_updated_on>2020-09-24 16:53:58</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-10-22 14:47:16</sys_updated_on>
         <template><![CDATA[<ul class="nav navbar-nav" role="menubar">
   
   <div class="header-loader" ng-class="{'invisible': !loadingIndicator}">
@@ -426,7 +428,7 @@
     </a>
   </li>
   <!-- Shopping cart stuff -->
-  <li class="header-menu-item" role="presentation" ng-if="data.showEquipments">
+  <li class="header-menu-item" role="presentation" ng-if="data.showEquipments && data.page_id != 'globoservice_report_incident'">
     <a ng-href="?id=globoservice_equipments"
        ng-click="collapse()"
        title="${Manager s Area}"
@@ -436,7 +438,7 @@
       <span ng-if="c.data.equipmentsCount > 0" aria-hidden="true" class="radio-cart">{{c.data.equipmentsCount}}</span>
     </a>
   </li>
-  <li class="header-menu-item" role="presentation" ng-if="data.isManager || data.isAdmin">
+  <li class="header-menu-item" role="presentation" ng-if="data.isManager || data.isAdmin && data.page_id != 'globoservice_report_incident'">
     <a ng-href="?id=globoservice_manager"
        ng-click="collapse()"
        title="${Manager s Area}"
@@ -446,7 +448,7 @@
     </a>
   </li>
 
-  <li class="header-menu-item" role="presentation">
+  <li class="header-menu-item" role="presentation" ng-if="data.page_id != 'globoservice_report_incident'">
     <a ng-href="?id=globoservice_my_dashboard"
        ng-click="collapse()"
        title="${GService My Dashboard}"

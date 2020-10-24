@@ -787,18 +787,18 @@ nav {
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 18:00:53</sys_created_on>
         <sys_id>578e7263db80dc10fa11cf24149619e7</sys_id>
-        <sys_mod_count>982</sys_mod_count>
+        <sys_mod_count>984</sys_mod_count>
         <sys_name>GService Stock Header</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_header_footer_578e7263db80dc10fa11cf24149619e7</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-10-20 14:58:45</sys_updated_on>
+        <sys_updated_on>2020-10-22 14:18:58</sys_updated_on>
         <template><![CDATA[<div class="content">
 
   <!-- SIDE BAR -->
-  <div class="icon-bar sidebar_menu">
+  <div class="icon-bar sidebar_menu" ng-if="data.page_id != 'globoservice_report_incident'">
     <div ng-click="c.openDropDown(2)"><img src="GS_ACESSORAPIDO_ERRO.png"></div>
     <div ng-click="c.openDropDown(3)"><img src="GS_ACESSORAPIDO_SERVICO.png"></div>
     <div ng-click="c.doYourself()"><img src="GS_ACESSORAPIDO_AUTO.png"></div>
