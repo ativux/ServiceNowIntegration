@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_translated">
+    <sys_translated action="INSERT_OR_UPDATE">
+        <element>title</element>
+        <id/>
+        <label>Categorias Tecnologia</label>
+        <language>pb</language>
+        <name>sys_sg_section</name>
+        <sys_class_name>sys_translated</sys_class_name>
+        <sys_created_by>erick.pires@g.globo</sys_created_by>
+        <sys_created_on>2020-07-10 14:33:27</sys_created_on>
+        <sys_id>4161da67db7d18105c116390149619a2</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Categorias Tecnologia</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_translated_4161da67db7d18105c116390149619a2</sys_update_name>
+        <sys_updated_by>vinicius.santos@organizecloudlabs.com</sys_updated_by>
+        <sys_updated_on>2020-09-23 21:19:43</sys_updated_on>
+        <value>KB Categories Top</value>
+    </sys_translated>
+</record_update>
