@@ -304,7 +304,8 @@
 	if(!localInput){
 		var categoriesID = options.selected_category.split(",");
 		data.slides = portalUtils.getSelectableCategories(categoriesID);
-		data.items_number = data.slides.length > options.items_number ? options.items_number : data.slides.length - 1;
+		data.items_number = data.slides.length >= options.items_number ? options.items_number : data.slides.length - 1;
+		data.show_carousel = data.items_number == data.slides.length ? false : true;
 		data.original_number = data.items_number;
 		data.left = 100 / data.items_number;
 		for(var i in data.slides){
@@ -318,19 +319,19 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 20:08:18</sys_created_on>
         <sys_id>e47a47771be6d05097c0dca0f54bcb03</sys_id>
-        <sys_mod_count>312</sys_mod_count>
+        <sys_mod_count>326</sys_mod_count>
         <sys_name>GService Category Items CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_e47a47771be6d05097c0dca0f54bcb03</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-10-13 19:46:04</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-11-30 14:51:12</sys_updated_on>
         <template><![CDATA[<h1 ng-if="!c.is_ie" class="category-title">${Serviços de Finanças, Jurídico e Infraestrutura}</h1>
 <div ng-if="!c.is_ie" class="content center">
   <div class="control">
-    <div class="back center" ng-click="c.back()"><img src="GS_Carrosel_ESQ.png"/></div>
-    <div class="next center" ng-click="c.next()"><img src="GS_Carrosel_DIR.png"/></div>
+    <div ng-if="data.show_carousel" class="back center" ng-click="c.back()"><img src="GS_Carrosel_ESQ.png"/></div>
+    <div ng-if="data.show_carousel" class="next center" ng-click="c.next()"><img src="GS_Carrosel_DIR.png"/></div>
   </div>
   <div class="slide_content_mask">
     <div class="slide_content">
