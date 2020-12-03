@@ -745,10 +745,9 @@ tbody {
 	data.columns = [];
 
 	if(!localInput){
-		var columns_property = gs.getProperty("gservice_dashboard_columns");
+		var columns_property = gs.getProperty("gservice_approvals_csc_columns");
 
-		var parse = JSON.parse(columns_property);
-		var columns = parse['approvalsTab'].columns;
+		var columns = JSON.parse(columns_property).columns;
 
 		data.columns = columns;
 		for(i in columns){
@@ -862,14 +861,14 @@ tbody {
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-11 18:05:20</sys_created_on>
         <sys_id>c5c47bb51b62541097c0dca0f54bcb6a</sys_id>
-        <sys_mod_count>67</sys_mod_count>
+        <sys_mod_count>74</sys_mod_count>
         <sys_name>GService My Dashboard Approvals CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_c5c47bb51b62541097c0dca0f54bcb6a</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-10-16 12:30:21</sys_updated_on>
+        <sys_updated_on>2020-12-03 13:11:04</sys_updated_on>
         <template><![CDATA[<div class="approval_content">
 
   <div class="title_category" ng-click="c.openContent()">
@@ -923,6 +922,20 @@ tbody {
                 <div class="row approval_column_requester">
                   <div>
                     <span class="service_title">{{item.price}}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="row approval_column_requester">
+                  <div>
+                    <span class="service_title">{{item.ar}}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="row approval_column_requester">
+                  <div>
+                    <span class="service_title">{{item.atividade}}</span>
                   </div>
                 </div>
               </td>
