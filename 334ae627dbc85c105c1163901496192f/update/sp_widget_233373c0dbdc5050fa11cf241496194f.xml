@@ -2,7 +2,7 @@
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
         <client_script><![CDATA[function ($scope, $element, $rootScope, $timeout, snAttachmentHandler, $http, spUtil, i18n, $window) {
-	
+	var c = this;
 	$scope.avatarProfile = {
 		userID: $scope.user.sys_id,
 		name: $scope.user.name,
@@ -48,8 +48,14 @@
 		}
 
 		if(!validImage) {
-			alert(file.name + " " + i18n.getMessage("isn't a recognized image file format"));
-			return;
+			c.data.isValid = false;
+			c.data.errorMsg = file.name + " " + i18n.getMessage("isn't a recognized image file format");
+			c.server.update().then(function(){
+				c.data.isValid = true;
+				return;			   
+			});
+			//alert(file.name + " " + i18n.getMessage("isn't a recognized image file format"));
+			
 		}
 
 		snAttachmentHandler.create("live_profile", $scope.data.liveProfileID).uploadAttachment(file, {
@@ -127,6 +133,15 @@
   font-family: $text-bold;
   background-color: white;
   color: $blue;
+}
+
+@media only screen and (max-width: 768px) {
+  .align-all {
+    margin-top: 0;
+  }
+  .main-avatar {
+    display: none;
+  }
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -141,7 +156,15 @@
         <option_schema/>
         <public>true</public>
         <roles/>
-        <script><![CDATA[(function() {
+        <script><![CDATA[(function() {	
+	
+	if(input){
+		if(!input.isValid){
+			gs.addErrorMessage(input.errorMsg);
+		}
+	}
+	
+	
 	data.sysUserID = $sp.getParameter("sys_id");
 	if (!data.sysUserID)
 		data.sysUserID = gs.getUser().getID();
@@ -169,16 +192,16 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-16 11:08:03</sys_created_on>
         <sys_id>233373c0dbdc5050fa11cf241496194f</sys_id>
-        <sys_mod_count>157</sys_mod_count>
+        <sys_mod_count>171</sys_mod_count>
         <sys_name>GService Main User</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_233373c0dbdc5050fa11cf241496194f</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-04 23:22:11</sys_updated_on>
+        <sys_updated_on>2020-12-04 14:47:00</sys_updated_on>
         <template><![CDATA[<div ng-if="user.logged_in" class="align-all">
-  <div>
+  <div class="main-avatar">
     <a title="Avatar Pic">
       <sn-avatar class="avatar-custom-size" primary="avatarProfile" />
     </a>
