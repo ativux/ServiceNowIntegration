@@ -222,11 +222,13 @@
 			}
 		}
 		if(showDetails){
+			c.data.showConversation = false;
 			c.server.get({
 				action: 'getTicketConversationWidget',
 				item: item
 			}).then(function(response) {
 				c.data.ticketConversationWidget = response.data.ticketConversationWidget;
+				c.data.showConversation = true;
 				if(item.table == "sc_request"){
 					c.data.requests[index] = response.data.newItem;
 					c.data.ritm_fields = response.data.ritm_fields;
@@ -1403,6 +1405,7 @@ tbody {
 	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
 	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
 	var portalUtils = new global.OCLPortalUtilsCSC();
+	data.showConversation = false;
 
 	data.showContent = false;
 
@@ -1467,7 +1470,7 @@ tbody {
 				data.item = portalUtils.changeItemState(localInput.item, localInput.state, comment, localInput.reopeningReason);
 				if(localInput.state == "acceptSolution"){
 					var surveyUtils = new global.OCLPortalSurveyUtils();
-					var survey_id = surveyUtils.createSurvey(gs.getProperty("x_gmeps_itsm_servi.portal_csc_survey"));
+					var survey_id = surveyUtils.createSurvey("6f71cfca1b3ed01094962170f54bcb40");
 					data.show_survey = true;
 					var survey_options = {"survey_id": survey_id};
 					data.gserviceSurveyCSC = $sp.getWidget('gservice_survey_csc', survey_options);
@@ -1608,6 +1611,7 @@ tbody {
 			data.urlItem = $sp.getParameter("item_id_csc");
 			if(data.urlItem){
 				data.showContent = true;
+				data.showConversation = true;
 				var request_for = "";
 				var grTask = new GlideRecord("task");
 				grTask.get(data.urlItem);
@@ -1645,11 +1649,15 @@ tbody {
 		else{
 			requests = portalUtils.getRequests("opened_at", "-1", data.query, data.window_start, data.window_end);
 		}
-		
+
 		if(data.urlItem && first_load){
 			requests.items[0].showDetails = true;
 			var item = requests.items[0];
 			var hide_new_comments = false;
+			var state = item.statusValue;
+			if(state == "5" || state == "7" || state == "8" || state == "9"){
+				hide_new_comments = true;
+			}
 			var gservice_ticket_conversation_options = {table : item.table,
 																									sys_id : item.sys_id,
 																									item_status : item.colorClass,
@@ -1725,14 +1733,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 17:40:05</sys_created_on>
         <sys_id>2988eebf1ba2d05097c0dca0f54bcba7</sys_id>
-        <sys_mod_count>155</sys_mod_count>
+        <sys_mod_count>166</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2988eebf1ba2d05097c0dca0f54bcba7</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-11-23 15:46:47</sys_updated_on>
+        <sys_updated_on>2020-12-07 16:11:15</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   <div class="title_category" ng-click="c.openContent()">
     ${Solicitações de Finanças, Jurídico e Infraestrutura}
@@ -1874,7 +1882,7 @@ tbody {
                       <div ng-class="{'status_active' : status.selected == true}">{{status.name}}</div>
                     </div>
                   </div>
-                  <div class="col-md-7">
+                  <div class="col-md-7" ng-if="data.showConversation">
                     <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
                   </div>
                 </td>
