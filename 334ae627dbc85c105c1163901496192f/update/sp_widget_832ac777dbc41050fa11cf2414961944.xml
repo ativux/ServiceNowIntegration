@@ -856,9 +856,28 @@
   .content {
     .content_header {
       .content_center {
-        .title {
+
+      }
+    }
+  }
+}
+@media only screen and (max-width: 768px) {
+  .content {
+    .content_header {
+      img { display: none; }
+      .content_center {
+        width: 100%;
+        padding: 0 20px;
+        .title { 
           font-size: 32px;
+          width: 100%;
         }
+      }
+    }
+    .content_body {
+      padding: 0 20px;
+      .content-form-group {
+        display: none;
       }
     }
   }
@@ -1124,14 +1143,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 13:30:17</sys_created_on>
         <sys_id>832ac777dbc41050fa11cf2414961944</sys_id>
-        <sys_mod_count>1805</sys_mod_count>
+        <sys_mod_count>1811</sys_mod_count>
         <sys_name>GService Categories</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_832ac777dbc41050fa11cf2414961944</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-11-23 15:43:44</sys_updated_on>
+        <sys_updated_by>organize.anna</sys_updated_by>
+        <sys_updated_on>2020-12-09 11:20:06</sys_updated_on>
         <template><![CDATA[<div id="widget-category" class="content" ng-show="data.showWidget">
   <div>
 
@@ -1185,14 +1204,14 @@
           Clique aqui para ser redirecionado.
         </a>
       </div>
-      
+
       <div class="line {{data.categoryBgColor}}" ng-if="data.categoryURL"></div>
 
       <div class="content_breadcrumb_items">
         <div id="show-items" ng-show="data.showItems">
           <div class="breadcrumb_item">{{data.breadcrumb}}</div>
           <h3 class="request_title {{data.categoryColor}}">{{data.itemSelectMessage}} {{data.categoryTitle}}?</h3>
-          
+
           <div class="col-md-6 content_cat_items hover_{{data.categoryColor}}" ng-repeat="item in data.arrayItems" ng-if="item.show">
             <div class="text-left ">
               <span method="get" class="radio-properties">
@@ -1206,7 +1225,7 @@
                   <div class="item_title" ng-class="{'item_title_current':item == c.selected_item}">{{item.title}}
 
                     <span class="icon_empty"></span>
-                    
+
                     <span class="icon_yourself" ng-if="item.do_yourself != 0 && item.do_yourself != null">
                       <img src="Do_Yourself_icon.png"/>
                       <span class="tooltip">
@@ -1214,7 +1233,7 @@
                         <div class="tooltip_text">${Do it yourself}</div>
                       </span>
                     </span>
-                    
+
                     <span class="icon_yourself" ng-if="item.table == 'x_gmeps_csc_link_catalog_item'">
                       <img src="{{data.categoryLinkImg}}"/>
                       <span class="tooltip">
@@ -1234,7 +1253,7 @@
 
         </div>
       </div>
-      
+
       <div class="description_item" ng-if="data.showLinkItem">{{data.linkItem.short_description}}</div>
       <div class="line {{data.categoryBgColor}}" ng-if="data.showLinkItem"></div>
       <div class="external_services" ng-if="data.showLinkItem">
@@ -1246,6 +1265,7 @@
 
       <div class="description_item" ng-show="data.showSelectedItem || data.showSelectedProducer " ng-bind-html="data.itemDescription"></div>
       <div class="line {{data.categoryBgColor}}" ng-show="c.data.showSelectedItem || data.showSelectedProducer"></div>
+      
       <div id="show-selected-item">
         <div ng-show="c.data.showSelectedItem">
           <sp-widget widget="data.gserviceCatalogItem"></sp-widget>
@@ -1257,6 +1277,7 @@
           <sp-widget widget="data.gserviceRecordProducer"></sp-widget>
         </div>
       </div>
+      
       <div class="line {{data.categoryBgColor}}" ng-show="data.showItems"></div>
       <div class="content_mostviewed_articles">
         <widget id="gservice_kb_most_viewed" options='data.kb_most_viewed_options'></widget>
