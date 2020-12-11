@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>292</height>
+        <image>2dc7378d1b0de410a4a720afe54bcb98</image>
+        <name>gsmobile_mydashboard2.png</name>
+        <size_bytes>2573</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.anna</sys_created_by>
+        <sys_created_on>2020-12-11 16:24:49</sys_created_on>
+        <sys_id>a27f27851bc9e410a4a720afe54bcb58</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>gsmobile_mydashboard2.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_a27f27851bc9e410a4a720afe54bcb58</sys_update_name>
+        <sys_updated_by>organize.anna</sys_updated_by>
+        <sys_updated_on>2020-12-11 17:00:08</sys_updated_on>
+        <thumbnail/>
+        <width>292</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#fda306</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>fecaa518ed81950ad1efc52268704f90b5eeabf848f32c1271c019064c971ca6</hash>
+        <image_height>292</image_height>
+        <image_width>292</image_width>
+        <size_bytes>2573</size_bytes>
+        <size_compressed>2361</size_compressed>
+        <state>available</state>
+        <sys_created_by>organize.anna</sys_created_by>
+        <sys_created_on>2020-12-11 17:00:01</sys_created_on>
+        <sys_id>2dc7378d1b0de410a4a720afe54bcb98</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_updated_by>organize.anna</sys_updated_by>
+        <sys_updated_on>2020-12-11 17:00:01</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>a27f27851bc9e410a4a720afe54bcb58</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="2dc7378d1b0de410a4a720afe54bcb98">2dc7378d1b0de410a4a720afe54bcb98</sys_attachment>
+        <sys_created_by>organize.anna</sys_created_by>
+        <sys_created_on>2020-12-11 17:00:01</sys_created_on>
+        <sys_id>6dc7378d1b0de410a4a720afe54bcb98</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>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</data>
+        <length>3136</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="2dc7378d1b0de410a4a720afe54bcb98">2dc7378d1b0de410a4a720afe54bcb98</sys_attachment>
+        <sys_created_by>organize.anna</sys_created_by>
+        <sys_created_on>2020-12-11 17:00:01</sys_created_on>
+        <sys_id>edc7378d1b0de410a4a720afe54bcb98</sys_id>
+    </sys_attachment_doc>
+</record_update>
