@@ -658,6 +658,51 @@
   color: $light-steel-blue;
 }
 
+.wrapper-custom-mobile {
+  padding: 0 50px 50px 50px !important;
+}
+
+@media only screen and (max-width : 768px)  {
+  .content{
+    .content_header {
+      img { display: none; }
+
+      .content_center {
+        width: 100% !important;
+        margin: 0 20px;
+        
+        .title{
+          font-size: 35px;
+        }
+      }
+    }
+    .content_body {
+      margin: 0 20px !important;
+      
+      .content-form-group {
+        width: 100%;
+        margin: 0 auto;
+        padding: 0px 20px;
+        .input-group-btn{
+          .btn.btn-default{
+            padding: 6px 30px 6px 10px;
+          }
+        }
+        .icon-img {
+          height: 30px;
+        }
+      }
+    }
+  }
+
+  .wrapper-custom-mobile {
+    padding: 0 10px !important;
+  }
+  .attachment_button {
+    margin-top: 20px;
+  }
+}
+
 @media only screen and (max-width : 1200px)  {
   .content {
     .content_body {
@@ -802,14 +847,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-05 12:59:42</sys_created_on>
         <sys_id>2e4ca118db9ddc905c1163901496194f</sys_id>
-        <sys_mod_count>803</sys_mod_count>
+        <sys_mod_count>819</sys_mod_count>
         <sys_name>GService Categories Knowledge Content</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2e4ca118db9ddc905c1163901496194f</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-25 12:26:46</sys_updated_on>
+        <sys_updated_on>2020-12-15 12:09:45</sys_updated_on>
         <template><![CDATA[<div id="widgetKBcategory" class="content" ng-show="data.showWidget">
 
   <div class="header-loader" ng-show="c.isLoading">
@@ -955,7 +1000,7 @@
         <div class="modal-content">
           <div class="modal-body">
             <div class="close_modal" ng-click="c.closeModal()">x</div>
-            <div ng-if="!c.submited" class="panel-body wrapper-xl wrapper-sc-cat-item">
+            <div ng-if="!c.submited" class="panel-body wrapper-custom-mobile"> <!-- wrapper-xl wrapper-sc-cat-item -->
               <div class="form-group">
                 <sp-widget widget="data.gserviceCatalogItem"></sp-widget>
               </div>
