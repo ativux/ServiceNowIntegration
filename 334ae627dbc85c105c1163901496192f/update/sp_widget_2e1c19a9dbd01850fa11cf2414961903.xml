@@ -111,29 +111,13 @@ input[type="radio"]:checked + .new-radio:after {
     font-size: 18px;
     font-family: $text-bold;
     color: #737373;
-    padding: 5px 0 2px 10px;
+    padding: 5px 0px 6px 0px;
   }
 
-  .label-current {
-    font-size: 18px;
-    font-family: $text-bold;
+  .label-current, input[type="radio"]:checked + label, label:hover{
     color: $coral;
-    padding: 5px 0 2px 10px;
   }
 
-  input[type="radio"]:checked + label{
-    font-size: 18px;
-    font-family: $text-bold;
-    color: $coral;
-    padding: 5px 0 2px 10px;
-  }
-
-  label:hover{
-    padding: 5px 0 2px 10px;
-    font-size: 18px;
-    font-family: $text-bold;
-    color: $coral;
-  }
 }
 
 .title-properties {
@@ -159,6 +143,7 @@ input[type="radio"]:checked + .new-radio:after {
   font-size: 18px;
   font-family: $text-bold;
   color: $coral !important;
+  margin-top: 25px;
 }
 
 .selected_error{
@@ -181,6 +166,46 @@ input[type="radio"]:checked + .new-radio:after {
       max-height: calc(100vh - 50px);
       overflow: auto;
     }
+  }
+}
+
+.wrapper-custom {
+  padding: 20px 50px !important;
+}
+
+/** mobile **/
+@media screen and (max-width: 768px){
+  .title-properties, .font-thin.title {
+    font-size: 25px;
+  }
+  .categories label {
+    font-size: 16px;
+    line-height: 20px;
+    padding: 7px 0px 6px 0px;
+  }
+  .wrapper-sc-cat-item {
+    padding: 10px !important;
+  }
+  .content .line {
+    margin: 10px 0;
+  }
+  .row.content-attachments {
+    margin-top: 0;
+    margin-bottom: 70px;
+  }
+  .attachment_button {
+    position: relative;
+    display: block;
+    margin-top: 30px;
+  }
+  div:not(.input-group-btn) .btn:not(.btn-link):not(.lookup):not(.btn-clear) {
+    padding: 10px 0 !important;
+  }
+  .content-attachments {
+    margin-top: 15px;
+  }
+  .wrapper-custom {
+    padding: 10px !important;
   }
 }</css>
         <data_table>sp_instance</data_table>
@@ -246,14 +271,14 @@ input[type="radio"]:checked + .new-radio:after {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-20 15:58:36</sys_created_on>
         <sys_id>2e1c19a9dbd01850fa11cf2414961903</sys_id>
-        <sys_mod_count>674</sys_mod_count>
+        <sys_mod_count>698</sys_mod_count>
         <sys_name>GService Error Modal</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2e1c19a9dbd01850fa11cf2414961903</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-11-23 15:58:35</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-12-15 11:53:44</sys_updated_on>
         <template><![CDATA[<div class="modal fade" style="z-index: 1041" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -261,7 +286,7 @@ input[type="radio"]:checked + .new-radio:after {
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <div class="panel-body wrapper-xl">
+        <div class="panel-body wrapper-sm wrapper-custom">
           <img src="pineappleError.png" height="100">
           <div><h1 class="title-properties">Em qual categoria gostaria <br> de reportar um erro?</h1></div>
           <div ng-repeat="errorType in data.categories" class="categories">
@@ -292,7 +317,7 @@ input[type="radio"]:checked + .new-radio:after {
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <div class="panel-body wrapper-xl wrapper-sc-cat-item">
+        <div class="panel-body wrapper-sm wrapper-sc-cat-item">
           <div class="form-group">
             <sp-widget widget="data.gserviceCatalogItem"></sp-widget>
           </div>
