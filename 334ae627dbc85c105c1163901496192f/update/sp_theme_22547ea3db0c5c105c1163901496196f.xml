@@ -791,10 +791,19 @@ iframe {&#13;
   }&#13;
   .container.index-catalog-content {&#13;
     margin-left: 0;&#13;
+    margin-bottom: 0;&#13;
+    margin-top: 0;&#13;
+    padding: 20px;&#13;
   }&#13;
+  .navbar-toggle,&#13;
+  .banner-content, #widgetGserviceIconlink,&#13;
+  #widgetGserviceCustomOrderGuide {&#13;
+  	display: none !important;&#13;
+  }&#13;
+  //#categoriesKnowledge&#13;
 }</css_variables>
         <footer/>
-        <footer_fixed>true</footer_fixed>
+        <footer_fixed>false</footer_fixed>
         <header display_value="GService Stock Header">578e7263db80dc10fa11cf24149619e7</header>
         <name>OCL: ITSM Unification</name>
         <navbar_fixed>true</navbar_fixed>
@@ -802,13 +811,13 @@ iframe {&#13;
         <sys_created_by>organize.matias</sys_created_by>
         <sys_created_on>2020-04-14 17:17:27</sys_created_on>
         <sys_id>22547ea3db0c5c105c1163901496196f</sys_id>
-        <sys_mod_count>326</sys_mod_count>
+        <sys_mod_count>332</sys_mod_count>
         <sys_name>OCL: ITSM Unification</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_theme_22547ea3db0c5c105c1163901496196f</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-09-17 00:44:19</sys_updated_on>
+        <sys_updated_on>2020-12-17 19:10:54</sys_updated_on>
     </sp_theme>
 </record_update>
