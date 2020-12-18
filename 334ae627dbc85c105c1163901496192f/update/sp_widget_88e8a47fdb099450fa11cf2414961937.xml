@@ -1361,6 +1361,60 @@ tbody {
 
 .modal .modal-content .modal-body {
   max-height: 510px !important;
+}
+
+@media only screen and (max-width: 768px) {
+  .content_request {
+    margin-top: 15px;
+    padding: 30px 20px;
+  }
+  
+  table {
+
+    thead {
+      th { font-size: 12px !important; }
+
+      th:nth-child(3), th:nth-child(4) {
+        display: none;
+      }
+    }
+    tbody {
+      td {
+        font-size: 12px !important;
+        div { font-size: 12px !important; }
+      }
+      td:nth-child(1), td:nth-child(2) {
+        width: 40%;
+      }
+      td:nth-child(3), td:nth-child(4) {
+        display: none;
+      }
+      td:nth-child(5) {
+        width: 20%;
+      }
+    }
+  }
+  
+  .conversation_form{
+    textarea{ width: 180px; }
+  }
+  .content_attach {
+
+    .attach_left{
+      width: 100% !important;
+
+      img {
+        width: 180px !important;
+        height: 110px !important;
+      }
+    }
+
+    .attach_right {
+      display: none;
+    }
+  }
+  
+  
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -1781,14 +1835,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 18:48:13</sys_created_on>
         <sys_id>88e8a47fdb099450fa11cf2414961937</sys_id>
-        <sys_mod_count>727</sys_mod_count>
+        <sys_mod_count>734</sys_mod_count>
         <sys_name>GService My Dashboard Requests</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_88e8a47fdb099450fa11cf2414961937</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-11-23 15:45:16</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-12-18 13:57:19</sys_updated_on>
         <template><![CDATA[<div class="content_request">
 
   <div class="title_category" ng-click="c.openContent()">
