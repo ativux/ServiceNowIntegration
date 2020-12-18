@@ -199,7 +199,7 @@
     }
   }
   .approval_column_requester {
-    padding-left: 10px !important;
+    padding-left: 10px;
 
     .info-size{
       height: 20px;
@@ -224,7 +224,7 @@
       margin-left: 20px;
     }
     .cancel-button{
-      margin-left: 15%;;
+      margin-left: 15%;
     }
   }
   .modal-body{
@@ -510,15 +510,6 @@ td {
   }
 }
 
-@media only screen and (max-width : 992px) {
-  .sc-btn, .sc-btn-group {
-    width: 100%;
-  }
-  .item-image {
-    max-width: 70px;
-  }
-}
-
 //All pages
 .without_notification {
   padding: 30px 0;
@@ -557,6 +548,9 @@ thead {
 .table-hover &gt; tbody &gt; tr:hover {
   background-color: white;
 }
+table {
+  table-layout: fixed;
+}
 tbody {
   img {
     width: 50px;
@@ -564,17 +558,17 @@ tbody {
   }
 
   td:nth-child(1) {
-    width: 15%;
+    width: 10%;
     padding: 20px;
   }
 
   td:nth-child(2) {
-    width: 15%;
+    width: 10%;
     padding: 20px;
   }
 
   td:nth-child(3) {
-    width: 15%;
+    width: 10%;
     padding-left: 20px;
   }
 
@@ -584,7 +578,7 @@ tbody {
   }
 
   td:nth-child(5) {
-    width: 20%;
+    width: 15%;
     padding: 20px;
 
     .request_button {
@@ -593,6 +587,16 @@ tbody {
   }
 
   td:nth-child(6) {
+    width: 15%;
+    padding: 20px;
+  }
+
+  td:nth-child(7) {
+    width: 15%;
+    padding: 20px;
+  }
+
+  td:nth-child(8) {
     width: 20%;
     padding: 20px;
   }
@@ -676,6 +680,7 @@ tbody {
 }
 
 .modal_approvals_csc {
+
   .modal_title {
     font-size: 32px;
     color: $dark-orchid;
@@ -695,10 +700,107 @@ tbody {
     display: flex;
     justify-content: flex-end;
 
-    img {
-      width: 60px;
+    img { width: 60px; }
+  }
+}
+
+.table-condensed &gt; thead &gt; tr &gt; th,
+.table-condensed &gt; thead &gt; tr &gt; td,
+.table-condensed &gt; tbody &gt; tr &gt; th,
+.table-condensed &gt; tbody &gt; tr &gt; td,
+.table-condensed &gt; tfoot &gt; tr &gt; th,
+.table-condensed &gt; tfoot &gt; tr &gt; td {
+  padding: 20px 0 !important;
+}
+
+.mobile_fields {
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+
+@media only screen and (max-width : 992px) {
+  .sc-btn, .sc-btn-group {
+    width: 100%;
+  }
+  .item-image {
+    max-width: 70px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .mobile_fields {
+    display: none;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .approval_content{
+    .title_category {
+      padding: 0 20px;
+    }
+    .content_body_mask {
+      padding: 0 20px;
     }
   }
+
+  table {
+    table-layout: auto;
+
+    thead {
+      th { font-size: 12px !important; }
+      th:nth-child(4), th:nth-child(5), th:nth-child(6), th:nth-child(7) {
+        display: none;
+      }
+    }
+    tbody {
+      td {
+        font-size: 12px !important;
+        h4 { font-size: 12px !important; }
+
+        .approval_column_requester {
+          padding-left: 0 !important;
+        }
+      }
+      td:nth-child(4), td:nth-child(5), td:nth-child(6), td:nth-child(7) {
+        display: none;
+      }
+      td:nth-child(8) {
+        .approvals-buttons {
+          display: flex;
+          flex-direction: column;
+          padding: 10px 0;
+
+          .submit-button{
+            margin-bottom: 5px;
+            margin-left: 0;
+          }
+          .cancel-button{
+            margin-left: 0;
+          }
+        }
+      }
+
+    }
+  }
+  
+  //Atach
+  .conversation_form{
+    textarea{ width: 180px; }
+  }
+  .content_attach {
+
+    .attach_left{
+      width: 100% !important;
+
+      img {
+        width: 180px !important;
+        height: 110px !important;
+      }
+    }
+
+    .attach_right {
+      display: none;
+    }
+  }
+
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -861,14 +963,14 @@ tbody {
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-11 18:05:20</sys_created_on>
         <sys_id>c5c47bb51b62541097c0dca0f54bcb6a</sys_id>
-        <sys_mod_count>74</sys_mod_count>
+        <sys_mod_count>140</sys_mod_count>
         <sys_name>GService My Dashboard Approvals CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_c5c47bb51b62541097c0dca0f54bcb6a</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-12-03 13:11:04</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-12-18 14:01:30</sys_updated_on>
         <template><![CDATA[<div class="approval_content">
 
   <div class="title_category" ng-click="c.openContent()">
@@ -912,14 +1014,14 @@ tbody {
                 </div>
               </td>
               <td>
-                <div class="row approval_column_requester">
+                <div class="approval_column_requester">
                   <div>
                     <span class="service_title">{{item.requester}}</span>
                   </div>
                 </div>
               </td>
               <td>
-                <div class="row approval_column_requester">
+                <div class="approval_column_requester">
                   <div>
                     <span class="service_title">{{item.price}}</span>
                   </div>
@@ -955,7 +1057,7 @@ tbody {
                 </div>
               </td>
               <td>
-                <div class="row approvals-buttons">
+                <div class="approvals-buttons">
                   <!-- Button to request a service again -->
                   <a class="submit-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, true)" aria-label="" title="">
                     <img src="GS_Confirmar_PB.png"/>
@@ -969,6 +1071,11 @@ tbody {
             <tr>
               <!-- Requests End -->
               <td ng-if="item.showDetails" class="content_conversation" colspan='6'>
+
+                <div class="mobile_fields">
+                  <div><b>${AR}:</b> {{item.ar}}</div>
+                  <div><b>${Atividade}:</b> {{item.ar}}</div>
+                </div>
 
                 <!-- Process Flow -->
                 <div class="col-md-3">
