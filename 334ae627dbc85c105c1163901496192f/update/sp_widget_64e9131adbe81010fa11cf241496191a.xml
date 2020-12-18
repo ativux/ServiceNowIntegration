@@ -12,7 +12,7 @@
 	
 	c.data.showWidget = true;
 
-	$rootScope.$on('showHideWidget', function(event,data) {
+	$rootScope.$on('showHideWidget', function(event, data) {
 
 		if (categorySubscribe.getSelectedCategory()){
 			oldCategory = categorySubscribe.getSelectedCategory();
@@ -54,7 +54,7 @@
     text-align: center;
     text-transform: uppercase;
     padding-bottom: 30px;
-    font-size: 28px;
+    font-size: 24px;
     font-family: $text-bold;
     color: $deep-sky-blue;
   }
@@ -71,6 +71,12 @@
     .text-align {
       text-align: center;
       padding-bottom: 30px;
+    }
+
+    .center-align{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     img {
@@ -114,6 +120,39 @@
       }
     }
   }
+}
+
+@media only screen and (max-width: 768px){
+  
+  .category-title{
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .mobile-flex-row{
+    display: flex;
+    max-width: 99%;
+    overflow: auto;
+    padding-left: 15px;
+    &amp;::after {
+      width: 20px;
+      height: 10px;
+      content: "";
+    }
+    .col-md-1{
+      display: none;
+    }
+    .categories{
+      background: #f8f8f8;
+      margin: 5px;
+      width: 33vw;
+      min-width: 180px;
+      .description-properties {
+        display: none;
+      }
+    }
+  }
+  
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -143,21 +182,21 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-05 19:19:17</sys_created_on>
         <sys_id>64e9131adbe81010fa11cf241496191a</sys_id>
-        <sys_mod_count>271</sys_mod_count>
+        <sys_mod_count>292</sys_mod_count>
         <sys_name>GService Category Items v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_64e9131adbe81010fa11cf241496191a</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-10-13 19:29:11</sys_updated_on>
+        <sys_updated_on>2020-12-18 12:44:53</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
   <h1 class="category-title">${GService Request a Service}</h1>
-  <div class="row margin-align">
+  <div class="row margin-align mobile-flex-row">
     <div class="col-md-1"></div>
     <div ng-repeat="item in data.categories" class="categories">
       <div class="m-b-s col-md-2 text-align {{item.color}}">
-        <div ng-click="selectedCategory(item.sys_id)">
+        <div ng-click="selectedCategory(item.sys_id)" class="center-align">
           <img src="{{item.img}}" class="icon-img">
           <div>
             <div class="category-items category-item">{{item.title}}</div>
