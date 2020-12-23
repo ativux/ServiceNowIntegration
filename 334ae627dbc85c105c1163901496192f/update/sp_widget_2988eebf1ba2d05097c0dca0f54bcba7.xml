@@ -96,8 +96,8 @@
 		c.requestComment = "";
 		c.needReason = false;
 		c.needComment = false;
-		
-		if(action == "acceptSolution" || action == "acceptCancellation" ||
+
+		if(action == "acceptSolution" || action == "acceptCancellation" || action == "approveItem" ||
 			 action == "cancelItem" && item.table == "u_question"){
 			c.server.get({
 				action: 'changeItemState',
@@ -112,14 +112,14 @@
 			});
 		}
 		else{
-			if(action == "rejectSolution" || action == "rejectCancellation"){
+			if(action == "rejectSolution" || action == "rejectCancellation" || action == "disapproveItem"){
 				c.modalMessage = c.data.msgs.reject;
 				for(var i in c.data.reopeningReason){
 					c.data.reopeningReason[i].selected = false;
 					c.requestComment = "";
 				}
 			}
-				
+
 			else
 				c.modalMessage = c.data.msgs.cancel;
 			for(var i in c.data.reopeningReason){
@@ -362,8 +362,8 @@
 
 	$scope.$on('surveyClosed', function(event) {
 		c.data.show_survey = false;
-
 	});
+	
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.content_request {
@@ -888,7 +888,6 @@ tbody {
   .inProgress {
     color: $yellow-green;
   }
-  
   .resolved {
     color: $dark-orchid;
   }
@@ -1826,14 +1825,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 17:40:05</sys_created_on>
         <sys_id>2988eebf1ba2d05097c0dca0f54bcba7</sys_id>
-        <sys_mod_count>225</sys_mod_count>
+        <sys_mod_count>235</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2988eebf1ba2d05097c0dca0f54bcba7</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-12-21 13:45:58</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-12-23 14:32:57</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   
   <div class="title_category" ng-click="c.openContent()">
@@ -1939,6 +1938,18 @@ tbody {
                     <span class="tooltip tooltip_bottom">
                       <div class="tooltip_arrow arrow_top"></div>
                       <div class="tooltip_text">${Reopen Request}</div>
+                    </span>
+                  </div>
+                  <div ng-if="item.approveButton" class="buttons" ng-click="c.itemAction(item, 'approveItem')"><img src="GS_Confirmar_PB.png"/>
+                    <span class="tooltip tooltip_bottom">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">${Approve}</div>
+                    </span>
+                  </div>
+                  <div ng-if="item.disapproveButton" class="buttons" ng-click="c.itemAction(item, 'disapproveItem')"><img src="GS_Reabrir_Roxo.png"/>
+                    <span class="tooltip tooltip_bottom">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">${Reject}</div>
                     </span>
                   </div>
                 </td>
