@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_message">
+    <sys_ui_message action="INSERT_OR_UPDATE">
+        <application/>
+        <key>see_more</key>
+        <language>en</language>
+        <message>See more</message>
+        <sys_class_name>sys_ui_message</sys_class_name>
+        <sys_created_by>organize.marta</sys_created_by>
+        <sys_created_on>2020-11-27 18:51:50</sys_created_on>
+        <sys_id>401bcc301b746c90f3683333dd4bcb07</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>see_more</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_ui_message_401bcc301b746c90f3683333dd4bcb07</sys_update_name>
+        <sys_updated_by>organize.marta</sys_updated_by>
+        <sys_updated_on>2020-11-27 18:51:50</sys_updated_on>
+    </sys_ui_message>
+</record_update>
