@@ -676,7 +676,8 @@
   .time-text {
     font-size: 10px;
     margin-left: 49px;
-    margin-top: -8px;
+    //margin-top: -8px;
+    margin-top: 15px;
   }
 
   .message_user {
@@ -927,7 +928,7 @@ ul {
 
 .modal-body{
   overflow: hidden !important;
-  border: 20px solid white;
+  padding: 0 20px 20px 20px solid white;
   .wrapper-xl {
     padding: 50px 0 50px 80px !important
       margin-right: -20px;
@@ -1042,6 +1043,66 @@ ul {
   .glyphicon-paperclip {
     color: $globo-purple !important;
   }
+}
+
+
+// Adiciona limite de display de 3 linhas ao ticket conversation
+.limit-line {
+  	overflow: hidden;
+   	text-overflow: ellipsis;
+   	display: -webkit-box;
+   	-webkit-line-clamp: 3; /* número de linhas*/
+   	-webkit-box-orient: vertical;
+}
+
+.modal-body {
+ 	padding: 0 15px 15px 15px !important;
+  margin-left: 20px;
+  overflow: auto !important;
+  color: #adadad;
+  //padding: 60px 20px !important;
+}
+
+@media (min-width: 768px){
+.modal-dialog {
+  width: 800px !important;
+  height: 600px;
+}
+}
+.modal_title {
+  color: #00BFFF;
+  font-family: 'globorounded_bd';
+  font-size: 32px;
+  text-transform: capitalize;
+  margin: 20px 0 0 45px; 
+}
+.modal .modal-content .modal-body {
+  max-height: 400px !important;
+}
+.modal-content {
+  width: 800px;
+}
+.text-modal {
+  margin: 0 30px 0 10px;
+  border: 2px solid $deep-sky-blue;
+  padding: 5px;
+}
+a#mymodal {
+  margin-left: 48px;
+}
+.comentario_analista {
+  margin: 0 20px 5px 10px;
+}
+.comentario_continuidade {
+  font-family: 'globorounded_bd';
+  color: #00BFFF;
+  margin: 5px 20px 0 10px;
+}
+.nome_analista{
+  color: #828282;
+  font-family: 'globorounded_bd';
+  font-size: 18px;
+  margin: 0 20px 5px 10px;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data>{"options": {
@@ -1267,14 +1328,14 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-19 14:34:49</sys_created_on>
         <sys_id>420f56b2dbf05410fa11cf24149619ab</sys_id>
-        <sys_mod_count>502</sys_mod_count>
+        <sys_mod_count>581</sys_mod_count>
         <sys_name>GService Ticket Conversations</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_420f56b2dbf05410fa11cf24149619ab</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-10-09 14:07:37</sys_updated_on>
+        <sys_updated_by>marta@organizecloudlabs.com</sys_updated_by>
+        <sys_updated_on>2021-01-06 17:45:47</sys_updated_on>
         <template><![CDATA[<div class="content_notifications dynamic_{{data.color_class}}" ng-if="data.canRead && !data.isNewRecord && !data.hide">
   <div class="mask_submitting" ng-show="c.submitting"/>
   <div class="content_conversation">
@@ -1296,7 +1357,31 @@ ul {
               </sn-avatar>
               <div class="history-name-size">{{e.name}}</div>
               <div>
-                <p ng-if="(e.element != 'attachment')" ng-bind-html="e.value"></p>
+                <p ng-if="(e.element != 'attachment')" ng-bind-html="e.value" class="limit-line"></p>
+                <a id="mymodal" class="seemore" data-toggle="modal" data-target="#myModal">
+  ${See full comment}
+</a>
+                <!-- modal starts -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <!--<div class="modal-header"> <-->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="ticket_title modal_title">{{data.number}} - Chamado pendente informação</div>
+                      	
+                      <div class="modal-body">
+                        <div class="comentario_analista">${Comentario_analista}</div>
+                        <div class="nome_analista">{{e.name}}</div>
+                         <p ng-if="(e.element != 'attachment')" ng-bind-html="e.value" class="text-modal"></p>
+                        <div class="comentario_continuidade">
+                          ${complete_informacao}
+                        </div>
+                        </div></div>
+                    </div>
+                  </div>
+                
+
+<!--modal ends -->
                 <div class="conversation_attach" ng-if="(e.element == 'attachment')">
                   <a ng-if="(e.attachment.state == 'available')" target="_blank" href="/sys_attachment.do?view=true&sys_id={{e.attachment.sys_id}}" title="${View}">
                     <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/>
@@ -1324,6 +1409,7 @@ ul {
             </li>
           </ul>
         </div>
+    
         <div class="message_user">
           <img src="{{data.comment_image}}">
           <span class="user_name">{{data.username}}</span>
