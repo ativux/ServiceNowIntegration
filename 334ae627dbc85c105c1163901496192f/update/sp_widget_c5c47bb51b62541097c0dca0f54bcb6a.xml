@@ -718,6 +718,8 @@ tbody {
   margin-bottom: 30px;
 }
 
+
+
 @media only screen and (max-width : 992px) {
   .sc-btn, .sc-btn-group {
     width: 100%;
@@ -963,14 +965,14 @@ tbody {
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-11 18:05:20</sys_created_on>
         <sys_id>c5c47bb51b62541097c0dca0f54bcb6a</sys_id>
-        <sys_mod_count>140</sys_mod_count>
+        <sys_mod_count>144</sys_mod_count>
         <sys_name>GService My Dashboard Approvals CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_c5c47bb51b62541097c0dca0f54bcb6a</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-12-18 14:01:30</sys_updated_on>
+        <sys_updated_by>organize.thiago</sys_updated_by>
+        <sys_updated_on>2021-01-13 19:43:20</sys_updated_on>
         <template><![CDATA[<div class="approval_content">
 
   <div class="title_category" ng-click="c.openContent()">
