@@ -649,7 +649,33 @@ nav {&#13;
       width: 90%;&#13;
     }&#13;
   }&#13;
-}</css>
+}&#13;
+&#13;
+&#13;
+@media only screen and (max-width: 400px) {&#13;
+  header {&#13;
+    height: 75px !important;&#13;
+  }&#13;
+&#13;
+  .sp-page-root header {&#13;
+		height: 85px !important;&#13;
+  }&#13;
+&#13;
+  .navbar-brand {&#13;
+    top: 0;&#13;
+    margin-top: 0;&#13;
+    padding: 0;&#13;
+    height: 70px;&#13;
+    img {&#13;
+      top: 30%; &#13;
+    }&#13;
+  }&#13;
+&#13;
+&#13;
+}&#13;
+&#13;
+&#13;
+</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -828,14 +854,14 @@ nav {&#13;
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 18:00:53</sys_created_on>
         <sys_id>578e7263db80dc10fa11cf24149619e7</sys_id>
-        <sys_mod_count>1031</sys_mod_count>
+        <sys_mod_count>1036</sys_mod_count>
         <sys_name>GService Stock Header</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_header_footer_578e7263db80dc10fa11cf24149619e7</sys_update_name>
-        <sys_updated_by>organize.anna</sys_updated_by>
-        <sys_updated_on>2020-12-10 14:02:43</sys_updated_on>
+        <sys_updated_by>organize.thiago</sys_updated_by>
+        <sys_updated_on>2021-01-14 18:24:10</sys_updated_on>
         <template><![CDATA[<div class="content">
 
   <!-- SIDE BAR -->
