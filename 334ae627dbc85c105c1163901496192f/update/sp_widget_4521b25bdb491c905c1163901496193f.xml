@@ -835,15 +835,15 @@ ul {
 }
 
 @media only screen and (max-width: 768px) {
+
   .content_conversation_all {
     .timeline:before {
-      left: 0;
+      left: 0 !important;
     }
-    
     .content_feedback_{
       left: 10px;
       right: 10px;
-      
+
       .content_feedback {
         width: 100%;
       }
@@ -986,14 +986,14 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-02 15:30:08</sys_created_on>
         <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
-        <sys_mod_count>515</sys_mod_count>
+        <sys_mod_count>538</sys_mod_count>
         <sys_name>GService Custom Conversation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-12-14 20:33:12</sys_updated_on>
+        <sys_updated_on>2021-01-15 12:47:11</sys_updated_on>
         <template><![CDATA[<div class="content_conversation_all dynamic_{{data.color_class}}">
   <div ng-if="data.hide_title == false" class="conversation_title">${GService Conversation Request History}</div>
   
@@ -1022,7 +1022,7 @@ ul {
             <div ng-style="{'border-color': getFieldColor(e.element)}">
               <div class="conversation_action {{data.color_class}}">{{e.name}}</div>
               <div class="conversation_description">{{e.field_label}}</div>
-              <div class="">
+              <div>
                 <div class="conversation_description" ng-if="(e.element != 'attachment')" ng-bind-html="e.display_value"><span ng-if="e.showAll">...</span></div>
                 <div ng-if="(e.element == 'attachment')">
                   <a ng-if="(e.attachment.state == 'available')" target="_blank" href="/sys_attachment.do?view=true&sys_id={{e.attachment.sys_id}}" title="${View}">
