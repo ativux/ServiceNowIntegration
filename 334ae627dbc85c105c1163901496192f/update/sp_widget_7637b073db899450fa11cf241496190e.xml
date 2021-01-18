@@ -6,6 +6,10 @@
 	var c = this;
 	c.isLoading = true;
 	c.index = 0;
+	c.showPhone = true;
+	c.updatePhone = false;
+	c.newPhone = "";
+	c.showFormat = false;
 
 	$scope.loadingIndicator = $rootScope.loadingIndicator;
 	//Show widget after loaded
@@ -197,6 +201,52 @@
 		});
 	}
 
+	c.changePhone = function(){
+		c.updatePhone = !c.updatePhone;
+		c.showPhone = !c.showPhone;
+		c.newPhone = "";
+		c.showFormat = false;
+	}
+
+	c.savePhone = function(){
+		if(c.verifyFormat()){
+			c.server.get({
+				action: "savePhone",
+				newPhone: c.newPhone
+			}).then(function(response) {
+				c.data.phone = response.data.phone;
+				c.changePhone();
+			});
+		}
+		else{
+			c.showFormat = true;
+		}
+
+
+	}
+
+	c.verifyFormat = function(){
+		var phone = c.newPhone.replace(/[^0-9]/g, '');
+		phone = phone.replaceAll(" ", "");
+		phone = phone.replaceAll(" ", "");
+		if(phone.length == 13){
+			c.newPhone = phone;
+			return true;
+		}
+		return false;
+	}
+
+	c.prepareFormat = function(){
+		var newPhone = c.newPhone.replace(/[^0-9]/g, '');
+		if(newPhone.length == 13){
+			newPhone = "+" + newPhone.slice(0,2) + " (" + newPhone.slice(2, 4) + ") " + newPhone.slice(4, 9) + "-" + newPhone.slice(9, 13);
+			c.newPhone = newPhone;
+		}
+		else{
+			c.showFormat = true;
+		}
+	}
+
 	$scope.$on('selectTabRequest', function(event, item_id, source) {
 		c.index = 0;
 		c.isLoading = true;
@@ -236,6 +286,31 @@
   padding-top: 30px;
   padding-bottom: 30px;
   margin-bottom: 15px;
+
+  // Phone number
+  .bi-pencil-fill {
+    margin-left: 5px;
+  }
+  .blue-globo{
+    color: $blue;
+  }
+  .input_phone {
+    display: flex;
+    margin: 5px 0;
+
+    .confirm_icon {
+      margin: 0 5px;
+
+      .bi-check-circle-fill { color: #0cc16d; }
+    }
+  }
+  .invalid_number{
+    color: #fe7f50;
+    font-style: italic;
+    margin-top: -5px;
+    font-size: 12px;
+  }
+
 
   .header-loader{
     padding: 50px;
@@ -507,7 +582,12 @@
   }
 
   .content_avatar{
-    display: none !important;
+    .avatar-image {
+      display: none !important;
+    }
+    .user-info-properties {
+      margin-bottom: 20px;
+    }
   }
 
   .tabs-align{
@@ -519,8 +599,7 @@
     }
   }
 
-}
-</css>
+}</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -580,7 +659,14 @@
 		data.name = grUserInfo.getValue("first_name");
 		data.title = grUserInfo.getValue("title");
 		data.email = grUserInfo.getValue("email");
-		data.phone = grUserInfo.getValue("mobile_phone");
+		var phone = grUserInfo.getValue("mobile_phone");
+		if(phone && phone.length == 13){
+			data.phone = "+" + phone.slice(0,2) + " " + phone.slice(2, 4) + " " + phone.slice(4, 9) + "-" + phone.slice(9, 13);
+		}
+		else{
+			data.phone = gs.getMessage("Sem número cadastrado");
+		}
+		
 		data.location = grUserInfo.getDisplayValue("location");
 
 		var tabs = gs.getProperty("gservice_dashboard_tabs").split("|");
@@ -648,6 +734,11 @@
 				data.approvalsCount = portalUtils.setApprovalsCount(localInput.approverQuery);
 				data.approvalsCount += portalUtils.setApprovalsCount(localInput.approverQueryCSC);
 				break;
+			case "savePhone":
+				portalUtils.savePhone(input.newPhone);
+				var newPhone = input.newPhone;
+				data.phone = "+" + newPhone.slice(0,2) + " " + newPhone.slice(2, 4) + " " + newPhone.slice(4, 9) + "-" + newPhone.slice(9, 13);
+				break;
 		}
 	}
 
@@ -680,16 +771,16 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>294</sys_mod_count>
+        <sys_mod_count>362</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
-        <sys_updated_by>organize.thiago</sys_updated_by>
-        <sys_updated_on>2021-01-13 19:37:47</sys_updated_on>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2021-01-18 20:21:16</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
-  
+
   <div class="content_avatar">
     <div class="avatar-image">
       <input ng-show="false" type="file" ng-file-select="attachFiles({files: $files})" 
@@ -708,11 +799,31 @@
       <div class="name-properties">{{data.name}}</div>
       <div class="job-properties">{{data.title}}</div>
       <div>{{data.email}}</div>
-      <div>{{data.phone}}</div>
+
+      <div class="blue-globo" ng-if="c.showPhone" ng-click="c.changePhone()">{{data.phone}} <span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+        </svg></span>
+      </div>
+      <div class="input_phone" ng-if="c.updatePhone">
+        <div><input ng-blur="c.prepareFormat()" ng-model="c.newPhone"></div>
+        <div class="confirm_icon" ng-click="c.savePhone()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+          </svg>
+        </div>
+        <div ng-click="c.changePhone()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+          </svg>
+        </div>
+      </div>
+      <div class="invalid_number" ng-if="c.showFormat">
+        ${Número inválido}
+      </div>
       <div class="location-properties">{{data.location}}</div>
     </div>
   </div>
-  
+
   <div class="tabs-align">
 
     <div class="categories" ng-repeat="tab in data.tabs" ng-if="tab.show">
