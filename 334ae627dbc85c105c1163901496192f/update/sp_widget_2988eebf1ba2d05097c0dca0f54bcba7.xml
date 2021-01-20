@@ -1831,14 +1831,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 17:40:05</sys_created_on>
         <sys_id>2988eebf1ba2d05097c0dca0f54bcba7</sys_id>
-        <sys_mod_count>238</sys_mod_count>
+        <sys_mod_count>239</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2988eebf1ba2d05097c0dca0f54bcba7</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2021-01-18 19:39:57</sys_updated_on>
+        <sys_updated_on>2021-01-20 16:01:28</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   
   <div class="title_category" ng-click="c.openContent()">
@@ -1985,7 +1985,7 @@ tbody {
 
               <tr>
                 <td ng-if="item.showDetails" class="content_conversation" colspan='5'>
-                  <div ng-if="item.table != 'sc_request' && item.table != 'u_question'" class="col-md-5 process_flow">
+                  <div ng-if="item.table != 'sc_request' && item.table != 'u_question' && item.table != 'x_gmeps_csc_liberacao_servico'" class="col-md-5 process_flow">
                     <div class="process_flow_title">${Etapas do Atendimento}</div>
                     <div class="line_flow"></div>
                     <div ng-repeat="status in item.processFlow" class="items_flow">
