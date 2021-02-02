@@ -38,7 +38,8 @@
 		c.data.category = [];
 		c.isLoading = true;
 		c.data.action = "showCategory";
-		c.data.category = category;
+		c.data.category = category.cat;
+		c.data.default_area = category.area;
 		c.server.update().then(function(response){
 			c.data.showWidget = true;
 			$timeout(function() {
@@ -670,7 +671,7 @@
       .content_center {
         width: 100% !important;
         margin: 0 20px;
-        
+
         .title{
           font-size: 35px;
         }
@@ -678,7 +679,7 @@
     }
     .content_body {
       margin: 0 20px !important;
-      
+
       .content-form-group {
         width: 100%;
         margin: 0 auto;
@@ -707,6 +708,15 @@
   .content {
     .content_body {
       margin-top: -0;
+    }
+  }
+}
+
+@media only screen and (max-width : 768px)  {
+  .modal_sc_catalog_kb {
+    .modal-body {
+      padding-right: 50px;
+      padding-bottom: 250px;
     }
   }
 }</css>
@@ -740,6 +750,7 @@
 	data.msgs.seeLess = gs.getMessage("See less").toLowerCase();
 	data.text_size = gs.getProperty("gservice_comment_size");
 	data.write_your_doubts = gs.getProperty("gservice_write_your_doubts");
+	var default_area = '';
 	// NEED TO CREATE A SEARCH SOURCE
 
 	data.typeahead_search_options = {"contextual_search_sources": gs.getProperty("gservice_kb_search_source"), "limit": 5,
@@ -748,6 +759,8 @@
 	data.phone_number = gs.getProperty("gservice_question_number");
 
 	if(localInput){
+		default_area = localInput.default_area;
+		
 		if(localInput.action == "showCategory"){
 			data.category = localInput.category;
 			var categoryID = data.category.sys_id;
@@ -835,7 +848,8 @@
 															 "category_bg_color": "color_category_csc_doubt",
 															 "category_submit_img": "GS_Solicitar_AR.png",
 															 "broadcast_name" : "openModalItem",
-															 "show_category_modal" : true};
+															 "show_category_modal" : true,
+															 "default_area": default_area};
 		
 		
 		data.gserviceCatalogItem = $sp.getWidget('gservice_custom_catalog_item_incident', sc_catalog_item_options);
@@ -847,14 +861,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-05 12:59:42</sys_created_on>
         <sys_id>2e4ca118db9ddc905c1163901496194f</sys_id>
-        <sys_mod_count>819</sys_mod_count>
+        <sys_mod_count>824</sys_mod_count>
         <sys_name>GService Categories Knowledge Content</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2e4ca118db9ddc905c1163901496194f</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-12-15 12:09:45</sys_updated_on>
+        <sys_updated_on>2021-02-02 18:05:02</sys_updated_on>
         <template><![CDATA[<div id="widgetKBcategory" class="content" ng-show="data.showWidget">
 
   <div class="header-loader" ng-show="c.isLoading">
