@@ -12,6 +12,10 @@
 	c.redirectPA2 = function(){
 		$window.open(c.data.instance_url2,'_blank');
 	}
+	
+	c.redirectPA3 = function(){
+		$window.open(c.data.instance_url3,'_blank');
+	}
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.message_panels {
@@ -96,9 +100,17 @@
         <script><![CDATA[(function() {
   /* populate the 'data' object */
   /* e.g., data.table = $sp.getValue('table'); */
-	data.instance_url = gs.getProperty('glide.servlet.uri') + "nav_to.do?uri=%2F$pa_dashboard.do%3Fsysparm_dashboard%3D3fd261a4db421c105c11639014961903";
+	data.instance_url = gs.getProperty('glide.servlet.uri') + "nav_to.do?uri=%2F$pa_dashboard.do%3Fsysparm_dashboard%"+gs.getProperty('x_gmeps_itsm_servi.ocl.gservice_panels.instance_url');
 	
-	data.instance_url2 = gs.getProperty('glide.servlet.uri') + "nav_to.do?uri=%2F$pa_dashboard.do%3Fsysparm_dashboard=a38d92b61be61c1097c0dca0f54bcb19";
+	
+	data.instance_url2 = gs.getProperty('glide.servlet.uri') + "nav_to.do?uri=%2F$pa_dashboard.do%3Fsysparm_dashboard="+gs.getProperty('x_gmeps_itsm_servi.ocl.gservice_panels.instance_url2');
+
+	data.instance_url3 = gs.getProperty('glide.servlet.uri') + "nav_to.do?uri=$pa_dashboard.do%3Fsysparm_dashboard%3De7aa34ac1bcd60102f9887f1f54bcbab%26sysparm_tab%3De17b7c201b01a0102f9887f1f54bcbef%26sysparm_cancelable%3Dtrue%26sysparm_editable%3Dundefined%26sysparm_active_panel%3Dfalse";
+	data.url_text3 = gs.getMessage("para acessar o painel Gerencial FJ&I");
+	
+	var cscManager = gs.getProperty("gservice_csc_manager_group");
+	data.cscManager = gs.getUser().isMemberOf(cscManager);
+	
 })();
 ]]></script>
         <servicenow>false</servicenow>
@@ -106,14 +118,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-07-30 17:29:39</sys_created_on>
         <sys_id>f1e8350a1b92101094962170f54bcb15</sys_id>
-        <sys_mod_count>21</sys_mod_count>
+        <sys_mod_count>26</sys_mod_count>
         <sys_name>GService Panels</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f1e8350a1b92101094962170f54bcb15</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-08-26 12:54:58</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2021-02-03 14:25:57</sys_updated_on>
         <template><![CDATA[<div class="card border-left-warning shadow h-100 py-2">
   <div class="card-body">
     <div class="row no-gutters align-items-center">
@@ -132,6 +144,18 @@
       <div class="col mr-2">
         <div class="message_panels">
         	<span class="click_here" ng-click="c.redirectPA2()">${Click here}</span> ${para acessar o painel de Incidentes e Problemas em Andamento}.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-if="data.cscManager" class="card border-left-warning shadow h-100 py-2">
+  <div class="card-body">
+    <div class="row no-gutters align-items-center">
+      <div class="col mr-2">
+        <div class="message_panels">
+        	<span class="click_here" ng-click="c.redirectPA3()">${Click here}</span> {{data.url_text3}}.
         </div>
       </div>
     </div>
