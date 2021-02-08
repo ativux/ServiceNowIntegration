@@ -204,7 +204,12 @@
 	c.changePhone = function(){
 		c.updatePhone = !c.updatePhone;
 		c.showPhone = !c.showPhone;
-		c.newPhone = "";
+		if(c.data.phone && c.data.phone != "Sem número cadastrado"){
+			c.data.newPhone = c.data.phone;
+		}
+		else
+			c.data.newPhone = "";
+		
 		c.showFormat = false;
 	}
 
@@ -212,7 +217,7 @@
 		if(c.verifyFormat()){
 			c.server.get({
 				action: "savePhone",
-				newPhone: c.newPhone
+				newPhone: c.data.newPhone
 			}).then(function(response) {
 				c.data.phone = response.data.phone;
 				c.changePhone();
@@ -226,21 +231,21 @@
 	}
 
 	c.verifyFormat = function(){
-		var phone = c.newPhone.replace(/[^0-9]/g, '');
-		phone = phone.replaceAll(" ", "");
-		phone = phone.replaceAll(" ", "");
+		var phone = c.data.newPhone.replace(/[^0-9]/g, '');
+		if(phone.includes(" "))
+			phone = phone.replaceAll(" ", "");
 		if(phone.length == 13){
-			c.newPhone = phone;
+			c.data.newPhone = phone;
 			return true;
 		}
 		return false;
 	}
 
 	c.prepareFormat = function(){
-		var newPhone = c.newPhone.replace(/[^0-9]/g, '');
+		var newPhone = c.data.newPhone.replace(/[^0-9]/g, '');
 		if(newPhone.length == 13){
 			newPhone = "+" + newPhone.slice(0,2) + " (" + newPhone.slice(2, 4) + ") " + newPhone.slice(4, 9) + "-" + newPhone.slice(9, 13);
-			c.newPhone = newPhone;
+			c.data.newPhone = newPhone;
 		}
 		else{
 			c.showFormat = true;
@@ -627,7 +632,7 @@
 	}
 
 	if(!localInput){
-
+		data.newPhone = "";
 		data.widgets = [];
 		var requestWidget = {show : true,
 												 widget1 : $sp.getWidget('gservice_my_dashboard_requests'),
@@ -661,12 +666,12 @@
 		data.email = grUserInfo.getValue("email");
 		var phone = grUserInfo.getValue("mobile_phone");
 		if(phone && phone.length == 13){
-			data.phone = "+" + phone.slice(0,2) + " " + phone.slice(2, 4) + " " + phone.slice(4, 9) + "-" + phone.slice(9, 13);
+			data.phone = "+" + phone.slice(0,2) + " (" + phone.slice(2, 4) + ") " + phone.slice(4, 9) + "-" + phone.slice(9, 13);
+			data.newPhone = data.phone;
 		}
 		else{
 			data.phone = gs.getMessage("Sem número cadastrado");
 		}
-		
 		data.location = grUserInfo.getDisplayValue("location");
 
 		var tabs = gs.getProperty("gservice_dashboard_tabs").split("|");
@@ -771,14 +776,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>364</sys_mod_count>
+        <sys_mod_count>384</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
         <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2021-02-04 18:53:14</sys_updated_on>
+        <sys_updated_on>2021-02-08 13:20:36</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
 
   <div class="content_avatar">
@@ -805,7 +810,7 @@
         </svg></span>
       </div>
       <div class="input_phone" ng-if="c.updatePhone">
-        <div><input ng-blur="c.prepareFormat()" ng-model="c.newPhone"></div>
+        <div><input ng-blur="c.prepareFormat()" ng-model="c.data.newPhone" placeholder="+55 (XX) XXXXX-XXXX"></div>
         <div class="confirm_icon" ng-click="c.savePhone()">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
@@ -818,7 +823,9 @@
         </div>
       </div>
       <div class="invalid_number" ng-if="c.showFormat">
-        ${Número inválido}
+        <div>${Número inválido}</div>
+        <div>${Formato: +55 (XX) XXXXX-XXXX}</div>
+
       </div>
       <div class="location-properties">{{data.location}}</div>
     </div>
