@@ -797,7 +797,8 @@ iframe {&#13;
   }&#13;
   .navbar-toggle,&#13;
   .banner-content, #widgetGserviceIconlink,&#13;
-  #widgetGserviceCustomOrderGuide {&#13;
+  #widgetGserviceCustomOrderGuide,&#13;
+  .sp-ac-container {&#13;
   	display: none !important;&#13;
   }&#13;
   &#13;
@@ -853,13 +854,13 @@ iframe {&#13;
         <sys_created_by>organize.matias</sys_created_by>
         <sys_created_on>2020-04-14 17:17:27</sys_created_on>
         <sys_id>22547ea3db0c5c105c1163901496196f</sys_id>
-        <sys_mod_count>342</sys_mod_count>
+        <sys_mod_count>343</sys_mod_count>
         <sys_name>OCL: ITSM Unification</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_theme_22547ea3db0c5c105c1163901496196f</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2021-01-15 18:05:00</sys_updated_on>
+        <sys_updated_on>2021-02-09 12:00:15</sys_updated_on>
     </sp_theme>
 </record_update>
