@@ -22,14 +22,34 @@
 		}
 	});
 
-	c.selectedCategory = function(secCatID, onlyCategory){
-		var category = c.changeSelectedCat(secCatID);
+	function tecnologyOrFinancials(title){
+		title = title.replace(/\s/g, '');
+		title = title.toLowerCase();
+		var tec = ["globoservice","produtosdigitais","equipamentoscorporativos",
+							 "aplicaçõescorporativas","infraestruturaesegurança"];
+		var fin = ["espaçoscorporativos","apoiocorporativo","apoioaproduçõeseeventos",
+							 "ambientalelicenciamento","financeiroesuprimentos","gestãodeserviçosfj&i"];
+		
+		if(tec.indexOf(title) != -1)
+			return "tecnologia";
+		else if(fin.indexOf(title) != -1)
+			return "financas";
+		else 
+			return "";
+
+	}
+
+	c.selectedCategory = function(secCatID, catTitle){
+
+		var category = {cat: c.changeSelectedCat(secCatID), area: tecnologyOrFinancials(catTitle)};
 		$rootScope.$broadcast("categoriesKBContent", category);
 	}
 
-	c.openCategory = function(category){
+	c.openCategory = function(category,title){
 		c.clearAll();
-		$rootScope.$broadcast("categoriesKBContent", category);
+		var cat = {cat: category, area: tecnologyOrFinancials(title)};
+
+		$rootScope.$broadcast("categoriesKBContent", cat);
 	}
 
 	c.seeAll = function(category){
@@ -240,6 +260,7 @@
 			categories[i].count = count;
 		}
 		data.categories = categories;
+		//console.log(data.categories);
 	}
 })();]]></script>
         <servicenow>false</servicenow>
@@ -247,38 +268,35 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-04 17:30:49</sys_created_on>
         <sys_id>1470e900db91dc905c1163901496191d</sys_id>
-        <sys_mod_count>441</sys_mod_count>
+        <sys_mod_count>452</sys_mod_count>
         <sys_name>GService Categories Knowledge</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_1470e900db91dc905c1163901496191d</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-12-14 12:38:26</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2021-02-11 17:38:22</sys_updated_on>
         <template><![CDATA[<div class="content_categories_knowledge" id="categoriesKnowledge" ng-class="c.categorySelected ? 'content_margin' : 'content_margin_bottom'">
   <div class="content">
 
     <div class="content_header">
       <img src="GS_Header_ESQ_DUVIDA.png"/>
-
       <div>
         <div class="title">${Tire Duvidas Category}</div>
         <p>${doubts_description}</p>
       </div>
-
       <img src="GS_Header_DIR_DUVIDA.png"/>
     </div>
 
     <div class="content_category_items">
       <div ng-repeat="category in data.categories" class="category_items">
-        <div class="categories {{category.catColor}}" ng-click="c.openCategory(category)">{{category.title}}</div>
-        <div class="category" ng-repeat="secCategory in category.secondCategories | filter:{hasArticles: true} | limitTo: category.resultLimit" ng-click="c.selectedCategory(secCategory.sys_id)" ng-class="secCategory.selected ? '{{category.catColor}} category_current' : ''">
+        <div class="categories {{category.catColor}}" ng-click="c.openCategory(category,category.title)">{{category.title}}</div>
+        <div class="category" ng-repeat="secCategory in category.secondCategories | filter:{hasArticles: true} | limitTo: category.resultLimit" ng-click="c.selectedCategory(secCategory.sys_id, category.title)" ng-class="secCategory.selected ? '{{category.catColor}} category_current' : ''">
           {{secCategory.title}}
         </div>        
         <a class="view_more" ng-if="category.count > category.resultLimit" ng-click="c.seeAll(category)">{{category.seeAllMsg}}</a>
       </div>
     </div>
-
   </div>
 </div>]]></template>
     </sp_widget>
