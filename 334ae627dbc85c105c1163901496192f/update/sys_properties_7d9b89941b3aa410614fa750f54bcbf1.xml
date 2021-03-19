@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Propriedade usada para referenciar a categoria da base de conhecimento Publicação - FAQ para funcionamento da pesquisa de artigos no  portal GloboService</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_gmeps_itsm_servi.knowledge.category_faq_.id</name>
+        <read_roles/>
+        <suffix>knowledge.category_faq_.id</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>vinicius.fernandes@nuvolax.com</sys_created_by>
+        <sys_created_on>2021-03-05 20:24:51</sys_created_on>
+        <sys_id>7d9b89941b3aa410614fa750f54bcbf1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_gmeps_itsm_servi.knowledge.category_faq_.id</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_properties_7d9b89941b3aa410614fa750f54bcbf1</sys_update_name>
+        <sys_updated_by>vinicius.fernandes@nuvolax.com</sys_updated_by>
+        <sys_updated_on>2021-03-05 20:24:51</sys_updated_on>
+        <type>string</type>
+        <value>915746b71b5a145094962170f54bcb01</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=7d9b89941b3aa410614fa750f54bcbf1"/>
+</record_update>
