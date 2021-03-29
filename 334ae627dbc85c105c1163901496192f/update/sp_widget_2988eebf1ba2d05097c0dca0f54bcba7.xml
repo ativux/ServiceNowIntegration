@@ -159,7 +159,7 @@
 			if(!c.requestComment){
 				c.needComment = true;
 				stop = true;
-			} else if(c.requestComment.length < 100){
+			} else if(c.requestComment.length < 20){
 				c.needComment = true;
 				stop = true;
 			} else{
@@ -368,7 +368,7 @@
         <controller_as>c</controller_as>
         <css>.content_request {
   background-color: white;
-  padding: 30px 90px;
+  padding: 30px 0;
   padding-bottom: 10px;
   margin-bottom: 15px;
 
@@ -378,6 +378,7 @@
     text-transform: uppercase;
     font-size: 22px;
     margin-bottom: 15px;
+    padding: 0 90px;
 
     .invert-arrow {
       transition: .8s ease-in-out;
@@ -402,6 +403,7 @@
     .content_body_req_csc {
       margin-top : -2000px;
       transition: .8s ease-in-out;
+      padding: 0 90px;
     }
   }
 }
@@ -1392,11 +1394,12 @@ tbody {
   }
   
   .content_request {
-    padding: 30px 20px;
+    .title_category, .content_body_req_csc {
+      padding: 0 20px !important;
+    }
   }
 
   table {
-
     thead {
       th { font-size: 12px !important; }
 
@@ -1425,10 +1428,8 @@ tbody {
     textarea{ width: 180px; }
   }
   .content_attach {
-
     .attach_left{
       width: 100% !important;
-
       img {
         width: 180px !important;
         height: 110px !important;
@@ -1457,7 +1458,6 @@ tbody {
       left: calc(50% - 11px);
     }
   }
-  
   .column_buttons {
     flex-direction: column;
     img { margin-bottom: 5px !important; }
@@ -1837,14 +1837,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 17:40:05</sys_created_on>
         <sys_id>2988eebf1ba2d05097c0dca0f54bcba7</sys_id>
-        <sys_mod_count>243</sys_mod_count>
+        <sys_mod_count>252</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2988eebf1ba2d05097c0dca0f54bcba7</sys_update_name>
-        <sys_updated_by>ricardo.l.junior@accenture.com</sys_updated_by>
-        <sys_updated_on>2021-02-08 14:19:34</sys_updated_on>
+        <sys_updated_by>marta@organizecloudlabs.com</sys_updated_by>
+        <sys_updated_on>2021-03-24 12:35:57</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   
   <div class="title_category" ng-click="c.openContent()">
