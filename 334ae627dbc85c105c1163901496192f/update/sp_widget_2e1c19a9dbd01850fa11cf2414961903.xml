@@ -61,154 +61,161 @@
 	};
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>input[type="radio"]{
-  display: none;
-}
-.wrapper-xl {
-  padding: 20px 50px !important;
-}
-
-.radio-properties {
-  position: relative;
-  display: inline-block;
-  padding-left: 30px;
-}
-
-.wrapper-sc-cat-item {
-  padding: 30px 50px !important;
-  padding-bottom: 10px !important;
-  min-height: 250px;
-}
-
-.new-radio {
-  height: 22px;
-  width: 22px;
-  border-radius: 50%;
-  border: 3px solid #737373;
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 6px;
-}
-input[type="radio"]:checked + .new-radio:after {
-  content: "";
-  height: 12px;
-  width: 12px;
-  background: $coral;
-  display: block;
-  position: absolute;
-  left: 8px;
-  top: 8px;
-  transform: translate(-50%, -50%) scale(1);
-  border-radius: 50%;
-  transition: 900ms ease-in-out 0s;
-}
-
-.categories {
-  margin-bottom: -10px;
-
-  label {
-    font-size: 18px;
-    font-family: $text-bold;
-    color: #737373;
-    padding: 5px 0px 6px 0px;
-  }
-
-  .label-current, input[type="radio"]:checked + label, label:hover{
-    color: $coral;
-  }
-
-}
-
-.title-properties {
-  padding-top: 0;
-  padding-bottom: 20px;
-  font-size: 40px;
-  font-family: $text-rough;
-  color: $coral;
-  line-height: 1;
-}
-.padding-left{
-  padding-left: 40px;
-}
-.cursor-properties {
-  cursor: pointer;
-}
-.button-position {
-  position: relative;
-  float: right;
-  color: $coral !important;
-}
-.button-color {
-  font-size: 18px;
-  font-family: $text-bold;
-  color: $coral !important;
-  margin-top: 25px;
-}
-
-.selected_error{
-  color: $coral;
-  font-weight: bold;
-  font-size: 100px;
-}
-
-.unselected_error{
-  color: #737373;
-  font-family: $text-rough;
-  font-size: 18px;
-}
-
-.modal {
-  .modal-content {
-    overflow: auto;
-
-    .modal-body {
-      max-height: calc(100vh - 50px);
-      overflow: auto;
-    }
-  }
-}
-
-.wrapper-custom {
-  padding: 20px 50px !important;
-}
-
-/** mobile **/
-@media screen and (max-width: 768px){
-  .title-properties, .font-thin.title {
-    font-size: 25px;
-  }
-  .categories label {
-    font-size: 16px;
-    line-height: 20px;
-    padding: 7px 0px 6px 0px;
-  }
-  .wrapper-sc-cat-item {
-    padding: 10px !important;
-    padding-right: 50px !important;
-    padding-bottom: 250px !important;
-  }
-  .content .line {
-    margin: 10px 0;
-  }
-  .row.content-attachments {
-    margin-top: 0;
-    margin-bottom: 70px;
-  }
-  .attachment_button {
-    position: relative;
-    display: block;
-    margin-top: 30px;
-  }
-  div:not(.input-group-btn) .btn:not(.btn-link):not(.lookup):not(.btn-clear) {
-    padding: 10px 0 !important;
-  }
-  .content-attachments {
-    margin-top: 15px;
-  }
-  .wrapper-custom {
-    padding: 10px !important;
-  }
+        <css>input[type="radio"]{&#13;
+  display: none;&#13;
+}&#13;
+.wrapper-xl {&#13;
+  padding: 20px 50px !important;&#13;
+}&#13;
+&#13;
+.radio-properties {&#13;
+  position: relative;&#13;
+  display: inline-block;&#13;
+  padding-left: 30px;&#13;
+}&#13;
+&#13;
+.wrapper-sc-cat-item {&#13;
+  padding: 30px 50px !important;&#13;
+  padding-bottom: 10px !important;&#13;
+  min-height: 250px;&#13;
+}&#13;
+&#13;
+.new-radio {&#13;
+  height: 22px;&#13;
+  width: 22px;&#13;
+  border-radius: 50%;&#13;
+  border: 3px solid #737373;&#13;
+  display: block;&#13;
+  position: absolute;&#13;
+  left: 0;&#13;
+  top: 6px;&#13;
+}&#13;
+input[type="radio"]:checked + .new-radio:after {&#13;
+  content: "";&#13;
+  height: 12px;&#13;
+  width: 12px;&#13;
+  background: $coral;&#13;
+  display: block;&#13;
+  position: absolute;&#13;
+  left: 8px;&#13;
+  top: 8px;&#13;
+  transform: translate(-50%, -50%) scale(1);&#13;
+  border-radius: 50%;&#13;
+  transition: 900ms ease-in-out 0s;&#13;
+}&#13;
+&#13;
+.categories {&#13;
+  margin-bottom: -10px;&#13;
+&#13;
+  label {&#13;
+    font-size: 18px;&#13;
+    font-family: $text-bold;&#13;
+    color: #737373;&#13;
+    padding: 5px 0px 6px 0px;&#13;
+  }&#13;
+&#13;
+  .label-current, input[type="radio"]:checked + label, label:hover{&#13;
+    color: $coral;&#13;
+  }&#13;
+  &#13;
+  .description {&#13;
+    margin: 0px 0px 22px 22px;&#13;
+    font-size: 16px;&#13;
+    color: $gray-light;&#13;
+  }&#13;
+&#13;
+}&#13;
+&#13;
+.title-properties {&#13;
+  padding-top: 0;&#13;
+  padding-bottom: 20px;&#13;
+  font-size: 40px;&#13;
+  font-family: $text-rough;&#13;
+  color: $coral;&#13;
+  line-height: 1;&#13;
+}&#13;
+.padding-left{&#13;
+  padding-left: 40px;&#13;
+}&#13;
+.cursor-properties {&#13;
+  cursor: pointer;&#13;
+}&#13;
+.button-position {&#13;
+  position: relative;&#13;
+  float: right;&#13;
+  color: $coral !important;&#13;
+}&#13;
+.button-color {&#13;
+  font-size: 18px;&#13;
+  font-family: $text-bold;&#13;
+  color: $coral !important;&#13;
+  margin-top: 25px;&#13;
+}&#13;
+&#13;
+.selected_error{&#13;
+  color: $coral;&#13;
+  font-weight: bold;&#13;
+  font-size: 100px;&#13;
+}&#13;
+&#13;
+.unselected_error{&#13;
+  color: #737373;&#13;
+  font-family: $text-rough;&#13;
+  font-size: 18px;&#13;
+}&#13;
+&#13;
+.modal {&#13;
+  .modal-content {&#13;
+    overflow: auto;&#13;
+&#13;
+    .modal-body {&#13;
+      max-height: calc(100vh - 50px);&#13;
+      /*max-height: 784px !important;*/&#13;
+      overflow: auto;]&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.wrapper-custom {&#13;
+  padding: 20px 50px !important;&#13;
+}&#13;
+&#13;
+/** mobile **/&#13;
+@media screen and (max-width: 768px){&#13;
+  .title-properties, .font-thin.title {&#13;
+    font-size: 25px;&#13;
+  }&#13;
+  .categories label {&#13;
+    font-size: 16px;&#13;
+    line-height: 20px;&#13;
+    padding: 7px 0px 6px 0px;&#13;
+  }&#13;
+  .wrapper-sc-cat-item {&#13;
+    padding: 10px !important;&#13;
+    padding-right: 50px !important;&#13;
+    padding-bottom: 250px !important;&#13;
+  }&#13;
+  .content .line {&#13;
+    margin: 10px 0;&#13;
+  }&#13;
+  .row.content-attachments {&#13;
+    margin-top: 0;&#13;
+    margin-bottom: 70px;&#13;
+  }&#13;
+  .attachment_button {&#13;
+    position: relative;&#13;
+    display: block;&#13;
+    margin-top: 30px;&#13;
+  }&#13;
+  div:not(.input-group-btn) .btn:not(.btn-link):not(.lookup):not(.btn-clear) {&#13;
+    padding: 10px 0 !important;&#13;
+  }&#13;
+  .content-attachments {&#13;
+    margin-top: 15px;&#13;
+  }&#13;
+  .wrapper-custom {&#13;
+    padding: 10px !important;&#13;
+  }&#13;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -260,6 +267,7 @@ input[type="radio"]:checked + .new-radio:after {
 							"sys_id" : gr.getUniqueValue(),
 							"name" : gr.getValue("name"),
 							"description" : gr.getValue("short_description"),
+							"descricao_portal" : gr.getValue("u_descricao_portal"),
 							"delivery_time" : gr.getDisplayValue("delivery_time"),
 							"selected" : false};
 		data.categories.push(categoryJSON);
@@ -273,14 +281,14 @@ input[type="radio"]:checked + .new-radio:after {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-20 15:58:36</sys_created_on>
         <sys_id>2e1c19a9dbd01850fa11cf2414961903</sys_id>
-        <sys_mod_count>704</sys_mod_count>
+        <sys_mod_count>724</sys_mod_count>
         <sys_name>GService Error Modal</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2e1c19a9dbd01850fa11cf2414961903</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2021-02-02 17:29:51</sys_updated_on>
+        <sys_updated_by>luis.reis@nuvolax.com</sys_updated_by>
+        <sys_updated_on>2021-03-25 17:43:09</sys_updated_on>
         <template><![CDATA[<div class="modal fade" style="z-index: 1041" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -305,6 +313,7 @@ input[type="radio"]:checked + .new-radio:after {
                 <span class="new-radio"></span>
               </label>
             </span>
+            <p class='description'>{{errorType.descricao_portal}}</p>
           </div>
           <p class="button-color cursor-properties"><a class="button-position" ng-click="c.nextModal()">${PRÓXIMO PASSO}</a></p>
         </div>
