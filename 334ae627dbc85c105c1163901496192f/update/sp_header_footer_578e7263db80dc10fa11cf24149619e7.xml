@@ -3,6 +3,11 @@
         <category>standard</category>
         <client_script><![CDATA[function ($rootScope, $scope, snRecordWatcher, spUtil, $location, $uibModal, cabrillo, $timeout, $window) {
 	var c = this;
+	
+	$scope.kb_categories = c.data.kb_categories;
+	
+	console.log("NOGS - KB Categories: " + JSON.stringify($scope.kb_categories));
+	
 	c.sendKBCategories = true;
 	c.categoryID = false;
 	c.secondCategory = false;
@@ -499,6 +504,13 @@ nav {&#13;
       background-color: $tec;&#13;
       margin: 28px 0;&#13;
     }&#13;
+    &#13;
+    .separate_doubts {&#13;
+      width: 100%;&#13;
+      height: 2px;&#13;
+      background-color: $doubts;&#13;
+      margin: 28px 0;&#13;
+    }&#13;
 &#13;
     &amp;:first-child {&#13;
       margin-left: 0;&#13;
@@ -849,18 +861,19 @@ nav {&#13;
 	}
 })()]]></script>
         <servicenow>false</servicenow>
+        <static>false</static>
         <sys_class_name>sp_header_footer</sys_class_name>
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 18:00:53</sys_created_on>
         <sys_id>578e7263db80dc10fa11cf24149619e7</sys_id>
-        <sys_mod_count>1037</sys_mod_count>
+        <sys_mod_count>1048</sys_mod_count>
         <sys_name>GService Stock Header</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_header_footer_578e7263db80dc10fa11cf24149619e7</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2021-02-08 17:07:28</sys_updated_on>
+        <sys_updated_by>lucas.nogueira_nuvolax@prestador.globo</sys_updated_by>
+        <sys_updated_on>2021-04-09 15:41:35</sys_updated_on>
         <template><![CDATA[<div class="content">
 
   <!-- SIDE BAR -->
@@ -922,7 +935,19 @@ nav {&#13;
   <!-- Tire Dúvidas -->
   <div class="dropdown-third-item" ng-class="c.data.menuSelected == 5 ? 'dropdown_open' : 'dropdown_close'" ng-show="c.data.menuSelected == 5">
     <div class="dropdown-column">
-      <div class="category-subcategory" ng-repeat="category in data.kb_categories">
+      <div class="category-subcategory" ng-repeat="category in data.kb_categories" ng-if="category.title == ' GLOBO SERVICE' || category.sc_catalog == 'TI'">
+        <div class="category category_kb" ng-click="c.showAllKB(category)">
+          {{category.title}}
+          <img class="arrow-size" src="GService_Seta_IS.png" ng-class="category.showAll ? '' : 'invert-arrow'"/>
+        </div>
+        <div ng-repeat="secCategory in category.secondCategories | filter:{hasArticles : true}" ng-if="category.showAll">
+          <div class="subcategory_kb" ng-click="c.toKnowledge(secCategory.sys_id)">{{secCategory.title}}</div>
+        </div>
+      </div>
+
+      <div class="separate_doubts"></div>
+
+      <div class="category-subcategory" ng-repeat="category in data.kb_categories" ng-if="category.sc_catalog == 'CSC'">
         <div class="category category_kb" ng-click="c.showAllKB(category)">
           {{category.title}}
           <img class="arrow-size" src="GService_Seta_IS.png" ng-class="category.showAll ? '' : 'invert-arrow'"/>
