@@ -834,6 +834,12 @@ ul {
   }
 }
 
+.modal_article{
+  .modal-body {
+    overflow: auto !important;
+  }
+}
+
 @media only screen and (max-width: 768px) {
 
   .content_conversation_all {
@@ -995,14 +1001,14 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-02 15:30:08</sys_created_on>
         <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
-        <sys_mod_count>542</sys_mod_count>
+        <sys_mod_count>549</sys_mod_count>
         <sys_name>GService Custom Conversation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2021-02-02 19:05:24</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2021-02-19 16:25:58</sys_updated_on>
         <template><![CDATA[<div class="content_conversation_all dynamic_{{data.color_class}}">
   <div ng-if="data.hide_title == false" class="conversation_title">${GService Conversation Request History}</div>
   
