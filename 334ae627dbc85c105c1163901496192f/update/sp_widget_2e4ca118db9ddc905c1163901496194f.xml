@@ -59,25 +59,6 @@
 			c.data.hasResults = true;
 		c.data.searchMade = true;
 	});
-	
-	$scope.$on("getSearchKB_FAQ", function(event, result, searchSourceID, category_id){//broadcast para pesquisa de artigos FAQ
-
-		//console.log('[KB Content Widget] getSearchKB_FAQ', result.results[0].search);
-		console.log('[KB Content Widget] getSearchKB_FAQ', result);
-		
-		
-		c.server.get({
-			action : "openMostArticles_FAQ",
-			searchedTerm : result
-		}).then(function(response){
-			
-			console.log('[KB Content Widget] RESPONSE SEARCHED', response.data.mostArticles);
-			c.data.mostArticles = response.data.mostArticles;
-			prepareMostArticles();
-		});
-		
-		
-	});
 
 	$scope.$on("clearAllBeforeSearch", function(event){
 		c.data.searchMade = false;
@@ -169,48 +150,20 @@
 	}
 
 	c.showArticles = function(kbCategoryID, selectedCat){
-		//alert('KB category: '+kbCategoryID+', selectedCat: '+kbCategoryID);
-		//console.log('KB category: '+kbCategoryID+', selectedCat: '+kbCategoryID);
-		//console.log('KB Categories:',c.data.kb_categories);
-		
-		//var showall=false;
-		
 		for(i in c.data.kb_categories){
 			if(c.data.kb_categories[i].sys_id == kbCategoryID){
-				console.log('IF - ACHOU O KB: ',c.data.kb_categories[i].sys_id);
-				
-				if(c.data.kb_categories[i].selected == true){// esconder os artigos da categoria selecionada e mostras todas as outras categorias
-					
-					//for para mostrar as demais categorias
-					for(h in c.data.kb_categories){
-						c.data.kb_categories[h].show = true;
-						c.data.kb_categories[h].selected = false;
-					}
-				}else{// mostrar os artigos da categoria selecionada
-					c.data.kb_categories[i].show = true;
-					c.data.kb_categories[i].selected = true;
-					c.data.articles = c.data.kb_categories[i].articles;
-
-					//for para esconder as demais categorias
-					for(k in c.data.kb_categories){
-						if(c.data.kb_categories[k].sys_id != kbCategoryID){
-							c.data.kb_categories[k].show = false;
-							c.data.kb_categories[k].selected = false;
-						}
-					}
-					
-				}
-				
-				
+				c.data.articles = c.data.kb_categories[i].articles;
 			}
-			
+			else
+				c.data.kb_categories[i].show = false
+			if(selectedCat){
+				c.data.kb_categories[i].show = true;
+			}
+			c.data.kb_categories[i].selected = !c.data.kb_categories[i].selected;
 		}
 		c.data.showArticles = !c.data.showArticles;
 		c.data.showArticleWidget = false;
 		prepareArticles();
-		
-		//console.log('AFTER - KB Categories:',c.data.kb_categories);
-		
 	}
 
 	c.openArticle = function(articleID){
@@ -760,7 +713,7 @@
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
-        <description>.</description>
+        <description/>
         <docs/>
         <field_list/>
         <has_preview>false</has_preview>
@@ -838,18 +791,6 @@
 			data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful_v2");
 
 		}
-		
-		if(localInput.action == "openMostArticles_FAQ"){
-			var searchedTerm = localInput.searchedTerm;
-			if(searchedTerm){//faq
-				getMostArticlesFAQ(gs.getProperty("x_gmeps_itsm_servi.knowledge.category_faq_.id"),searchedTerm);
-			}else{
-				data.mostArticles = [];
-			}
-		}
-		
-		
-		
 	}
 
 
@@ -863,18 +804,6 @@
 			mostArticles.seeAllMsg = data.msgs.seeLess;	
 		data.mostArticles = mostArticles;
 	}
-	
-	function getMostArticlesFAQ(categoryID,searchedTerm){
-		var mostArticles = {};
-		mostArticles.articles = portalUtils.getArticlesFAQ(categoryID,searchedTerm);
-		mostArticles.resultLimit = 5;
-		if(mostArticles.articles.length > mostArticles.resultLimit)
-			mostArticles.seeAllMsg = data.msgs.seeAll;
-		else
-			mostArticles.seeAllMsg = data.msgs.seeLess;	
-		data.mostArticles = mostArticles;
-	}
-	
 
 	function createCategoryWidgets(){
 		var article_widget_options = {"broadcast_name": "openArticle"};
@@ -923,14 +852,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-05 12:59:42</sys_created_on>
         <sys_id>2e4ca118db9ddc905c1163901496194f</sys_id>
-        <sys_mod_count>860</sys_mod_count>
+        <sys_mod_count>823</sys_mod_count>
         <sys_name>GService Categories Knowledge Content</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2e4ca118db9ddc905c1163901496194f</sys_update_name>
-        <sys_updated_by>vinicius.fernandes@nuvolax.com</sys_updated_by>
-        <sys_updated_on>2021-03-18 22:13:51</sys_updated_on>
+        <sys_updated_by>organize.anzolin</sys_updated_by>
+        <sys_updated_on>2021-01-29 16:44:17</sys_updated_on>
         <template><![CDATA[<div id="widgetKBcategory" class="content" ng-show="data.showWidget">
 
   <div class="header-loader" ng-show="c.isLoading">
@@ -978,7 +907,7 @@
       <div class="content_services" ng-if="data.kb_categories.length > 0">
         <div class="section_title">Sobre Serviços</div>
         <div>
-          <div ng-if="kbCategory.show" ng-repeat="kbCategory in data.kb_categories" >
+          <div ng-if="kbCategory.show" ng-repeat="kbCategory in data.kb_categories">
             <div ng-if="kbCategory.articles.length > 0" class="service_title">
               <div ng-click="c.showArticles(kbCategory.sys_id, kbCategory.selected)">
                 <div class="{{data.color.categoryColor}}" ng-show="!data.showArticleWidget">
