@@ -903,6 +903,8 @@ ul {
 	data.articleWidget = $sp.getWidget("gservice_knowledge_article_content", data.article_widget_options);
 	data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful_v2");
 
+	data.motoboy_spot_widget = true;
+	
 	if(!localInput){
 		data.clear = true;
 		data.mergedEntries = [];
@@ -978,6 +980,7 @@ ul {
 		}
 
 		data.ticketInfo = portalUtils.getTicketInfo(data.table, data.sys_id);
+		
 	}
 	else{
 		switch(localInput.action){
@@ -995,20 +998,34 @@ ul {
 				break;
 		}
 	}
+	
+	
+	// DETASK0001878 remove attachment for MotoboySpot Integration
+	var grItem = portalUtils.getRecord(options.table, options.sys_id);
+	if(options.table == "x_gmeps_csc_transportes_frota"){
+		var service = grItem.getValue("service") + '';
+		var noAttachmentServices = gs.getProperty("no_need_attachment_services");
+		if(noAttachmentServices.indexOf(service) > -1){
+			var site = grItem.variable_pool.site.getDisplayValue();
+			if(site == "BSB" || site == "REC") data.motoboy_spot_widget = true;
+			else data.motoboy_spot_widget = false;
+		}
+	}
+	
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-02 15:30:08</sys_created_on>
         <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
-        <sys_mod_count>549</sys_mod_count>
+        <sys_mod_count>565</sys_mod_count>
         <sys_name>GService Custom Conversation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2021-02-19 16:25:58</sys_updated_on>
+        <sys_updated_by>organize.vinicius</sys_updated_by>
+        <sys_updated_on>2021-05-07 19:40:53</sys_updated_on>
         <template><![CDATA[<div class="content_conversation_all dynamic_{{data.color_class}}">
   <div ng-if="data.hide_title == false" class="conversation_title">${GService Conversation Request History}</div>
   
@@ -1038,7 +1055,9 @@ ul {
               <div class="conversation_action {{data.color_class}}">{{e.name}}</div>
               <div class="conversation_description">{{e.field_label}}</div>
               <div>
-                <div class="conversation_description" ng-if="(e.element != 'attachment')" ng-bind-html="e.display_value"><span ng-if="e.showAll">...</span></div>
+                <div class="conversation_description" ng-if="(e.element != '
+                                                             ment')" ng-bind-html="e.display_value"><span ng-if="e.showAll">...</span></div>
+                
                 <div ng-if="(e.element == 'attachment')">
                   <a ng-if="(e.attachment.state == 'available')" target="_blank" href="/sys_attachment.do?view=true&sys_id={{e.attachment.sys_id}}" title="${View}">
                     <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/>
@@ -1059,8 +1078,8 @@ ul {
                       <a href="javascript:void(0)" ng-click="scanAttachment(e.attachment)" title="{{dataViewMsg}}"><strong>{{e.attachment.file_name}}</strong></a><br/>
                       {{e.attachment.size}}
                     </div>
-                  </div>
-                </div>
+                  </div> 
+                </div> 
               </div>
               <div ng-if="e.showTranslation" class="translation-container">
                 <div ng-if="e.isTranslationInProgress">
@@ -1087,7 +1106,7 @@ ul {
         </ul>
       </div>
 
-      <div class="conversation_form" ng-if="!data.hide_new_comments">
+      <div class="conversation_form" ng-if="!data.hide_new_comments && data.motoboy_spot_widget">
         <form ng-if="data.item_status != 'resolved'" ng-submit="c.postEntry(data.journalEntry)" id="sand">
           <div class="conversation_user">
             <img src="{{data.comment_image}}"/>
@@ -1106,9 +1125,9 @@ ul {
     </div>
   </div>
 
-  <div ng-if="!data.hide_new_comments">
+  <div ng-if="!data.hide_new_comments && data.motoboy_spot_widget">
     <widget id="gservice_ticket_attachments"></widget>  
-  </div>
+  </div> 
 
   <div class="modal fade modal_article" id="moreDetails{{data.sys_id}}" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
