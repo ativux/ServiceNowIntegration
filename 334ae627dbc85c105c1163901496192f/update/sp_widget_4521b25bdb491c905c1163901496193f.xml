@@ -904,7 +904,7 @@ ul {
 	data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful_v2");
 
 	data.motoboy_spot_widget = true;
-	
+	data.exception = true;
 	if(!localInput){
 		data.clear = true;
 		data.mergedEntries = [];
@@ -914,9 +914,9 @@ ul {
 		data.statusEntries = [];
 		data.sys_id = options.sys_id;
 		data.table = options.table;
-		
+
 		var grItem = portalUtils.getRecord(data.table, data.sys_id);
-		
+
 		var created_on = grItem.getDisplayValue('sys_created_on');
 		created_on = created_on.split(' ');
 		data.createdDate = created_on[0].replace(/-/g, "/");
@@ -954,7 +954,7 @@ ul {
 		data.gservice_ticket_attachment = $sp.getWidget('gservice_ticket_attachments');
 		var grVariables = new GlideRecord(data.table);
 		grVariables.get(data.sys_id);
-		
+
 		switch(data.table){
 			case "sc_req_item":
 			case "u_question":
@@ -980,7 +980,7 @@ ul {
 		}
 
 		data.ticketInfo = portalUtils.getTicketInfo(data.table, data.sys_id);
-		
+
 	}
 	else{
 		switch(localInput.action){
@@ -998,10 +998,17 @@ ul {
 				break;
 		}
 	}
-	
-	
+
+
 	// DETASK0001878 remove attachment for MotoboySpot Integration
 	var grItem = portalUtils.getRecord(options.table, options.sys_id);
+	if(options.table == 'x_gmeps_csc_seguranca') {
+		var service2 = grItem.getValue("service") + '';
+		var noAttachmentServices2 = gs.getProperty("x_gmeps_itsm_servi.except_seguranca_item");
+		if(service2 === noAttachmentServices2)
+		console.log(service2)
+		data.exception = false;
+	}
 	if(options.table == "x_gmeps_csc_transportes_frota"){
 		var service = grItem.getValue("service") + '';
 		var noAttachmentServices = gs.getProperty("no_need_attachment_services");
@@ -1014,21 +1021,22 @@ ul {
 			else data.motoboy_spot_widget = false;
 		}
 	}
-	
+	console.log(service)
+
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-02 15:30:08</sys_created_on>
         <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
-        <sys_mod_count>607</sys_mod_count>
+        <sys_mod_count>622</sys_mod_count>
         <sys_name>GService Custom Conversation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
         <sys_updated_by>victor.b.hugo</sys_updated_by>
-        <sys_updated_on>2021-05-14 17:33:11</sys_updated_on>
+        <sys_updated_on>2021-05-18 20:37:54</sys_updated_on>
         <template><![CDATA[<div class="content_conversation_all dynamic_{{data.color_class}}">
   <div ng-if="data.hide_title == false" class="conversation_title">${GService Conversation Request History}</div>
   
@@ -1109,7 +1117,7 @@ ul {
         </ul>
       </div>
 
-      <div class="conversation_form" ng-if="!data.hide_new_comments && data.motoboy_spot_widget">
+      <div class="conversation_form" ng-if="!data.hide_new_comments && data.motoboy_spot_widget && data.exception">
         <form ng-if="data.item_status != 'resolved'" ng-submit="c.postEntry(data.journalEntry)" id="sand">
           <div class="conversation_user">
             <img src="{{data.comment_image}}"/>
@@ -1128,7 +1136,7 @@ ul {
     </div>
   </div>
 
-  <div ng-if="!data.hide_new_comments && data.motoboy_spot_widget">
+  <div ng-if="!data.hide_new_comments && data.motoboy_spot_widget && data.exception">
     <widget id="gservice_ticket_attachments"></widget>  
   </div> 
 
