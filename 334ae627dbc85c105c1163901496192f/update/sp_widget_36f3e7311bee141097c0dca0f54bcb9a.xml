@@ -9,6 +9,7 @@
 	c.contentOpened = false;
 
 	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
+		
 		var changes = event.data.changes;
 		var stateChanged = false;
 		for(i in changes){
@@ -753,13 +754,16 @@ tbody {
 		for(i in columns){
 			data.columns[i].name = gs.getMessage(columns[i].name).toUpperCase();
 		}
+		
 		data.approverQuery = "state=requested^source_table=sc_req_item^ORsource_table=change_request^approver.sys_idIN" + gs.getUserID();
 
 		var delegateUsers = [];
 		var grDelegate = new GlideRecord("sys_user_delegate");
 		grDelegate.addQuery("delegate", gs.getUserID());
 		grDelegate.addQuery("approvals", true);
+		grDelegate.addEncodedQuery("starts<=javascript:gs.beginningOfToday()^ends>=javascript:gs.endOfToday()");
 		grDelegate.query();
+		
 		if(grDelegate.next()){
 			do{
 				delegateUsers.push(grDelegate.getValue("user"));
@@ -858,14 +862,14 @@ tbody {
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-11 16:52:01</sys_created_on>
         <sys_id>36f3e7311bee141097c0dca0f54bcb9a</sys_id>
-        <sys_mod_count>49</sys_mod_count>
+        <sys_mod_count>59</sys_mod_count>
         <sys_name>GService My Dashboard Approvals v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_36f3e7311bee141097c0dca0f54bcb9a</sys_update_name>
-        <sys_updated_by>organize.thiago</sys_updated_by>
-        <sys_updated_on>2021-01-13 19:41:00</sys_updated_on>
+        <sys_updated_by>ricardo.ljunior_accenture@prestador.glob</sys_updated_by>
+        <sys_updated_on>2021-05-25 13:04:46</sys_updated_on>
         <template><![CDATA[<div class="approval_content">
 
   <div class="title_category" ng-click="c.openContent()">
