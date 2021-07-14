@@ -803,12 +803,12 @@ tbody {&#13;
 
 	else{
 		switch(localInput.action){
-			/*case "getTicketConversationWidget":
+			case "getTicketConversationWidget":
 				var gservice_ticket_conversation_options = {table : localInput.item.table,
 																										sys_id : localInput.item.sys_id,
 																										item_status : localInput.item.colorClass};
 				data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
-				break;*/
+				break;
 
 			case "orderBy":
 				var order = localInput.order;
@@ -881,14 +881,14 @@ tbody {&#13;
         <sys_created_by>organize.sarah</sys_created_by>
         <sys_created_on>2021-06-23 21:29:15</sys_created_on>
         <sys_id>f0d937631b7cf09445840fe1f54bcb6f</sys_id>
-        <sys_mod_count>35</sys_mod_count>
+        <sys_mod_count>41</sys_mod_count>
         <sys_name>GService My Dashboard Approvals IRM</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f0d937631b7cf09445840fe1f54bcb6f</sys_update_name>
         <sys_updated_by>organize.sarah</sys_updated_by>
-        <sys_updated_on>2021-06-25 17:12:35</sys_updated_on>
+        <sys_updated_on>2021-06-29 19:22:01</sys_updated_on>
         <template><![CDATA[<div ng-if="data.visible" class="approval_content">
 
   <div class="title_category irm_title" ng-click="c.openContent()">
@@ -901,7 +901,7 @@ tbody {&#13;
     <div class="content_body_app_irm"
          style="margin-top : {{data.margin_top}}px;">
 
-      <div class="page_description">${My Dashboard Approvals 1}<br>${My Dashboard Approvals 2}</div>
+      <div class="page_description">${IRM Dasboard Portal 1}<br>${IRM Dasboard Portal 2}</div>
       <div>
         <div ng-if="data.approvals.length == 0" class="without_notification">
           ${Oba! Não existem aprovações pendentes.}
@@ -941,7 +941,7 @@ tbody {&#13;
               <td>
                 <div class="row approval_column_opened">
                   <div>
-                    <span>{{item.opened}}</span>
+                    <span>{{item.status}}</span>
                   </div>
                 </div>
               </td>
@@ -958,14 +958,17 @@ tbody {&#13;
               </td>
             </tr>
             <tr>
-              <!-- Requests End -->
-              <td ng-if="item.showDetails" class="content_conversation" colspan='8'>
-                <div class="mobile_fields">
-                  <div><b>Clique</b><a href="{{item.url}}"><b> aqui </b></a><b> para obter mais acesso à aprovação</b></div>
+              <td ng-if="item.showDetails" class="content_conversation" colspan='6'>
+
+                <!-- Process Flow -->
+                <div class="col-md-3">
+                  <div ng-repeat="status in item.processFlow">
+                    <div ng-class="status.selected ? 'text-uppercase' : text-lowercase">{{status.name}}</div>
+                  </div>
                 </div>
 
                 <!-- Ticket Conversation -->
-                <div class="col-md-7">
+                <div class="col-md-9">
                   <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
                 </div>
               </td>

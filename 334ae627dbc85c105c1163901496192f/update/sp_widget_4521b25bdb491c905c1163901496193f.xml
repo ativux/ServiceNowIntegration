@@ -886,6 +886,7 @@ ul {
 	/* e.g., data.table = $sp.getValue('table'); */
 	data.hide = false;
 	var localInput = input;
+
 	var portalUtils = new global.OCLPortalUtils();
 	//Used to get the current user sys_id
 	data.gservice_ticket_attachment = [];
@@ -914,6 +915,14 @@ ul {
 		data.statusEntries = [];
 		data.sys_id = options.sys_id;
 		data.table = options.table;
+		
+		console.log("SB TABLE " + data.table);
+
+		if(data.table != 'sn_compliance_policy'){
+			data.hist = gs.getMessage('GService Conversation Request History');
+		}else{
+			data.hist = gs.getMessage('GService Conversation Request History IRM');
+		}
 
 		var grItem = portalUtils.getRecord(data.table, data.sys_id);
 
@@ -986,7 +995,13 @@ ul {
 		switch(localInput.action){
 			case "insertComment":
 				var grTask = portalUtils.getRecord(localInput.table, localInput.sys_id);
-				grTask.comments = localInput.comment;
+
+				if(localInput.table != 'sn_compliance_policy'){
+					grTask.comments = localInput.comment;
+				}else{
+					grTask.u_comments = localInput.comment;
+				}
+
 				grTask.update();
 				break;
 			case "newComment":
@@ -1006,7 +1021,7 @@ ul {
 		var service2 = grItem.getValue("service") + '';
 		var noAttachmentServices2 = gs.getProperty("x_gmeps_itsm_servi.except_seguranca_item");
 		if(service2 === noAttachmentServices2)
-		console.log(service2)
+			console.log(service2)
 		data.exception = false;
 	}
 	if(options.table == "x_gmeps_csc_transportes_frota"){
@@ -1029,16 +1044,16 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-02 15:30:08</sys_created_on>
         <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
-        <sys_mod_count>622</sys_mod_count>
+        <sys_mod_count>630</sys_mod_count>
         <sys_name>GService Custom Conversation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
-        <sys_updated_by>victor.b.hugo</sys_updated_by>
-        <sys_updated_on>2021-05-18 20:37:54</sys_updated_on>
+        <sys_updated_by>organize.sarah</sys_updated_by>
+        <sys_updated_on>2021-06-29 19:29:45</sys_updated_on>
         <template><![CDATA[<div class="content_conversation_all dynamic_{{data.color_class}}">
-  <div ng-if="data.hide_title == false" class="conversation_title">${GService Conversation Request History}</div>
+  <div ng-if="data.hide_title == false" class="conversation_title">{{data.hist}}</div>
   
   <div>
     <div class="panel-body">
