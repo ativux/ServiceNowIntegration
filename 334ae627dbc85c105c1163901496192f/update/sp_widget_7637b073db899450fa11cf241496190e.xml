@@ -787,14 +787,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>413</sys_mod_count>
+        <sys_mod_count>418</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
         <sys_updated_by>organize.sarah</sys_updated_by>
-        <sys_updated_on>2021-06-25 23:33:43</sys_updated_on>
+        <sys_updated_on>2021-06-28 15:43:24</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
 
   <div class="content_avatar">
@@ -870,7 +870,7 @@
 
       </div>
 
-      <a class="tab_title" ng-if="tab.name == 'risk' && data.verifyAccessirm" href="/$pa_dashboard.do?sysparm_dashboard=9181a996673003003b63624ad585ef9a" target="_blank">
+      <a class="tab_title" ng-if="tab.name == 'risk' && data.verifyAccessirm" href="/$pa_dashboard?sysparm_dashboard=9181a996673003003b63624ad585ef9a" target="_self">
         <div class="tab_items" ng-class="{'tab_current': tab.selected}" >
 
           <div class="tab_images">
