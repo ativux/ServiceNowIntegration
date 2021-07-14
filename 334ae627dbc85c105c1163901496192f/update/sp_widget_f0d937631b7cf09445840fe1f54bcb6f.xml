@@ -1,0 +1,1009 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope, $timeout, spUtil, $location) {
+	var c = this;
+	c.approvalComment = '';
+	c.approvalItem = false;
+	c.needComment = false;
+	c.contentOpened = false;
+
+	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
+		var changes = event.data.changes;
+		var stateChanged = false;
+		for(i in changes){
+			if(changes[i] == "state"){
+				stateChanged = true;
+			}
+		}
+		if(event.data.record.state.value == "requested" && stateChanged){
+			c.server.get({
+				action: "getNewApproval",
+				approvalID: event.data.sys_id,
+				approvals: c.data.approvals
+			}).then(function(response) {
+				if(response.data.approvals.length > 0){
+					c.data.approvals = response.data.approvals;
+					c.data.showEmptyMessage = false;
+				} else {
+					c.data.showEmptyMessage = true;
+				}
+			});
+		} else if(event.data.record.state.value == "rejected" ||
+							event.data.record.state.value == "approved" && stateChanged){
+			c.server.get({
+				action: "deleteApprovals",
+				approvalID: event.data.sys_id,
+				approvals: c.data.approvals
+			}).then(function(response) {
+				if(response.data.approvals.length > 0){
+					c.data.approvals = response.data.approvals;
+					c.data.showEmptyMessage = false;
+				} else {
+					c.data.showEmptyMessage = true;
+				}
+			});
+		}
+	});
+
+	c.showDetails = function(item){
+		var showDetails = false;
+		for(i in c.data.approvals){
+			if(c.data.approvals[i].sys_id == item.sys_id){
+				c.data.approvals[i].showDetails = !c.data.approvals[i].showDetails;
+				showDetails = c.data.approvals[i].showDetails;
+			}
+			else{
+				c.data.approvals[i].showDetails = false;
+			}
+		}
+		if(showDetails){
+			c.server.get({
+				action: 'getTicketConversationWidget',
+				item: item
+			}).then(function(response) {
+				c.data.ticketConversationWidget = response.data.ticketConversationWidget;
+			});
+		}
+
+	}
+
+	c.orderBy = function(order, items){
+		c.server.get({
+			action : "orderBy",
+			items : items,
+			order : order,
+			allColumns : c.data.columns
+		}).then(function(response) {
+			c.data.columns = response.data.columns;
+			c.data.approvals = response.data.approvals;
+		});
+	}
+	
+			c.statusColor = function(status){
+		var statusClass = '';
+		if (status == 2){
+			statusClass = 'status_flow_empty';
+		} else if (status == true) {
+			statusClass = 'status_flow_active';
+		} else if (!status) {
+			statusClass = 'status_flow_completed';
+		}
+		return statusClass;
+	}
+	
+	c.submitApproval = function(item, approval){
+		c.approvalItem = item;
+		if(approval){
+			c.server.get({
+				action : "submitApproval",
+				item : item,
+				approvals : c.data.approvals,
+				approval : approval
+			}).then(function(response) {
+				c.data.approvals = response.data.approvals;
+			});
+		}
+		else{
+			$('#approvalCommentModalIRM').modal("show");
+		}
+	}
+
+	c.submitCommentApproval = function(){
+		if(c.approvalComment){
+			c.needComment = false;
+			c.server.get({
+				action : "submitApproval",
+				item : c.approvalItem,
+				approvals : c.data.approvals,
+				comment : c.approvalComment,
+				approval : false
+			}).then(function(response) {
+				$('#approvalCommentModalIRM').modal("hide");
+				c.data.approvals = response.data.approvals;
+				c.approvalComment = '';
+			});
+		}
+		else{
+			c.needComment = true;
+		}
+	}
+	
+	$('#approvalCommentModalIRM').on('hide.bs.modal', function () {
+		c.needComment = "";
+	});
+	
+	$scope.$on('hideDetails', function (event) {
+		for(var i in c.data.approvals){
+			c.data.approvals[i].showDetails = false;
+		}
+	});
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>/* PAGE 3 - APPROVALS */&#13;
+.approval_content {&#13;
+  background-color: white;&#13;
+  padding: 30px 0;&#13;
+  padding-bottom: 10px;&#13;
+  margin-bottom: 15px;&#13;
+&#13;
+  .title_category {&#13;
+    transition: .2s ease-in-out;&#13;
+    color: $deep-sky-blue;&#13;
+    text-transform: uppercase;&#13;
+    font-size: 22px;&#13;
+    margin-bottom: 15px;&#13;
+    padding: 0 90px;&#13;
+&#13;
+    .invert-arrow {&#13;
+      transition: .8s ease-in-out;&#13;
+      transform: rotate(180deg);&#13;
+    }&#13;
+    img {&#13;
+      transition: .8s ease-in-out;&#13;
+      margin-top: -4px;&#13;
+      margin-left: 8px;&#13;
+      width: 16px;&#13;
+    }&#13;
+&#13;
+    &amp;:hover {&#13;
+      transition: .2s ease-in-out;&#13;
+      transform: translate(0, -5px);&#13;
+    }&#13;
+  }&#13;
+  .items_length {&#13;
+    color: white;&#13;
+    text-align: center;&#13;
+    background-color: $coral;&#13;
+    height: 20px;&#13;
+    width: 20px;&#13;
+    border-radius: 50%;&#13;
+    font-family: $text-bolder;&#13;
+    font-size: 14px;&#13;
+    display: inline-block;&#13;
+    margin-left: 10px;&#13;
+  }&#13;
+&#13;
+  .content_body_mask {&#13;
+    overflow: hidden;&#13;
+    padding: 0 90px;&#13;
+&#13;
+    .content_body_app {&#13;
+      margin-top : -2000px;&#13;
+      transition: .8s ease-in-out;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .approval_column_title{&#13;
+    h4 {&#13;
+      margin: 4px 0 0 0 !important;&#13;
+    }&#13;
+    .approval_number{&#13;
+      font-size: 16px;&#13;
+    }&#13;
+    .approval_title{&#13;
+      font-family: $text-bold;&#13;
+    }&#13;
+    .approval_more-details{&#13;
+      font-size: 12px;&#13;
+      text-decoration: underline;&#13;
+      color: $slate-gray;&#13;
+      cursor: pointer;&#13;
+    }&#13;
+  }&#13;
+  .approval_column_requester{&#13;
+    padding-left: 10px !important;&#13;
+&#13;
+    .info-size{&#13;
+      height: 20px;&#13;
+      width: 20px;&#13;
+      margin-left: 10px;&#13;
+      margin-top: -5px;&#13;
+      cursor: pointer;&#13;
+    }&#13;
+  }&#13;
+  .approval_column_opened{&#13;
+    padding-left: 20px !important;&#13;
+&#13;
+  }&#13;
+  .approval_column_forecast{&#13;
+    padding-left: 12px !important;&#13;
+&#13;
+  }&#13;
+  .approvals-buttons{&#13;
+    display: flex;&#13;
+&#13;
+    .submit-button{&#13;
+      margin-left: 20px;&#13;
+    }&#13;
+    .cancel-button{&#13;
+      margin-left: 15%;;&#13;
+    }&#13;
+  }&#13;
+  .modal-body{&#13;
+    overflow: hidden !important;&#13;
+    border: 20px solid white;&#13;
+    padding-left: 50px !important;&#13;
+    .wrapper-xl {&#13;
+      padding: 50px 0 0 50px !important;&#13;
+      margin-right: -20px;&#13;
+    }&#13;
+    button{&#13;
+      text-align: right;&#13;
+      font-size: 42px;&#13;
+    }&#13;
+    .justify-text{&#13;
+      color: $deep-sky-blue;&#13;
+      font-size: 36px;&#13;
+      padding-bottom: 15px;&#13;
+      margin-bottom: 5px;&#13;
+    }&#13;
+    .no-text-answer{&#13;
+      font-size: 16px;&#13;
+      color: lightcoral;&#13;
+      padding: 2px;&#13;
+    }&#13;
+    .form-group{&#13;
+      display: flex;&#13;
+      flex-direction: column;&#13;
+      align-items: flex-end;&#13;
+&#13;
+      textarea{&#13;
+        margin-top: 5px;&#13;
+        margin-right: 10% !important;&#13;
+        resize: none;&#13;
+        overflow: hidden;&#13;
+        height: 140px;&#13;
+        width: 90%;&#13;
+        overflow-wrap: break-word;&#13;
+        border: solid 3px $deep-sky-blue;&#13;
+      }&#13;
+    }&#13;
+    .resize-img{&#13;
+      height: 70px;&#13;
+      margin-top: 25px;&#13;
+      margin-left: -110%;&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.cart-mobile {&#13;
+  border: 0;&#13;
+  box-shadow: none;&#13;
+&#13;
+  .cart-header {&#13;
+    display: flex;&#13;
+    align-items: center;&#13;
+    justify-content: space-between;&#13;
+    margin-bottom: 20px;&#13;
+&#13;
+    a {&#13;
+      text-align: right;&#13;
+      display: block !important;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .cart-item-mobile-info {&#13;
+    display: flex;&#13;
+    flex-direction: row;&#13;
+    align-items: center;&#13;
+    justify-content: space-between;&#13;
+    padding: 5px 10px 20px 10px;&#13;
+&#13;
+    .item-info {&#13;
+      display: flex;&#13;
+      flex-direction: column;&#13;
+    }&#13;
+    .item-image {&#13;
+      margin: 0;&#13;
+    }&#13;
+&#13;
+    a {&#13;
+      float: none;&#13;
+      text-align: center;&#13;
+    }&#13;
+&#13;
+    select {&#13;
+      margin-top: 10px;&#13;
+      padding: 0px 5px;&#13;
+      text-align-last: center;&#13;
+    }&#13;
+  }  &#13;
+}&#13;
+&#13;
+td {&#13;
+  vertical-align: middle !important;&#13;
+}&#13;
+&#13;
+.a-disabled {&#13;
+  cursor: default;&#13;
+  color: $btn-link-disabled-color;&#13;
+}&#13;
+&#13;
+.media-body {&#13;
+  .btn-link {&#13;
+    padding-left: 0;&#13;
+    padding-right: 0;&#13;
+    color: $primary;&#13;
+&#13;
+    &amp;:hover {&#13;
+      color: darken($primary, 10%);&#13;
+    }&#13;
+&#13;
+    &amp;:focus {&#13;
+      color: darken($primary, 10%);&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.btn-remove {&#13;
+  font-size: 18px !important;&#13;
+}&#13;
+&#13;
+.action-btn {&#13;
+  display: block;&#13;
+  width: 100%;&#13;
+  margin-top: 5px;&#13;
+&#13;
+  &amp;.btn-link {&#13;
+    color: $primary;&#13;
+  }&#13;
+}&#13;
+&#13;
+.list-group {&#13;
+  max-height: 250px;&#13;
+  overflow-y: auto;&#13;
+}&#13;
+&#13;
+.list-group-item.ng-enter {&#13;
+  transition: all 1s;&#13;
+  -webkit-transition: all 1s;&#13;
+  background-color: #c0dcfa;&#13;
+}&#13;
+&#13;
+.list-group-item.ng-enter-active {&#13;
+  background-color: #fff;&#13;
+}&#13;
+&#13;
+.empty-cart {&#13;
+  font-style: italic;&#13;
+  text-align: center;&#13;
+  margin-top: 10px;&#13;
+  margin-bottom: 7px;&#13;
+}&#13;
+&#13;
+.view-carts-link {&#13;
+  text-align: center;&#13;
+  display: block;&#13;
+}&#13;
+&#13;
+.order-details-container {&#13;
+  display: flex;&#13;
+  flex-direction: row;&#13;
+  flex-wrap: wrap;&#13;
+  margin: 5px 10px 10px 10px;&#13;
+&#13;
+  .order-details {&#13;
+    padding: 5px;&#13;
+&#13;
+    textarea {&#13;
+      resize: none;&#13;
+      flex-basis: 100%;&#13;
+      flex-shrink: 1;&#13;
+      width: 100%;&#13;
+      box-sizing: border-box;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .requested-for-details {&#13;
+    flex: 1 0 auto;&#13;
+    max-width: 100%;&#13;
+  }&#13;
+&#13;
+  .special-instructions-details {&#13;
+    textarea {&#13;
+      height: calc(100% - 25px);&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.item-image {&#13;
+  margin-left: auto;&#13;
+  margin-right: auto;&#13;
+  margin-top: 10px;&#13;
+}&#13;
+&#13;
+.empty-state-content {&#13;
+  margin-top: 30px;&#13;
+&#13;
+  &amp;.small-cart {&#13;
+    margin-top: 0px;&#13;
+    padding: 10px 20px;&#13;
+  }&#13;
+&#13;
+  .fa-shopping-cart {&#13;
+    color: $gray-light;&#13;
+    font-size: 80px;&#13;
+    display: block;&#13;
+    text-align: center;&#13;
+&#13;
+    &amp;.small-cart {&#13;
+      font-size: 40px;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .h3 {&#13;
+    text-align: center;&#13;
+    margin-bottom: 5px;&#13;
+  }&#13;
+  .h4 {&#13;
+    text-align: center;&#13;
+    margin-bottom: 5px;&#13;
+  }&#13;
+  p {&#13;
+    text-align: center;&#13;
+    margin-bottom: 20px;&#13;
+  }&#13;
+&#13;
+  .btn {&#13;
+    display: block;&#13;
+    margin-left: auto;&#13;
+    margin-right: auto;&#13;
+    width: 300px;&#13;
+    max-width: 100%;&#13;
+    margin-bottom: 35px;&#13;
+  }&#13;
+}&#13;
+&#13;
+.large-checkout {&#13;
+  display: inline-block;&#13;
+  float: none !important;&#13;
+  width: 100%;&#13;
+  margin-top: 15px;&#13;
+}&#13;
+&#13;
+.item-row:hover .btn-clear {&#13;
+  background-color: #f5f5f5;&#13;
+}&#13;
+&#13;
+.sc-btn {&#13;
+  margin-bottom: 10px;&#13;
+}&#13;
+.sc-btn-group {&#13;
+  clear: right;&#13;
+}&#13;
+&#13;
+.sc-remove-btn {&#13;
+  &amp;:hover {&#13;
+    background-color: $danger;&#13;
+    color: #fff;&#13;
+    border-color: darken($danger, 10%);&#13;
+  }&#13;
+}&#13;
+&#13;
+.btn-group-justified &gt; .btn-group {&#13;
+  padding: 0 5px;&#13;
+&#13;
+  .btn {&#13;
+    border-radius: 4px !important;&#13;
+    white-space: nowrap;&#13;
+    overflow: hidden;&#13;
+    text-overflow: ellipsis;&#13;
+  }&#13;
+}&#13;
+&#13;
+.cart-table {&#13;
+  th {&#13;
+    position: sticky;&#13;
+    -webkit-position: sticky;&#13;
+    top: -1px;&#13;
+    z-index: 10;&#13;
+    background-color: $panel-bg;&#13;
+    box-shadow: 0px 1px 0px $panel-inner-border;&#13;
+  }&#13;
+}&#13;
+&#13;
+@media only screen and (max-width : 992px) {&#13;
+  .sc-btn, .sc-btn-group {&#13;
+    width: 100%;&#13;
+  }&#13;
+  .item-image {&#13;
+    max-width: 70px;&#13;
+  }&#13;
+}&#13;
+&#13;
+//All pages&#13;
+.without_notification {&#13;
+  padding: 30px 0;&#13;
+  font-size: 30px;&#13;
+}&#13;
+&#13;
+/* Custom Checkout */&#13;
+.panel {&#13;
+  padding: 30px 100px;&#13;
+  box-shadow: 0 0 0 0;&#13;
+  -webkit-box-shadow: 0 0 0 0;&#13;
+}&#13;
+&#13;
+/* Table */&#13;
+.h3 {&#13;
+  font-size: 28px;&#13;
+  color: $dodger-blue;&#13;
+  margin-top: 20px !important;&#13;
+  margin-bottom: 30px;&#13;
+}&#13;
+.b-b {&#13;
+  border-bottom: 2px solid $slate-gray;&#13;
+}&#13;
+.b-t {&#13;
+  border: 0;&#13;
+}&#13;
+thead {&#13;
+  color: $slate-gray;&#13;
+  font-family: $text-bolder;&#13;
+  font-size: 13px;&#13;
+}&#13;
+.table &gt; thead &gt; tr &gt; th {&#13;
+  border: 0;&#13;
+  vertical-align: middle;&#13;
+}&#13;
+.table-hover &gt; tbody &gt; tr:hover {&#13;
+  background-color: white;&#13;
+}&#13;
+tbody {&#13;
+  img {&#13;
+    width: 50px;&#13;
+    height: 50px;&#13;
+  }&#13;
+&#13;
+  td:nth-child(1) {&#13;
+    width: 15%;&#13;
+    padding: 20px;&#13;
+  }&#13;
+&#13;
+  td:nth-child(2) {&#13;
+    width: 15%;&#13;
+    padding: 20px;&#13;
+  }&#13;
+&#13;
+  td:nth-child(3) {&#13;
+    width: 15%;&#13;
+  }&#13;
+&#13;
+  td:nth-child(4) {&#13;
+    width: 5%;&#13;
+    padding: 15px;&#13;
+  }&#13;
+&#13;
+  td:nth-child(5) {&#13;
+    width: 20%;&#13;
+    padding: 20px;&#13;
+&#13;
+    .request_button {&#13;
+      margin-right: 50px;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  td:nth-child(6) {&#13;
+    width: 20%;&#13;
+    padding: 20px;&#13;
+  }&#13;
+&#13;
+}&#13;
+&#13;
+&#13;
+&#13;
+.footer_checkout {&#13;
+&#13;
+  .continue_shopping {&#13;
+    color: $slate-gray;&#13;
+    font-size: 10px;&#13;
+    font-weight: bold;&#13;
+    text-decoration: underline;&#13;
+    text-transform: uppercase;&#13;
+    padding: 20px 0 !important;&#13;
+  }&#13;
+&#13;
+  .submit_button {&#13;
+    .submit_button_content {&#13;
+      display: flex;&#13;
+      align-items: center;&#13;
+&#13;
+      .submit_img {&#13;
+        width: 50px;&#13;
+        height: 50px;&#13;
+        margin-right: 5px;&#13;
+      }&#13;
+      .submit_title {&#13;
+        font-size: 20px;&#13;
+        font-weight: bold;&#13;
+        line-height: 1;&#13;
+        color: $dodger-blue;&#13;
+        width: 90px;&#13;
+      }&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.empty_content {&#13;
+  background-color: white;&#13;
+  padding: 30px 100px;&#13;
+  padding-bottom: 330px;&#13;
+  font-size: 30px;&#13;
+&#13;
+  .empty_title {&#13;
+    color: $dodger-blue;&#13;
+    margin-bottom: 30px;&#13;
+  }&#13;
+}&#13;
+&#13;
+.column_content {&#13;
+  img {&#13;
+    height: 10px;&#13;
+    position: relative;&#13;
+    top: -2px;&#13;
+    right: -2px;&#13;
+  }&#13;
+  .invert-arrow{&#13;
+    transform: rotateX(180deg);&#13;
+  }&#13;
+}&#13;
+&#13;
+.content_conversation {&#13;
+  width: 100%;&#13;
+}&#13;
+&#13;
+.buttons {&#13;
+  img { transition: .4s ease-in-out; }&#13;
+  &amp;:hover {&#13;
+    img {&#13;
+      transition: .2s ease-in-out;&#13;
+      transform: scale(1.1);&#13;
+      -webkit-transform: scale(1.1);&#13;
+      -ms-transform: scale(1.1);&#13;
+      -moz-transform: scale(1.1);&#13;
+      -o-transform: scale(1.1);&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.modal {&#13;
+  .justify-text {&#13;
+    font-family: $text-bold;&#13;
+    margin-bottom: 5px;&#13;
+  }&#13;
+  .resize-img {&#13;
+    width: 60px;&#13;
+    margin-top: 15px;&#13;
+    float: right;&#13;
+  }&#13;
+}&#13;
+&#13;
+&#13;
+&#13;
+@media only screen and (max-width: 768px) {&#13;
+  .approval_content{&#13;
+    .title_category {&#13;
+      padding: 0 20px;&#13;
+    }&#13;
+    .content_body_mask {&#13;
+      padding: 0 20px;&#13;
+    }&#13;
+  }&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_my_dashboard_approvals_irm</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+	var c = controller;
+  
+	c.openContent = function() {
+		c.contentOpened = !c.contentOpened;
+		var contentBody = element.find(".content_body_app_irm");
+		if(!c.contentOpened) {
+			contentBody.css("margin-top", "-" + (contentBody.outerHeight() + 100) + 'px');
+		}
+		else {
+			contentBody.css("margin-top", 0);
+		}
+	}
+
+	c.makeTransition = function(position, newLeft){
+		var slide = element.find('#slide' + position);
+		slide.css('left', newLeft + '%');
+	}
+
+	c.change_z_index = function(position, z_index){
+		var slide = element.find('#slide' + position);
+		slide.css('z-index', z_index);
+	}
+	
+}]]></link>
+        <name>GService My Dashboard Approvals IRM</name>
+        <option_schema>[{"hint":"Selects the columns to show on the table","name":"table","section":"Presentation","label":"Table","type":"string"},{"name":"table_template","section":"Behavior","label":"Table Template","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+	var portalUtils = new global.OCLPortalUtilsCSC();
+	var complianceUtils = new sn_compliance.ComplianceUtils();
+	data.showEmptyMessage = false;
+	data.user_id = gs.getUserID();
+	data.columns = [];
+
+	if(!localInput){
+		var columns_property = gs.getProperty("gservice_approvals_irm_columns");
+
+		var columns = JSON.parse(columns_property).columns;
+
+		data.columns = columns;
+		for(i in columns){
+			data.columns[i].name = gs.getMessage(columns[i].name).toUpperCase();
+		}
+		data.approverQuery = "state=requested^source_table=sn_compliance_policy^approver.sys_idIN" + gs.getUserID();
+
+		var delegateUsers = [];
+		var grDelegate = new GlideRecord("sys_user_delegate");
+		grDelegate.addQuery("delegate", gs.getUserID());
+		grDelegate.addQuery("approvals", true);
+		grDelegate.query();
+		if(grDelegate.next()){
+			do{
+				delegateUsers.push(grDelegate.getValue("user"));
+			} while(grDelegate.next());
+		}
+
+		if(delegateUsers.length > 0){
+			data.approverQuery += "," + delegateUsers.join(",");
+		}
+
+		data.approvals = complianceUtils.getApprovals(data.user_id);
+		data.approvalsCount = data.approvals.length;
+		if(data.approvals.length == 0){
+			data.showEmptyMessage = true;
+		}
+		data.margin_top = -300 * data.approvals.length;
+		if(data.margin_top == 0){
+			data.margin_top = -300;
+		}
+	}
+
+	else{
+		switch(localInput.action){
+			case "getTicketConversationWidget":
+				var gservice_ticket_conversation_options = {table : localInput.item.table,
+																										sys_id : localInput.item.sys_id,
+																										item_status : localInput.item.colorClass,
+																										send_image : "GService_SS_TV.png",
+																										comment_image : "GS_Resposta_Roxo.png",
+																										color_class : "color_category2",
+																										bd_color_class : "bdcolor_category2"};
+				data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
+				break;
+
+			case "orderBy":
+				var order = localInput.order;
+				data.columns = localInput.allColumns;
+				var direction;
+				for(i in data.columns){
+					if(order == data.columns[i].order){
+						data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
+						direction = data.columns[i].direction;
+					}
+					else{
+						data.columns[i].direction = false;
+					}
+				}
+				var items = localInput.items;
+				var itemsSort = portalUtils.sortList(items, localInput.order, direction);
+				data.approvals = itemsSort;
+				data.approvalsCount = data.approvals.length;
+				break;
+			case "submitApproval":
+				data.approvals = localInput.approvals;
+				var comment = localInput.comment ? localInput.comment : '';
+				var newApprovalID = complianceUtils.submitApproval(localInput.item, localInput.approval, comment);
+
+				var newApprovals = [];
+				for(i in data.approvals){
+					if(data.approvals[i].approvalID != newApprovalID){
+						newApprovals.push(data.approvals[i]);
+					}
+				}
+				data.approvals = newApprovals;
+				data.approvalsCount = data.approvals.length;
+				break;
+
+			case "getNewApproval":
+				data.approvals = [];
+
+				if(localInput.approvals){
+					data.approvals = localInput.approvals;
+				}
+
+				data.approvals = complianceUtils.getApprovals(data.user_id);
+				//data.approvals.push(portalUtils.getNewApproval(localInput.approvalID));
+				data.approvalsCount = data.approvals.length;
+				break;
+			case "deleteApprovals":
+				var newObject = [];
+				if(localInput.approvals){
+					data.approvals = localInput.approvals;
+				}
+				if(data.approvals.length > 0){
+					for(var i in data.approvals){
+						if(data.approvals[i].approvalID != localInput.approvalID){
+							newObject.push(data.approvals[i]);
+						}
+					}
+					data.approvals = newObject;
+					data.approvalsCount = data.approvals.length;
+				}
+				break;
+		}
+
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.sarah</sys_created_by>
+        <sys_created_on>2021-06-23 21:29:15</sys_created_on>
+        <sys_id>f0d937631b7cf09445840fe1f54bcb6f</sys_id>
+        <sys_mod_count>22</sys_mod_count>
+        <sys_name>GService My Dashboard Approvals IRM</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_f0d937631b7cf09445840fe1f54bcb6f</sys_update_name>
+        <sys_updated_by>organize.sarah</sys_updated_by>
+        <sys_updated_on>2021-06-24 00:47:08</sys_updated_on>
+        <template><![CDATA[<div class="approval_content">
+
+  <div class="title_category irm_title" ng-click="c.openContent()">
+    ${Aprovações de Políticas e Conformidade}
+    <span><img src="GService_Seta_PD_Transparent.png" ng-class="c.contentOpened ? '' : 'invert-arrow'"/></span>
+    <span class="items_length">{{data.approvals.length}}</span>
+  </div>
+
+  <div class="content_body_mask">
+    <div class="content_body_app_irm"
+         style="margin-top : {{data.margin_top}}px;">
+
+      <div class="page_description">${My Dashboard Approvals 1}<br>${My Dashboard Approvals 2}</div>
+      <div>
+        <div ng-if="data.approvals.length == 0" class="without_notification">
+          ${Oba! Não existem aprovações pendentes.}
+        </div>
+        <table ng-if="data.approvals.length > 0" class="table table-hover b-t table-condensed cart-table">
+          <thead>
+            <tr>
+              <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
+                <div ng-click="c.orderBy(column.order, data.approvals)">
+                  {{column.name}}
+                  <span ng-if="column.order">
+                    <span ng-if="!column.direction"></span>
+                    <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
+                  </span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody ng-repeat="item in data.approvals">
+            <tr class="item-row b-b">
+              <td data-th="Product">
+                <div class="approval_column_title">
+                  <div>
+                    <h4 class="approval_number">#{{item.number}}</h4>
+                    <h4 class="approval_title">{{item.title}}</h4>
+                    <a class="approval_more-details" ng-click="c.showDetails(item)">${GService Details}</a>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="approval_column_requester">
+                  <div>
+                    <span class="service_title">{{item.requester}}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="row approval_column_opened">
+                  <div>
+                    <span>{{item.opened}}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="approvals-buttons">
+                  <!-- Button to request a service again -->
+                  <a class="submit-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, true)" aria-label="" title="">
+                    <img src="GS_Confirmar_TEC.png"/>
+                  </a>
+                  <a class="cancel-button buttons" style="cursor: pointer;" ng-click="c.submitApproval(item, false)" aria-label="" title="">
+                    <img src="GService_DASH_Cancelar.png"/>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <!-- Requests End -->
+              <td ng-if="item.showDetails" class="content_conversation" colspan='8'>
+                <div class="mobile_fields">
+                  <div><b>${AR}:</b> {{item.ar}}</div>
+                  <div><b>${Atividade}:</b> {{item.ar}}</div>
+                </div>
+
+                <!-- Process Flow -->
+              <div ng-if="item.table != 'sc_request' && item.table != 'u_question' && item.table != 'x_gmeps_csc_liberacao_servico'" class="col-md-5 process_flow">
+                    <div class="process_flow_title">${Etapas do Atendimento}</div>
+                    <div class="line_flow"></div>
+                    <div ng-repeat="status in item.processFlow" class="items_flow">
+                      <div class="status_flow" ng-class="c.statusColor(status.selected)">{{$index+1}}</div>
+                      <div ng-class="{'status_active' : status.selected == true}">{{status.name}}</div>
+                    </div>
+                  </div>
+
+                <!-- Ticket Conversation -->
+                <div class="col-md-7">
+                  <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal fade modal_approvals_csc" style="z-index: 1041" id="approvalCommentModalIRM" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="panel-body wrapper-xl wrapper-sc-cat-item">
+          <div class="modal_title">${Justifique sua resposta negativa:}</div>
+          <span class="notification-align no-text-answer" ng-if="c.needComment"> ${Favor preencher o comentário antes de submeter} </span>
+          <div class="form-group">
+            <textarea class="form-control" ng-model="c.approvalComment" maxlength="255"></textarea>
+            <div class="btn_submit" ng-click="c.submitCommentApproval()">
+              <img src="GService_SS_Digital.png"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<now-message key="Done" value="${Done}"/>]]></template>
+    </sp_widget>
+</record_update>

@@ -23,6 +23,10 @@
 	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQueryCSC, function(event) {
 		c.refreshDashboardcount();
 	});
+	
+	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQueryIRM, function(event) {
+		c.refreshDashboardcount();
+	});
 
 	c.refreshDashboardcount = function(){
 		c.server.get({
@@ -327,9 +331,11 @@
 	data.cscQuery = "u_status_portal=3^requester.sys_idIN"+ gs.getUserID() +"^ORopened_by.sys_idIN"+ gs.getUserID();
 	data.equipment_query = gs.getProperty("gservice_equipments_query");
 	data.approverQueryCSC = "state=requested^source_tableSTARTSWITHx_gmeps_csc^approver.sys_idIN" + gs.getUserID();
+	data.approverQueryIRM = "state=requested^source_table=sn_compliance_policy^approver.sys_idIN" + gs.getUserID();
 	data.dashboardCount = portalUtils.setDashboardCount(data.taskQuery, data.incidentQuery, data.approverQuery);
 	data.dashboardCount += portalUtilsCSC.setNotificationsCount(data.cscQuery);
 	data.dashboardCount += portalUtils.setApprovalsCount(data.approverQueryCSC);
+	data.dashboardCount += portalUtils.setApprovalsCount(data.approverQueryIRM);
 	data.equipmentsCount = equipmentsUtils.getEquipmentsCount();
 	if(localInput){
 		if(localInput.action == "dashboardCount"){
@@ -383,14 +389,14 @@
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 17:35:57</sys_created_on>
         <sys_id>8ed872e7db40dc10fa11cf241496192b</sys_id>
-        <sys_mod_count>295</sys_mod_count>
+        <sys_mod_count>296</sys_mod_count>
         <sys_name>GService Header Menu</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_8ed872e7db40dc10fa11cf241496192b</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2020-10-22 14:47:16</sys_updated_on>
+        <sys_updated_by>organize.sarah</sys_updated_by>
+        <sys_updated_on>2021-06-23 23:42:29</sys_updated_on>
         <template><![CDATA[<ul class="nav navbar-nav" role="menubar">
   
   <div class="header-loader" ng-class="{'invisible': !loadingIndicator}">

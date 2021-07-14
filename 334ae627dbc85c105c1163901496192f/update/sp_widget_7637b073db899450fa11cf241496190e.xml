@@ -635,19 +635,20 @@
 		data.newPhone = "";
 		data.widgets = [];
 		var requestWidget = {show : true,
-												 widget1 : $sp.getWidget('gservice_my_dashboard_requests'),
-												 widget2 : $sp.getWidget('gservice_my_dashboard_requests_csc')};
+							 widget1 : $sp.getWidget('gservice_my_dashboard_requests'),
+							 widget2 : $sp.getWidget('gservice_my_dashboard_requests_csc')};
 		var notificationWidget = {show : false,
-															widget1 : $sp.getWidget('gservice_my_dashboard_notification_v2'),
-															widget2 : $sp.getWidget("gservice_my_dashboard_notification_csc")};
+								  widget1 : $sp.getWidget('gservice_my_dashboard_notification_v2'),
+								  widget2 : $sp.getWidget("gservice_my_dashboard_notification_csc")};
 		var approvalsWidget = {show : false,
-													 widget1 : $sp.getWidget('gservice_my_dashboard_approvals_v2'),
-													 widget2 : $sp.getWidget("gservice_my_dashboard_approvals_csc")};
+							   widget1 : $sp.getWidget('gservice_my_dashboard_approvals_v2'),
+							   widget2 : $sp.getWidget("gservice_my_dashboard_approvals_csc"),
+							   widget3 : $sp.getWidget("gservice_my_dashboard_approvals_irm")};
 		var assetsWidget = {show : false,
-												widget1 : $sp.getWidget('gservice_my_dashboard_assets')};
+							widget1 : $sp.getWidget('gservice_my_dashboard_assets')};
 		var mostReqWidget = {show : false,
-												 widget1 : $sp.getWidget('gservice_my_dashboard_most_req_v2'),
-												 widget2 : $sp.getWidget("gservice_my_dashboard_most_req_csc")};
+							 widget1 : $sp.getWidget('gservice_my_dashboard_most_req_v2'),
+							 widget2 : $sp.getWidget("gservice_my_dashboard_most_req_csc")};
 		data.widgets.push(requestWidget);
 		data.widgets.push(notificationWidget);
 		data.widgets.push(approvalsWidget);
@@ -708,6 +709,7 @@
 		data.incidentQuery = queries.incidentQuery;
 		data.approverQuery = portalUtils.getApproverQuery();
 		data.approverQueryCSC = "state=requested^source_tableSTARTSWITHx_gmeps_csc^approver.sys_idIN" + gs.getUserID();
+		data.approverQueryIRM = "state=requested^source_table=sn_compliance_policy^approver.sys_idIN" + gs.getUserID();
 		data.cscQuery = "requester="+ gs.getUserID() +"^ORopened_by="+ gs.getUserID() +"^u_status_portal=3";
 
 
@@ -715,6 +717,7 @@
 		data.notificationsCount += portalUtilsCSC.setNotificationsCount(data.cscQuery);
 		data.approvalsCount = portalUtils.setApprovalsCount(data.approverQuery);
 		data.approvalsCount += portalUtils.setApprovalsCount(data.approverQueryCSC);
+		data.approvalsCount += portalUtils.setApprovalsCount(data.approverQueryIRM);
 	}
 
 	else{
@@ -726,8 +729,8 @@
 				}
 				if(localInput.index == 1){
 					var notificationWidget = {show : true,
-																		widget1 : $sp.getWidget('gservice_my_dashboard_notification_v2'),
-																		widget2 : $sp.getWidget("gservice_my_dashboard_notification_csc")};
+											  widget1 : $sp.getWidget('gservice_my_dashboard_notification_v2'),
+											  widget2 : $sp.getWidget("gservice_my_dashboard_notification_csc")};
 					data.widgets[1] = notificationWidget;
 				}
 				break;
@@ -776,14 +779,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>386</sys_mod_count>
+        <sys_mod_count>392</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
-        <sys_updated_by>organize.vinicius</sys_updated_by>
-        <sys_updated_on>2021-05-07 16:35:56</sys_updated_on>
+        <sys_updated_by>organize.sarah</sys_updated_by>
+        <sys_updated_on>2021-06-24 00:32:12</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
 
   <div class="content_avatar">
@@ -875,6 +878,7 @@
   <div id="show-selected-item" ng-repeat='widget in data.widgets'>
     <sp-widget ng-if='widget.show' widget="widget.widget1"></sp-widget>
     <sp-widget ng-if='widget.show' widget="widget.widget2"></sp-widget>
+    <sp-widget ng-if='widget.show' widget="widget.widget3"></sp-widget>
   </div>
 </div> ]]></template>
     </sp_widget>
