@@ -330,6 +330,12 @@
 			}
 		});
 	}
+	c.editDraft = function(table, item_id, sys_id, index){
+		c.data.editIndex = index;
+		var jsonItem = {itemID: item_id, breadcrumb : "", table: table, duplicatedItemID : false, sys_id : sys_id};
+		$rootScope.$broadcast('editItem', jsonItem, "editItem");
+		$('#editModal').modal("show");
+	}
 
 	if(c.data.urlItem && c.data.first_load){
 		$timeout(function() {
@@ -340,7 +346,8 @@
 		}, 500);
 	}
 
-	c.selectedChoice = function(index){
+
+						c.selectedChoice = function(index){
 		for(var i in c.data.reopeningReason){
 			c.data.reopeningReason[i].selected = false;
 		}
@@ -359,11 +366,19 @@
 			$('#ritmDetails').modal("show");
 		});
 	}
+	
+	$scope.$on('closeEditModal', function(event){
+		$('#editModal').modal("hide");
+	});
+
+	c.copyItem = function(id){
+		$location.search("id=globoservice_index&copy_id=" + id);
+	}
 
 	$scope.$on('surveyClosed', function(event) {
 		c.data.show_survey = false;
 	});
-	
+
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.content_request {
@@ -1392,7 +1407,7 @@ tbody {
   .column_buttons {
     flex-direction: column;
   }
-  
+
   .content_request {
     .title_category, .content_body_req_csc {
       padding: 0 20px !important;
@@ -1447,7 +1462,7 @@ tbody {
   .content_my_requests .buttons .tooltip_right {
     top: calc(100% + 15px);
     left: calc(-50% - -13px);
-    
+
     .arrow_left {
       border-top: 0px solid transparent;
       border-left: 10px solid transparent;
@@ -1476,7 +1491,34 @@ tbody {
   .tooltip {
     display: none;
   }
-}</css>
+}
+
+.number_text_parent{
+  display: flex;
+  align-items: center;
+}
+
+.create_circle {
+  background: lightblue;
+  margin-right : 5px;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  border-style: solid;
+  border-width: 0.5px;
+  border-color: gray;
+  
+}
+
+.circle_red{
+    background: red;
+  }
+.circle_yellow{
+    background: yellow;
+  }
+.circle_green{
+    background: lightgreen;
+  }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -1487,11 +1529,10 @@ tbody {
         <internal>false</internal>
         <link><![CDATA[function link(scope, element, attrs, controller) {
 	var c = controller;
-	
 	c.openContent = function() {
 		c.contentOpened = !c.contentOpened;
 		var contentBody = element.find(".content_body_req_csc");
-		if(!c.contentOpened) {
+		if(!c.contentOpened && contentBody) {
 			contentBody.css("margin-top", '-2000px');
 		}
 		else {
@@ -1509,7 +1550,7 @@ tbody {
 	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
 	var portalUtils = new global.OCLPortalUtilsCSC();
 	data.showConversation = false;
-
+	
 	data.showContent = false;
 
 	data.showRecordDetails = false;
@@ -1550,6 +1591,21 @@ tbody {
 	data.order = "opened_at";
 	data.direction = -1;
 	if(!localInput){
+		var sc_catalog_item_options = {"show_add_cart_button": "true",
+																	 "show_field_validation_messages": "false",
+																	 "show_add_to_wishlist_button": "false",
+																	 "display_cart_on_right": "false",
+																	 "show_less_description": "false",
+																	 "hide_delivery_time": "false",
+																	 "category_color": "",
+																	 "category_bg_color": "",
+																	 "category_bd_color": "",
+																	 "category_submit_img": "",
+																	 "broadcast_name" : "editItem"};
+
+		data.gserviceCatalogItem = $sp.getWidget('gservice_catalog_item_edit_csc', sc_catalog_item_options);
+
+
 		data.listFilter_widget = $sp.getWidget('gservice_list_filter_csc');
 		prepareDefaultList(true);
 	}
@@ -1648,7 +1704,7 @@ tbody {
 																										bd_color_class : "bdcolor_category2"
 																									 };
 				data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
-				
+
 				break;
 
 			case "orderBy":
@@ -1837,14 +1893,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 17:40:05</sys_created_on>
         <sys_id>2988eebf1ba2d05097c0dca0f54bcba7</sys_id>
-        <sys_mod_count>252</sys_mod_count>
+        <sys_mod_count>349</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2988eebf1ba2d05097c0dca0f54bcba7</sys_update_name>
-        <sys_updated_by>marta@organizecloudlabs.com</sys_updated_by>
-        <sys_updated_on>2021-03-24 12:35:57</sys_updated_on>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2021-07-07 19:46:46</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   
   <div class="title_category" ng-click="c.openContent()">
@@ -1889,7 +1945,10 @@ tbody {
                 <td data-th="Product" class="column_product">
                   <div>
                     <div>
-                      <div class="number_text">#{{item.number}}</div>
+                      <div class="number_text_parent">
+                        <div ng-if="item.diligence_result" class="create_circle circle_{{item.diligence_result}}"></div>
+                        <div class="number_text">#{{item.number}}</div>
+                      </div>
                       <div class="item_text">{{item.title}}</div>
                       <div ng-if="item.watch" class="follow_up_properties">{{item.watch}}
                         <span ng-if="item.watchTooltip" class="tooltip tooltip_bottom">
@@ -1958,10 +2017,23 @@ tbody {
                       <div class="tooltip_text">${Approve}</div>
                     </span>
                   </div>
+                  
                   <div ng-if="item.disapproveButton" class="buttons" ng-click="c.itemAction(item, 'disapproveItem')"><img src="GS_Reabrir_Roxo.png"/>
                     <span class="tooltip tooltip_bottom">
                       <div class="tooltip_arrow arrow_top"></div>
                       <div class="tooltip_text">${Reject}</div>
+                    </span>
+                  </div>
+                  <div class="buttons" ng-if="item.copyButton" ng-click="c.copyItem(item.sys_id)"><img src="copy-icon.png"/>
+                    <span class="tooltip tooltip_bottom">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">${Copy}</div>
+                    </span>
+                  </div>
+                   <div class="buttons" ng-if="item.draftButton" ng-click="c.editDraft(item.table, item.cat_item_id, item.sys_id, $index)"><img src="edit-icon.png"/>
+                    <span class="tooltip tooltip_bottom">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">${Edit draft}</div>
                     </span>
                   </div>
                 </td>
@@ -2070,15 +2142,17 @@ tbody {
   </div>
 </div>
 
-<div class="modal_ritm_details modal fade" id="ritmDetails" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+<div class="modal fade" style="z-index: 1041" id="editModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <div ng-if="data.showRecordDetails">
-          <sp-widget widget="data.recordDetailsWidget"></sp-widget>
+        <div class="panel-body wrapper-sm wrapper-sc-cat-item">
+          <div class="form-group">
+            <sp-widget widget="data.gserviceCatalogItem"></sp-widget>
+          </div>
         </div>
       </div>
     </div>
