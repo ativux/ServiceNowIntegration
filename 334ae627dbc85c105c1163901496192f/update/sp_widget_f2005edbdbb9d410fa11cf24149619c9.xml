@@ -1,109 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function ($scope, $timeout, spUtil, $location, $rootScope) {
-	var c = this;
-	c.requestComment = '';
-	c.requestItem = '';
-	c.needComment = false;
-	c.needReason = false;
-	c.modalMessage = '';
-	c.isLoading = true;
-	c.reopeningReason = false;
-	c.focus = true;
+        <client_script><![CDATA[function($scope, $timeout, spUtil, $location, $rootScope) {
+    var c = this;
+    c.requestComment = '';
+    c.requestItem = '';
+    c.needComment = false;
+    c.needReason = false;
+    c.modalMessage = '';
+    c.isLoading = true;
+    c.reopeningReason = false;
+    c.focus = true;
 
-	$scope.loadingIndicator = $rootScope.loadingIndicator;
-	//Show widget after loaded
-	$scope.$on('sp_loading_indicator', function(e, value) {
-		if($scope.loadingIndicator && !value){
-			c.isLoading = false;
-		}
-		$scope.loadingIndicator = value;
-	});
+    $scope.loadingIndicator = $rootScope.loadingIndicator;
+    //Show widget after loaded
+    $scope.$on('sp_loading_indicator', function(e, value) {
+        if ($scope.loadingIndicator && !value) {
+            c.isLoading = false;
+        }
+        $scope.loadingIndicator = value;
+    });
 
-	$scope.$on('applyEquipmentFilter', function(event, filters) {
-		c.data.filters = filters;
+    $scope.$on('applyEquipmentFilter', function(event, filters) {
+        c.data.filters = filters;
+		c.data.filters.searchTerm = "";
+        c.isLoading = true;
+        c.data.action = "applyFilter";
+        c.server.update().then(function(response) {
+            c.verifyEmptySearch();
+        });
+    });
+
+    c.verifyEmptySearch = function() {
+        c.data.showFilterClean = true;
+        if (c.data.orders.length > 0) {
+            c.data.showFilterClean = false;
+        }
+    }
+
+    c.accept = function(index) {
+        c.data.acceptedOrder = c.data.orders[index];
+        if (c.data.acceptedOrder.u_responsible.value == false) {
+            spUtil.addErrorMessage(c.data.msgs.needAssigned);
+        } else {
+            c.data.action = "changeItemState";
+            c.server.update().then(function(response) {
+                c.verifyEmptySearch();
+            });
+        }
+    }
+
+    c.showDetails = function(index) {
+        var showDetails = false;
+        for (var i in c.data.orders) {
+            if (i == index) {
+                c.data.orders[index].showDetails = !c.data.orders[index].showDetails;
+                showDetails = c.data.orders[index].showDetails;
+            } else
+                c.data.orders[i].showDetails = false;
+        }
+        if (showDetails) {
+            c.server.get({
+                action: 'getTicketConversationWidget',
+                order_id: c.data.orders[index].sys_id
+            }).then(function(response) {
+                c.data.ticketConversationWidget = response.data.ticketConversationWidget;
+            });
+        }
+
+    }
+
+    c.orderBy = function(order, items) {
+        c.data.action = "orderBy";
+        c.data.order = order;
+        c.server.update();
+    }
+
+    c.statusColor = function(status) {
+        var statusClass = '';
+        if (status == 2) {
+            statusClass = 'status_flow_empty';
+        } else if (status == true) {
+            statusClass = 'status_flow_active';
+        } else if (!status) {
+            statusClass = 'status_flow_completed';
+        }
+        return statusClass;
+    }
+
+    c.previousPage = function() {
+        c.data.actualPage--;
+        c.updatePageCount();
+    }
+    c.nextPage = function() {
+        c.data.actualPage++;
+        c.updatePageCount();
+    }
+
+    c.updatePageCount = function() {
+        c.data.window_start = c.data.actualPage * c.data.items_per_page;
+        c.data.window_end = c.data.window_start + c.data.items_per_page;
+        c.data.action = "changePage";
+        c.server.update();
+    }
+	
+	c.searchedFilter = function(searchTerm){
 		c.isLoading = true;
 		c.data.action = "applyFilter";
-		c.server.update().then(function(response){
+		c.data.filters.searchTerm = searchTerm;
+		c.server.update().then(function(response) {
 			c.verifyEmptySearch();
 		});
+	}
+	
+	$scope.$on("getSearchedItemsFilter", function(evt, searchTerm) {
+		c.searchedFilter(searchTerm);
+
+	});
+	
+	$scope.$on("getSearchedItemsFilterClear", function(evt, searchTerm) {
+		c.searchedFilter("");
 	});
 
-	c.verifyEmptySearch = function(){
-		c.data.showFilterClean = true;
-		if(c.data.orders.length > 0){
-			c.data.showFilterClean = false;
-		}
-	}
-
-	c.accept = function(index){
-		c.data.acceptedOrder = c.data.orders[index];
-		if(c.data.acceptedOrder.u_responsible.value == false){
-			spUtil.addErrorMessage(c.data.msgs.needAssigned);
-		}
-		else{
-			c.data.action = "changeItemState";
-			c.server.update().then(function(response){
-				c.verifyEmptySearch();
-			});
-		}
-	}
-
-	c.showDetails = function(index){
-		var showDetails = false;
-		for(var i in c.data.orders){
-			if(i == index){
-				c.data.orders[index].showDetails = !c.data.orders[index].showDetails ;
-				showDetails = c.data.orders[index].showDetails;
-			}
-			else
-				c.data.orders[i].showDetails = false;
-		}
-		if(showDetails){
-			c.server.get({
-				action: 'getTicketConversationWidget',
-				order_id: c.data.orders[index].sys_id
-			}).then(function(response) {
-				c.data.ticketConversationWidget = response.data.ticketConversationWidget;
-			});
-		}
-
-	}
-
-	c.orderBy = function(order, items){
-		c.data.action = "orderBy";
-		c.data.order = order;
-		c.server.update();
-	}
-
-	c.statusColor = function(status){
-		var statusClass = '';
-		if (status == 2){
-			statusClass = 'status_flow_empty';
-		} else if (status == true) {
-			statusClass = 'status_flow_active';
-		} else if (!status) {
-			statusClass = 'status_flow_completed';
-		}
-		return statusClass;
-	}
-
-	c.previousPage = function(){
-		c.data.actualPage--;
-		c.updatePageCount();
-	}
-	c.nextPage = function(){
-		c.data.actualPage++;
-		c.updatePageCount();
-	}
-
-	c.updatePageCount = function(){
-		c.data.window_start = c.data.actualPage * c.data.items_per_page;
-		c.data.window_end = c.data.window_start + c.data.items_per_page;
-		c.data.action = "changePage";
-		c.server.update();
-	}
+	
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.transform_title {&#13;
@@ -1042,166 +1061,173 @@ input:focus::placeholder{&#13;
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
-	data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
-	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
-	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
-	var equipmentsUtils = new global.OCLPortalEquipmentsUtil();
-	data.requestsID = '';
-	data.showEmptyMessage = false;
+    data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
+    data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
+    var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+    var equipmentsUtils = new global.OCLPortalEquipmentsUtil();
+    data.requestsID = '';
+    data.showEmptyMessage = false;
 
-	data.show_survey = false;
+    data.show_survey = false;
 
-	data.msgs = {};
-	data.msgs.needAssigned = gs.getMessage("Necessário selecionar um responsável antes de aceitar movimentação.");
+    data.msgs = {};
+    data.msgs.needAssigned = gs.getMessage("Necessário selecionar um responsável antes de aceitar movimentação.");
 
-	data.user_query = gs.getProperty("gservice_order_user_query");
+    data.user_query = gs.getProperty("gservice_order_user_query");
 
-	data.statusFlow = [];
-	var statusFlow = gs.getProperty("gservice_list_filters_status").split("|");
-	for(var i in statusFlow){
-		statusFlow[i].number = i + 1;
-		statusFlow[i].selected = false;
-		data.statusFlow.push(JSON.parse(statusFlow[i]));
-	}
+    data.statusFlow = [];
+    var statusFlow = gs.getProperty("gservice_list_filters_status").split("|");
+    for (var i in statusFlow) {
+        statusFlow[i].number = i + 1;
+        statusFlow[i].selected = false;
+        data.statusFlow.push(JSON.parse(statusFlow[i]));
+    }
 
-	//Used to get the current user sys_id
-	var userID = gs.getUser().getID();
-	data.user_id = userID;
-	//Get the columns (from property) to show upside the requests
-	data.columns = [];
+    //Used to get the current user sys_id
+    var userID = gs.getUser().getID();
+    data.user_id = userID;
+    //Get the columns (from property) to show upside the requests
+    data.columns = [];
 
-	if(!localInput){
-		data.equipmentFilter_widget = $sp.getWidget('gservice_equipment_filter');
-		data.filters = {};
-		data.filters.locationFilter = equipmentsUtils.getLocationFilter();
-		data.filters.areaFilter = equipmentsUtils.getAreaFilter();
-		data.orders = [];
-		prepareDefaultList();
-		data.showEmptyMessage = true;
-	}
-	else{
-		switch(localInput.action){
-			case "applyFilter":
-				preparePages();
-				data.filters = localInput.filters;
-				prepareDefaultList();
-				break;
+    if (!localInput) {
+        data.equipmentFilter_widget = $sp.getWidget('gservice_equipment_filter');
+        data.filters = {};
+        data.filters.locationFilter = equipmentsUtils.getLocationFilter();
+        data.filters.areaFilter = equipmentsUtils.getAreaFilter();
+        data.filters.statusFilter = equipmentsUtils.getStatusFilter();
+        data.filters.pontoDeColetaFilter = equipmentsUtils.getPontoDeColetaFilter();
+        data.orders = [];
+        prepareDefaultList();
+        data.showEmptyMessage = true;
+    } else {
+        switch (localInput.action) {
+            case "applyFilter":
+                preparePages();
+                data.filters = localInput.filters;
+                prepareDefaultList();
+                break;
 
-			case "changeItemState":
-				equipmentsUtils.acceptOrder(localInput.acceptedOrder);
-				preparePages();
-				data.items_per_page = localInput.items_per_page;
-				data.actualPage = localInput.actualPage;
-				data.window_start = localInput.window_start;
-				data.window_end = localInput.window_end;
-				data.query = localInput.query;
-				data.columns = localInput.columns;
-				data.order = localInput.order;
-				data.direction = localInput.direction;
-				data.orders = equipmentsUtils.getOrders(data.query, data.window_start, data.window_end, data.order, data.direction);
-				prepareCount();
-				break;
-			case "getTicketConversationWidget":
-				var gservice_ticket_conversation_options = {table : "wm_order",
-																										sys_id : localInput.order_id,
-																										item_status : "",
-																										hide_new_comments : true};
-				data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
-				break;
-			case "orderBy":
-				preparePages();
-				data.order = localInput.order;
-				data.columns = localInput.columns;
-				prepareOrderBy();
+            case "changeItemState":
+                equipmentsUtils.acceptOrder(localInput.acceptedOrder);
+                preparePages();
+                data.items_per_page = localInput.items_per_page;
+                data.actualPage = localInput.actualPage;
+                data.window_start = localInput.window_start;
+                data.window_end = localInput.window_end;
+                data.query = localInput.query;
+                data.columns = localInput.columns;
+                data.order = localInput.order;
+                data.direction = localInput.direction;
+                data.orders = equipmentsUtils.getOrders(data.query, data.window_start, data.window_end, data.order, data.direction);
+                prepareCount();
+                break;
+            case "getTicketConversationWidget":
+                var gservice_ticket_conversation_options = {
+                    table: "wm_order",
+                    sys_id: localInput.order_id,
+                    item_status: "",
+                    hide_new_comments: true
+                };
+                data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
+                break;
+            case "orderBy":
+                preparePages();
+                data.order = localInput.order;
+                data.columns = localInput.columns;
+                prepareOrderBy();
 
-				data.query = localInput.query;
-				data.orders = equipmentsUtils.getOrders(data.query, data.window_start, data.window_end, data.order, data.direction);
-				prepareCount();
-				break;
-			case "changePage":
-				data.items_per_page = localInput.items_per_page;
-				data.actualPage = localInput.actualPage;
-				data.window_start = localInput.window_start;
-				data.window_end = localInput.window_end;
-				data.query = localInput.query;
-				data.columns = localInput.columns;
-				data.order = localInput.order;
-				data.direction = localInput.direction;
-				data.orders = equipmentsUtils.getOrders(data.query, data.window_start, data.window_end, data.order, data.direction);
-				prepareCount();
-				break;
+                data.query = localInput.query;
+                data.orders = equipmentsUtils.getOrders(data.query, data.window_start, data.window_end, data.order, data.direction);
+                prepareCount();
+                break;
+            case "changePage":
+                data.items_per_page = localInput.items_per_page;
+                data.actualPage = localInput.actualPage;
+                data.window_start = localInput.window_start;
+                data.window_end = localInput.window_end;
+                data.query = localInput.query;
+                data.columns = localInput.columns;
+                data.order = localInput.order;
+                data.direction = localInput.direction;
+                data.orders = equipmentsUtils.getOrders(data.query, data.window_start, data.window_end, data.order, data.direction);
+                prepareCount();
+                break;
+        }
+    }
+
+    function prepareDefaultList() {
+        preparePages();
+        prepareColumns();
+
+		if(data.filters.searchTerm == ""){
+			data.query = equipmentsUtils.mountQuery(data.filters.locationFilter, data.filters.areaFilter, data.filters.statusFilter, data.filters.pontoDeColetaFilter);
+		} else {
+			data.query = "numberIN" + data.filters.searchTerm;
 		}
-	}
+		
+        data.orders = equipmentsUtils.getOrders(data.query, data.window_start, data.window_end);
+        if (data.orders.length == 0) {
+            data.showEmptyMessage = true;
+        }
+        prepareCount();
+    }
 
-	function prepareDefaultList(){
-		preparePages();
-		prepareColumns();
+    function preparePages() {
+        data.items_per_page = 6;
+        data.actualPage = 0;
 
-		data.query = equipmentsUtils.mountQuery(data.filters.locationFilter, data.filters.areaFilter);
-		data.orders = equipmentsUtils.getOrders(data.query, data.window_start, data.window_end);
-		if(data.orders.length == 0){
-			data.showEmptyMessage = true;
-		}
-		prepareCount();
-	}
+        data.window_start = 0;
+        data.window_end = 6;
+    }
 
-	function preparePages(){
-		data.items_per_page = 6;
-		data.actualPage = 0;
+    function prepareColumns() {
+        //You need to select the columns name on the property
+        //Using checkout as a test, but it`ll change to a dinamic way when you call the widget you send the option
+        var columns_property = gs.getProperty("gservice_equipments_columns");
 
-		data.window_start = 0;
-		data.window_end = 6;
-	}
+        var columns = JSON.parse(columns_property);
 
-	function prepareColumns(){
-		//You need to select the columns name on the property
-		//Using checkout as a test, but it`ll change to a dinamic way when you call the widget you send the option
-		var columns_property = gs.getProperty("gservice_equipments_columns");
+        data.columns = columns;
+        for (var i in columns) {
+            data.columns[i].name = gs.getMessage(columns[i].name);
+        }
+    }
 
-		var columns = JSON.parse(columns_property);
+    function prepareOrderBy() {
+        for (var i in data.columns) {
+            if (data.order == data.columns[i].order) {
+                data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
+                data.direction = data.columns[i].direction;
+            } else {
+                data.columns[i].direction = false;
+            }
+        }
+    }
 
-		data.columns = columns;
-		for(var i in columns){
-			data.columns[i].name = gs.getMessage(columns[i].name);
-		}
-	}
-
-	function prepareOrderBy(){
-		for(var i in data.columns){
-			if(data.order == data.columns[i].order){
-				data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
-				data.direction = data.columns[i].direction;
-			}
-			else{
-				data.columns[i].direction = false;
-			}
-		}
-	}
-
-	function prepareCount(){
-		data.actualPageCount = data.actualPage + 1;
-		data.actualItemsCount = data.items_per_page * data.actualPageCount;
-		data.requestsID = 'sys_idIN';
-		data.totalItems = equipmentsUtils.getTotalOrders(data.query);
-		data.actualItemsCount = data.items_per_page * data.actualPageCount;
-		if(data.actualItemsCount > data.totalItems){
-			data.actualItemsCount = data.totalItems;
-		}
-	}
+    function prepareCount() {
+        data.actualPageCount = data.actualPage + 1;
+        data.actualItemsCount = data.items_per_page * data.actualPageCount;
+        data.requestsID = 'sys_idIN';
+        data.totalItems = equipmentsUtils.getTotalOrders(data.query);
+        data.actualItemsCount = data.items_per_page * data.actualPageCount;
+        if (data.actualItemsCount > data.totalItems) {
+            data.actualItemsCount = data.totalItems;
+        }
+    }
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-07-09 19:49:04</sys_created_on>
         <sys_id>f2005edbdbb9d410fa11cf24149619c9</sys_id>
-        <sys_mod_count>403</sys_mod_count>
+        <sys_mod_count>436</sys_mod_count>
         <sys_name>GService Equipment List</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_f2005edbdbb9d410fa11cf24149619c9</sys_update_name>
-        <sys_updated_by>tfesilva</sys_updated_by>
-        <sys_updated_on>2020-10-24 04:58:19</sys_updated_on>
+        <sys_updated_by>renanlui</sys_updated_by>
+        <sys_updated_on>2021-08-03 19:17:43</sys_updated_on>
         <template><![CDATA[<div class="content_request">
   <div class="col-md-12 filter-padding">
     <sp-widget widget="data.equipmentFilter_widget"></sp-widget>

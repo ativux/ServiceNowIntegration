@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>64</height>
+        <image>f3006abc1b31341445840fe1f54bcbb7</image>
+        <name>gservice_mini_search_equipment_dashboard.png</name>
+        <size_bytes>14903</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>renanlui</sys_created_by>
+        <sys_created_on>2021-08-03 18:56:23</sys_created_on>
+        <sys_id>62ff127c1b31341445840fe1f54bcb15</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>gservice_mini_search_equipment_dashboard.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_62ff127c1b31341445840fe1f54bcb15</sys_update_name>
+        <sys_updated_by>renanlui</sys_updated_by>
+        <sys_updated_on>2021-08-03 18:56:33</sys_updated_on>
+        <thumbnail/>
+        <width>61</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#33ff</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>6fbd8b5b5aa1f854947bd909cc7e8ef28adfc84be980d1eb3a98e997dbfb97d3</hash>
+        <image_height>64</image_height>
+        <image_width>61</image_width>
+        <size_bytes>14903</size_bytes>
+        <size_compressed>1517</size_compressed>
+        <state>available</state>
+        <sys_created_by>renanlui</sys_created_by>
+        <sys_created_on>2021-08-03 18:56:33</sys_created_on>
+        <sys_id>f3006abc1b31341445840fe1f54bcbb7</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_updated_by>renanlui</sys_updated_by>
+        <sys_updated_on>2021-08-03 18:56:33</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>62ff127c1b31341445840fe1f54bcb15</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="f3006abc1b31341445840fe1f54bcbb7">f3006abc1b31341445840fe1f54bcbb7</sys_attachment>
+        <sys_created_by>renanlui</sys_created_by>
+        <sys_created_on>2021-08-03 18:56:33</sys_created_on>
+        <sys_id>37006abc1b31341445840fe1f54bcbb7</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>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</data>
+        <length>2012</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="f3006abc1b31341445840fe1f54bcbb7">f3006abc1b31341445840fe1f54bcbb7</sys_attachment>
+        <sys_created_by>renanlui</sys_created_by>
+        <sys_created_on>2021-08-03 18:56:33</sys_created_on>
+        <sys_id>b7006abc1b31341445840fe1f54bcbb7</sys_id>
+    </sys_attachment_doc>
+</record_update>
