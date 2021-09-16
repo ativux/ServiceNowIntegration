@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller = function($scope, spUtil, $rootScope) {
+    /* widget controller */
+
+    var c = this;
+
+    c.item_number = $scope.$parent.item.number;
+    $scope.feedback = false;
+
+    $scope.data.inputSurvey = "";
+    $scope.surveyResposta = 5;
+    $scope.showButton = false;
+    $scope.sysID = $scope.$parent.item.sys_id;
+
+    $scope.surveyResponse = function(resposta) {
+        $scope.surveyResposta = resposta;
+        $scope.showButton = true;
+    };
+
+    $scope.sendSurvey = function() {
+        $scope.data.action = "survey";
+        var objResponse = {
+            "qdtStars": $scope.surveyResposta,
+            "justification": $scope.data.inputSurvey,
+            "taskSysId": $scope.sysID
+        };
+
+        $scope.feedback = true;
+
+        c.data.objSurveyResponse = objResponse;
+        c.data.action = 'respostaSurvey';
+
+        c.server.update().then(function() {});
+    };
+
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.feed{
+    color:#33ccff;
+    Width:200px;
+}
+.rate {
+    float: left;
+}
+.rate:not(:checked) &gt; input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) &gt; label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) &gt; label:before {
+    content: '★ ';
+}
+.rate &gt; input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) &gt; label:hover,
+.rate:not(:checked) &gt; label:hover ~ label {
+    color: #deb217;  
+}
+.rate &gt; input:checked + label:hover,
+.rate &gt; input:checked + label:hover ~ label,
+.rate &gt; input:checked ~ label:hover,
+.rate &gt; input:checked ~ label:hover ~ label,
+.rate &gt; label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+.container{
+  width:inherit;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  .rate{
+  	display:flex;
+    flex-direction: row-reverse;
+    //justify-content:center;
+    justify-content: flex-end
+  }
+  .options{
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+    textarea{
+    	resize: none;
+      border: solid blue 1px;
+    }
+    .closing {
+      border:none;
+      background: none;
+      width:100%;
+      display:flex;
+      justify-content:left;
+      padding:10px;
+      align-items:center;
+      font-size:1.7rem;
+      img{
+        width:45px;
+        height:45px;
+        margin:8px;
+      }
+    }  
+    .icone{
+      img{
+        width:35px;
+        height:35px;
+      }   
+    }
+  }
+}
+
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data>{
+	"options":{
+		"task_sys_id":"001214481b2d701041b0ea8ce54bcbc4",
+		"table":"sc_req_item"	
+	}	
+}</demo_data>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>rating_stars_survey</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>Rating stars survey</name>
+        <option_schema>[{"name":"task_sys_id","section":"Data","label":"task_sys_id","type":"string"},{"name":"table","section":"other","label":"table","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+    var localInput = input;
+	data.objSurveyResponse = '';
+    var surveyUtils = new global.SurveyUtils();
+    if (localInput) {
+        if (localInput.action == "respostaSurvey") {
+            surveyUtils.getInstance(localInput.objSurveyResponse);
+        }
+    }
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>glorusso</sys_created_by>
+        <sys_created_on>2021-08-03 16:53:01</sys_created_on>
+        <sys_id>92c30afcdbf5b0141c0d0fbca3961901</sys_id>
+        <sys_mod_count>155</sys_mod_count>
+        <sys_name>Rating stars survey</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_92c30afcdbf5b0141c0d0fbca3961901</sys_update_name>
+        <sys_updated_by>lnoguei</sys_updated_by>
+        <sys_updated_on>2021-08-19 15:34:50</sys_updated_on>
+        <template><![CDATA[<div class="container">
+  <div class="rate" id="{{c.item_number + '-stars'}}" ng-if='feedback == false'>
+    <input type="radio" id="{{c.item_number + '-star5'}}" name="{{c.item_number + '-rate'}}" value="5" ng-click="surveyResponse('5')" />
+    <label for="{{c.item_number + '-star5'}}" title="5">★ stars</label>
+
+    <input type="radio" id="{{c.item_number + '-star4'}}" name="{{c.item_number + '-rate'}}" value="4" ng-click="surveyResponse('4')" />
+    <label for="{{c.item_number + '-star4'}}" title="4">★ stars</label>
+
+    <input type="radio" id="{{c.item_number + '-star3'}}" name="{{c.item_number + '-rate'}}" value="3" ng-click="surveyResponse('3')" />
+    <label for="{{c.item_number + '-star3'}}" title="3">★ stars</label>
+
+    <input type="radio" id="{{c.item_number + '-star2'}}" name="{{c.item_number + '-rate'}}" value="2" ng-click="surveyResponse('2')" />
+    <label for="{{c.item_number + '-star2'}}" title="2">★ stars</label>
+
+    <input type="radio" id="{{c.item_number + '-star1'}}" name="{{c.item_number + '-rate'}}" value="1" ng-click="surveyResponse('1')" />
+    <label for="{{c.item_number + '-star1'}}" title="1">★ star</label>
+  </div>
+  <div class="options">
+    <div id="{{c.item_number + '-msgMelhorar'}}" ng-if="surveyResposta <= '3' && feedback == false" class="icone">
+      <img src="GS_DASH_Resposta.png" />
+      O que acha que poderia melhorar?
+    </div>
+
+    <textarea id="{{c.item_number + '-surveyJustification'}}" ng-model="data.inputSurvey" ng-if="surveyResposta <= '3' && feedback == false" rows="5"
+      cols="60"></textarea>
+    <button ng-if="showButton == true && feedback == false" id="{{c.item_number + '-close'}}" class="closing" ng-click="sendSurvey()"> <img
+        src="gservice_dashboard_submit.png" /> Enviar </button>
+  </div>
+</div>
+<div id="{{c.item_number + '-msgFeedback'}}" ng-if="feedback == true" class="feed"> 
+     Recebemos o seu feedback!
+     Muito obrigado
+    </div>]]></template>
+    </sp_widget>
+</record_update>

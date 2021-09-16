@@ -741,8 +741,11 @@
 				}
 				break;
 			case "notificationsCount":
+				console.log('*** ANTES : ' + data.notificationsCount);
 				data.notificationsCount = portalUtils.setNotificationsCount(localInput.taskQuery, localInput.incidentQuery);
+				console.log('*** NO MEIO : ' +data.notificationsCount);
 				data.notificationsCount += portalUtilsCSC.setNotificationsCount(localInput.cscQuery);
+				console.log('*** DEPOIS : ' +data.notificationsCount);
 				break;
 			case "approvalsCount":
 				data.approvalsCount = portalUtils.setApprovalsCount(localInput.approverQuery);
@@ -785,14 +788,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>419</sys_mod_count>
+        <sys_mod_count>420</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
-        <sys_updated_by>organize.sarah</sys_updated_by>
-        <sys_updated_on>2021-07-02 20:57:41</sys_updated_on>
+        <sys_updated_by>ccaires</sys_updated_by>
+        <sys_updated_on>2021-07-27 20:38:44</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
 
   <div class="content_avatar">

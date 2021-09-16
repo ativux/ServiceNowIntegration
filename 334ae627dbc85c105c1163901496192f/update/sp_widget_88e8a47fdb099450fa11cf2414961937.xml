@@ -1,1431 +1,1441 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function ($scope, $timeout, spUtil, $location, $rootScope) {
-	var c = this;
-	c.requestComment = '';
-	c.requestItem = '';
-	c.needComment = false;
-	c.needReason = false;
-	c.modalMessage = '';
-	c.isLoading = true;
-	c.reopeningReason = false;
-	c.disableAction = false;
-	c.stateChanged = false;
-	
-	c.contentOpened = false;
+        <client_script><![CDATA[function($scope, $timeout, spUtil, $location, $rootScope) {
+    var c = this;
+    c.requestComment = '';
+    c.requestItem = '';
+    c.needComment = false;
+    c.needReason = false;
+    c.modalMessage = '';
+    c.isLoading = true;
+    c.reopeningReason = false;
+    c.disableAction = false;
+    c.stateChanged = false;
+    c.contentOpened = false;
 
+    $scope.loadingIndicator = $rootScope.loadingIndicator;
+    //Show widget after loaded
+    $scope.$on('sp_loading_indicator', function(e, value) {
+        if ($scope.loadingIndicator && !value) {
+            c.isLoading = false;
+        }
+        $scope.loadingIndicator = value;
+    });
 
-	$scope.loadingIndicator = $rootScope.loadingIndicator;
-	//Show widget after loaded
-	$scope.$on('sp_loading_indicator', function(e, value) {
-		if($scope.loadingIndicator && !value){
-			c.isLoading = false;
-		}
-		$scope.loadingIndicator = value;
-	});
+    spUtil.recordWatch($scope, "task", c.data.requestsID, function(event) {
+        if (event.data.record.state) {
+            c.server.get({
+                action: "stateChangedBackend",
+                itemID: event.data.sys_id,
+                newState: event.data.record.state,
+                requests: c.data.requests
+            }).then(function(response) {
+                c.data.requests = response.data.requests;
+                if (c.stateChanged) {
+                    c.stateChanged = false;
+                    $timeout(function() {
+                        c.disableAction = false;
+                    }, 1000);
+                }
+            });
+        }
+    });
 
+    spUtil.recordWatch($scope, "sc_req_item", c.data.ritmID, function(event) {
+        if (event.data.record.state) {
+            c.server.get({
+                action: "ritmStateChangedBackend",
+                itemID: event.data.sys_id,
+                newState: event.data.record.state,
+                requests: c.data.requests
+            }).then(function(response) {
+                c.data.requests = response.data.requests;
+            });
+        }
+    });
 
-	spUtil.recordWatch($scope, "task", c.data.requestsID, function(event) {
-		if(event.data.record.state){
-			c.server.get({
-				action: "stateChangedBackend",
-				itemID: event.data.sys_id,
-				newState: event.data.record.state,
-				requests: c.data.requests
-			}).then(function(response) {
-				c.data.requests = response.data.requests;
-				if(c.stateChanged) {
-					c.stateChanged = false;
-					$timeout(function() {
-						c.disableAction = false;
-					}, 1000);
-				}
-			});
-		}
-	});
+    $scope.$on('applyFilter', function(event, filters) {
+        c.data.statusFilter = filters.statusFilter;
+        c.data.typeFilter = filters.typeFilter;
+        c.isLoading = true;
+        c.data.action = "applyFilter";
+        c.server.update().then(function(response) {
+            c.verifyEmptySearch();
+            c.newRecordWatch();
+        });
+    });
 
-	spUtil.recordWatch($scope, "sc_req_item", c.data.ritmID, function(event) {
-		if(event.data.record.state){
-			c.server.get({
-				action: "ritmStateChangedBackend",
-				itemID: event.data.sys_id,
-				newState: event.data.record.state,
-				requests: c.data.requests
-			}).then(function(response) {
-				c.data.requests = response.data.requests;
-			});
-		}
-	});
+    $scope.$on('applyDate', function(event, daysAgo) {
+        c.data.dateFilter = daysAgo;
+        c.data.action = "applyDate";
+        c.server.update().then(function(response) {
+            $timeout(function() {
+                scrollTo("list-columns");
+            }, 200);
+            c.verifyEmptySearch();
+            c.newRecordWatch();
+        });
+    });
 
-	$scope.$on('applyFilter', function(event, filters) {
-		c.data.statusFilter = filters.statusFilter;
-		c.data.typeFilter = filters.typeFilter;
-		c.isLoading = true;
-		c.data.action = "applyFilter";
-		c.server.update().then(function(response){
-			c.verifyEmptySearch();
-			c.newRecordWatch();
-		});
-	});
+    $scope.$on('clearAllFilters', function(event) {
+        c.data.requests = [];
+        for (var i in c.data.typeFilter) {
+            c.data.typeFilter[i].selected = false;
+        }
+        for (i in c.data.statusFilter) {
+            c.data.statusFilter[i].selected = false;
+        }
+        c.verifyEmptySearch();
+    });
 
-	$scope.$on('applyDate', function(event, daysAgo) {
-		c.data.dateFilter = daysAgo;
-		c.data.action = "applyDate";
-		c.server.update().then(function(response){
-			$timeout(function() {
-				scrollTo("list-columns");
-			}, 200);
-			c.verifyEmptySearch();
-			c.newRecordWatch();
-		});
-	});
+    c.verifyEmptySearch = function() {
+        c.data.showFilterClean = true;
+        if (c.data.requests.length > 0) {
+            c.data.showFilterClean = false;
+        }
+    }
 
-	$scope.$on('clearAllFilters', function(event) {
-		c.data.requests = [];
-		for(var i in c.data.typeFilter){
-			c.data.typeFilter[i].selected = false;
-		}
-		for(i in c.data.statusFilter){
-			c.data.statusFilter[i].selected = false;
-		}
-		c.verifyEmptySearch();
-	});
+    c.itemAction = function(item, action, fullItem) {
+        c.disableAction = true;
 
-	c.verifyEmptySearch = function(){
-		c.data.showFilterClean = true;
-		if(c.data.requests.length > 0){
-			c.data.showFilterClean = false;
-		}
-	}
+        if (action == "acceptSolution") {
+            fullItem.showSurvey = true;
+        }
 
-	c.itemAction = function(item, action){
-		c.disableAction = true;
+        if (action == "acceptSolution" || action == "acceptCancellation" ||
+            action == "cancelItem" && item.table == "u_question") {
 
-		if(action == "acceptSolution" || action == "acceptCancellation" ||
-			 action == "cancelItem" && item.table == "u_question"){
+            c.server.get({
+                action: 'changeItemState',
+                state: action,
+                item: item,
+                reopeningReason: false
+            }).then(function(response) {
+                item = response.data.item;
+                c.data.show_survey = response.data.show_survey;
+                c.data.gserviceSurvey = response.data.gserviceSurvey;
+                c.disableAction = false;
+            });
+        } else {
+            if (action == "rejectSolution" || action == "rejectCancellation")
+                c.modalMessage = c.data.msgs.reject;
+            else
+                c.modalMessage = c.data.msgs.cancel;
+            for (var i in c.data.reopeningReason) {
+                c.data.reopeningReason[i].selected = false;
+            }
+            $('#requestCommentModal').modal("show");
+            c.requestItem = item;
+            c.state = action;
+            $timeout(function() {
+                c.disableAction = false;
+            }, 1000);
+        }
+    }
 
-			c.server.get({
-				action: 'changeItemState',
-				state: action,
-				item: item,
-				reopeningReason: false
-			}).then(function(response) {
-				item = response.data.item;
-				c.data.show_survey = response.data.show_survey;
-				c.data.gserviceSurvey = response.data.gserviceSurvey;
-				c.disableAction = false;
-			});
-		}
-		else{
-			if(action == "rejectSolution" || action == "rejectCancellation")
-				c.modalMessage = c.data.msgs.reject;
-			else
-				c.modalMessage = c.data.msgs.cancel;
-			for(var i in c.data.reopeningReason){
-				c.data.reopeningReason[i].selected = false;
-			}
-			$('#requestCommentModal').modal("show");
-			c.requestItem = item;
-			c.state = action;
-			$timeout(function() {
-				c.disableAction = false;
-			}, 1000);
-		}
-	}
+    c.submitRequestComment = function() {
+        if (c.state == "rejectSolution") {
+            var stop = false;
+            if (!c.requestComment) {
+                c.needComment = true;
+                stop = true;
+            } else if (c.requestComment.length < 100) {
+                c.needComment = true;
+                stop = true;
+            } else {
+                c.needComment = false;
+            }
+            if (!c.reopeningReason) {
+                c.needReason = true;
+                stop = true
+            } else
+                c.needReason = false;
+            if (stop) {
+                return;
+            }
+        } else if (c.state == "cancelItem") {
+            var stop = false;
+            if (!c.requestComment) {
+                c.needComment = true;
+                stop = true;
+            } else if (c.requestComment.length < 100) {
+                c.needComment = true;
+                stop = true;
+            } else {
+                c.needComment = false;
+            }
+            if (stop) {
+                return;
+            }
+        }
+        c.disableAction = true;
+        c.stateChanged = true;
+        if (c.state != "rejectSolution") {
+            if (c.requestComment) {
+                c.reopeningReason = false;
+                c.needComment = false;
+                c.server.get({
+                    action: "changeItemState",
+                    state: c.state,
+                    item: c.requestItem,
+                    comment: c.requestComment,
+                    reopeningReason: c.reopeningReason
+                }).then(function(response) {
+                    $('#requestCommentModal').modal("hide");
+                    c.requestComment = '';
+                    $timeout(function() {
+                        c.disableAction = false;
+                    }, 3000);
+                });
+            } else
+                c.needComment = true;
+        } else {
+            c.needReason = false;
+            c.needComment = false;
+            c.server.get({
+                action: "changeItemState",
+                state: c.state,
+                item: c.requestItem,
+                comment: c.requestComment,
+                reopeningReason: c.reopeningReason
+            }).then(function(response) {
+                $('#requestCommentModal').modal("hide");
+                c.requestComment = '';
+                $timeout(function() {
+                    c.disableAction = false;
+                }, 3000);
+            });
+        }
+    }
 
-	c.submitRequestComment = function(){
-		if(c.state == "rejectSolution"){
-			var stop = false;
-			if(!c.requestComment){
-				c.needComment = true;
-				stop = true;
-			} else if(c.requestComment.length < 100){
-				c.needComment = true;
-				stop = true;
-			} else{
-				c.needComment = false;
-			}
-			if(!c.reopeningReason){
-				c.needReason = true;
-				stop = true
-			} else
-				c.needReason = false;
-			if(stop){
-				return;
-			}
-		} else if(c.state == "cancelItem"){
-			var stop = false;
-			if(!c.requestComment){
-				c.needComment = true;
-				stop = true;
-			} else if(c.requestComment.length < 100){
-				c.needComment = true;
-				stop = true;
-			} else{
-				c.needComment = false;
-			}
-			if(stop){
-				return;
-			}
-		}
-		c.disableAction = true;
-		c.stateChanged = true;
-		if(c.state != "rejectSolution"){
-			if(c.requestComment){
-				c.reopeningReason = false;
-				c.needComment = false;
-				c.server.get({
-					action : "changeItemState",
-					state: c.state,
-					item: c.requestItem,
-					comment: c.requestComment,
-					reopeningReason: c.reopeningReason
-				}).then(function(response) {
-					$('#requestCommentModal').modal("hide");
-					c.requestComment = '';
-					$timeout(function() {
-						c.disableAction = false;
-					}, 3000);
-				});
-			} else
-				c.needComment = true;
-		} else{
-			c.needReason = false;
-			c.needComment = false;
-			c.server.get({
-				action : "changeItemState",
-				state: c.state,
-				item: c.requestItem,
-				comment: c.requestComment,
-				reopeningReason: c.reopeningReason
-			}).then(function(response) {
-				$('#requestCommentModal').modal("hide");
-				c.requestComment = '';
-				$timeout(function() {
-					c.disableAction = false;
-				}, 3000);
-			});
-		}
-	}
+    c.showDetails = function(item) {
+        var showDetails = false;
+        var index = 0;
+        for (var i in c.data.requests) {
+            if (c.data.requests[i].sys_id == item.sys_id) {
+                index = i;
+                c.data.requests[i].showDetails = !c.data.requests[i].showDetails;
+                showDetails = c.data.requests[i].showDetails;
+            } else {
+                c.data.requests[i].showDetails = false;
+            }
+        }
+        if (showDetails) {
+            c.server.get({
+                action: 'getTicketConversationWidget',
+                item: item
+            }).then(function(response) {
+                c.data.ticketConversationWidget = response.data.ticketConversationWidget;
+                if (item.table == "sc_request") {
+                    c.data.requests[index] = response.data.newItem;
+                    c.data.ritm_fields = response.data.ritm_fields;
+                }
+            });
+        }
 
-	c.showDetails = function(item){
-		var showDetails = false;
-		var index = 0;
-		for(var i in c.data.requests){
-			if(c.data.requests[i].sys_id == item.sys_id){
-				index = i;
-				c.data.requests[i].showDetails = !c.data.requests[i].showDetails;
-				showDetails = c.data.requests[i].showDetails;
-			}
-			else{
-				c.data.requests[i].showDetails = false;
-			}
-		}
-		if(showDetails){
-			c.server.get({
-				action: 'getTicketConversationWidget',
-				item: item
-			}).then(function(response) {
-				c.data.ticketConversationWidget = response.data.ticketConversationWidget;
-				if(item.table == "sc_request"){
-					c.data.requests[index] = response.data.newItem;
-					c.data.ritm_fields = response.data.ritm_fields;
-				}
-			});
-		}
+    }
 
-	}
+    c.orderBy = function(order, items) {
+        c.data.action = "orderBy";
+        c.data.order = order;
+        c.server.update().then(function(response) {
+            c.newRecordWatch();
+        });
+    }
 
-	c.orderBy = function(order, items){
-		c.data.action = "orderBy";
-		c.data.order = order;
-		c.server.update().then(function(response){
-			c.newRecordWatch();
-		});
-	}
+    c.statusColor = function(status) {
+        var statusClass = '';
+        if (status == 2) {
+            statusClass = 'status_flow_empty';
+        } else if (status == true) {
+            statusClass = 'status_flow_active';
+        } else if (!status) {
+            statusClass = 'status_flow_completed';
+        }
+        return statusClass;
+    }
 
-	c.statusColor = function(status){
-		var statusClass = '';
-		if (status == 2){
-			statusClass = 'status_flow_empty';
-		} else if (status == true) {
-			statusClass = 'status_flow_active';
-		} else if (!status) {
-			statusClass = 'status_flow_completed';
-		}
-		return statusClass;
-	}
+    $scope.$on("getSearchedItemsFilter", function(event, searchTerm) {
+        c.data.searchTerm = searchTerm;
+        c.data.action = "searchResult";
+        c.server.update().then(function(response) {
+            c.verifyEmptySearch();
+            c.newRecordWatch();
+        });
+    });
 
-	$scope.$on("getSearchedItemsFilter", function (event, searchTerm) {
-		c.data.searchTerm = searchTerm;
-		c.data.action = "searchResult";
-		c.server.update().then(function(response){
-			c.verifyEmptySearch();
-			c.newRecordWatch();
-		});
-	});
+    $scope.$on("getSearchedItemsFilterClear", function(event) {
+        c.data.action = "applyDefaultFilter";
+        c.server.update().then(function(response) {
+            c.verifyEmptySearch();
+            c.newRecordWatch();
+        });
+    });
 
-	$scope.$on("getSearchedItemsFilterClear", function (event) {
-		c.data.action = "applyDefaultFilter";
-		c.server.update().then(function(response){
-			c.verifyEmptySearch();
-			c.newRecordWatch();
-		});
-	});
+    $scope.$on('selectRequest', function(event, item_id) {
+        c.data.item_id = item_id;
+        c.data.action = "selectRequest";
+        c.server.update().then(function(response) {
+            c.openContent();
+            $timeout(function() {
+                scrollTo("list-columns");
+            }, 200);
+            c.verifyEmptySearch();
+            c.newRecordWatch();
+        });
+    });
 
-	$scope.$on('selectRequest', function(event, item_id) {
-		c.data.item_id = item_id;
-		c.data.action = "selectRequest";
-		c.server.update().then(function(response){
-			c.openContent();
-			$timeout(function() {
-				scrollTo("list-columns");
-			}, 200);
-			c.verifyEmptySearch();
-			c.newRecordWatch();
-		});
-	});
+    $('#requestCommentModal').on('hide.bs.modal', function() {
+        c.requestComment = "";
+        c.reopeningReason = false;
+        c.needComment = "";
+        c.needReason = false;
+    });
 
-	$('#requestCommentModal').on('hide.bs.modal', function () {
-		c.requestComment = "";
-		c.reopeningReason = false;
-		c.needComment = "";
-		c.needReason = false;
-	});
+    c.previousPage = function() {
+        c.data.actualPage--;
+        c.updatePageCount();
 
-	c.previousPage = function(){
-		c.data.actualPage--;
-		c.updatePageCount();
+    }
+    c.nextPage = function() {
+        c.data.actualPage++;
+        c.updatePageCount();
+    }
 
-	}
-	c.nextPage = function(){
-		c.data.actualPage++;
-		c.updatePageCount();
-	}
+    c.updatePageCount = function() {
+        c.data.window_start = c.data.actualPage * c.data.items_per_page;
+        c.data.window_end = c.data.window_start + c.data.items_per_page;
+        c.data.action = "changePage";
+        c.server.update().then(function(response) {
+            c.newRecordWatch();
+        });
 
-	c.updatePageCount = function(){
-		c.data.window_start = c.data.actualPage * c.data.items_per_page;
-		c.data.window_end = c.data.window_start + c.data.items_per_page;
-		c.data.action = "changePage";
-		c.server.update().then(function(response){
-			c.newRecordWatch();
-		});
+    }
 
-	}
+    c.newRecordWatch = function() {
+        spUtil.recordWatch($scope, "task", c.data.requestsID, function(event) {
+            if (event.data.record.state) {
+                c.server.get({
+                    action: "stateChangedBackend",
+                    itemID: event.data.sys_id,
+                    newState: event.data.record.state,
+                    requests: c.data.requests
+                }).then(function(response) {
+                    c.data.requests = response.data.requests;
+                    if (c.stateChanged) {
+                        c.stateChanged = false;
+                        $timeout(function() {
+                            c.disableAction = false;
+                        }, 1000);
+                    }
+                });
+            }
+        });
+    }
 
-	c.newRecordWatch = function(){
-		spUtil.recordWatch($scope, "task", c.data.requestsID, function(event) {
-			if(event.data.record.state){
-				c.server.get({
-					action: "stateChangedBackend",
-					itemID: event.data.sys_id,
-					newState: event.data.record.state,
-					requests: c.data.requests
-				}).then(function(response) {
-					c.data.requests = response.data.requests;
-					if(c.stateChanged) {
-						c.stateChanged = false;
-						$timeout(function() {
-							c.disableAction = false;
-						}, 1000);
-					}
-				});
-			}
-		});
-	}
+    if (c.data.urlItem && c.data.first_load) {
+        $timeout(function() {
+            scrollTo("items-content");
+            c.openContent();
+        }, 500);
+    }
 
-	if(c.data.urlItem && c.data.first_load){
-		$timeout(function() {
-			scrollTo("items-content");
-			c.openContent();
-		}, 500);
-	}
+    c.selectedChoice = function(index) {
+        for (var i in c.data.reopeningReason) {
+            c.data.reopeningReason[i].selected = false;
+        }
+        c.data.reopeningReason[index].selected = c.data.reopeningReason[index].label;
+        c.reopeningReason = c.data.reopeningReason[index].value;
+    }
 
-	c.selectedChoice = function(index){
-		for(var i in c.data.reopeningReason){
-			c.data.reopeningReason[i].selected = false;
-		}
-		c.data.reopeningReason[index].selected = c.data.reopeningReason[index].label;
-		c.reopeningReason = c.data.reopeningReason[index].value;
-	}
+    c.openItem = function(ritm) {
+        c.data.showRecordDetails = false;
+        c.server.get({
+            action: "openRITM",
+            ritm: ritm
+        }).then(function(response) {
+            c.data.recordDetailsWidget = response.data.recordDetailsWidget;
+            c.data.showRecordDetails = true;
+            $('#ritmDetails').modal("show");
+        });
+    }
 
-	c.openItem = function(ritm){
-		c.data.showRecordDetails = false;
-		c.server.get({
-			action : "openRITM",
-			ritm : ritm
-		}).then(function(response) {
-			c.data.recordDetailsWidget = response.data.recordDetailsWidget;
-			c.data.showRecordDetails = true;
-			$('#ritmDetails').modal("show");
-		});
-	}
+    $scope.$on('surveyClosed', function(event) {
+        c.data.show_survey = false;
 
-	$scope.$on('surveyClosed', function(event) {
-		c.data.show_survey = false;
-
-	});
+    });
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.content_request {
-  background-color: white;
-  padding: 30px 0;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-
-  .title_category {
-    transition: .2s ease-in-out;
-    color: $deep-sky-blue;
-    text-transform: uppercase;
-    font-size: 22px;
-    margin-bottom: 15px;
-    padding: 0 90px;
-
-    .invert-arrow {
-      transition: .8s ease-in-out;
-      transform: rotate(180deg);
-    }
-    img {
-      transition: .8s ease-in-out;
-      margin-top: -4px;
-      margin-left: 8px;
-      width: 16px;
-    }
-
-    &amp;:hover {
-      transition: .2s ease-in-out;
-      transform: translate(0, -5px);
-    }
-  }
-
-  .content_body_mask {
-    overflow: hidden;
-
-    .content_body_req {
-      margin-top : -2000px;
-      transition: .8s ease-in-out;
-      padding: 0 90px;
-    }
-  }
-}
-.cart-mobile {
-  border: 0;
-  box-shadow: none;
-
-  .cart-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-
-    a {
-      text-align: right;
-      display: block !important;
-    }
-  }
-
-  .cart-item-mobile-info {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 10px 20px 10px;
-
-    .item-info {
-      display: flex;
-      flex-direction: column;
-    }
-    .item-image {
-      margin: 0;
-    }
-    a {
-      float: none;
-      text-align: center;
-    }
-    select {
-      margin-top: 10px;
-      padding: 0px 5px;
-      text-align-last: center;
-    }
-  }  
-}
-
-td {
-  vertical-align: middle !important;
-}
-
-.a-disabled {
-  cursor: default;
-  color: $btn-link-disabled-color;
-}
-
-.media-body {
-  .btn-link {
-    padding-left: 0;
-    padding-right: 0;
-    color: $primary;
-
-    &amp;:hover {
-      color: darken($primary, 10%);
-    }
-
-    &amp;:focus {
-      color: darken($primary, 10%);
-    }
-  }
-}
-
-.btn-remove {
-  font-size: 18px !important;
-}
-
-.action-btn {
-  display: block;
-  width: 100%;
-  margin-top: 5px;
-
-  &amp;.btn-link {
-    color: $primary;
-  }
-}
-
-.list-group {
-  max-height: 250px;
-  overflow-y: auto;
-}
-
-.list-group-item.ng-enter {
-  transition: all 1s;
-  -webkit-transition: all 1s;
-  background-color: #c0dcfa;
-}
-
-.list-group-item.ng-enter-active {
-  background-color: #fff;
-}
-
-.empty-cart {
-  font-style: italic;
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 7px;
-}
-
-.view-carts-link {
-  text-align: center;
-  display: block;
-}
-
-.order-details-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin: 5px 10px 10px 10px;
-
-  .order-details {
-    padding: 5px;
-
-    textarea {
-      resize: none;
-      flex-basis: 100%;
-      flex-shrink: 1;
-      width: 100%;
-      box-sizing: border-box;
-    }
-  }
-
-  .requested-for-details {
-    flex: 1 0 auto;
-    max-width: 100%;
-  }
-  .special-instructions-details {
-    textarea {
-      height: calc(100% - 25px);
-    }
-  }
-}
-
-.item-image {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 10px;
-}
-
-.empty-state-content {
-  margin-top: 30px;
-
-  &amp;.small-cart {
-    margin-top: 0px;
-    padding: 10px 20px;
-  }
-
-  .fa-shopping-cart {
-    color: $gray-light;
-    font-size: 80px;
-    display: block;
-    text-align: center;
-
-    &amp;.small-cart {
-      font-size: 40px;
-    }
-  }
-
-  .h3 {
-    text-align: center;
-    margin-bottom: 5px;
-  }
-  .h4 {
-    text-align: center;
-    margin-bottom: 5px;
-  }
-  p {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .btn {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 300px;
-    max-width: 100%;
-    margin-bottom: 35px;
-  }
-}
-
-.large-checkout {
-  display: inline-block;
-  float: none !important;
-  width: 100%;
-  margin-top: 15px;
-}
-
-.item-row:hover .btn-clear {
-  background-color: #f5f5f5;
-}
-
-.sc-btn {
-  margin-bottom: 10px;
-}
-.sc-btn-group {
-  clear: right;
-}
-
-.sc-remove-btn {
-  &amp;:hover {
-    background-color: $danger;
-    color: #fff;
-    border-color: darken($danger, 10%);
-  }
-}
-
-.btn-group-justified &gt; .btn-group {
-  padding: 0 5px;
-
-  .btn {
-    border-radius: 4px !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
-.cart-table {
-  th {
-    position: sticky;
-    -webkit-position: sticky;
-    top: -1px;
-    z-index: 10;
-    background-color: $panel-bg;
-    box-shadow: 0px 1px 0px $panel-inner-border;
-  }
-}
-
-@media only screen and (max-width : 992px) {
-  .sc-btn, .sc-btn-group {
-    width: 100%;
-  }
-  .item-image {
-    max-width: 70px;
-  }
-}
-
-.without_notification {
-  padding: 30px 0;
-  font-size: 30px;
-}
-
-.content_modal_requests {
-  .modal-body{
-    overflow: auto !important;
-    border: 20px solid white;
-    padding-left: 50px !important;
-    .wrapper-xl {
-      padding: 50px 0 0 50px !important;
-      margin-right: -20px;
-    }
-    button{
-      text-align: right;
-      font-size: 42px;
-    }
-    .justify-text{
-      color: $deep-sky-blue;
-      font-size: 36px;
-      padding-bottom: 15px;
-      margin-bottom: 5px;
-    }
-    .no-text-answer{
-      font-size: 16px;
-      color: lightcoral;
-      padding: 2px;
-    }
-    .form-group{
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-
-      textarea{
-        margin-top: 5px;
-        margin-right: 10% !important;
-        resize: none;
-        overflow: hidden;
-        height: 140px;
-        width: 90%;
-        overflow-wrap: break-word;
-        border: solid 3px $deep-sky-blue;
-      }
-    }
-    .resize-img{
-      height: 70px;
-      margin-top: 25px;
-      margin-left: -110%;
-    }
-  }
-}
-
-/* Custom Checkout */
-.panel {
-  padding: 30px 100px;
-  box-shadow: 0 0 0 0;
-  -webkit-box-shadow: 0 0 0 0;
-}
-
-.survey_accept {
-  .panel {
-    padding: 0 !important;
-  }
-}
-
-/* Table */
-.h3 {
-  font-size: 28px;
-  color: $dodger-blue;
-  margin-top: 20px !important;
-  margin-bottom: 30px;
-}
-.b-b {
-  border-bottom: 2px solid $slate-gray;
-}
-.b-t {
-  border: 0;
-}
-thead {
-  color: $slate-gray;
-  font-family: $text-bolder;
-  font-size: 12px;
-}
-.table &gt; thead &gt; tr &gt; th {
-  border: 0;
-  vertical-align: middle;
-  padding: 15px 0 !important;
-}
-.table-hover &gt; tbody &gt; tr:hover {
-  background-color: white;
-}
-tbody {
-  img {
-    width: 50px;
-    height: 50px;
-  }
-
-  td:nth-child(1) {
-    width: 20%;
-    padding: 20px 0;
-  }
-
-  td:nth-child(2) {
-    width: 20%;
-    padding: 20px;
-  }
-
-  td:nth-child(3) {
-    width: 25%;
-  }
-
-  td:nth-child(4) {
-    width: 5%;
-    padding: 20px 0;
-  }
-
-  td:nth-child(5) {
-    width: 30%;
-    padding: 20px 0;
-
-    .request_button {
-      margin-right: 50px;
-    }
-  }
-
-}
-
-/* PAGE 1 - My Requests */
-.content_my_requests {
-  .buttons {
-    position: relative;
-
-    &amp;:hover {
-      .tooltip {
-        visibility: visible;
-        opacity: 1;
-      }
-    }
-    .tooltip_right {
-      top: calc(50% - 15px);
-      left: 60px;
-    }
-    .tooltip_bottom {
-      bottom: -41px;
-      left: -34px;
-    }
-    .arrow_bottom {
-      position: absolute !important;
-      top: 27px !important;
-    }
-  }
-}
-.center-loading {
-  position: relative;
-  left: 50%;
-  .sp-loading-indicator{
-    color: $deep-sky-blue !important;
-  }
-}
-
-.filter-padding{
-  padding: 10px 0 !important;
-}
-
-.thead_myrequests {
-  border-top: 2px solid $slate-gray;
-}
-.column_product {
-  .number_text {
-    text-transform: uppercase;
-  }
-  .item_text {
-    font-family: $text-bold;
-    font-size: 18px;
-    line-height: 1;
-  }
-  .follow_up_properties{
-    font-size: 10px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: $deep-sky-blue;
-
-    &amp;:hover {
-      .tooltip{
-        visibility: visible;
-        opacity: 1;
-      }
-    }
-    .tooltip_bottom{
-      align-items: flex-start;
-    }
-    .tooltip_arrow{
-      margin-left: 40px;
-    }
-  }
-  .more_detail {
-    text-decoration: underline;
-    font-size: 12px;
-  }
-}
-.column_status {
-  .service_title {
-    text-transform: uppercase;
-    font-family: $text-bold;
-    font-size: 12px;
-
-    .tooltip, .tooltip_{
-      position: relative !important;
-      margin-right: 50% !important;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-    }
-
-    &amp;:hover {
-      .tooltip, .tooltip_ {
-        visibility: visible;
-        opacity: 1;
-      }
-    }
-    .tooltip_right {
-      top: calc(50% - 15px);
-      left: 60px;
-    }
-    .tooltip_bottom {
-      bottom: -41px;
-      left: -34px;
-    }
-    .arrow_bottom {
-      position: absolute !important;
-      top: 27px !important;
-    }
-  }
-  .pending {
-    color: $coral !important;
-  }
-  .inProgress {
-    color: $yellow-green;
-  }
-  .resolved {
-    color: $deep-sky-blue;
-  }
-}
-.column_opened {
-  .item_opened {
-    font-size: 12px;
-  }
-}
-.column_sla {
-  .sla_description {
-    font-size: 12px;
-  }
-}
-.column_buttons {
-  position: relative;
-  display: flex;
-  border: 0;
-
-  .disable_buttons {    
-    width: 241px;
-    height: 72px;
-    background-color: white;
-    position: absolute;
-    z-index: 1040;
-    opacity: 0;
-  }
-
-  img {
-    width: 50px;
-    height: 50px;
-    margin-right: 20px !important;
-  }
-  img:last-child {
-    margin-right: 0 !important;
-  }
-}
-.process_flow {
-  position: relative;
-
-  .process_flow_title {
-    text-transform: uppercase;
-    font-family: $text-bolder;
-    margin-bottom: 20px;
-  }
-  .line_flow {
-    background-color: $slate-gray;
-    width: 2px;
-    height: 70%;
-    left: 29px;
-    z-index: 1;
-    position: absolute;
-  } 
-  .items_flow {
-    text-transform: uppercase;
-    font-family: $text-bolder;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    z-index: 2;
-    position: inherit;
-
-    .status_flow {
-      width: 30px;
-      height: 30px;
-      font-size: 18px;
-      border-radius: 15px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-right: 15px;
-    }
-    .status_flow_completed {
-      color: white;
-      background-color: $slate-gray;
-    }
-    .status_flow_active {
-      color: white;
-      background-color: $deep-sky-blue;
-    }
-    .status_flow_empty {
-      color: $slate-gray;
-      background-color: white;
-      border: 2px solid $slate-gray;
-    }
-    .status_active {
-      color: $deep-sky-blue;
-    }
-  }
-}
-
-/* PAGE 2 - Notifications */
-.content_notification {
-  .header_message {
-    padding: 20px 0;
-    font-family: $text-bold;
-    font-size: 18px;
-    line-height: 1;
-    border-bottom: 2px solid $deep-sky-blue;
-  }
-  .widget_notifications {
-    overflow: auto;
-
-    .border-notification {
-      padding: 20px 0;
-      border-bottom: 2px solid $slate-gray;
-    }
-  }
-
-  .close {
-    font-size: 36px;
-    font-family: $text-light;
-    margin-right: 20px;
-    margin-top: 15px;
-  }
-  .modal-body {
-    padding: 60px 100px;
-
-    .modal-title {
-      color: $deep-sky-blue;
-      font-size: 30px;
-    }
-    .modal-description {
-      font-size: 24px;
-      font-family: $text-bold;
-    }
-  }
-  .form-control {
-    width: 329px !important;
-  }
-}
-
-/* PAGE 3 - APPROVALS */
-.approval_content {
-  .approval_column_title{
-    h4 {
-      margin: 4px 0 0 0 !important;
-    }
-    .approval_number{
-      font-size: 16px;
-    }
-    .approval_title{
-      font-family: $text-bold;
-    }
-    .approval_more-details{
-      font-size: 12px;
-      text-decoration: underline;
-      color: $slate-gray;
-      cursor: pointer;
-    }
-  }
-  .approval_column_requester{
-    padding-left: 10px !important;
-    .info-size{
-      height: 20px;
-      width: 20px;
-      margin-left: 10px;
-      margin-top: -5px;
-      cursor: pointer;
-    }
-  }
-  .approval_column_opened{
-    padding-left: 20px !important;
-
-  }
-  .approval_column_forecast{
-    padding-left: 12px !important;
-
-  }
-  .approvals-buttons{
-    .submit-button{
-      margin-left: 20px;
-    }
-    .cancel-button{
-      margin-left: 15%;;
-    }
-  }
-  .modal-body{
-    overflow: hidden !important;
-    border: 20px solid white;
-    padding-left: 50px !important;
-    .wrapper-xl {
-      padding: 50px 0 0 50px !important;
-      margin-right: -20px;
-    }
-    button{
-      text-align: right;
-      font-size: 42px;
-    }
-    .justify-text{
-      color: $deep-sky-blue;
-      font-size: 36px;
-      padding-bottom: 15px;
-      margin-bottom: 5px;
-    }
-    .no-text-answer{
-      font-size: 16px;
-      color: lightcoral;
-      padding: 2px;
-    }
-    .form-group{
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      textarea{
-        margin-top: 5px;
-        margin-right: 10% !important;
-        resize: none;
-        overflow: hidden;
-        height: 140px;
-        width: 90%;
-        overflow-wrap: break-word;
-        border: solid 3px $deep-sky-blue;
-      }
-    }
-    .resize-img{
-      height: 70px;
-      margin-top: 25px;
-      margin-left: -110%;
-    }
-  }
-}
-
-/* PAGE 4 */
-.assets_content {
-  .column_name {
-    .asset_name {
-      font-size: 18px;
-      font-family: $text-bold;
-    }
-  }
-  .service_title {
-    font-size: 12px;
-    color: $slate-gray;
-  }
-}
-
-/* PAGE 5 */
-.page_description {
-  border-bottom: 2px solid $slate-gray;
-  padding: 20px;
-  font-family: $text-bold;
-  font-size: 16px;
-  line-height: 1;
-}
-.column_category {
-  text-align: center;
-
-  h4 {
-    text-transform: uppercase;
-    font-size: 14px;
-    font-family: $text-bolder;
-    color: $dodger-blue;
-    width: 130px;
-    margin: 0 auto;
-    margin-top: 5px;
-  }
-}
-.column_service {
-  color: $dodger-blue;
-
-  .service_title {
-    font-size: 12px;
-    text-transform: uppercase;
-  }
-  .service_description {
-    font-size: 14px;
-    font-weight: bold;
-  }
-}
-.column_description {
-  .description {
-    font-size: 12px;
-  }
-}
-.column_sla {
-  .sla_text {
-    font-size: 12px;
-  }
-}
-
-.content_pagination {
-  .pag_arrow_left {
-    img {
-      transform: rotate(90deg);
-    }
-  }
-  .pag_arrow_right {
-    img {
-      margin-left: 25px;
-      transform: rotate(-90deg);
-    }
-  }
-  .pag_arrow_left, .pag_arrow_right {
-    img {
-      height: 14px;
-      margin-top: -4px;
-    }
-  }
-  .pag_text {
-    font-family: $text-bold;
-    text-transform: uppercase;
-    margin-left: 25px;
-  }
-}
-
-
-.footer_checkout {
-
-  .continue_shopping {
-    color: $slate-gray;
-    font-size: 10px;
-    font-weight: bold;
-    text-decoration: underline;
-    text-transform: uppercase;
-    padding: 20px 0 !important;
-  }
-
-  .submit_button {
-    .submit_button_content {
-      display: flex;
-      align-items: center;
-
-      .submit_img {
-        width: 50px;
-        height: 50px;
-        margin-right: 5px;
-      }
-      .submit_title {
-        font-size: 20px;
-        font-weight: bold;
-        line-height: 1;
-        color: $dodger-blue;
-        width: 90px;
-      }
-    }
-  }
-}
-
-.empty_content {
-  background-color: white;
-  padding: 30px 100px;
-  padding-bottom: 330px;
-  font-size: 30px;
-
-  .empty_title {
-    color: $dodger-blue;
-    margin-bottom: 30px;
-  }
-}
-
-.column_content {
-  img {
-    height: 10px;
-    position: relative;
-    top: -2px;
-    right: -2px;
-  }
-  .invert-arrow{
-    transform: rotateX(180deg);
-  }
-}
-
-.content_conversation {
-  width: 100%;
-  .turn_bold{ font-weight: bold; }
-  .pending { color: $coral !important; }
-  .inProgress { color: $yellow-green; }
-  .resolved { color: $deep-sky-blue; }
-}
-
-.buttons {
-  img { transition: .4s ease-in-out; }
-  &amp;:hover {
-    img {
-      transition: .2s ease-in-out;
-      transform: scale(1.1);
-      -webkit-transform: scale(1.1);
-      -ms-transform: scale(1.1);
-      -moz-transform: scale(1.1);
-      -o-transform: scale(1.1);
-    }
-  }
-}
-
-.modal_reopen {
-  .modal_title {
-    font-size: 32px;
-    color: #00BFFF;
-    font-family: $text-bold;
-  }
-  .reason {
-    color: $slate-gray;
-    margin-bottom: 15px;
-    font-size: 18px;
-    margin-bottom: 20px;
-    font-family: $text-bold;
-  }
-  .mandatory_message {
-    color: $coral;
-    font-family: $text-bold;
-  }
-  label {
-    margin-bottom: 10px;
-    color: gray;
-    font-family: $text-rough;
-  }
-  textarea {
-    border: 2px solid $deep-sky-blue;
-    margin-top: 10px;
-    margin-bottom: 30px;
-    min-height: 100px;
-  }
-  .btn_submit {
-    display: flex;
-    justify-content: flex-end;
-  }
-  img {
-    width: 60px;
-    height: 60px;
-  }
-}
-
-.modal_ritm_details{
-  .modal-dialog{
-    overflow-y: initial !important
-  }
-  .modal-body{
-    overflow-y: auto;
-  }
-  .modal-body .close {
-    top: 10px !important;
-    right: 18px !important;
-  }
-}
-
-.content_service_pack {
-  .pack_title {
-    font-size: 14px;
-    text-transform: uppercase;
-    font-family: $text-bolder;
-    margin-bottom: 20px;
-  }
-  .table_pack {
-    display: flex;
-
-    .column_items, .column_state {
-      font-size: 12px;
-    }
-
-    .column_items {
-      width: 20%;
-      margin-bottom: 10px;
-
-      .item_title {
-        transition: .2s ease-in-out;
-        font-size: 16px;
-        text-decoration: underline;
-        font-family: $text-bold;
-
-        &amp;:hover {
-          transition: .2s ease-in-out;
-          opacity: .7;
-        }
-      }
-    }
-    .column_state {
-      width: 80%;
-      text-transform: uppercase;
-    }
-  }
-}
-
-.modal .modal-content .modal-body {
-  max-height: 510px !important;
-}
-
-@media only screen and (max-width: 768px) {
-  .content_request {
-    margin-top: 15px;
-    
-    .title_category, .content_body_req {
-      padding: 0 20px !important;
-    }
-  }
-
-  table {
-    thead {
-      th { font-size: 12px !important; }
-
-      th:nth-child(3), th:nth-child(4) {
-        display: none;
-      }
-    }
-    tbody {
-      td {
-        font-size: 12px !important;
-        div { font-size: 12px !important; }
-      }
-      td:nth-child(1), td:nth-child(2) {
-        width: 40%;
-      }
-      td:nth-child(3), td:nth-child(4) {
-        display: none;
-      }
-      td:nth-child(5) {
-        width: 20%;
-      }
-    }
-  }
-
-  .conversation_form{
-    textarea{ width: 180px; }
-  }
-  .content_attach {
-    .attach_left{
-      width: 100% !important;
-      img {
-        width: 180px !important;
-        height: 110px !important;
-      }
-    }
-    .attach_right {
-      display: none;
-    }
-  }
-  .modal-body .wrapper-xl{
-    padding: 20px!important;
-  }
-  .column_buttons {
-    flex-direction: column;
-    img { margin-bottom: 5px !important; }
-  }
-
-}</css>
+        <css>.feed{&#13;
+    color:#33ccff;&#13;
+    Width:200px;&#13;
+}&#13;
+.content_request {&#13;
+  background-color: white;&#13;
+  padding: 30px 0;&#13;
+  padding-bottom: 10px;&#13;
+  margin-bottom: 15px;&#13;
+&#13;
+  .title_category {&#13;
+    transition: .2s ease-in-out;&#13;
+    color: $deep-sky-blue;&#13;
+    text-transform: uppercase;&#13;
+    font-size: 22px;&#13;
+    margin-bottom: 15px;&#13;
+    padding: 0 90px;&#13;
+&#13;
+    .invert-arrow {&#13;
+      transition: .8s ease-in-out;&#13;
+      transform: rotate(180deg);&#13;
+    }&#13;
+    img {&#13;
+      transition: .8s ease-in-out;&#13;
+      margin-top: -4px;&#13;
+      margin-left: 8px;&#13;
+      width: 16px;&#13;
+    }&#13;
+&#13;
+    &amp;:hover {&#13;
+      transition: .2s ease-in-out;&#13;
+      transform: translate(0, -5px);&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .content_body_mask {&#13;
+    overflow: hidden;&#13;
+&#13;
+    .content_body_req {&#13;
+      margin-top : -2000px;&#13;
+      transition: .8s ease-in-out;&#13;
+      padding: 0 90px;&#13;
+    }&#13;
+  }&#13;
+}&#13;
+.cart-mobile {&#13;
+  border: 0;&#13;
+  box-shadow: none;&#13;
+&#13;
+  .cart-header {&#13;
+    display: flex;&#13;
+    justify-content: space-between;&#13;
+    margin-bottom: 20px;&#13;
+&#13;
+    a {&#13;
+      text-align: right;&#13;
+      display: block !important;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .cart-item-mobile-info {&#13;
+    display: flex;&#13;
+    flex-direction: row;&#13;
+    align-items: center;&#13;
+    justify-content: space-between;&#13;
+    padding: 5px 10px 20px 10px;&#13;
+&#13;
+    .item-info {&#13;
+      display: flex;&#13;
+      flex-direction: column;&#13;
+    }&#13;
+    .item-image {&#13;
+      margin: 0;&#13;
+    }&#13;
+    a {&#13;
+      float: none;&#13;
+      text-align: center;&#13;
+    }&#13;
+    select {&#13;
+      margin-top: 10px;&#13;
+      padding: 0px 5px;&#13;
+      text-align-last: center;&#13;
+    }&#13;
+  }  &#13;
+}&#13;
+&#13;
+td {&#13;
+  vertical-align: middle !important;&#13;
+}&#13;
+&#13;
+.a-disabled {&#13;
+  cursor: default;&#13;
+  color: $btn-link-disabled-color;&#13;
+}&#13;
+&#13;
+.media-body {&#13;
+  .btn-link {&#13;
+    padding-left: 0;&#13;
+    padding-right: 0;&#13;
+    color: $primary;&#13;
+&#13;
+    &amp;:hover {&#13;
+      color: darken($primary, 10%);&#13;
+    }&#13;
+&#13;
+    &amp;:focus {&#13;
+      color: darken($primary, 10%);&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.btn-remove {&#13;
+  font-size: 18px !important;&#13;
+}&#13;
+&#13;
+.action-btn {&#13;
+  display: block;&#13;
+  width: 100%;&#13;
+  margin-top: 5px;&#13;
+&#13;
+  &amp;.btn-link {&#13;
+    color: $primary;&#13;
+  }&#13;
+}&#13;
+&#13;
+.list-group {&#13;
+  max-height: 250px;&#13;
+  overflow-y: auto;&#13;
+}&#13;
+&#13;
+.list-group-item.ng-enter {&#13;
+  transition: all 1s;&#13;
+  -webkit-transition: all 1s;&#13;
+  background-color: #c0dcfa;&#13;
+}&#13;
+&#13;
+.list-group-item.ng-enter-active {&#13;
+  background-color: #fff;&#13;
+}&#13;
+&#13;
+.empty-cart {&#13;
+  font-style: italic;&#13;
+  text-align: center;&#13;
+  margin-top: 10px;&#13;
+  margin-bottom: 7px;&#13;
+}&#13;
+&#13;
+.view-carts-link {&#13;
+  text-align: center;&#13;
+  display: block;&#13;
+}&#13;
+&#13;
+.order-details-container {&#13;
+  display: flex;&#13;
+  flex-direction: row;&#13;
+  flex-wrap: wrap;&#13;
+  margin: 5px 10px 10px 10px;&#13;
+&#13;
+  .order-details {&#13;
+    padding: 5px;&#13;
+&#13;
+    textarea {&#13;
+      resize: none;&#13;
+      flex-basis: 100%;&#13;
+      flex-shrink: 1;&#13;
+      width: 100%;&#13;
+      box-sizing: border-box;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .requested-for-details {&#13;
+    flex: 1 0 auto;&#13;
+    max-width: 100%;&#13;
+  }&#13;
+  .special-instructions-details {&#13;
+    textarea {&#13;
+      height: calc(100% - 25px);&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.item-image {&#13;
+  margin-left: auto;&#13;
+  margin-right: auto;&#13;
+  margin-top: 10px;&#13;
+}&#13;
+&#13;
+.empty-state-content {&#13;
+  margin-top: 30px;&#13;
+&#13;
+  &amp;.small-cart {&#13;
+    margin-top: 0px;&#13;
+    padding: 10px 20px;&#13;
+  }&#13;
+&#13;
+  .fa-shopping-cart {&#13;
+    color: $gray-light;&#13;
+    font-size: 80px;&#13;
+    display: block;&#13;
+    text-align: center;&#13;
+&#13;
+    &amp;.small-cart {&#13;
+      font-size: 40px;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .h3 {&#13;
+    text-align: center;&#13;
+    margin-bottom: 5px;&#13;
+  }&#13;
+  .h4 {&#13;
+    text-align: center;&#13;
+    margin-bottom: 5px;&#13;
+  }&#13;
+  p {&#13;
+    text-align: center;&#13;
+    margin-bottom: 20px;&#13;
+  }&#13;
+&#13;
+  .btn {&#13;
+    display: block;&#13;
+    margin-left: auto;&#13;
+    margin-right: auto;&#13;
+    width: 300px;&#13;
+    max-width: 100%;&#13;
+    margin-bottom: 35px;&#13;
+  }&#13;
+}&#13;
+&#13;
+.large-checkout {&#13;
+  display: inline-block;&#13;
+  float: none !important;&#13;
+  width: 100%;&#13;
+  margin-top: 15px;&#13;
+}&#13;
+&#13;
+.item-row:hover .btn-clear {&#13;
+  background-color: #f5f5f5;&#13;
+}&#13;
+&#13;
+.sc-btn {&#13;
+  margin-bottom: 10px;&#13;
+}&#13;
+.sc-btn-group {&#13;
+  clear: right;&#13;
+}&#13;
+&#13;
+.sc-remove-btn {&#13;
+  &amp;:hover {&#13;
+    background-color: $danger;&#13;
+    color: #fff;&#13;
+    border-color: darken($danger, 10%);&#13;
+  }&#13;
+}&#13;
+&#13;
+.btn-group-justified &gt; .btn-group {&#13;
+  padding: 0 5px;&#13;
+&#13;
+  .btn {&#13;
+    border-radius: 4px !important;&#13;
+    white-space: nowrap;&#13;
+    overflow: hidden;&#13;
+    text-overflow: ellipsis;&#13;
+  }&#13;
+}&#13;
+&#13;
+.cart-table {&#13;
+  th {&#13;
+    position: sticky;&#13;
+    -webkit-position: sticky;&#13;
+    top: -1px;&#13;
+    z-index: 10;&#13;
+    background-color: $panel-bg;&#13;
+    box-shadow: 0px 1px 0px $panel-inner-border;&#13;
+  }&#13;
+}&#13;
+&#13;
+@media only screen and (max-width : 992px) {&#13;
+  .sc-btn, .sc-btn-group {&#13;
+    width: 100%;&#13;
+  }&#13;
+  .item-image {&#13;
+    max-width: 70px;&#13;
+  }&#13;
+}&#13;
+&#13;
+.without_notification {&#13;
+  padding: 30px 0;&#13;
+  font-size: 30px;&#13;
+}&#13;
+&#13;
+.content_modal_requests {&#13;
+  .modal-body{&#13;
+    overflow: auto !important;&#13;
+    border: 20px solid white;&#13;
+    padding-left: 50px !important;&#13;
+    .wrapper-xl {&#13;
+      padding: 50px 0 0 50px !important;&#13;
+      margin-right: -20px;&#13;
+    }&#13;
+    button{&#13;
+      text-align: right;&#13;
+      font-size: 42px;&#13;
+    }&#13;
+    .justify-text{&#13;
+      color: $deep-sky-blue;&#13;
+      font-size: 36px;&#13;
+      padding-bottom: 15px;&#13;
+      margin-bottom: 5px;&#13;
+    }&#13;
+    .no-text-answer{&#13;
+      font-size: 16px;&#13;
+      color: lightcoral;&#13;
+      padding: 2px;&#13;
+    }&#13;
+    .form-group{&#13;
+      display: flex;&#13;
+      flex-direction: column;&#13;
+      align-items: flex-end;&#13;
+&#13;
+      textarea{&#13;
+        margin-top: 5px;&#13;
+        margin-right: 10% !important;&#13;
+        resize: none;&#13;
+        overflow: hidden;&#13;
+        height: 140px;&#13;
+        width: 90%;&#13;
+        overflow-wrap: break-word;&#13;
+        border: solid 3px $deep-sky-blue;&#13;
+      }&#13;
+    }&#13;
+    .resize-img{&#13;
+      height: 70px;&#13;
+      margin-top: 25px;&#13;
+      margin-left: -110%;&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+/* Custom Checkout */&#13;
+.panel {&#13;
+  padding: 30px 100px;&#13;
+  box-shadow: 0 0 0 0;&#13;
+  -webkit-box-shadow: 0 0 0 0;&#13;
+}&#13;
+&#13;
+.survey_accept {&#13;
+  .panel {&#13;
+    padding: 0 !important;&#13;
+  }&#13;
+}&#13;
+&#13;
+/* Table */&#13;
+.h3 {&#13;
+  font-size: 28px;&#13;
+  color: $dodger-blue;&#13;
+  margin-top: 20px !important;&#13;
+  margin-bottom: 30px;&#13;
+}&#13;
+.b-b {&#13;
+  border-bottom: 2px solid $slate-gray;&#13;
+}&#13;
+.b-t {&#13;
+  border: 0;&#13;
+}&#13;
+thead {&#13;
+  color: $slate-gray;&#13;
+  font-family: $text-bolder;&#13;
+  font-size: 12px;&#13;
+}&#13;
+.table &gt; thead &gt; tr &gt; th {&#13;
+  border: 0;&#13;
+  vertical-align: middle;&#13;
+  padding: 15px 0 !important;&#13;
+}&#13;
+.table-hover &gt; tbody &gt; tr:hover {&#13;
+  background-color: white;&#13;
+}&#13;
+tbody {&#13;
+  img {&#13;
+    width: 50px;&#13;
+    height: 50px;&#13;
+  }&#13;
+&#13;
+  td:nth-child(1) {&#13;
+    width: 20%;&#13;
+    padding: 20px 0;&#13;
+  }&#13;
+&#13;
+  td:nth-child(2) {&#13;
+    width: 20%;&#13;
+    padding: 20px;&#13;
+  }&#13;
+&#13;
+  td:nth-child(3) {&#13;
+    width: 25%;&#13;
+  }&#13;
+&#13;
+  td:nth-child(4) {&#13;
+    width: 5%;&#13;
+    padding: 20px 0;&#13;
+  }&#13;
+&#13;
+  td:nth-child(5) {&#13;
+    width: 30%;&#13;
+    padding: 20px 0;&#13;
+&#13;
+    .request_button {&#13;
+      margin-right: 50px;&#13;
+    }&#13;
+  }&#13;
+&#13;
+}&#13;
+&#13;
+/* PAGE 1 - My Requests */&#13;
+.content_my_requests {&#13;
+  .buttons {&#13;
+    position: relative;&#13;
+&#13;
+    &amp;:hover {&#13;
+      .tooltip {&#13;
+        visibility: visible;&#13;
+        opacity: 1;&#13;
+      }&#13;
+    }&#13;
+    .tooltip_right {&#13;
+      top: calc(50% - 15px);&#13;
+      left: 60px;&#13;
+    }&#13;
+    .tooltip_bottom {&#13;
+      bottom: -41px;&#13;
+      left: -34px;&#13;
+    }&#13;
+    .arrow_bottom {&#13;
+      position: absolute !important;&#13;
+      top: 27px !important;&#13;
+    }&#13;
+  }&#13;
+}&#13;
+.center-loading {&#13;
+  position: relative;&#13;
+  left: 50%;&#13;
+  .sp-loading-indicator{&#13;
+    color: $deep-sky-blue !important;&#13;
+  }&#13;
+}&#13;
+&#13;
+.filter-padding{&#13;
+  padding: 10px 0 !important;&#13;
+}&#13;
+&#13;
+.thead_myrequests {&#13;
+  border-top: 2px solid $slate-gray;&#13;
+}&#13;
+.column_product {&#13;
+  .number_text {&#13;
+    text-transform: uppercase;&#13;
+  }&#13;
+  .item_text {&#13;
+    font-family: $text-bold;&#13;
+    font-size: 18px;&#13;
+    line-height: 1;&#13;
+  }&#13;
+  .follow_up_properties{&#13;
+    font-size: 10px;&#13;
+    font-weight: bold;&#13;
+    text-transform: uppercase;&#13;
+    color: $deep-sky-blue;&#13;
+&#13;
+    &amp;:hover {&#13;
+      .tooltip{&#13;
+        visibility: visible;&#13;
+        opacity: 1;&#13;
+      }&#13;
+    }&#13;
+    .tooltip_bottom{&#13;
+      align-items: flex-start;&#13;
+    }&#13;
+    .tooltip_arrow{&#13;
+      margin-left: 40px;&#13;
+    }&#13;
+  }&#13;
+  .more_detail {&#13;
+    text-decoration: underline;&#13;
+    font-size: 12px;&#13;
+  }&#13;
+}&#13;
+.column_status {&#13;
+  .service_title {&#13;
+    text-transform: uppercase;&#13;
+    font-family: $text-bold;&#13;
+    font-size: 12px;&#13;
+&#13;
+    .tooltip, .tooltip_{&#13;
+      position: relative !important;&#13;
+      margin-right: 50% !important;&#13;
+      top: 0;&#13;
+      left: 0;&#13;
+      right: 0;&#13;
+      bottom: 0;&#13;
+    }&#13;
+&#13;
+    &amp;:hover {&#13;
+      .tooltip, .tooltip_ {&#13;
+        visibility: visible;&#13;
+        opacity: 1;&#13;
+      }&#13;
+    }&#13;
+    .tooltip_right {&#13;
+      top: calc(50% - 15px);&#13;
+      left: 60px;&#13;
+    }&#13;
+    .tooltip_bottom {&#13;
+      bottom: -41px;&#13;
+      left: -34px;&#13;
+    }&#13;
+    .arrow_bottom {&#13;
+      position: absolute !important;&#13;
+      top: 27px !important;&#13;
+    }&#13;
+  }&#13;
+  .pending {&#13;
+    color: $coral !important;&#13;
+  }&#13;
+  .inProgress {&#13;
+    color: $yellow-green;&#13;
+  }&#13;
+  .resolved {&#13;
+    color: $deep-sky-blue;&#13;
+  }&#13;
+}&#13;
+.column_opened {&#13;
+  .item_opened {&#13;
+    font-size: 12px;&#13;
+  }&#13;
+}&#13;
+.column_sla {&#13;
+  .sla_description {&#13;
+    font-size: 12px;&#13;
+  }&#13;
+}&#13;
+.column_buttons {&#13;
+  position: relative;&#13;
+  display: flex;&#13;
+  border: 0;&#13;
+&#13;
+  .disable_buttons {    &#13;
+    width: 241px;&#13;
+    height: 72px;&#13;
+    background-color: white;&#13;
+    position: absolute;&#13;
+    z-index: 1040;&#13;
+    opacity: 0;&#13;
+  }&#13;
+&#13;
+  img {&#13;
+    width: 50px;&#13;
+    height: 50px;&#13;
+    margin-right: 20px !important;&#13;
+  }&#13;
+  img:last-child {&#13;
+    margin-right: 0 !important;&#13;
+  }&#13;
+}&#13;
+.process_flow {&#13;
+  position: relative;&#13;
+&#13;
+  .process_flow_title {&#13;
+    text-transform: uppercase;&#13;
+    font-family: $text-bolder;&#13;
+    margin-bottom: 20px;&#13;
+  }&#13;
+  .line_flow {&#13;
+    background-color: $slate-gray;&#13;
+    width: 2px;&#13;
+    height: 70%;&#13;
+    left: 29px;&#13;
+    z-index: 1;&#13;
+    position: absolute;&#13;
+  } &#13;
+  .items_flow {&#13;
+    text-transform: uppercase;&#13;
+    font-family: $text-bolder;&#13;
+    margin-bottom: 20px;&#13;
+    display: flex;&#13;
+    align-items: center;&#13;
+    z-index: 2;&#13;
+    position: inherit;&#13;
+&#13;
+    .status_flow {&#13;
+      width: 30px;&#13;
+      height: 30px;&#13;
+      font-size: 18px;&#13;
+      border-radius: 15px;&#13;
+      display: flex;&#13;
+      justify-content: center;&#13;
+      align-items: center;&#13;
+      margin-right: 15px;&#13;
+    }&#13;
+    .status_flow_completed {&#13;
+      color: white;&#13;
+      background-color: $slate-gray;&#13;
+    }&#13;
+    .status_flow_active {&#13;
+      color: white;&#13;
+      background-color: $deep-sky-blue;&#13;
+    }&#13;
+    .status_flow_empty {&#13;
+      color: $slate-gray;&#13;
+      background-color: white;&#13;
+      border: 2px solid $slate-gray;&#13;
+    }&#13;
+    .status_active {&#13;
+      color: $deep-sky-blue;&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+/* PAGE 2 - Notifications */&#13;
+.content_notification {&#13;
+  .header_message {&#13;
+    padding: 20px 0;&#13;
+    font-family: $text-bold;&#13;
+    font-size: 18px;&#13;
+    line-height: 1;&#13;
+    border-bottom: 2px solid $deep-sky-blue;&#13;
+  }&#13;
+  .widget_notifications {&#13;
+    overflow: auto;&#13;
+&#13;
+    .border-notification {&#13;
+      padding: 20px 0;&#13;
+      border-bottom: 2px solid $slate-gray;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .close {&#13;
+    font-size: 36px;&#13;
+    font-family: $text-light;&#13;
+    margin-right: 20px;&#13;
+    margin-top: 15px;&#13;
+  }&#13;
+  .modal-body {&#13;
+    padding: 60px 100px;&#13;
+&#13;
+    .modal-title {&#13;
+      color: $deep-sky-blue;&#13;
+      font-size: 30px;&#13;
+    }&#13;
+    .modal-description {&#13;
+      font-size: 24px;&#13;
+      font-family: $text-bold;&#13;
+    }&#13;
+  }&#13;
+  .form-control {&#13;
+    width: 329px !important;&#13;
+  }&#13;
+}&#13;
+&#13;
+/* PAGE 3 - APPROVALS */&#13;
+.approval_content {&#13;
+  .approval_column_title{&#13;
+    h4 {&#13;
+      margin: 4px 0 0 0 !important;&#13;
+    }&#13;
+    .approval_number{&#13;
+      font-size: 16px;&#13;
+    }&#13;
+    .approval_title{&#13;
+      font-family: $text-bold;&#13;
+    }&#13;
+    .approval_more-details{&#13;
+      font-size: 12px;&#13;
+      text-decoration: underline;&#13;
+      color: $slate-gray;&#13;
+      cursor: pointer;&#13;
+    }&#13;
+  }&#13;
+  .approval_column_requester{&#13;
+    padding-left: 10px !important;&#13;
+    .info-size{&#13;
+      height: 20px;&#13;
+      width: 20px;&#13;
+      margin-left: 10px;&#13;
+      margin-top: -5px;&#13;
+      cursor: pointer;&#13;
+    }&#13;
+  }&#13;
+  .approval_column_opened{&#13;
+    padding-left: 20px !important;&#13;
+&#13;
+  }&#13;
+  .approval_column_forecast{&#13;
+    padding-left: 12px !important;&#13;
+&#13;
+  }&#13;
+  .approvals-buttons{&#13;
+    .submit-button{&#13;
+      margin-left: 20px;&#13;
+    }&#13;
+    .cancel-button{&#13;
+      margin-left: 15%;;&#13;
+    }&#13;
+  }&#13;
+  .modal-body{&#13;
+    overflow: hidden !important;&#13;
+    border: 20px solid white;&#13;
+    padding-left: 50px !important;&#13;
+    .wrapper-xl {&#13;
+      padding: 50px 0 0 50px !important;&#13;
+      margin-right: -20px;&#13;
+    }&#13;
+    button{&#13;
+      text-align: right;&#13;
+      font-size: 42px;&#13;
+    }&#13;
+    .justify-text{&#13;
+      color: $deep-sky-blue;&#13;
+      font-size: 36px;&#13;
+      padding-bottom: 15px;&#13;
+      margin-bottom: 5px;&#13;
+    }&#13;
+    .no-text-answer{&#13;
+      font-size: 16px;&#13;
+      color: lightcoral;&#13;
+      padding: 2px;&#13;
+    }&#13;
+    .form-group{&#13;
+      display: flex;&#13;
+      flex-direction: column;&#13;
+      align-items: flex-end;&#13;
+      textarea{&#13;
+        margin-top: 5px;&#13;
+        margin-right: 10% !important;&#13;
+        resize: none;&#13;
+        overflow: hidden;&#13;
+        height: 140px;&#13;
+        width: 90%;&#13;
+        overflow-wrap: break-word;&#13;
+        border: solid 3px $deep-sky-blue;&#13;
+      }&#13;
+    }&#13;
+    .resize-img{&#13;
+      height: 70px;&#13;
+      margin-top: 25px;&#13;
+      margin-left: -110%;&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+/* PAGE 4 */&#13;
+.assets_content {&#13;
+  .column_name {&#13;
+    .asset_name {&#13;
+      font-size: 18px;&#13;
+      font-family: $text-bold;&#13;
+    }&#13;
+  }&#13;
+  .service_title {&#13;
+    font-size: 12px;&#13;
+    color: $slate-gray;&#13;
+  }&#13;
+}&#13;
+&#13;
+/* PAGE 5 */&#13;
+.page_description {&#13;
+  border-bottom: 2px solid $slate-gray;&#13;
+  padding: 20px;&#13;
+  font-family: $text-bold;&#13;
+  font-size: 16px;&#13;
+  line-height: 1;&#13;
+}&#13;
+.column_category {&#13;
+  text-align: center;&#13;
+&#13;
+  h4 {&#13;
+    text-transform: uppercase;&#13;
+    font-size: 14px;&#13;
+    font-family: $text-bolder;&#13;
+    color: $dodger-blue;&#13;
+    width: 130px;&#13;
+    margin: 0 auto;&#13;
+    margin-top: 5px;&#13;
+  }&#13;
+}&#13;
+.column_service {&#13;
+  color: $dodger-blue;&#13;
+&#13;
+  .service_title {&#13;
+    font-size: 12px;&#13;
+    text-transform: uppercase;&#13;
+  }&#13;
+  .service_description {&#13;
+    font-size: 14px;&#13;
+    font-weight: bold;&#13;
+  }&#13;
+}&#13;
+.column_description {&#13;
+  .description {&#13;
+    font-size: 12px;&#13;
+  }&#13;
+}&#13;
+.column_sla {&#13;
+  .sla_text {&#13;
+    font-size: 12px;&#13;
+  }&#13;
+}&#13;
+&#13;
+.content_pagination {&#13;
+  .pag_arrow_left {&#13;
+    img {&#13;
+      transform: rotate(90deg);&#13;
+    }&#13;
+  }&#13;
+  .pag_arrow_right {&#13;
+    img {&#13;
+      margin-left: 25px;&#13;
+      transform: rotate(-90deg);&#13;
+    }&#13;
+  }&#13;
+  .pag_arrow_left, .pag_arrow_right {&#13;
+    img {&#13;
+      height: 14px;&#13;
+      margin-top: -4px;&#13;
+    }&#13;
+  }&#13;
+  .pag_text {&#13;
+    font-family: $text-bold;&#13;
+    text-transform: uppercase;&#13;
+    margin-left: 25px;&#13;
+  }&#13;
+}&#13;
+&#13;
+&#13;
+.footer_checkout {&#13;
+&#13;
+  .continue_shopping {&#13;
+    color: $slate-gray;&#13;
+    font-size: 10px;&#13;
+    font-weight: bold;&#13;
+    text-decoration: underline;&#13;
+    text-transform: uppercase;&#13;
+    padding: 20px 0 !important;&#13;
+  }&#13;
+&#13;
+  .submit_button {&#13;
+    .submit_button_content {&#13;
+      display: flex;&#13;
+      align-items: center;&#13;
+&#13;
+      .submit_img {&#13;
+        width: 50px;&#13;
+        height: 50px;&#13;
+        margin-right: 5px;&#13;
+      }&#13;
+      .submit_title {&#13;
+        font-size: 20px;&#13;
+        font-weight: bold;&#13;
+        line-height: 1;&#13;
+        color: $dodger-blue;&#13;
+        width: 90px;&#13;
+      }&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.empty_content {&#13;
+  background-color: white;&#13;
+  padding: 30px 100px;&#13;
+  padding-bottom: 330px;&#13;
+  font-size: 30px;&#13;
+&#13;
+  .empty_title {&#13;
+    color: $dodger-blue;&#13;
+    margin-bottom: 30px;&#13;
+  }&#13;
+}&#13;
+&#13;
+.column_content {&#13;
+  img {&#13;
+    height: 10px;&#13;
+    position: relative;&#13;
+    top: -2px;&#13;
+    right: -2px;&#13;
+  }&#13;
+  .invert-arrow{&#13;
+    transform: rotateX(180deg);&#13;
+  }&#13;
+}&#13;
+&#13;
+.content_conversation {&#13;
+  width: 100%;&#13;
+  .turn_bold{ font-weight: bold; }&#13;
+  .pending { color: $coral !important; }&#13;
+  .inProgress { color: $yellow-green; }&#13;
+  .resolved { color: $deep-sky-blue; }&#13;
+}&#13;
+&#13;
+.buttons {&#13;
+  img { transition: .4s ease-in-out; }&#13;
+  &amp;:hover {&#13;
+    img {&#13;
+      transition: .2s ease-in-out;&#13;
+      transform: scale(1.1);&#13;
+      -webkit-transform: scale(1.1);&#13;
+      -ms-transform: scale(1.1);&#13;
+      -moz-transform: scale(1.1);&#13;
+      -o-transform: scale(1.1);&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.modal_reopen {&#13;
+  .modal_title {&#13;
+    font-size: 32px;&#13;
+    color: #00BFFF;&#13;
+    font-family: $text-bold;&#13;
+  }&#13;
+  .reason {&#13;
+    color: $slate-gray;&#13;
+    margin-bottom: 15px;&#13;
+    font-size: 18px;&#13;
+    margin-bottom: 20px;&#13;
+    font-family: $text-bold;&#13;
+  }&#13;
+  .mandatory_message {&#13;
+    color: $coral;&#13;
+    font-family: $text-bold;&#13;
+  }&#13;
+  label {&#13;
+    margin-bottom: 10px;&#13;
+    color: gray;&#13;
+    font-family: $text-rough;&#13;
+  }&#13;
+  textarea {&#13;
+    border: 2px solid $deep-sky-blue;&#13;
+    margin-top: 10px;&#13;
+    margin-bottom: 30px;&#13;
+    min-height: 100px;&#13;
+  }&#13;
+  .btn_submit {&#13;
+    display: flex;&#13;
+    justify-content: flex-end;&#13;
+  }&#13;
+  img {&#13;
+    width: 60px;&#13;
+    height: 60px;&#13;
+  }&#13;
+}&#13;
+&#13;
+.modal_ritm_details{&#13;
+  .modal-dialog{&#13;
+    overflow-y: initial !important&#13;
+  }&#13;
+  .modal-body{&#13;
+    overflow-y: auto;&#13;
+  }&#13;
+  .modal-body .close {&#13;
+    top: 10px !important;&#13;
+    right: 18px !important;&#13;
+  }&#13;
+}&#13;
+&#13;
+.content_service_pack {&#13;
+  .pack_title {&#13;
+    font-size: 14px;&#13;
+    text-transform: uppercase;&#13;
+    font-family: $text-bolder;&#13;
+    margin-bottom: 20px;&#13;
+  }&#13;
+  .table_pack {&#13;
+    display: flex;&#13;
+&#13;
+    .column_items, .column_state {&#13;
+      font-size: 12px;&#13;
+    }&#13;
+&#13;
+    .column_items {&#13;
+      width: 20%;&#13;
+      margin-bottom: 10px;&#13;
+&#13;
+      .item_title {&#13;
+        transition: .2s ease-in-out;&#13;
+        font-size: 16px;&#13;
+        text-decoration: underline;&#13;
+        font-family: $text-bold;&#13;
+&#13;
+        &amp;:hover {&#13;
+          transition: .2s ease-in-out;&#13;
+          opacity: .7;&#13;
+        }&#13;
+      }&#13;
+    }&#13;
+    .column_state {&#13;
+      width: 80%;&#13;
+      text-transform: uppercase;&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.modal .modal-content .modal-body {&#13;
+  max-height: 510px !important;&#13;
+}&#13;
+&#13;
+@media only screen and (max-width: 768px) {&#13;
+  .content_request {&#13;
+    margin-top: 15px;&#13;
+    &#13;
+    .title_category, .content_body_req {&#13;
+      padding: 0 20px !important;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  table {&#13;
+    thead {&#13;
+      th { font-size: 12px !important; }&#13;
+&#13;
+      th:nth-child(3), th:nth-child(4) {&#13;
+        display: none;&#13;
+      }&#13;
+    }&#13;
+    tbody {&#13;
+      td {&#13;
+        font-size: 12px !important;&#13;
+        div { font-size: 12px !important; }&#13;
+      }&#13;
+      td:nth-child(1), td:nth-child(2) {&#13;
+        width: 40%;&#13;
+      }&#13;
+      td:nth-child(3), td:nth-child(4) {&#13;
+        display: none;&#13;
+      }&#13;
+      td:nth-child(5) {&#13;
+        width: 20%;&#13;
+      }&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .conversation_form{&#13;
+    textarea{ width: 180px; }&#13;
+  }&#13;
+  .content_attach {&#13;
+    .attach_left{&#13;
+      width: 100% !important;&#13;
+      img {&#13;
+        width: 180px !important;&#13;
+        height: 110px !important;&#13;
+      }&#13;
+    }&#13;
+    .attach_right {&#13;
+      display: none;&#13;
+    }&#13;
+  }&#13;
+  .modal-body .wrapper-xl{&#13;
+    padding: 20px!important;&#13;
+  }&#13;
+  .column_buttons {&#13;
+    flex-direction: column;&#13;
+    img { margin-bottom: 5px !important; }&#13;
+  }&#13;
+&#13;
+}&#13;
+&#13;
+.column_stars{&#13;
+ 	width:100%;&#13;
+   margin-left:-100px;&#13;
+ box-sizing:border-box;&#13;
+}&#13;
+</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -1446,398 +1456,398 @@ tbody {
 		else {
 			contentBody.css("margin-top", 0);
 		}
-	}
+	};
 }]]></link>
         <name>GService My Dashboard Requests</name>
         <option_schema>[{"hint":"Selects the columns to show on the table","name":"table","section":"Presentation","label":"Table","type":"string"},{"name":"table_template","section":"Behavior","label":"Table Template","type":"string"}]</option_schema>
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
-	data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
-	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
-	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
-	var portalUtils = new global.OCLPortalUtils();
-	data.showRecordDetails = false;
-	data.requestsID = '';
-	data.showEmptyMessage = false;
+    data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
+    data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
+    var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+    var portalUtils = new global.OCLPortalUtils();
+    data.showRecordDetails = false;
+    data.requestsID = '';
+    data.showEmptyMessage = false;
 
-	data.show_survey = false;
+    data.show_survey = false;
 
-	data.msgs = {};
-	data.msgs.reject = gs.getMessage("Justifique sua resposta negativa");
-	data.msgs.cancel = gs.getMessage("Justifique o cancelamento");
+    data.msgs = {};
+    data.msgs.reject = gs.getMessage("Justifique sua resposta negativa");
+    data.msgs.cancel = gs.getMessage("Justifique o cancelamento");
 
-	data.statusFlow = [];
-	var statusFlow = gs.getProperty("gservice_list_filters_status").split("|");
-	
-	for(var i in statusFlow){
-		statusFlow[i].number = i + 1;
-		statusFlow[i].selected = false;
-		data.statusFlow.push(JSON.parse(statusFlow[i]));
-	}
-	
+    data.statusFlow = [];
+    var statusFlow = gs.getProperty("gservice_list_filters_status").split("|");
 
-	data.reopeningReason = [];
+    for (var i in statusFlow) {
+        statusFlow[i].number = i + 1;
+        statusFlow[i].selected = false;
+        data.statusFlow.push(JSON.parse(statusFlow[i]));
+    }
 
-	var grReopening = new GlideRecord("sys_choice");
-	grReopening.addEncodedQuery("nameSTARTSWITHsc_req_item^elementSTARTSWITHu_reopening_reason^language=pb");
-	grReopening.query();
-	while(grReopening.next()){
-		data.reopeningReason.push({label : grReopening.getDisplayValue("label"), value : grReopening.getDisplayValue("value"),
-															 selected: false});
-	}
+    data.reopeningReason = [];
 
-	//Used to get the current user sys_id
-	var userID = gs.getUser().getID();
-	data.user_id = userID;
+    var grReopening = new GlideRecord("sys_choice");
+    grReopening.addEncodedQuery("nameSTARTSWITHsc_req_item^elementSTARTSWITHu_reopening_reason^language=pb");
+    grReopening.query();
+    while (grReopening.next()) {
+        data.reopeningReason.push({
+            label: grReopening.getDisplayValue("label"),
+            value: grReopening.getDisplayValue("value"),
+            selected: false
+        });
+    }
 
-	data.filter = false;
-	//Get the columns (from property) to show upside the requests
-	data.columns = [];
-	data.order = "opened_at";
-	data.direction = -1;
-	
-	if(!localInput){
-		data.listFilter_widget = $sp.getWidget('gservice_list_filter');
-		prepareDefaultList(true);
-	}
-	else{		
-		switch(localInput.action){				
-			case "applyFilter":
-				preparePages();
-				data.order = "opened_at";
-				data.direction = -1;
-				data.typeFilter = localInput.typeFilter;
-				data.statusFilter = localInput.statusFilter;
-				data.query = portalUtils.mountQuery(data.typeFilter, data.statusFilter, "", "");
-				var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
-				data.requests = requests.items;
-				prepareColumns();
-				prepareRecordWatch();
-				break;
+    //Used to get the current user sys_id
+    var userID = gs.getUser().getID();
+    data.user_id = userID;
 
-			case "changeItemState":
-				var comment = localInput.comment ? localInput.comment : false;
-				data.item = portalUtils.changeItemState(localInput.item, localInput.state, comment, localInput.reopeningReason);
-				if(localInput.state == "acceptSolution"){
-					var surveyUtils = new global.OCLPortalSurveyUtils();
-					var survey_id = surveyUtils.createSurvey(gs.getProperty("x_gmeps_itsm_servi.portal_itsm_survey"), localInput.item.sys_id);
-					data.show_survey = true;
-					var survey_options = {"survey_id": survey_id};
-					data.gserviceSurvey = $sp.getWidget('gservice_survey_modal', survey_options);
-				}
-				break;
-			case "stateChangedBackend":
-				var state = localInput.newState;
-				var itemID = localInput.itemID;
-				data.requests = localInput.requests;
-				for(i in data.requests){
-					if(data.requests[i].sys_id == itemID){
-						data.requests[i].statusValue = state.value;
-						if(state.value == "-5" || state.value == "3"){
-							var objHold = portalUtils.getHoldReason(data.requests[i].table, data.requests[i].sys_id);
-							data.requests[i].hold_reason = objHold.hold_reason;
-							data.requests[i].forecast = objHold.forecast;
-						}
-						if(data.requests[i].table == 'sn_si_incident'){
-							//10,16,18,19,20,100
-							if(state.value == "10")
-								data.requests[i].statusLabel = "Aguardando Atendimento";
-							else if(state.value == "16" || state.value == "18"  ||
-											state.value == "19"  || state.value == "20")
-								data.requests[i].statusLabel = "Em Atendimento";
-							else if(state.value == "100")
-								data.requests[i].statusLabel = "Solucionado";
-						} else{
-							data.requests[i].statusLabel = state.display_value;
-						}
-						data.requests[i] = portalUtils.verifyButtons(data.requests[i]);
-						data.requests[i].colorClass = portalUtils.getColorClass(data.requests[i].statusValue,data.requests[i].table);
-						data.requests[i].processFlow = portalUtils.getProcessFlow(data.requests[i].table, data.requests[i].statusValue);
-					}
-				}
-				break;
+    data.filter = false;
+    //Get the columns (from property) to show upside the requests
+    data.columns = [];
+    data.order = "opened_at";
+    data.direction = -1;
 
-			case "ritmStateChangedBackend":
-				var state = localInput.newState;
-				var itemID = localInput.itemID;
-				data.newItem = localInput.requests;
-				for(i in data.newItem){
-					if(data.newItem[i].table == "sc_request"){
-						for(var j in data.newItem[i].ritms){
-							if(data.newItem[i].ritms[j].sys_id == itemID){
-								data.newItem[i].ritms[j].state = state.display_value;
-								data.newItem[i].ritms[j].colorClass = portalUtils.getColorClass(state.value,"sc_req_item");
-							}
-						}
-					}
-				}
-				data.requests = data.newItem;
-				break;
+    if (!localInput) {
+        data.listFilter_widget = $sp.getWidget('gservice_list_filter');
+        data.survey_widget = $sp.getWidget('rating_stars_survey');
+        prepareDefaultList(true);
+    } else {
+        switch (localInput.action) {
+            case "applyFilter":
+                preparePages();
+                data.order = "opened_at";
+                data.direction = -1;
+                data.typeFilter = localInput.typeFilter;
+                data.statusFilter = localInput.statusFilter;
+                data.query = portalUtils.mountQuery(data.typeFilter, data.statusFilter, "", "");
+                var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
+                data.requests = requests.items;
+                prepareColumns();
+                prepareRecordWatch();
+                break;
 
-			case "applyDate":
-				preparePages();
-				data.order = "opened_at";
-				data.direction = -1;
-				data.dateFilter = localInput.dateFilter;
-				data.typeFilter = localInput.typeFilter;
-				data.statusFilter = localInput.statusFilter;
-				data.query = portalUtils.mountQuery(data.typeFilter, data.statusFilter, data.dateFilter, "");
-				var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
-				data.requests = requests.items;
-				prepareColumns();
-				prepareRecordWatch();
-				break;
-			case "getTicketConversationWidget":
-				var hide_new_comments = false;
-				var item = localInput.item;
-				if(item.table == "sc_req_item"){
-					if(item.statusValue == "3" || item.statusValue == "4" || item.statusValue == "7" || item.statusValue == "10"){
-						hide_new_comments = true;
-					}
-				} else if(item.table == "incident"){
-					if(item.statusValue == "7" || item.statusValue == "8" || item.statusValue == "10"){
-						hide_new_comments = true;
-					}
-				}else if(localInput.item.table == "sc_request"){
-					hide_new_comments = true;
-					data.newItem = item;
-					data.newItem.ritms = portalUtils.getRITMs(localInput.item.sys_id);
-					prepareRitmWatch(data.newItem.ritms);
-				}else if(localInput.item.table == "u_question"){
-					hide_new_comments = true;
-				}else if(localInput.item.table == "sn_si_incident"){
-					if(item.statusValue == "3"){
-						hide_new_comments = true;
-					}
-				}
-				else if(localInput.item.table == "wm_order"){
-					if(item.statusValue == "3" || item.statusValue == "4" || item.statusValue == "7"){
-						hide_new_comments = true;
-					}
-				}
-				else if(localInput.item.table == "change_request"){
-					if(item.statusValue == "3" || item.statusValue == "4"){
-						hide_new_comments = true;
-					}
-				}
-				var gservice_ticket_conversation_options = {table : localInput.item.table,
-																										sys_id : localInput.item.sys_id,
-																										item_status : localInput.item.colorClass,
-																										hide_new_comments : hide_new_comments
-																									 };
-				data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
-				break;
+            case "changeItemState":
+                var comment = localInput.comment ? localInput.comment : false;
+                data.item = portalUtils.changeItemState(localInput.item, localInput.state, comment, localInput.reopeningReason);
+                if (localInput.state == "acceptSolution") {
+                    /*var surveyUtils = new global.OCLPortalSurveyUtils();
+                    var survey_id = surveyUtils.createSurvey(gs.getProperty("x_gmeps_itsm_servi.portal_itsm_survey"), localInput.item.sys_id);
+                    data.show_survey = true;
+                    var survey_options = {"survey_id": survey_id};
+                    data.gserviceSurvey = $sp.getWidget('gservice_survey_modal', survey_options);*/
+                }
+                break;
+            case "stateChangedBackend":
+                var state = localInput.newState;
+                var itemID = localInput.itemID;
+                data.requests = localInput.requests;
+                for (i in data.requests) {
+                    if (data.requests[i].sys_id == itemID) {
+                        data.requests[i].statusValue = state.value;
+                        if (state.value == "-5" || state.value == "3") {
+                            var objHold = portalUtils.getHoldReason(data.requests[i].table, data.requests[i].sys_id);
+                            data.requests[i].hold_reason = objHold.hold_reason;
+                            data.requests[i].forecast = objHold.forecast;
+                        }
+                        if (data.requests[i].table == 'sn_si_incident') {
+                            //10,16,18,19,20,100
+                            if (state.value == "10")
+                                data.requests[i].statusLabel = "Aguardando Atendimento";
+                            else if (state.value == "16" || state.value == "18" ||
+                                state.value == "19" || state.value == "20")
+                                data.requests[i].statusLabel = "Em Atendimento";
+                            else if (state.value == "100")
+                                data.requests[i].statusLabel = "Solucionado";
+                        } else {
+                            data.requests[i].statusLabel = state.display_value;
+                        }
+                        data.requests[i] = portalUtils.verifyButtons(data.requests[i]);
+                        data.requests[i].colorClass = portalUtils.getColorClass(data.requests[i].statusValue, data.requests[i].table);
+                        data.requests[i].processFlow = portalUtils.getProcessFlow(data.requests[i].table, data.requests[i].statusValue);
+                    }
+                }
+                break;
 
-			case "orderBy":
-				preparePages();
-				data.order = localInput.order;
-				data.columns = localInput.columns;
-				prepareOrderBy();
+            case "ritmStateChangedBackend":
+                var state = localInput.newState;
+                var itemID = localInput.itemID;
+                data.newItem = localInput.requests;
+                for (i in data.newItem) {
+                    if (data.newItem[i].table == "sc_request") {
+                        for (var j in data.newItem[i].ritms) {
+                            if (data.newItem[i].ritms[j].sys_id == itemID) {
+                                data.newItem[i].ritms[j].state = state.display_value;
+                                data.newItem[i].ritms[j].colorClass = portalUtils.getColorClass(state.value, "sc_req_item");
+                            }
+                        }
+                    }
+                }
+                data.requests = data.newItem;
+                break;
 
-				data.query = localInput.query;
-				var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
-				data.requests = requests.items;
-				prepareRecordWatch();
-				break;
-			case "searchResult":
-				data.searchTerm = localInput.searchTerm;
-				prepareColumns();
-				data.query = portalUtils.mountQuery("", "", "", data.searchTerm);
-				preparePages();
-				var requests = portalUtils.getRequests("", "", data.query, data.window_start, data.window_end);
-				data.requests = requests.items;
-				preparePages();
-				prepareRecordWatch();
-				break;
-			case "changePage":
-				//
-				data.items_per_page = localInput.items_per_page;
-				data.actualPage = localInput.actualPage;
-				data.window_start = localInput.window_start;
-				data.window_end = localInput.window_end;
-				//
-				data.query = localInput.query;
-				data.columns = localInput.columns;
-				data.order = localInput.order;
-				data.direction = localInput.direction;
-				var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
-				data.requests = requests.items;
-				prepareRecordWatch();
-				break;
-			case "applyDefaultFilter":
-				prepareDefaultList();
-				break;
-			case "selectRequest":
-				prepareDefaultList("", localInput.item_id);
-				break;
-			case "openRITM":
-				var ritm = localInput.ritm;
-				var gservice_record_details_options = {table : ritm.table,
-																							 sys_id : ritm.sys_id};
-				data.recordDetailsWidget = $sp.getWidget('gservice_record_details', gservice_record_details_options);
-				break;
-		}
-	}
+            case "applyDate":
+                preparePages();
+                data.order = "opened_at";
+                data.direction = -1;
+                data.dateFilter = localInput.dateFilter;
+                data.typeFilter = localInput.typeFilter;
+                data.statusFilter = localInput.statusFilter;
+                data.query = portalUtils.mountQuery(data.typeFilter, data.statusFilter, data.dateFilter, "");
+                var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
+                data.requests = requests.items;
+                prepareColumns();
+                prepareRecordWatch();
+                break;
+            case "getTicketConversationWidget":
+                var hide_new_comments = false;
+                var item = localInput.item;
+                if (item.table == "sc_req_item") {
+                    if (item.statusValue == "3" || item.statusValue == "4" || item.statusValue == "7" || item.statusValue == "10") {
+                        hide_new_comments = true;
+                    }
+                } else if (item.table == "incident") {
+                    if (item.statusValue == "7" || item.statusValue == "8" || item.statusValue == "10") {
+                        hide_new_comments = true;
+                    }
+                } else if (localInput.item.table == "sc_request") {
+                    hide_new_comments = true;
+                    data.newItem = item;
+                    data.newItem.ritms = portalUtils.getRITMs(localInput.item.sys_id);
+                    prepareRitmWatch(data.newItem.ritms);
+                } else if (localInput.item.table == "u_question") {
+                    hide_new_comments = true;
+                } else if (localInput.item.table == "sn_si_incident") {
+                    if (item.statusValue == "3") {
+                        hide_new_comments = true;
+                    }
+                } else if (localInput.item.table == "wm_order") {
+                    if (item.statusValue == "3" || item.statusValue == "4" || item.statusValue == "7") {
+                        hide_new_comments = true;
+                    }
+                } else if (localInput.item.table == "change_request") {
+                    if (item.statusValue == "3" || item.statusValue == "4") {
+                        hide_new_comments = true;
+                    }
+                }
+                var gservice_ticket_conversation_options = {
+                    table: localInput.item.table,
+                    sys_id: localInput.item.sys_id,
+                    item_status: localInput.item.colorClass,
+                    hide_new_comments: hide_new_comments
+                };
+                data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
+                break;
 
-	function prepareDefaultList(first_load, item_id){
-		preparePages();
-		prepareColumns();
-		data.statusFilter = [];
-		var statusFilter = gs.getProperty("gservice_list_filters_status").split("|");
-		for(var i in statusFilter){
-			data.statusFilter.push(JSON.parse(statusFilter[i]));
-		}
-		if(first_load){
-			data.first_load = true;
-			data.urlItem = $sp.getParameter("item_id");
-			
-			if(data.urlItem){
-				var request_for = "";
-				var grTask = new GlideRecord("task");
-				grTask.get(data.urlItem);
-				if(grTask.getValue("sys_class_name") == "sc_req_item"){
-					var grRitm = new GlideRecord("sc_req_item");
-					grRitm.get(data.urlItem);
-					request_for = grRitm.request.requested_for;
-				}
-				
-				if(grTask.getValue("sys_class_name") == "wm_order"){
-					var grWO = new GlideRecord("wm_order");
-					grWO.get(data.urlItem);
-					request_for = grWO.opened_for;
-				}
-				
-				var watchList = "", delegateUsers = "";
+            case "orderBy":
+                preparePages();
+                data.order = localInput.order;
+                data.columns = localInput.columns;
+                prepareOrderBy();
 
-				if(grTask.getValue('watch_list')){
-					watchList = grTask.getValue('watch_list');
-				}
-				if(grTask.getValue("u_delegate_users")){
-					delegateUsers = grTask.getValue("u_delegate_users");
-				}
-				if(data.user_id == grTask.getValue('opened_by') || data.user_id == request_for || watchList.includes(data.user_id) || delegateUsers.includes(data.user_id)){
-					data.query = portalUtils.mountQuery("", data.statusFilter, "", "", data.urlItem);
-				} else{
-					data.showFilterClean = true;
-					data.query = portalUtils.mountQuery("", data.statusFilter);
-				}
-			} else{
-				data.query = portalUtils.mountQuery("", data.statusFilter);
-			}
-			
-		}
-		else if(item_id){
-			data.query = portalUtils.mountQuery("", data.statusFilter, "", "", item_id);
-		}
-		else{
-			data.query = portalUtils.mountQuery("", data.statusFilter);
-		}
-		var requests = portalUtils.getRequests("opened_at", "-1", data.query, data.window_start, data.window_end);
-		
-		if(data.urlItem && first_load){
-			requests.items[0].showDetails = true;
-			var item = requests.items[0];
-			var hide_new_comments = false;
-			if(item.table == "sc_req_item"){
-				if(item.statusValue == "3" || item.statusValue == "4" || item.statusValue == "7" || item.statusValue == "10"){
-					hide_new_comments = true;
-				}
-			} else if(item.table == "incident"){
-				if(item.statusValue == "7" || item.statusValue == "8" || item.statusValue == "10"){
-					hide_new_comments = true;
-				}
-			}else if(item.table == "sc_request"){
-				hide_new_comments = true;
-				data.newItem = item;
-				data.newItem.ritms = portalUtils.getRITMs(item.sys_id);
-				prepareRitmWatch(data.newItem.ritms);
-			}else if(item.table == "u_question"){
-				hide_new_comments = true;
-			}
-			else if(item.table == "wm_order"){
-				if(item.statusValue == "3" || item.statusValue == "4" || item.statusValue == "7"){
-					hide_new_comments = true;
-				}
-			}
-			else if(item.table == "change_request"){
-				if(item.statusValue == "3" || item.statusValue == "4"){
-					hide_new_comments = true;
-				}
-			}
-			var gservice_ticket_conversation_options = {table : item.table,
-																									sys_id : item.sys_id,
-																									item_status : item.colorClass,
-																									hide_new_comments : hide_new_comments
-																								 };
-			data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
-		}
-		data.requests = requests.items;
-		if(data.requests.length == 0){
-			data.showEmptyMessage = true;
-		}
-		prepareRecordWatch();
-	}
+                data.query = localInput.query;
+                var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
+                data.requests = requests.items;
+                prepareRecordWatch();
+                break;
+            case "searchResult":
+                data.searchTerm = localInput.searchTerm;
+                prepareColumns();
+                data.query = portalUtils.mountQuery("", "", "", data.searchTerm);
+                preparePages();
+                var requests = portalUtils.getRequests("", "", data.query, data.window_start, data.window_end);
+                data.requests = requests.items;
+                preparePages();
+                prepareRecordWatch();
+                break;
+            case "changePage":
+                //
+                data.items_per_page = localInput.items_per_page;
+                data.actualPage = localInput.actualPage;
+                data.window_start = localInput.window_start;
+                data.window_end = localInput.window_end;
+                //
+                data.query = localInput.query;
+                data.columns = localInput.columns;
+                data.order = localInput.order;
+                data.direction = localInput.direction;
+                var requests = portalUtils.getRequests(data.order, data.direction, data.query, data.window_start, data.window_end);
+                data.requests = requests.items;
+                prepareRecordWatch();
+                break;
+            case "applyDefaultFilter":
+                prepareDefaultList();
+                break;
+            case "selectRequest":
+                prepareDefaultList("", localInput.item_id);
+                break;
+            case "openRITM":
+                var ritm = localInput.ritm;
+                var gservice_record_details_options = {
+                    table: ritm.table,
+                    sys_id: ritm.sys_id
+                };
+                data.recordDetailsWidget = $sp.getWidget('gservice_record_details', gservice_record_details_options);
+                break;
+        }
+    }
 
-	function prepareRecordWatch(){
-		data.actualPageCount = data.actualPage + 1;
-		data.actualItemsCount = data.items_per_page * data.actualPageCount;
-		data.requestsID = 'sys_idIN';
-		var reqIDs = [];
-		for(var i in data.requests){
-			reqIDs.push(data.requests[i].sys_id);
-		}
-		data.requestsID += reqIDs.join();
-		data.totalItems = portalUtils.getTotalRequests(data.query);
-		data.actualItemsCount = data.items_per_page * data.actualPageCount;
-		if(data.actualItemsCount > data.totalItems){
-			data.actualItemsCount = data.totalItems;
-		}
-	}
+    function prepareDefaultList(first_load, item_id) {
+        preparePages();
+        prepareColumns();
+        data.statusFilter = [];
+        var statusFilter = gs.getProperty("gservice_list_filters_status").split("|");
+        for (var i in statusFilter) {
+            data.statusFilter.push(JSON.parse(statusFilter[i]));
+        }
+        if (first_load) {
+            data.first_load = true;
+            data.urlItem = $sp.getParameter("item_id");
 
-	function preparePages(){
-		data.items_per_page = 6;
-		data.actualPage = 0;
+            if (data.urlItem) {
+                var request_for = "";
+                var grTask = new GlideRecord("task");
+                grTask.get(data.urlItem);
+                if (grTask.getValue("sys_class_name") == "sc_req_item") {
+                    var grRitm = new GlideRecord("sc_req_item");
+                    grRitm.get(data.urlItem);
+                    request_for = grRitm.request.requested_for;
+                }
+
+                if (grTask.getValue("sys_class_name") == "wm_order") {
+                    var grWO = new GlideRecord("wm_order");
+                    grWO.get(data.urlItem);
+                    request_for = grWO.opened_for;
+                }
+
+                var watchList = "",
+                    delegateUsers = "";
+
+                if (grTask.getValue('watch_list')) {
+                    watchList = grTask.getValue('watch_list');
+                }
+                if (grTask.getValue("u_delegate_users")) {
+                    delegateUsers = grTask.getValue("u_delegate_users");
+                }
+                if (data.user_id == grTask.getValue('opened_by') || data.user_id == request_for || watchList.includes(data.user_id) || delegateUsers.includes(data.user_id)) {
+                    data.query = portalUtils.mountQuery("", data.statusFilter, "", "", data.urlItem);
+                } else {
+                    data.showFilterClean = true;
+                    data.query = portalUtils.mountQuery("", data.statusFilter);
+                }
+            } else {
+                data.query = portalUtils.mountQuery("", data.statusFilter);
+            }
+
+        } else if (item_id) {
+            data.query = portalUtils.mountQuery("", data.statusFilter, "", "", item_id);
+        } else {
+            data.query = portalUtils.mountQuery("", data.statusFilter);
+        }
+        var requests = portalUtils.getRequests("opened_at", "-1", data.query, data.window_start, data.window_end);
+
+        if (data.urlItem && first_load) {
+            requests.items[0].showDetails = true;
+            var item = requests.items[0];
+            var hide_new_comments = false;
+            if (item.table == "sc_req_item") {
+                if (item.statusValue == "3" || item.statusValue == "4" || item.statusValue == "7" || item.statusValue == "10") {
+                    hide_new_comments = true;
+                }
+            } else if (item.table == "incident") {
+                if (item.statusValue == "7" || item.statusValue == "8" || item.statusValue == "10") {
+                    hide_new_comments = true;
+                }
+            } else if (item.table == "sc_request") {
+                hide_new_comments = true;
+                data.newItem = item;
+                data.newItem.ritms = portalUtils.getRITMs(item.sys_id);
+                prepareRitmWatch(data.newItem.ritms);
+            } else if (item.table == "u_question") {
+                hide_new_comments = true;
+            } else if (item.table == "wm_order") {
+                if (item.statusValue == "3" || item.statusValue == "4" || item.statusValue == "7") {
+                    hide_new_comments = true;
+                }
+            } else if (item.table == "change_request") {
+                if (item.statusValue == "3" || item.statusValue == "4") {
+                    hide_new_comments = true;
+                }
+            }
+            var gservice_ticket_conversation_options = {
+                table: item.table,
+                sys_id: item.sys_id,
+                item_status: item.colorClass,
+                hide_new_comments: hide_new_comments
+            };
+            data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
+        }
+        data.requests = requests.items;
+        if (data.requests.length == 0) {
+            data.showEmptyMessage = true;
+        }
+        prepareRecordWatch();
+    }
+
+    function prepareRecordWatch() {
+        data.actualPageCount = data.actualPage + 1;
+        data.actualItemsCount = data.items_per_page * data.actualPageCount;
+        data.requestsID = 'sys_idIN';
+        var reqIDs = [];
+        for (var i in data.requests) {
+            reqIDs.push(data.requests[i].sys_id);
+        }
+        data.requestsID += reqIDs.join();
+        data.totalItems = portalUtils.getTotalRequests(data.query);
+        data.actualItemsCount = data.items_per_page * data.actualPageCount;
+        if (data.actualItemsCount > data.totalItems) {
+            data.actualItemsCount = data.totalItems;
+        }
+    }
+
+    function preparePages() {
+        data.items_per_page = 6;
+        data.actualPage = 0;
 
 
-		data.window_start = 0;
-		data.window_end = 6;
-	}
+        data.window_start = 0;
+        data.window_end = 6;
+    }
 
-	function prepareColumns(){
-		//You need to select the columns name on the property
-		//Using checkout as a test, but it`ll change to a dinamic way when you call the widget you send the option
-		var columns_property = gs.getProperty("gservice_dashboard_columns");
+    function prepareColumns() {
+        //You need to select the columns name on the property
+        //Using checkout as a test, but it`ll change to a dinamic way when you call the widget you send the option
+        var columns_property = gs.getProperty("gservice_dashboard_columns");
 
-		var parse = JSON.parse(columns_property);
-		var columns = parse["requestsTab"].columns;
+        var parse = JSON.parse(columns_property);
+        var columns = parse["requestsTab"].columns;
 
-		data.columns = columns;
-		for(i in columns){
-			data.columns[i].name = gs.getMessage(columns[i].name);
-		}
-	}
+        data.columns = columns;
+        for (i in columns) {
+            data.columns[i].name = gs.getMessage(columns[i].name);
+        }
+    }
 
-	function prepareOrderBy(){
-		for(i in data.columns){
-			if(data.order == data.columns[i].order){
-				data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
-				data.direction = data.columns[i].direction;
-			}
-			else{
-				data.columns[i].direction = false;
-			}
-		}
-	}
+    function prepareOrderBy() {
+        for (i in data.columns) {
+            if (data.order == data.columns[i].order) {
+                data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
+                data.direction = data.columns[i].direction;
+            } else {
+                data.columns[i].direction = false;
+            }
+        }
+    }
 
-	function prepareRitmWatch(ritms){
-		data.ritmID = 'sys_idIN';
-		var ritmIDs = [];
-		for(var i in ritms){
-			ritmIDs.push(ritms[i].sys_id);
-		}
-		data.ritmID += ritmIDs.join();
-	}
+    function prepareRitmWatch(ritms) {
+        data.ritmID = 'sys_idIN';
+        var ritmIDs = [];
+        for (var i in ritms) {
+            ritmIDs.push(ritms[i].sys_id);
+        }
+        data.ritmID += ritmIDs.join();
+    }
 
 })();]]></script>
         <servicenow>false</servicenow>
@@ -1845,19 +1855,19 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 18:48:13</sys_created_on>
         <sys_id>88e8a47fdb099450fa11cf2414961937</sys_id>
-        <sys_mod_count>747</sys_mod_count>
+        <sys_mod_count>766</sys_mod_count>
         <sys_name>GService My Dashboard Requests</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_88e8a47fdb099450fa11cf2414961937</sys_update_name>
-        <sys_updated_by>ricardo.l.junior@accenture.com</sys_updated_by>
-        <sys_updated_on>2021-02-23 20:33:42</sys_updated_on>
+        <sys_updated_by>lnoguei</sys_updated_by>
+        <sys_updated_on>2021-08-19 15:37:16</sys_updated_on>
         <template><![CDATA[<div class="content_request">
 
   <div class="title_category" ng-click="c.openContent()">
     ${Solicitações de Tecnologia}
-    <span><img src="GService_Seta_PD_Transparent.png" ng-class="c.contentOpened ? '' : 'invert-arrow'"/></span>
+    <span><img src="GService_Seta_PD_Transparent.png" ng-class="c.contentOpened ? '' : 'invert-arrow'" /></span>
   </div>
 
   <div class="content_body_mask">
@@ -1866,7 +1876,8 @@ tbody {
       <div class="col-md-12 filter-padding">
         <sp-widget widget="data.listFilter_widget"></sp-widget>
       </div>
-      <div ng-if="data.showFilterClean" class="without_notification">${Ops! Não encontramos resultados para essa busca.}</div>
+      <div ng-if="data.showFilterClean" class="without_notification">${Ops! Não encontramos resultados para essa busca.}
+      </div>
       <div ng-if="!data.showFilterClean" class="content_my_requests">
         <div>
           <table class="table table-hover b-t table-condensed cart-table">
@@ -1886,7 +1897,8 @@ tbody {
                     {{column.name}}
                     <span ng-if="column.order">
                       <span ng-if="!column.direction"></span>
-                      <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''"}/></span>
+                      <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png"
+                          ng-class="column.direction == 1 ? 'invert-arrow' : ''" } /></span>
                     </span>
                   </div>
                 </th>
@@ -1927,52 +1939,65 @@ tbody {
                 <td class="column_sla">
                   <p class="sla_description" ng-if="item.forecast">{{item.forecast}}</p>
                 </td>
-                
+
                 <td class="column_buttons">
                   <div class="disable_buttons" ng-show="c.disableAction"></div>
                   <div ng-if="item.eraseButton" class="buttons" ng-click="c.itemAction(item, 'cancelItem')">
-                    <img src="trash.png"/>
+                    <img src="trash.png" />
                     <span class="tooltip tooltip_right">
                       <div class="tooltip_arrow arrow_left"></div>
                       <div class="tooltip_text">${Cancel Request}</div>
                     </span>
                   </div>
-                  <div ng-if="item.acceptButton" class="buttons" ng-click="c.itemAction(item, 'acceptSolution')"><img src="GS_Confirmar_TEC.png"/>
+                  <div ng-if="item.acceptButton" class="buttons" ng-click="c.itemAction(item, 'acceptSolution', item)">
+                    <img src="GS_Confirmar_TEC.png" />
                     <span class="tooltip tooltip_bottom">
                       <div class="tooltip_arrow arrow_top"></div>
                       <div class="tooltip_text">${Accept Solution}</div>
                     </span>
                   </div>
-                  <div ng-if="item.reopenButton" class="buttons" ng-click="c.itemAction(item, 'rejectSolution')"><img src="GS_Reabrir_TEC.png"/>
+                  <div ng-if="item.reopenButton" class="buttons" ng-click="c.itemAction(item, 'rejectSolution')"><img
+                      src="GS_Reabrir_TEC.png" />
                     <span class="tooltip tooltip_bottom">
                       <div class="tooltip_arrow arrow_top"></div>
                       <div class="tooltip_text">${Reopen Request}</div>
                     </span>
                   </div>
-                  <div ng-if="item.cancelButton" class="buttons" ng-click="c.itemAction(item, 'acceptCancellation')"><img src="GS_Confirmar_TEC.png"/>
+                  <div ng-if="item.cancelButton" class="buttons" ng-click="c.itemAction(item, 'acceptCancellation')">
+                    <img src="GS_Confirmar_TEC.png" />
                     <span class="tooltip tooltip_bottom">
                       <div class="tooltip_arrow arrow_top"></div>
                       <div class="tooltip_text">${Accept Cancellation}</div>
                     </span>
                   </div>
-                  <div ng-if="item.rejectButton" class="buttons" ng-click="c.itemAction(item, 'rejectCancellation')"><img src="GS_Reabrir_TEC.png"/>
+                  <div ng-if="item.rejectButton" class="buttons" ng-click="c.itemAction(item, 'rejectCancellation')">
+                    <img src="GS_Reabrir_TEC.png" />
                     <span class="tooltip tooltip_bottom">
                       <div class="tooltip_arrow arrow_top"></div>
                       <div class="tooltip_text">${Reopen Request}</div>
                     </span>
                   </div>
+                <td ng-show="item.showSurvey == true && (item.statusValue == '3' || item.statusValue == '7')" class="column_stars">
+                  <sp-widget widget="c.data.survey_widget"></sp-widget>
                 </td>
-                
+                <td ng-show="item.showSurvey == false && (item.statusValue == '3' || item.statusValue == '7')" class="column_stars">
+                  <div class="feed">
+                    Recebemos o seu feedback!
+                    Muito obrigado
+                  </div>
+                </td>
+
               </tr>
 
               <tr>
-                <td ng-if="item.showDetails && item.table == 'sc_request'" class="content_conversation content_service_pack" colspan='5'>
+                <td ng-if="item.showDetails && item.table == 'sc_request'"
+                  class="content_conversation content_service_pack" colspan='5'>
 
                   <div class="pack_title">${Serviços do Pacote}</div>
                   <div ng-repeat="ritm in item.ritms" class="table_pack">
                     <div class="column_items">
                       <div>#{{ritm.number}}</div>
-                      <div ng-click="c.openItem(ritm)" class="item_title">{{ritm.title}}</div>  
+                      <div ng-click="c.openItem(ritm)" class="item_title">{{ritm.title}}</div>
                     </div>
 
                     <div class="column_state service_title turn_bold {{ritm.colorClass}}">{{ritm.state}}</div>
@@ -2003,13 +2028,17 @@ tbody {
           </table>
 
           <div class="content_pagination">
-            <span class="pag_arrow_left" ng-click="c.previousPage()" ng-if="data.actualPage > 0"><img src="gservice_column_dashboard_arrow.png"/></span>
-            <span class="pag_arrow_right" ng-click="c.nextPage()" ng-if="data.actualItemsCount < data.totalItems"><img src="gservice_column_dashboard_arrow.png"/></span>
-            <span class="pag_text">Página {{data.actualPageCount}} - {{data.actualItemsCount}} de {{data.totalItems}} RESULTADOS</span>
+            <span class="pag_arrow_left" ng-click="c.previousPage()" ng-if="data.actualPage > 0"><img
+                src="gservice_column_dashboard_arrow.png" /></span>
+            <span class="pag_arrow_right" ng-click="c.nextPage()" ng-if="data.actualItemsCount < data.totalItems"><img
+                src="gservice_column_dashboard_arrow.png" /></span>
+            <span class="pag_text">Página {{data.actualPageCount}} - {{data.actualItemsCount}} de {{data.totalItems}}
+              RESULTADOS</span>
           </div>
         </div>
 
-        <div class="modal_reopen modal fade" style="z-index: 1041" id="requestCommentModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+        <div class="modal_reopen modal fade" style="z-index: 1041" id="requestCommentModal" tabindex="-1" role="dialog"
+          aria-labelledby="articleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-body">
@@ -2022,19 +2051,17 @@ tbody {
 
                   <div class="">
                     <div ng-if="c.state == 'rejectSolution'">
-                      
+
                       <div class="reason">${Motivo de rejeição}</div>
 
-                      <span class="mandatory_message" ng-if="c.needReason"> ${Favor preencher a razão da rejeição} </span>
+                      <span class="mandatory_message" ng-if="c.needReason"> ${Favor preencher a razão da rejeição}
+                      </span>
                       <div class="radio_content" ng-repeat="reopeningReason in data.reopeningReason track by $index">
                         <span method="get" class="radio-properties">
                           <label for="{{reopeningReason.label}}">
-                            <input type="radio"
-                                   id="{{reopeningReason.label}}"
-                                   name="selectedChoice"
-                                   value="{{reopeningReason.label}}"
-                                   ng-model="reopeningReason.selected"
-                                   ng-click="c.selectedChoice($index)">
+                            <input type="radio" id="{{reopeningReason.label}}" name="selectedChoice"
+                              value="{{reopeningReason.label}}" ng-model="reopeningReason.selected"
+                              ng-click="c.selectedChoice($index)">
                             {{reopeningReason.label}}
                             <span class="new-radio"></span>
                           </label>
@@ -2042,10 +2069,12 @@ tbody {
                       </div>
                     </div>
 
-                    <span class="mandatory_message" ng-if="c.needComment"> ${Favor preencher o comentário com mais de 100 caracteres antes de submeter} </span>
+                    <span class="mandatory_message" ng-if="c.needComment"> ${Favor preencher o comentário com mais de
+                      100 caracteres antes de submeter} </span>
                     <textarea class="form-control" ng-model="c.requestComment" maxlength="255"></textarea>
-                    <div class="btn_submit" style="cursor: pointer;" aria-label="" ng-click="c.submitRequestComment()" title="">
-                      <img class="resize-img" src="gservice_dashboard_submit.png"/>
+                    <div class="btn_submit" style="cursor: pointer;" aria-label="" ng-click="c.submitRequestComment()"
+                      title="">
+                      <img class="resize-img" src="gservice_dashboard_submit.png" />
                     </div>
                   </div>
                 </div>
@@ -2056,11 +2085,12 @@ tbody {
       </div>
     </div>
 
-    <now-message key="Done" value="${Done}"/>
+    <now-message key="Done" value="${Done}" />
   </div>
 </div>
 
-<div class="modal_ritm_details modal fade" id="ritmDetails" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+<div class="modal_ritm_details modal fade" id="ritmDetails" tabindex="-1" role="dialog"
+  aria-labelledby="articleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
