@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>69</height>
+        <image>b78fe12cdb9278901c0d0fbca39619be</image>
+        <name>Comentario_dashboard.png</name>
+        <size_bytes>2310</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>glorusso</sys_created_by>
+        <sys_created_on>2021-08-27 17:17:20</sys_created_on>
+        <sys_id>4a5fe1e8db9278901c0d0fbca3961909</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Comentario_dashboard.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_4a5fe1e8db9278901c0d0fbca3961909</sys_update_name>
+        <sys_updated_by>glorusso</sys_updated_by>
+        <sys_updated_on>2021-08-27 17:17:34</sys_updated_on>
+        <thumbnail/>
+        <width>69</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#55b9f5</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>1882afcdd2f022725f55a7bf217c66f6610c855d971451cf670a2c6e6bdf8866</hash>
+        <image_height>69</image_height>
+        <image_width>69</image_width>
+        <size_bytes>2310</size_bytes>
+        <size_compressed>2333</size_compressed>
+        <state>available</state>
+        <sys_created_by>glorusso</sys_created_by>
+        <sys_created_on>2021-08-27 17:17:34</sys_created_on>
+        <sys_id>b78fe12cdb9278901c0d0fbca39619be</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_updated_by>glorusso</sys_updated_by>
+        <sys_updated_on>2021-08-27 17:17:34</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>4a5fe1e8db9278901c0d0fbca3961909</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="b78fe12cdb9278901c0d0fbca39619be">b78fe12cdb9278901c0d0fbca39619be</sys_attachment>
+        <sys_created_by>glorusso</sys_created_by>
+        <sys_created_on>2021-08-27 17:17:34</sys_created_on>
+        <sys_id>f78fe12cdb9278901c0d0fbca39619be</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>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</data>
+        <length>3100</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="b78fe12cdb9278901c0d0fbca39619be">b78fe12cdb9278901c0d0fbca39619be</sys_attachment>
+        <sys_created_by>glorusso</sys_created_by>
+        <sys_created_on>2021-08-27 17:17:34</sys_created_on>
+        <sys_id>7b8fe12cdb9278901c0d0fbca39619be</sys_id>
+    </sys_attachment_doc>
+</record_update>

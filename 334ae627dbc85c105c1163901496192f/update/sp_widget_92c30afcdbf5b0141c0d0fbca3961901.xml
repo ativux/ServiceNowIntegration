@@ -91,8 +91,9 @@
     justify-content:center;
     flex-direction:column;
     textarea{
+      margin-top:10px;
     	resize: none;
-      border: solid blue 1px;
+      border: solid #33ccff 1px;
     }
     .closing {
       border:none;
@@ -100,19 +101,18 @@
       width:100%;
       display:flex;
       justify-content:left;
-      padding:10px;
+      padding:10px 0;
       align-items:center;
       font-size:1.7rem;
       img{
-        width:45px;
-        height:45px;
-        margin:8px;
-      }
+        width:120px;
+       }
     }  
     .icone{
       img{
         width:35px;
         height:35px;
+        margin-right:5px;
       }   
     }
   }
@@ -122,7 +122,7 @@
         <data_table>sp_instance</data_table>
         <demo_data>{
 	"options":{
-		"task_sys_id":"001214481b2d701041b0ea8ce54bcbc4",
+		"task_sys_id":"3472061adb4278101c0d0fbca39619cd",
 		"table":"sc_req_item"	
 	}	
 }</demo_data>
@@ -153,14 +153,14 @@
         <sys_created_by>glorusso</sys_created_by>
         <sys_created_on>2021-08-03 16:53:01</sys_created_on>
         <sys_id>92c30afcdbf5b0141c0d0fbca3961901</sys_id>
-        <sys_mod_count>155</sys_mod_count>
+        <sys_mod_count>177</sys_mod_count>
         <sys_name>Rating stars survey</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_92c30afcdbf5b0141c0d0fbca3961901</sys_update_name>
-        <sys_updated_by>lnoguei</sys_updated_by>
-        <sys_updated_on>2021-08-19 15:34:50</sys_updated_on>
+        <sys_updated_by>glorusso</sys_updated_by>
+        <sys_updated_on>2021-08-27 19:21:59</sys_updated_on>
         <template><![CDATA[<div class="container">
   <div class="rate" id="{{c.item_number + '-stars'}}" ng-if='feedback == false'>
     <input type="radio" id="{{c.item_number + '-star5'}}" name="{{c.item_number + '-rate'}}" value="5" ng-click="surveyResponse('5')" />
@@ -180,14 +180,14 @@
   </div>
   <div class="options">
     <div id="{{c.item_number + '-msgMelhorar'}}" ng-if="surveyResposta <= '3' && feedback == false" class="icone">
-      <img src="GS_DASH_Resposta.png" />
+      <img src="Comentario_dashboard.png" />
       O que acha que poderia melhorar?
     </div>
 
     <textarea id="{{c.item_number + '-surveyJustification'}}" ng-model="data.inputSurvey" ng-if="surveyResposta <= '3' && feedback == false" rows="5"
       cols="60"></textarea>
     <button ng-if="showButton == true && feedback == false" id="{{c.item_number + '-close'}}" class="closing" ng-click="sendSurvey()"> <img
-        src="gservice_dashboard_submit.png" /> Enviar </button>
+        src="Botao_Enviar_Dashboard.png" /></button>
   </div>
 </div>
 <div id="{{c.item_number + '-msgFeedback'}}" ng-if="feedback == true" class="feed"> 
