@@ -38,90 +38,101 @@
 
 };]]></client_script>
         <controller_as>c</controller_as>
-        <css>.feed{&#13;
-    color:#33ccff;&#13;
-    width:200px;&#13;
-}&#13;
-.rate {&#13;
-    float: left;&#13;
-}&#13;
-.rate:not(:checked) &gt; input {&#13;
-    position:absolute;&#13;
-    top:-9999px;&#13;
-  	visibility: hidden;&#13;
-}&#13;
-.rate:not(:checked) &gt; label {&#13;
-    float:right;&#13;
-    width:1em;&#13;
-    overflow:hidden;&#13;
-    white-space:nowrap;&#13;
-    cursor:pointer;&#13;
-    font-size:30px;&#13;
-    color:#ccc;&#13;
-}&#13;
-.rate:not(:checked) &gt; label:before {&#13;
-    content: '★ ';&#13;
-}&#13;
-.rate &gt; input:checked ~ label {&#13;
-    color: #ffc700;    &#13;
-}&#13;
-.rate:not(:checked) &gt; label:hover,&#13;
-.rate:not(:checked) &gt; label:hover ~ label {&#13;
-    color: #deb217;  &#13;
-}&#13;
-.rate &gt; input:checked + label:hover,&#13;
-.rate &gt; input:checked + label:hover ~ label,&#13;
-.rate &gt; input:checked ~ label:hover,&#13;
-.rate &gt; input:checked ~ label:hover ~ label,&#13;
-.rate &gt; label:hover ~ input:checked ~ label {&#13;
-    color: #c59b08;&#13;
-}&#13;
-&#13;
-.container{&#13;
-  width:inherit;&#13;
-  height:100%;&#13;
-  margin-left: 0;&#13;
-  min-width: 250px;&#13;
-  display:flex;&#13;
-  flex-direction:column;&#13;
-  .rate{&#13;
-  	display:flex;&#13;
-    flex-direction: row-reverse;&#13;
-    //justify-content:center;&#13;
-    justify-content: flex-end&#13;
-  }&#13;
-  .options{&#13;
-    display:flex;&#13;
-    justify-content:center;&#13;
-    flex-direction:column;&#13;
-    textarea{&#13;
-      margin-top:10px;&#13;
-    	resize: none;&#13;
-      border: solid #33ccff 1px;&#13;
-    }&#13;
-    .closing {&#13;
-      border:none;&#13;
-      background: none;&#13;
-      width:100%;&#13;
-      display:flex;&#13;
-      justify-content:left;&#13;
-      padding:10px 0;&#13;
-      align-items:center;&#13;
-      font-size:1.7rem;&#13;
-      img{&#13;
-        width:120px;&#13;
-       }&#13;
-    }  &#13;
-    .icone{&#13;
-      img{&#13;
-        width:35px;&#13;
-        height:35px;&#13;
-        margin-right:5px;&#13;
-      }   &#13;
-    }&#13;
-  }&#13;
-}&#13;
-&#13;
+        <css>.feed{
+    color:#33ccff;
+    width:200px;
+}
+.rate {
+    float: left;
+}
+.rate:not(:checked) &gt; input {
+    position:absolute;
+    top:-9999px;
+  	visibility: hidden;
+}
+.rate:not(:checked) &gt; label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) &gt; label:before {
+    content: '★ ';
+}
+.rate &gt; input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) &gt; label:hover,
+.rate:not(:checked) &gt; label:hover ~ label {
+    color: #deb217;  
+}
+.rate &gt; input:checked + label:hover,
+.rate &gt; input:checked + label:hover ~ label,
+.rate &gt; input:checked ~ label:hover,
+.rate &gt; input:checked ~ label:hover ~ label,
+.rate &gt; label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+.container{
+  width:inherit;
+  height:100%;
+  margin-left: 0;
+  min-width: 250px;
+  display:flex;
+  flex-direction:column;
+  .rate{
+  	display:flex;
+    flex-direction: row-reverse;
+    //justify-content:center;
+    justify-content: flex-end
+  }
+  .options{
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+    textarea{
+      margin-top:10px;
+    	resize: none;
+      border: solid #33ccff 1px;
+    }
+    .closing {
+      border:none;
+      background: none;
+      width:100%;
+      display:flex;
+      justify-content:left;
+      padding:10px 0;
+      align-items:center;
+      font-size:1.7rem;
+      img{
+        width:120px;
+        transition:0.5s ease;
+       }
+      img:hover{
+        transform: scale(1.1);
+        transition:0.5s ease;
+       }
+    }  
+    .icone{ 
+      display:flex;
+      height:100%;
+      align-items:center;
+      img{
+        width:35px;
+        height:35px;
+        margin-right:5px;
+      }
+      p{
+        font-size:12px;       
+        }
+    }
+  }
+}
+
 </css>
         <data_table>sp_instance</data_table>
         <demo_data>{
@@ -157,14 +168,14 @@
         <sys_created_by>glorusso</sys_created_by>
         <sys_created_on>2021-08-03 16:53:01</sys_created_on>
         <sys_id>92c30afcdbf5b0141c0d0fbca3961901</sys_id>
-        <sys_mod_count>189</sys_mod_count>
+        <sys_mod_count>248</sys_mod_count>
         <sys_name>Rating stars survey</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_92c30afcdbf5b0141c0d0fbca3961901</sys_update_name>
         <sys_updated_by>glorusso</sys_updated_by>
-        <sys_updated_on>2021-09-01 13:12:46</sys_updated_on>
+        <sys_updated_on>2021-09-06 23:18:19</sys_updated_on>
         <template><![CDATA[<div class="container">
   <div class="rate" id="{{c.item_number + '-stars'}}" ng-if='feedback == false'>
     <input type="radio" id="{{c.item_number + '-star5'}}" name="{{c.item_number + '-rate'}}" value="5" ng-click="surveyResponse('5')" />
@@ -183,9 +194,11 @@
     <label for="{{c.item_number + '-star1'}}" title="1">★ star</label>
   </div>
   <div class="options">
-    <div id="{{c.item_number + '-msgMelhorar'}}" ng-if="surveyResposta <= '3' && feedback == false" class="icone">
+    <div id="{{c.item_number + '-msgMelhorar'}}" ng-if="surveyResposta <= '3' && feedback == false" size="2" class="icone">
       <img src="Comentario_dashboard.png" />
-      O que acha que poderia melhorar?
+      <p>
+        O que acha que poderia melhorar?
+      </p>      
     </div>
 
     <textarea id="{{c.item_number + '-surveyJustification'}}" ng-model="data.inputSurvey" ng-if="surveyResposta <= '3' && feedback == false" rows="4"

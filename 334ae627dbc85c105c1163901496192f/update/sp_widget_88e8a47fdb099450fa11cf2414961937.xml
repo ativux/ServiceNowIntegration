@@ -740,7 +740,7 @@ thead {
 .table &gt; thead &gt; tr &gt; th {
   border: 0;
   vertical-align: middle;
-  padding: 15px 0 !important;
+  padding: 16px !important;
 }
 .table-hover &gt; tbody &gt; tr:hover {
   background-color: white;
@@ -761,12 +761,13 @@ tbody {
   }
 
   td:nth-child(2) {
-    width: 20%;
+    width: 15%;
     padding: 20px;
   }
 
   td:nth-child(3) {
-    width: 25%;
+    width: 15%;
+    padding-right: 0;
   }
 
   td:nth-child(4) {
@@ -775,14 +776,20 @@ tbody {
   }
 
   td:nth-child(5) {
-    width: 30%;
+    width: 25%;
     padding: 20px 0;
 
     .request_button {
       margin-right: 50px;
     }
+      
   }
 
+  td:nth-child(6) {
+    width: 20%;
+    padding: 0 2rem;
+  }
+  
 }
 
 /* PAGE 1 - My Requests */
@@ -1863,14 +1870,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 18:48:13</sys_created_on>
         <sys_id>88e8a47fdb099450fa11cf2414961937</sys_id>
-        <sys_mod_count>798</sys_mod_count>
+        <sys_mod_count>811</sys_mod_count>
         <sys_name>GService My Dashboard Requests</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_88e8a47fdb099450fa11cf2414961937</sys_update_name>
         <sys_updated_by>glorusso</sys_updated_by>
-        <sys_updated_on>2021-09-01 18:31:30</sys_updated_on>
+        <sys_updated_on>2021-09-10 12:23:06</sys_updated_on>
         <template><![CDATA[<div class="content_request">
 
   <div class="title_category" ng-click="c.openContent()">
