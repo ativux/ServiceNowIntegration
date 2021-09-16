@@ -750,6 +750,10 @@ tbody {
     width: 50px;
     height: 50px;
   }
+  
+  td {
+    border-top: 0 !important;
+  }
 
   td:nth-child(1) {
     width: 20%;
@@ -820,6 +824,7 @@ tbody {
 
 .thead_myrequests {
   border-top: 2px solid $slate-gray;
+  border-bottom: 1px solid $gray-light;
 }
 .column_product {
   .number_text {
@@ -1244,7 +1249,6 @@ tbody {
     margin-bottom: 30px;
   }
 }
-
 .column_content {
   img {
     height: 10px;
@@ -1432,8 +1436,12 @@ tbody {
 
 .column_stars{
  	width:100%;
-   margin-left:-100px;
- box-sizing:border-box;
+  margin-left:-100px;
+  //margin-right:-100px;
+  //display: flex;
+  //align-items: center;
+  //justify-content: center;  
+  box-sizing:border-box;
 }
 </css>
         <data_table>sp_instance</data_table>
@@ -1855,14 +1863,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 18:48:13</sys_created_on>
         <sys_id>88e8a47fdb099450fa11cf2414961937</sys_id>
-        <sys_mod_count>768</sys_mod_count>
+        <sys_mod_count>798</sys_mod_count>
         <sys_name>GService My Dashboard Requests</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_88e8a47fdb099450fa11cf2414961937</sys_update_name>
         <sys_updated_by>glorusso</sys_updated_by>
-        <sys_updated_on>2021-08-27 20:03:13</sys_updated_on>
+        <sys_updated_on>2021-09-01 18:31:30</sys_updated_on>
         <template><![CDATA[<div class="content_request">
 
   <div class="title_category" ng-click="c.openContent()">
@@ -1899,8 +1907,8 @@ tbody {
                       <span ng-if="!column.direction"></span>
                       <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png"
                           ng-class="column.direction == 1 ? 'invert-arrow' : ''" } /></span>
-                    </span>
-                  </div>
+                    </span> 
+                  </div>  
                 </th>
               </tr>
             </thead>
@@ -1980,7 +1988,7 @@ tbody {
                 <td ng-show="item.showSurvey == true && (item.statusValue == '3' || item.statusValue == '7')" class="column_stars">
                   <sp-widget widget="c.data.survey_widget"></sp-widget>
                 </td>
-                <td ng-show="item.showSurvey == false && (item.statusValue == '3' || item.statusValue == '7')" class="column_stars">
+                <td ng-show="item.showSurvey == false && (item.table == 'sc_req_item' && item.statusValue == '3' || item.table == 'incident' && item.statusValue == '7')" class="column_stars">
                   <div class="feed">
                     Recebemos o seu feedback!
                     Muito obrigado
