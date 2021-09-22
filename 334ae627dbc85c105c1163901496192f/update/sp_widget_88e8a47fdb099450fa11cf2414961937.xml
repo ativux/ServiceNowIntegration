@@ -154,7 +154,7 @@
             if (stop) {
                 return;
             }
-        } else if (c.state == "cancelItem") {
+        } else if (c.state == "rejectCancellation") {
             var stop = false;
             if (!c.requestComment) {
                 c.needComment = true;
@@ -1872,14 +1872,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 18:48:13</sys_created_on>
         <sys_id>88e8a47fdb099450fa11cf2414961937</sys_id>
-        <sys_mod_count>818</sys_mod_count>
+        <sys_mod_count>824</sys_mod_count>
         <sys_name>GService My Dashboard Requests</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_88e8a47fdb099450fa11cf2414961937</sys_update_name>
         <sys_updated_by>renanlui</sys_updated_by>
-        <sys_updated_on>2021-09-17 17:31:45</sys_updated_on>
+        <sys_updated_on>2021-09-21 18:40:26</sys_updated_on>
         <template><![CDATA[<div class="content_request">
 
   <div class="title_category" ng-click="c.openContent()">
