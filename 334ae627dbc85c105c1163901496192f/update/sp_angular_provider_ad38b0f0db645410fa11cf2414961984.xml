@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_angular_provider">
+    <sp_angular_provider action="INSERT_OR_UPDATE">
+        <name>categorySubscribe</name>
+        <script><![CDATA[function($rootScope) {
+	var categoryID = false;
+	var secondCategory = false;
+	var thirdCategory = false;
+	var itemID = false;
+	var duplicateItem = false;
+	var categorySelected = false;
+	var itemSelected = false;
+	var iconLink = false;
+
+	function setCategoryID(catID) {
+		categoryID = catID;
+		if (!categorySelected){
+		categorySelected = catID;
+		}
+		$rootScope.$broadcast('selectedCategory');
+		$rootScope.$broadcast('openMenu', "service");
+		if (categorySelected != catID){
+			categorySelected = catID;
+		}
+	}
+
+	function setSecondCat(catID, secondCat){
+		categoryID = catID;
+		secondCategory = secondCat;
+		categorySelected = catID;
+		$rootScope.$broadcast('secondCategory');
+	}
+
+	function setThirdCat(catID, secondCat, thirdCat){
+		categoryID = catID;
+		secondCategory = secondCat;
+		thirdCategory = thirdCat;
+		categorySelected = catID;
+		$rootScope.$broadcast('thirdCategory');
+	}
+
+	function setSelectedItem(catID, secondCat, thirdCat, id){
+		categoryID = catID;
+		secondCategory = secondCat;
+		thirdCategory = thirdCat;
+		itemID = id;
+		itemSelected = true;
+		$rootScope.$broadcast('selectItem');
+		$rootScope.$broadcast('openMenu', "service");
+	}
+
+	function setDuplicateItem(catID, secondCat, thirdCat, id, duplicateID){
+		categoryID = catID;
+		secondCategory = secondCat;
+		thirdCategory = thirdCat;
+		itemID = id;
+		duplicateItem = duplicateID;
+		itemSelected = true;
+		$rootScope.$broadcast('selectItem');
+		$rootScope.$broadcast('openMenu', "service");
+	}
+	
+	function setIconLink(){
+		iconLink = true;
+	}
+
+	function setSecondCatOnly(secondCat){
+		secondCategory = secondCat;
+	}
+	
+	function setThirdCatOnly(thirdCat){
+		thirdCategory = thirdCat;
+	}
+	
+	function setSelectedItemOnly(selectedItem){
+		itemID = selectedItem;
+	}
+	
+	
+	function getCategoryID(){
+		return categoryID;
+	}
+
+	function getSecondCat(){
+		return secondCategory;
+	}
+
+	function getThirdCat(){
+		return thirdCategory;
+	}
+
+	function getItemID(){
+		return itemID;
+	}
+
+	function getDuplicateItem(){
+		return duplicateItem;
+	}
+	//Check if the icon link has been clicked and shows the category items widget
+	function getIconLink(){
+		return iconLink;
+	}
+	
+	//Checks if a category is already selected so the scroll doesn`t animate
+	function getSelectedCategory(){
+		return categorySelected;
+	}
+
+	function getSelectedItem(){
+		return itemSelected;
+	}
+	//After scroll of the item, cleans the selection
+	function clearValues(){
+		iconLink = false;
+		categorySelected = false;
+		itemSelected = false;
+	}
+
+	return {
+		setCategoryID: setCategoryID,
+		setSecondCat: setSecondCat,
+		setThirdCat: setThirdCat,
+		setSelectedItem: setSelectedItem,
+		setDuplicateItem: setDuplicateItem,
+		setSecondCatOnly: setSecondCatOnly,
+		setThirdCatOnly: setThirdCatOnly,
+		setSelectedItemOnly: setSelectedItemOnly,
+		getCategoryID : getCategoryID,
+		getSecondCat: getSecondCat,
+		getThirdCat: getThirdCat,
+		getItemID: getItemID,
+		getDuplicateItem: getDuplicateItem,
+		//Return the 3 new functions to scroll in the right way
+		getSelectedCategory: getSelectedCategory,
+		getSelectedItem: getSelectedItem,
+		clearValues: clearValues,
+		setIconLink: setIconLink,
+		getIconLink: getIconLink
+	};
+}]]></script>
+        <sys_class_name>sp_angular_provider</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-30 15:45:13</sys_created_on>
+        <sys_id>ad38b0f0db645410fa11cf2414961984</sys_id>
+        <sys_mod_count>47</sys_mod_count>
+        <sys_name>categorySubscribe</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_angular_provider_ad38b0f0db645410fa11cf2414961984</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-05-07 16:46:57</sys_updated_on>
+        <type>service</type>
+    </sp_angular_provider>
+</record_update>

@@ -622,39 +622,49 @@
         <option_schema>[{"displayValue":"Category","hint":"Selecione a categoria que deseja exibir","name":"selected_category","display_value_list":[],"section":"Data","label":"Category","type":"glide_list","value":"sc_category","ed":{"reference":"sc_category"}}]</option_schema>
         <public>false</public>
         <roles/>
-        <script><![CDATA[(function() {
+        <script><![CDATA[(function () {
 	var localInput = input;
 	var portalUtils = new global.OCLPortalUtils();
-	var portalUtilsCSC = new global.OCLPortalUtilsCSC(); 
-	
-	data.verifyAccessirm = gs.getUser().hasRole('sn_risk.user');
+	var portalUtilsCSC = new global.OCLPortalUtilsCSC();
 
-	data.msg = '';
-	if(localInput){
-		if(localInput.action == "sendMsg"){
+	data.verifyAccessirm = gs.getUser().hasRole("sn_risk.user");
+
+	data.msg = "";
+	if (localInput) {
+		if (localInput.action == "sendMsg") {
 			gs.addErrorMessage(localInput.msg);
 			return;
 		}
 	}
 
-	if(!localInput){
+	if (!localInput) {
 		data.newPhone = "";
 		data.widgets = [];
-		var requestWidget = {show : true,
-							 widget1 : $sp.getWidget('gservice_my_dashboard_requests'),
-							 widget2 : $sp.getWidget('gservice_my_dashboard_requests_csc')};
-		var notificationWidget = {show : false,
-								  widget1 : $sp.getWidget('gservice_my_dashboard_notification_v2'),
-								  widget2 : $sp.getWidget("gservice_my_dashboard_notification_csc")};
-		var approvalsWidget = {show : false,
-							   widget1 : $sp.getWidget('gservice_my_dashboard_approvals_v2'),
-							   widget2 : $sp.getWidget("gservice_my_dashboard_approvals_csc"),
-							   widget3 : $sp.getWidget("gservice_my_dashboard_approvals_irm")};
-		var assetsWidget = {show : false,
-							widget1 : $sp.getWidget('gservice_my_dashboard_assets')};
-		var mostReqWidget = {show : false,
-							 widget1 : $sp.getWidget('gservice_my_dashboard_most_req_v2'),
-							 widget2 : $sp.getWidget("gservice_my_dashboard_most_req_csc")};
+		var requestWidget = {
+			show: true,
+			widget1: $sp.getWidget("gservice_my_dashboard_requests"),
+			widget2: $sp.getWidget("gservice_my_dashboard_requests_csc"),
+		};
+		var notificationWidget = {
+			show: false,
+			widget1: $sp.getWidget("gservice_my_dashboard_notification_v2"),
+			widget2: $sp.getWidget("gservice_my_dashboard_notification_csc"),
+		};
+		var approvalsWidget = {
+			show: false,
+			widget1: $sp.getWidget("gservice_my_dashboard_approvals_v2"),
+			widget2: $sp.getWidget("gservice_my_dashboard_approvals_csc"),
+			widget3: $sp.getWidget("gservice_my_dashboard_approvals_irm"),
+		};
+		var assetsWidget = {
+			show: false,
+			widget1: $sp.getWidget("gservice_my_dashboard_assets"),
+		};
+		var mostReqWidget = {
+			show: false,
+			widget1: $sp.getWidget("gservice_my_dashboard_most_req_v2"),
+			widget2: $sp.getWidget("gservice_my_dashboard_most_req_csc"),
+		};
 		data.widgets.push(requestWidget);
 		data.widgets.push(notificationWidget);
 		data.widgets.push(approvalsWidget);
@@ -666,27 +676,35 @@
 		data.user_id = userID;
 
 		//Get the current user information
-		var grUserInfo = new GlideRecord ("sys_user");
+		var grUserInfo = new GlideRecord("sys_user");
 		grUserInfo.get(data.user_id);
 		data.name = grUserInfo.getValue("first_name");
 		data.title = grUserInfo.getValue("title");
 		data.email = grUserInfo.getValue("email");
 		var phone = grUserInfo.getValue("mobile_phone");
-		if(phone && phone.length == 13){
-			data.phone = "+" + phone.slice(0,2) + " (" + phone.slice(2, 4) + ") " + phone.slice(4, 9) + "-" + phone.slice(9, 13);
+		if (phone && phone.length == 13) {
+			data.phone =
+				"+" +
+				phone.slice(0, 2) +
+				" (" +
+				phone.slice(2, 4) +
+				") " +
+				phone.slice(4, 9) +
+				"-" +
+				phone.slice(9, 13);
 			data.newPhone = data.phone;
-		}
-		else{
+		} else {
 			data.phone = gs.getMessage("Sem número cadastrado");
 		}
 		data.location = grUserInfo.getDisplayValue("location");
 
 		var tabs = gs.getProperty("gservice_dashboard_tabs").split("|");
 		data.tabs = [];
-		for(i in tabs){
+		for (i in tabs) {
 			var tab = JSON.parse(tabs[i]);
-			if(tab.show == false && tab.name != "assetsTab"){
-				tab.show = (gs.getUser().hasRole("approver_user") || gs.getUser().hasRole("itil"));
+			if (tab.show == false && tab.name != "assetsTab") {
+				tab.show =
+					gs.getUser().hasRole("approver_user") || gs.getUser().hasRole("itil");
 			}
 			data.tabs.push(tab);
 			data.tabs[i].label = gs.getMessage(tab.label);
@@ -699,70 +717,98 @@
 		var qc = grDelegate.addQuery("u_pending_requests", true);
 		qc.addOrCondition("approvals", true);
 		grDelegate.query();
-		if(grDelegate.next()){
-			do{
-				if(grDelegate.getValue("u_pending_requests") == 1){
+		if (grDelegate.next()) {
+			do {
+				if (grDelegate.getValue("u_pending_requests") == 1) {
 					delegateUsersNotification.push(grDelegate.getValue("user"));
 				}
-				if(grDelegate.getValue("approvals") == 1){
+				if (grDelegate.getValue("approvals") == 1) {
 					delegateUsersApproval.push(grDelegate.getValue("user"));
 				}
-
-			} while(grDelegate.next());
+			} while (grDelegate.next());
 		}
 		var queries = portalUtils.getNotificationQuery();
 		data.taskQuery = queries.taskQuery;
 		data.incidentQuery = queries.incidentQuery;
 		data.approverQuery = portalUtils.getApproverQuery();
-		data.approverQueryCSC = "state=requested^source_tableSTARTSWITHx_gmeps_csc^approver.sys_idIN" + gs.getUserID();
-		data.approverQueryIRM = "state=requested^source_table=sn_compliance_policy^approver.sys_idIN" + gs.getUserID();
-		data.cscQuery = "requester="+ gs.getUserID() +"^ORopened_by="+ gs.getUserID() +"^u_status_portal=3";
+		data.approverQueryCSC =
+			"state=requested^source_tableSTARTSWITHx_gmeps_csc^approver.sys_idIN" +
+			gs.getUserID();
+		data.approverQueryIRM =
+			"state=requested^source_table=sn_compliance_policy^approver.sys_idIN" +
+			gs.getUserID();
+		data.cscQuery =
+			"requester=" +
+			gs.getUserID() +
+			"^ORopened_by=" +
+			gs.getUserID() +
+			"^u_status_portal=3";
 
-
-		data.notificationsCount = portalUtils.setNotificationsCount(data.taskQuery, data.incidentQuery);
-		data.notificationsCount += portalUtilsCSC.setNotificationsCount(data.cscQuery);
+		data.notificationsCount = portalUtils.setNotificationsCount(
+			data.taskQuery,
+			data.incidentQuery
+		);
+		data.notificationsCount += portalUtilsCSC.setNotificationsCount(
+			data.cscQuery
+		);
 		data.approvalsCount = portalUtils.setApprovalsCount(data.approverQuery);
 		data.approvalsCount += portalUtils.setApprovalsCount(data.approverQueryCSC);
 		data.approvalsCount += portalUtils.setApprovalsCount(data.approverQueryIRM);
-	}
-
-	else{
-		switch(localInput.action){
+	} else {
+		switch (localInput.action) {
 			case "selectedTab":
 				data.widgets = localInput.widgets;
-				for(i in data.widgets){
+				for (i in data.widgets) {
 					data.widgets[i].show = i == localInput.index ? true : false;
 				}
-				if(localInput.index == 1){
-					var notificationWidget = {show : true,
-											  widget1 : $sp.getWidget('gservice_my_dashboard_notification_v2'),
-											  widget2 : $sp.getWidget("gservice_my_dashboard_notification_csc")};
+				if (localInput.index == 1) {
+					var notificationWidget = {
+						show: true,
+						widget1: $sp.getWidget("gservice_my_dashboard_notification_v2"),
+						widget2: $sp.getWidget("gservice_my_dashboard_notification_csc"),
+					};
 					data.widgets[1] = notificationWidget;
 				}
 				break;
 			case "notificationsCount":
-				console.log('*** ANTES : ' + data.notificationsCount);
-				data.notificationsCount = portalUtils.setNotificationsCount(localInput.taskQuery, localInput.incidentQuery);
-				console.log('*** NO MEIO : ' +data.notificationsCount);
-				data.notificationsCount += portalUtilsCSC.setNotificationsCount(localInput.cscQuery);
-				console.log('*** DEPOIS : ' +data.notificationsCount);
+				console.log("*** ANTES : " + data.notificationsCount);
+				data.notificationsCount = portalUtils.setNotificationsCount(
+					localInput.taskQuery,
+					localInput.incidentQuery
+				);
+				console.log("*** NO MEIO : " + data.notificationsCount);
+				data.notificationsCount += portalUtilsCSC.setNotificationsCount(
+					localInput.cscQuery
+				);
+				console.log("*** DEPOIS : " + data.notificationsCount);
 				break;
 			case "approvalsCount":
-				data.approvalsCount = portalUtils.setApprovalsCount(localInput.approverQuery);
-				data.approvalsCount += portalUtils.setApprovalsCount(localInput.approverQueryCSC);
+				data.approvalsCount = portalUtils.setApprovalsCount(
+					localInput.approverQuery
+				);
+				data.approvalsCount += portalUtils.setApprovalsCount(
+					localInput.approverQueryCSC
+				);
 				break;
 			case "savePhone":
 				portalUtils.savePhone(input.newPhone);
 				var newPhone = input.newPhone;
-				data.phone = "+" + newPhone.slice(0,2) + " " + newPhone.slice(2, 4) + " " + newPhone.slice(4, 9) + "-" + newPhone.slice(9, 13);
+				data.phone =
+					"+" +
+					newPhone.slice(0, 2) +
+					" " +
+					newPhone.slice(2, 4) +
+					" " +
+					newPhone.slice(4, 9) +
+					"-" +
+					newPhone.slice(9, 13);
 				break;
 		}
 	}
 
 	//Upload user image
 	data.sysUserID = $sp.getParameter("sys_id");
-	if (!data.sysUserID)
-		data.sysUserID = gs.getUser().getID();
+	if (!data.sysUserID) data.sysUserID = gs.getUser().getID();
 	var sysUserGR = new GlideRecord("sys_user");
 	data.userExists = sysUserGR.get(data.sysUserID) && sysUserGR.canRead();
 
@@ -770,32 +816,35 @@
 		var loggedInSysUserID = gs.getUser().getID();
 		data.liveProfileID = "";
 
-		if (GlidePluginManager().isActive('com.glideapp.live_common')) {
+		if (GlidePluginManager().isActive("com.glideapp.live_common")) {
 			var liveProfileGR = new GlideRecord("live_profile");
 			liveProfileGR.addQuery("document", data.sysUserID);
 			liveProfileGR.query();
 			if (liveProfileGR.next()) {
 				data.liveProfileID = liveProfileGR.getValue("sys_id");
-				data.liveProfileModel = $sp.getForm("live_profile", data.liveProfileID)._fields;
+				data.liveProfileModel = $sp.getForm(
+					"live_profile",
+					data.liveProfileID
+				)._fields;
 			}
 		}
 	}
 	//End of user image upload
-
-})();]]></script>
+})();
+]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-06-03 19:50:55</sys_created_on>
         <sys_id>7637b073db899450fa11cf241496190e</sys_id>
-        <sys_mod_count>420</sys_mod_count>
+        <sys_mod_count>429</sys_mod_count>
         <sys_name>GService My  Dashboard Tabs v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_7637b073db899450fa11cf241496190e</sys_update_name>
-        <sys_updated_by>ccaires</sys_updated_by>
-        <sys_updated_on>2021-07-27 20:38:44</sys_updated_on>
+        <sys_updated_by>leonardo.c.bianchi@accenture.com</sys_updated_by>
+        <sys_updated_on>2021-10-07 05:35:40</sys_updated_on>
         <template><![CDATA[<div class="content" id="widget-category-items">
 
   <div class="content_avatar">

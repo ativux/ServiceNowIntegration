@@ -2,9 +2,13 @@
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
         <client_script><![CDATA[function($scope, $rootScope) {
-
 	var c = this;
 	c.filterMask = false;
+	c.selected = '';
+
+	for(var i in c.data.filters.filterBy){
+		c.data.filters.filterBy[i].selected = false;
+	}
 
 	c.applyFilterCSC = function(filter){
 		if(filter){
@@ -28,9 +32,77 @@
 		$rootScope.$broadcast('applyFilterCSC', c.data.filters);
 	}
 
-	c.applyDate = function(daysAgo){
-		$rootScope.$broadcast('applyDateCSC', daysAgo);
+	c.applyFilterBy = function(index){
+		c.inputDate = null;
+		for(var i in c.data.filters.filterBy){
+			c.data.filters.filterBy[i].selected = false;
+		}
+		c.data.filters.filterBy[index].selected = true;
 	}
+
+
+
+	c.applyDate = function(daysAgo, dateOrder){
+		c.selected = daysAgo+dateOrder;
+		c.inputDate = null;
+		$rootScope.$broadcast('applyDateCSC', daysAgo, dateOrder);
+	}
+	
+	c.sendDate = function (dateCalendar, dateOrder){
+		c.selected = '';
+		var dateFormated = c.convertDate(dateCalendar);
+		$rootScope.$broadcast('sendDateCSC', dateFormated, dateOrder);
+	}
+	
+	
+	c.convertDate = function(dateCalendar){
+		var dateString = dateCalendar.toString();
+		var day = dateString.substring(8, 10);
+		var year = dateString.substring(11, 15);
+		var month = dateString.substring(4, 7);
+
+		switch(month){
+			case "Jan":
+				month = "01";
+				break;
+			case "Feb":
+				month = "02";
+				break;
+			case "Mar":
+				month = "03";
+				break;
+			case "Apr":
+				month = "04";
+				break;
+			case "May":
+				month = "05";
+				break;
+			case "Jun":
+				month = "06";
+				break;
+			case "Jul":
+				month = "07";
+				break;
+			case "Aug":
+				month = "08";
+				break;
+			case "Sep":
+				month = "09";
+				break;
+			case "Oct":
+				month = "10";
+				break;
+			case "Nov":
+				month = "11";
+				break;
+			case "Dec":
+				month = "12";
+				break;
+		}
+		var dateConverted = year+'-'+month+'-'+day;
+		return dateConverted;
+	}
+	
 
 	c.clearAllFilters = function(){
 		for(var i in c.data.filters.statusFilter){
@@ -38,6 +110,9 @@
 		}
 		for(i in c.data.filters.typeFilter){
 			c.data.filters.typeFilter[i].selected = false;
+		}
+		for(i in c.data.filters.filterBy){
+			c.data.filters.filterBy[i].selected = false;
 		}
 		$rootScope.$broadcast('clearAllFiltersCSC');
 	}
@@ -50,188 +125,214 @@
 		c.data.showTypeFilter = !c.data.showTypeFilter;
 	}
 
+	c.FilterBy = function(){
+		c.data.showFilterBy = !c.data.showFilterBy;
+	}
+
 	$scope.$on("getSearchedItemsFilterClear", function (event) {
 		c.server.update();
 	});
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.content_list {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  padding-left: 0 !important;
-
-  .filter-click-size {
-    transition: .4s ease-in-out;
-    width: 120px;
-    height: 30px;
-    margin-bottom: 20px;
-  }
-
-  .title {
-    color: $dark-orchid;
-    font-size: 14px;
-    font-family: $text-bolder;
-    text-transform: uppercase;
-    line-height: 1;
-    margin-bottom: 15px !important;
-
-    .break-line-other {
-      transition: .4s ease-in-out;
-      width: 60px;
-    }
-  }
-
-  .break-line-filter {
-    width: 84px;
-  }
-
-  .mask_filter {
-    overflow: hidden;
-
-    .content_filters {
-      transition: .5s ease-in-out;
-    }
-    .filter_open {
-      margin-top: 0;
-    }
-    .filter_close {
-      margin-top: -260px;
-    }
-  }
-
-  .status_filter {
-    transition: .1s ease-in-out;
-    cursor: pointer;
-    display: flex;
-
-    input[type="checkbox"]{
-      display: none;
-    }
-
-    &amp;:hover {
-      transition: .1s ease-in-out;
-      opacity: .6;
-    }
-
-    .new-radio {
-      height: 16px;
-      width: 16px;
-      border-radius: 50%;
-      border: 2px solid #737373;
-      display: block;
-      position: absolute;
-      left: 0;
-      top: 4px;
-    }
-    .radio-after {
-      content: "";
-      height: 10px;
-      width: 10px;
-      display: block;
-      position: absolute;
-      left: 1px;
-      top: 1px;
-      border-radius: 50%;
-      background-color: $dark-orchid;
-    }
-    .filter_name {
-      margin-left: 25px;
-      margin-top: 4px;
-      margin-bottom: -6px;
-      font-size: 12px;
-      font-family: $text-bold;
-    }
-  }
-
-  .arrow-size {
-    transition: .4s ease-in-out;
-    height: 10px;
-    position: relative;
-    top: -34px;
-    left: 100px;
-  }
-  .invert-arrow {
-    transform: rotate(180deg);
-  }
-  .filter_type {
-    .arrow-size {
-      left: 82px;
-    }
-  }
-
-  .confirm_button {
-    transition: .4s ease-in-out;
-    font-size: 12px;
-    color: $dark-orchid;
-    font-family: $text-bolder;
-    text-decoration: underline;
-    text-transform: uppercase;
-    margin-left: 30px;
-    padding-top: 10px !important;
-  }
-
-  .radio-properties {
-    position: relative;
-    display: inline-block;
-    padding-bottom: 5px;
-  }
-
-  .list-properties {
-    padding-left: 0 !important;
-    margin-bottom: -8px;
-  }
-
-  .detail_search {
-    margin-top: -30px;
-    margin-right: 60px;
-  }
-
-  .filter-click-size, .break-line-other {
-    &amp;:hover {
-      transition: .2s ease-in-out;
-      transform: scale(1.1);
-      -webkit-transform: scale(1.1);
-      -ms-transform: scale(1.1);
-      -moz-transform: scale(1.1);
-      -o-transform: scale(1.1);
-    }
-  }
-
-  .statusMask{
-    background: white;
-    height: 100%;
-    width: 98%;
-    z-index: 1;
-    position: absolute;
-    opacity: 0.5;
-    outline: solid white;
-  }
-}
-
-@media only screen and (max-width: 768px) {
-
-  .content_list {
-
-    .filter-click-size {
-      margin-bottom: 0;
-    }
-    .break-line-filter {
-      width: 200px;
-    }
-    .arrow-size {
-      left: 148px;
-    }
-    .filter_type {
-      .arrow-size {
-        left: 130px;
-      }
-    }
-    .title .break-line-other {
-      width: 150px;
-    }
-
-  }
-
+        <css>.content_list {&#13;
+  margin-top: 20px;&#13;
+  margin-bottom: 20px;&#13;
+  padding-left: 0 !important;&#13;
+&#13;
+  .filter-click-size {&#13;
+    transition: .4s ease-in-out;&#13;
+    width: 120px;&#13;
+    height: 30px;&#13;
+    margin-bottom: 20px;&#13;
+  }&#13;
+&#13;
+  .title {&#13;
+    color: $dark-orchid;&#13;
+    font-size: 14px;&#13;
+    font-family: $text-bolder;&#13;
+    text-transform: uppercase;&#13;
+    line-height: 1;&#13;
+    margin-bottom: 15px !important;&#13;
+&#13;
+    .break-line-other {&#13;
+      transition: .4s ease-in-out;&#13;
+      width: 60px;&#13;
+    }&#13;
+  }&#13;
+  .date-field{&#13;
+    border: none;&#13;
+    border-bottom: 2px solid #8028FF;&#13;
+    align-items: center;&#13;
+  }&#13;
+  .title-date{&#13;
+    color: $dark-orchid;&#13;
+    font-size: 14px;&#13;
+    font-family: $text-bolder;&#13;
+    text-transform: uppercase;&#13;
+    line-height: 1;&#13;
+    border-bottom: 3px solid #c8c9c7;&#13;
+    width: 90px;&#13;
+    padding: 10px 0px;&#13;
+    .title-transaction{&#13;
+      transition: .4s ease-in-out;&#13;
+    }&#13;
+  }&#13;
+  &#13;
+  .border-selected {&#13;
+    border-bottom: 3px solid #8028FF !important;&#13;
+  }&#13;
+&#13;
+  .break-line-filter {&#13;
+    width: 84px;&#13;
+  }&#13;
+&#13;
+  .mask_filter {&#13;
+    overflow: hidden;&#13;
+&#13;
+    .content_filters {&#13;
+      transition: .5s ease-in-out;&#13;
+    }&#13;
+    .filter_open {&#13;
+      margin-top: 0;&#13;
+    }&#13;
+    .filter_close {&#13;
+      margin-top: -260px;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .status_filter {&#13;
+    transition: .1s ease-in-out;&#13;
+    cursor: pointer;&#13;
+    display: flex;&#13;
+&#13;
+    input[type="checkbox"]{&#13;
+      display: none;&#13;
+    }&#13;
+&#13;
+    &amp;:hover {&#13;
+      transition: .1s ease-in-out;&#13;
+      opacity: .6;&#13;
+    }&#13;
+&#13;
+    .new-radio {&#13;
+      height: 16px;&#13;
+      width: 16px;&#13;
+      border-radius: 50%;&#13;
+      border: 2px solid #737373;&#13;
+      display: block;&#13;
+      position: absolute;&#13;
+      left: 0;&#13;
+      top: 4px;&#13;
+    }&#13;
+    .radio-after {&#13;
+      content: "";&#13;
+      height: 10px;&#13;
+      width: 10px;&#13;
+      display: block;&#13;
+      position: absolute;&#13;
+      left: 1px;&#13;
+      top: 1px;&#13;
+      border-radius: 50%;&#13;
+      background-color: $dark-orchid;&#13;
+    }&#13;
+    .filter_name {&#13;
+      margin-left: 25px;&#13;
+      margin-top: 4px;&#13;
+      margin-bottom: -6px;&#13;
+      font-size: 12px;&#13;
+      font-family: $text-bold;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .arrow-size {&#13;
+    transition: .4s ease-in-out;&#13;
+    height: 10px;&#13;
+    position: relative;&#13;
+    top: -34px;&#13;
+    left: 100px;&#13;
+  }&#13;
+  .invert-arrow {&#13;
+    transform: rotate(180deg);&#13;
+  }&#13;
+  .filter_type {&#13;
+    .arrow-size {&#13;
+      left: 82px;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .confirm_button {&#13;
+    transition: .4s ease-in-out;&#13;
+    font-size: 12px;&#13;
+    color: $dark-orchid;&#13;
+    font-family: $text-bolder;&#13;
+    text-decoration: underline;&#13;
+    text-transform: uppercase;&#13;
+    margin-left: 30px;&#13;
+    padding-top: 10px !important;&#13;
+  }&#13;
+&#13;
+  .radio-properties {&#13;
+    position: relative;&#13;
+    display: inline-block;&#13;
+    padding-bottom: 5px;&#13;
+  }&#13;
+&#13;
+  .list-properties {&#13;
+    padding-left: 0 !important;&#13;
+    margin-bottom: -8px;&#13;
+  }&#13;
+&#13;
+  .detail_search {&#13;
+    margin-top: -30px;&#13;
+    margin-right: 60px;&#13;
+  }&#13;
+&#13;
+  .filter-click-size, .break-line-other, .title-transaction {&#13;
+    &amp;:hover {&#13;
+      transition: .2s ease-in-out;&#13;
+      transform: scale(1.1);&#13;
+      -webkit-transform: scale(1.1);&#13;
+      -ms-transform: scale(1.1);&#13;
+      -moz-transform: scale(1.1);&#13;
+      -o-transform: scale(1.1);&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .statusMask{&#13;
+    background: white;&#13;
+    height: 100%;&#13;
+    width: 98%;&#13;
+    z-index: 1;&#13;
+    position: absolute;&#13;
+    opacity: 0.5;&#13;
+    outline: solid white;&#13;
+  }&#13;
+}&#13;
+&#13;
+@media only screen and (max-width: 768px) {&#13;
+&#13;
+  .content_list {&#13;
+&#13;
+    .filter-click-size {&#13;
+      margin-bottom: 0;&#13;
+    }&#13;
+    .break-line-filter {&#13;
+      width: 200px;&#13;
+    }&#13;
+    .arrow-size {&#13;
+      left: 148px;&#13;
+    }&#13;
+    .filter_type {&#13;
+      .arrow-size {&#13;
+        left: 130px;&#13;
+      }&#13;
+    }&#13;
+    .title .break-line-other {&#13;
+      width: 150px;&#13;
+    }&#13;
+&#13;
+  }&#13;
+&#13;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -251,12 +352,14 @@
         <script><![CDATA[(function() {
 	var localInput = input;
 
-	data.filters = {statusFilter : [], typeFilter : []};
+	data.filters = {statusFilter : [], typeFilter : [], filterBy : []};
 	data.showStatusFilter = true;
 	data.showTypeFilter = true;
+	data.showFilterBy = true;
 
 	var statusFilter = gs.getProperty("gservice_list_filters_status_csc").split("|");
 	var typeFilter = gs.getProperty("gservice_list_filters_type_csc").split("|");
+	var filterBy = gs.getProperty("gservice_list_filters_by_csc").split("|");
 
 	for(var i in statusFilter){
 		data.filters.statusFilter.push(JSON.parse(statusFilter[i]));
@@ -266,8 +369,16 @@
 		data.filters.typeFilter.push(JSON.parse(typeFilter[i]));
 	}
 
+	for(i in filterBy){
+		data.filters.filterBy.push(JSON.parse(filterBy[i]));
+	}
+
 	data.statusFilterTitle = gs.getMessage("Filtrar por status").toUpperCase();
 	data.typeFilterTitle = gs.getMessage("Filtrar por tipo").toUpperCase();
+	data.filterByTitle = gs.getMessage("Filtrar por").toUpperCase();
+	data.lastDays = gs.getMessage("Last 15 days").toUpperCase();
+	data.lastMonth = gs.getMessage("Last month").toUpperCase();
+	data.clearFilter = gs.getMessage("Clear Filters").toUpperCase();
 
 	data.search_property = gs.getProperty("gservice_my_requests_search_source");
 
@@ -281,10 +392,6 @@
 
 	data.gserviceTypeahead = $sp.getWidget('gservice_typeahead_search', typeahead_search_options);
 
-	data.lastDays = gs.getMessage("Last 15 days").toUpperCase();
-	data.lastMonth = gs.getMessage("Last month").toUpperCase();
-	data.clearFilter = gs.getMessage("Clear Filters").toUpperCase();
-
 
 })();]]></script>
         <servicenow>false</servicenow>
@@ -292,14 +399,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 18:23:24</sys_created_on>
         <sys_id>40723a331b26d05097c0dca0f54bcbb8</sys_id>
-        <sys_mod_count>28</sys_mod_count>
+        <sys_mod_count>179</sys_mod_count>
         <sys_name>GService List Filter CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_40723a331b26d05097c0dca0f54bcbb8</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-12-10 11:45:07</sys_updated_on>
+        <sys_updated_by>lorenzo.d.d.angelo@accenture.com</sys_updated_by>
+        <sys_updated_on>2021-09-23 17:02:24</sys_updated_on>
         <template><![CDATA[<div class="content_list col-md-12">
   <div class="col-md-2 filter-padding filter_type">
     <div ng-click="c.typeFilterState()" class="filter-click-size">
@@ -327,7 +434,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="col-md-3 filter-padding">
     <div ng-class="c.filterMask ? 'statusMask' : ''"></div>
     <div ng-click="c.statusFilterState()" class="filter-click-size">
@@ -357,18 +464,67 @@
     </div>
   </div>
 
-  <div class="col-md-3 detail_search filter-padding">
+  <div class="col-md-2 filter-padding">
+    <div></div>
+    <div ng-click="c.FilterBy()" class="filter-click-size">
+      <div class="title break-line-filter">{{data.filterByTitle}}
+      </div>
+      <img class="arrow-size" src="GS_Seta_PB.png" ng-class="c.data.showFilterBy ? '' : 'invert-arrow'"/>
+    </div>
+    <div class="mask_filter">
+      <div class="content_filters" ng-class="c.data.showFilterBy ? 'filter_open' : 'filter_close'">
+        <div class="list-properties" ng-repeat="filterBy in data.filters.filterBy">
+          <div class="radio-properties">
+            <label for="{{filterBy.name}}FilterBy" class="status_filter">
+              <input type="checkbox"
+                     id="{{filterBy.name}}FilterBy"
+                     name="selectedItem"
+                     value="{{filterBy.name}}FilterBy"
+                     ng-model="filterBy.selected"
+                     ng-click="c.applyFilterBy(filterBy.value)">
+              <div class="new-radio">
+                <span ng-class="filterBy.selected ? 'radio-after' : ''"></span>
+              </div>
+              <div class="filter_name">{{filterBy.name}}</div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-2 filter-padding" ng-if="data.filters.filterBy[0].selected == true">
+    <div>
+      <input class="date-field" ng-model="c.inputDate" ng-change="c.sendDate(c.inputDate, 'opened_at')" type="date">
+    </div>
+    <div ng-class="{'border-selected': c.selected == '15opened_at'}" class="title-date title-transaction">
+      <div ng-click="c.applyDate(15, 'opened_at')">{{data.lastDays}}</div>
+    </div>
+    <div ng-class="{'border-selected': c.selected == '30opened_at'}" class="title-date title-transaction">
+      <div ng-click="c.applyDate(30, 'opened_at')">{{data.lastMonth}}</div>
+    </div>
+  </div>
+
+  <div class="col-md-2 filter-padding" ng-if="data.filters.filterBy[1].selected == true">
+    <div>
+      <input class="date-field" ng-model="c.inputDate" ng-change="c.sendDate(c.inputDate, 'forecast')" type="date">
+    </div>
+    <div ng-class="{'border-selected': c.selected == '15forecast'}" class="title-date title-transaction">
+      <div ng-click="c.applyDate(15, 'forecast')">{{data.lastDays}}</div>
+    </div>
+    <div ng-class="{'border-selected': c.selected == '30forecast'}" class="title-date title-transaction">
+      <div ng-click="c.applyDate(30, 'forecast')">{{data.lastMonth}}</div>
+    </div>
+  </div>
+
+  <div class="col-md-3 detail_search filter-padding" ng-if="data.filters.filterBy[2].selected == true">
     <sp-widget widget="data.gserviceTypeahead"></sp-widget>
   </div>
-  <div class="col-md-1 title filter-padding">
-    <div ng-click="c.applyDate(15)" class="break-line-other">{{data.lastDays}}</div>
-  </div>
-  <div class="col-md-1 title filter-padding">
-    <div ng-click="c.applyDate(30)" class="break-line-other">{{data.lastMonth}}</div>
-  </div>
+
   <div class="col-md-1 title filter-padding">
     <div ng-click="c.clearAllFilters()" class="break-line-other">{{data.clearFilter}}</div>
   </div>
+
 
 </div>]]></template>
     </sp_widget>
