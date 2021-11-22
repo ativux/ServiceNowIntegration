@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>sys_email</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition table="sys_email">state=ignored^type=send-ignored^recipients=javascript: gs.getProperty('instance_name')+'@service-now.com'^EQ<item display_value="Ignored" endquery="false" field="state" goto="false" newquery="false" operator="=" or="false" value="ignored"/>
+            <item display_value="send-ignored" endquery="false" field="type" goto="false" newquery="false" operator="=" or="false" value="send-ignored"/>
+            <item endquery="false" field="recipients" goto="false" newquery="false" operator="=" or="false" value="javascript: gs.getProperty('instance_name')+'@service-now.com'"/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </filter_condition>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>GS: Auto Approval Email</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
+
+    // Add your code here
+    var body = current.getValue('body');
+	var approval_infos = JSON.parse(body.substring(body.indexOf("approval")+9, body.indexOf("/approval")-1));
+	var comments = body.substring(body.indexOf("comments")+9, body.indexOf("/comments")-1);
+    
+	var gr_approval = new GlideRecord('sysapproval_approver');
+    gr_approval.get(approval_infos.u_approval);
+    gr_approval.setValue('state', approval_infos.u_action);
+	if (!approval_infos.result) gr_approval.comments = comments;
+    gr_approval.update();
+
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>diego_pinheiroACCENTURE</sys_created_by>
+        <sys_created_on>2021-11-09 16:03:51</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>ea332ed4dbbb30501c0d0fbca39619ba</sys_id>
+        <sys_mod_count>44</sys_mod_count>
+        <sys_name>GS: Auto Approval Email</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_script_ea332ed4dbbb30501c0d0fbca39619ba</sys_update_name>
+        <sys_updated_by>diego_pinheiroACCENTURE</sys_updated_by>
+        <sys_updated_on>2021-11-11 19:20:25</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=ea332ed4dbbb30501c0d0fbca39619ba"/>
+</record_update>

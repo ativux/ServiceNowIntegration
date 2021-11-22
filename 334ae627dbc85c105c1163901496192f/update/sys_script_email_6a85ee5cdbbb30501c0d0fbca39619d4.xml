@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_email">
+    <sys_script_email action="INSERT_OR_UPDATE">
+        <name>GS_auto_approval</name>
+        <new_lines_to_html>false</new_lines_to_html>
+        <script><![CDATA[(function runMailScript(/* GlideRecord */ current, /* TemplatePrinter */ template,
+          /* Optional EmailOutbound */ email, /* Optional GlideRecord */ email_action,
+          /* Optional GlideRecord */ event) {
+
+    // Add your code here
+	email.setSubject('Aprovação recebida com sucesso!');
+	
+	template.print('<approval>'+event.parm1+'</approval>');
+	template.print('<comments>'+event.parm2+'</comments>');
+	
+	
+})(current, template, email, email_action, event);]]></script>
+        <sys_class_name>sys_script_email</sys_class_name>
+        <sys_created_by>diego_pinheiroACCENTURE</sys_created_by>
+        <sys_created_on>2021-11-09 16:09:49</sys_created_on>
+        <sys_id>6a85ee5cdbbb30501c0d0fbca39619d4</sys_id>
+        <sys_mod_count>20</sys_mod_count>
+        <sys_name>GS_auto_approval</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_script_email_6a85ee5cdbbb30501c0d0fbca39619d4</sys_update_name>
+        <sys_updated_by>diego_pinheiroACCENTURE</sys_updated_by>
+        <sys_updated_on>2021-11-11 18:55:59</sys_updated_on>
+    </sys_script_email>
+</record_update>

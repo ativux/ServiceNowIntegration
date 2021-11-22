@@ -744,138 +744,138 @@ tbody {&#13;
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
-	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
-	var portalUtils = new global.OCLPortalUtils();
-	data.showEmptyMessage = false;
-	data.user_id = gs.getUserID();
-	data.columns = [];
+    var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+    var portalUtils = new global.OCLPortalUtils();
+    data.showEmptyMessage = false;
+    data.user_id = gs.getUserID();
+    data.columns = [];
 
-	if(!localInput){
-		var columns_property = gs.getProperty("gservice_dashboard_columns");
+    if (!localInput) {
+        var columns_property = gs.getProperty("gservice_dashboard_columns");
 
-		var parse = JSON.parse(columns_property);
-		var columns = parse['approvalsTab'].columns;
+        var parse = JSON.parse(columns_property);
+        var columns = parse['approvalsTab'].columns;
 
-		data.columns = columns;
-		for(i in columns){
-			data.columns[i].name = gs.getMessage(columns[i].name).toUpperCase();
-		}
-		
-		data.approverQuery = "state=requested^source_table=sc_req_item^ORsource_table=change_request^approver.sys_idIN" + gs.getUserID();
+        data.columns = columns;
+        for (i in columns) {
+            data.columns[i].name = gs.getMessage(columns[i].name).toUpperCase();
+        }
 
-		var delegateUsers = [];
-		var grDelegate = new GlideRecord("sys_user_delegate");
-		grDelegate.addQuery("delegate", gs.getUserID());
-		grDelegate.addQuery("approvals", true);
-		grDelegate.addEncodedQuery("starts<=javascript:gs.beginningOfToday()^ends>=javascript:gs.endOfToday()");
-		grDelegate.query();
-		
-		if(grDelegate.next()){
-			do{
-				delegateUsers.push(grDelegate.getValue("user"));
-			} while(grDelegate.next());
-		}
+        data.approverQuery = "state=requested^source_table=sc_req_item^ORsource_table=change_request^approver.sys_idIN" + gs.getUserID();
 
-		if(delegateUsers.length > 0){
-			data.approverQuery += "," + delegateUsers.join(",");
-		}
+        var delegateUsers = [];
+        var grDelegate = new GlideRecord("sys_user_delegate");
+        grDelegate.addQuery("delegate", gs.getUserID());
+        grDelegate.addQuery("approvals", true);
+        grDelegate.addEncodedQuery("starts<=javascript:gs.beginningOfToday()^ends>=javascript:gs.endOfToday()");
+        grDelegate.query();
 
-		data.approvals = portalUtils.getApprovals(data.user_id);
-		if(data.approvals.length == 0){
-			data.showEmptyMessage = true;
-		}
-		data.margin_top = -300 * data.approvals.length;
-		if(data.margin_top == 0){
-			data.margin_top = -300;
-		}
-		
-		data.approvalsCount = data.approvals.length;
-	}
+        if (grDelegate.next()) {
+            do {
+                delegateUsers.push(grDelegate.getValue("user"));
+            } while (grDelegate.next());
+        }
 
-	else{
-		switch(localInput.action){
-			case "getTicketConversationWidget":
-				var gservice_ticket_conversation_options = {table : localInput.item.table,
-																										sys_id : localInput.item.sys_id,
-																										item_status : localInput.item.colorClass};
-				data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
-				break;
+        if (delegateUsers.length > 0) {
+            data.approverQuery += "," + delegateUsers.join(",");
+        }
 
-			case "orderBy":
-				var order = localInput.order;
-				data.columns = localInput.allColumns;
-				var direction;
-				for(i in data.columns){
-					if(order == data.columns[i].order){
-						data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
-						direction = data.columns[i].direction;
-					}
-					else{
-						data.columns[i].direction = false;
-					}
-				}
-				var items = localInput.items;
-				var itemsSort = portalUtils.sortList(items, localInput.order, direction);
-				data.approvals = itemsSort;
-				data.approvalsCount = data.approvals.length;
-				break;
-			case "submitApproval":
-				data.approvals = localInput.approvals;
-				var comment = localInput.comment ? localInput.comment : '';
-				var newApprovalID = portalUtils.submitApproval(localInput.item, localInput.approval, comment);
+        data.approvals = portalUtils.getApprovals(data.user_id);
+        if (data.approvals.length == 0) {
+            data.showEmptyMessage = true;
+        }
+        data.margin_top = -300 * data.approvals.length;
+        if (data.margin_top == 0) {
+            data.margin_top = -300;
+        }
 
-				var newApprovals = [];
-				for(i in data.approvals){
-					if(data.approvals[i].approvalID != newApprovalID){
-						newApprovals.push(data.approvals[i]);
-					}
-				}
-				data.approvals = newApprovals;
-				data.approvalsCount = data.approvals.length;
-				break;
+        data.approvalsCount = data.approvals.length;
+    } else {
+        switch (localInput.action) {
+            case "getTicketConversationWidget":
+                var gservice_ticket_conversation_options = {
+                    table: localInput.item.table,
+                    sys_id: localInput.item.sys_id,
+                    item_status: localInput.item.colorClass
+                };
+                data.ticketConversationWidget = $sp.getWidget('gservice_custom_conversation', gservice_ticket_conversation_options);
+                break;
 
-			case "getNewApproval":
-				data.approvals = [];
+            case "orderBy":
+                var order = localInput.order;
+                data.columns = localInput.allColumns;
+                var direction;
+                for (i in data.columns) {
+                    if (order == data.columns[i].order) {
+                        data.columns[i].direction = !data.columns[i].direction ? -1 : -data.columns[i].direction;
+                        direction = data.columns[i].direction;
+                    } else {
+                        data.columns[i].direction = false;
+                    }
+                }
+                var items = localInput.items;
+                var itemsSort = portalUtils.sortList(items, localInput.order, direction);
+                data.approvals = itemsSort;
+                data.approvalsCount = data.approvals.length;
+                break;
+            case "submitApproval":
 
-				if(localInput.approvals){
-					data.approvals = localInput.approvals;
-				}
+                data.approvals = localInput.approvals;
+                var comment = localInput.comment ? localInput.comment : '';
+                var newApprovalID = portalUtils.submitApproval(localInput.item, localInput.approval, comment);
 
-				data.approvals.push(portalUtils.getNewApproval(localInput.approvalID));
-				data.approvalsCount = data.approvals.length;
-				break;
-			case "deleteApprovals":
-				var newObject = [];
-				if(localInput.approvals){
-					data.approvals = localInput.approvals;
-				}
-				if(data.approvals.length > 0){
-					for(var i in data.approvals){
-						if(data.approvals[i].approvalID != localInput.approvalID){
-							newObject.push(data.approvals[i]);
-						}
-					}
-					data.approvals = newObject;
-					data.approvalsCount = data.approvals.length;
-				}
-				break;
-		}
+                var newApprovals = [];
+                for (i in data.approvals) {
+                    if (data.approvals[i].approvalID != newApprovalID && data.approvals[i].approvalID != localInput.item.approvalID) {
+                        newApprovals.push(data.approvals[i]);
+                    }
+                }
+                data.approvals = newApprovals;
+                data.approvalsCount = data.approvals.length;
+                break;
 
-	}
+            case "getNewApproval":
+                data.approvals = [];
+
+                if (localInput.approvals) {
+                    data.approvals = localInput.approvals;
+                }
+
+                data.approvals.push(portalUtils.getNewApproval(localInput.approvalID));
+                data.approvalsCount = data.approvals.length;
+                break;
+            case "deleteApprovals":
+                var newObject = [];
+                if (localInput.approvals) {
+                    data.approvals = localInput.approvals;
+                }
+                if (data.approvals.length > 0) {
+                    for (var i in data.approvals) {
+                        if (data.approvals[i].approvalID != localInput.approvalID) {
+                            newObject.push(data.approvals[i]);
+                        }
+                    }
+                    data.approvals = newObject;
+                    data.approvalsCount = data.approvals.length;
+                }
+                break;
+        }
+
+    }
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>organize.jorge.garcia</sys_created_by>
         <sys_created_on>2020-08-11 16:52:01</sys_created_on>
         <sys_id>36f3e7311bee141097c0dca0f54bcb9a</sys_id>
-        <sys_mod_count>61</sys_mod_count>
+        <sys_mod_count>81</sys_mod_count>
         <sys_name>GService My Dashboard Approvals v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_36f3e7311bee141097c0dca0f54bcb9a</sys_update_name>
-        <sys_updated_by>rljunio</sys_updated_by>
-        <sys_updated_on>2021-07-21 18:14:01</sys_updated_on>
+        <sys_updated_by>diego_pinheiroACCENTURE</sys_updated_by>
+        <sys_updated_on>2021-11-17 15:31:23</sys_updated_on>
         <template><![CDATA[<div class="approval_content">
 
   <div class="title_category" ng-click="c.openContent()">
@@ -920,7 +920,7 @@ tbody {&#13;
               <td>
                 <div class="row approval_column_requester">
                   <div>
-                    <span class="service_title">{{item.requester}}</span>
+                 	<span class="service_title">{{item.requester}}</span>
                   </div>
                 </div>
               </td>
@@ -994,7 +994,7 @@ tbody {&#13;
           <div class="justify-text">${Justifique sua resposta negativa:}</div>
           <span class="notification-align no-text-answer" ng-if="c.needComment"> ${Favor preencher o comentário antes de submeter} </span>
           <div class="form-group">
-            <textarea class="form-control" ng-model="c.approvalComment" maxlength="255"></textarea>
+            <textarea class="form-control" ng-model="c.approvalComment" maxlength="400"></textarea>
             <a style="cursor: pointer;" ng-click="c.submitCommentApproval()">
               <img class="resize-img" src="gservice_dashboard_submit.png"/>
             </a>
