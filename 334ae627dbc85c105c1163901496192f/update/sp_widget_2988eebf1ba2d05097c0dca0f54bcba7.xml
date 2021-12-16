@@ -12,20 +12,24 @@
 	c.reopeningReason = false;
 	c.disableAction = false;
 
+
 	// === INICIO Properites do botão Editar INCIO ===
 	var variableSetsToBeReadOnly = [
-		"5105fae2dbea30101c0d0fbca3961926",
-		"6694fb9c1b6278d045840fe1f54bcb6d",
+		"5105fae2dbea30101c0d0fbca3961926", //ACN: CSC - Cabeçalho Padrão
+		"6694fb9c1b6278d045840fe1f54bcb6d" //ACN: CSC - Estrutura de Custeio
 	];
 
 	var excludeFields = [];
 
+	// 60 = Encerrado, 117 = Encerrado por falta de retorno
+	// 116 = Cancelado por falta de aprovação, 115 = Rejeitado pelo aprovador
 	c.cantEditStates = ["60", "117", "116", "115"];
 
 	c.canEditItems = [
-		"4eaecef71b0a7c5045840fe1f54bcb47",
-		"870c4d1b1b86f45045840fe1f54bcbee",
-		"f3579ee31b42f85045840fe1f54bcbe2",
+		"4eaecef71b0a7c5045840fe1f54bcb47", //Buffet em Externas e PA's
+		"870c4d1b1b86f45045840fe1f54bcbee", //Coffee Break
+		"f3579ee31b42f85045840fe1f54bcbe2", //Kit Lanche
+		"37181a95db7f7c501c0d0fbca39619e1" //Solicitação de Caçambas
 	];
 
 	// === FIM Properites do botão Editar FIM ===
@@ -56,39 +60,44 @@
 
 		c.server
 			.get({
-				action: "getVsetFields",
-				vsets: variableSetsToBeReadOnly,
-				exceptions: excludeFields,
-			})
+			action: "getVsetFields",
+			vsets: variableSetsToBeReadOnly,
+			exceptions: excludeFields
+		})
 			.then(function (response) {
-				var fields = response.data.fields;
-				spModal
-					.open({
-						title: "ATENÇÃO! Você está editando uma solicitação em andamento.",
-						widget: widgetId,
-						widgetInput: {
-							table: "x_gmeps_csc_alimentacao",
-							sys_id: itemSysID,
-							view: "edit_request_view",
-							fields: fields,
-							hideActions: true,
-						},
-						buttons: [
-							{ label: "${Cancel}", cancel: true },
-							{ label: "${Save}", primary: true },
-						],
+			var fields = response.data.fields;
+
+			spModal
+				.open({
+				title: "ATENÇÃO! Você está editando uma solicitação em andamento.",
+				widget: widgetId,
+				backdrop: 'static',
+				widgetInput: {
+					table: item.table,
+					sys_id: itemSysID,
+					view: "edit_request_view",
+					fields: fields,
+					hideActions: true,
+					category: item.category
+				},
+				buttons: [
+					{ label: "${Cancel}", cancel: true },
+					{ label: "${Save}", primary: true}
+				]
+			})
+				.then(function () {
+				if ($scope.gFormInstance != undefined) {
+					$scope.gFormInstance.submit("save")
+						.then(function() {								
+						$scope.server
+							.get({ action: "sendNotification", itemSysID: itemSysID })
+							.then(function () {
+							$location.url("?id=globoservice_my_dashboard");
+						});
 					})
-					.then(function () {
-						if ($scope.gFormInstance != undefined) {
-							$scope.gFormInstance.submit("save");
-							$scope.server
-								.get({ action: "sendNotification", itemSysID: itemSysID })
-								.then(function () {
-									$location.url("?id=globoservice_my_dashboard");
-								});
-						}
-					});
+				}
 			});
+		});
 	};
 
 	spUtil.recordWatch(
@@ -99,14 +108,14 @@
 			if (event.data.record.u_status_portal) {
 				c.server
 					.get({
-						action: "stateChangedBackend",
-						itemID: event.data.sys_id,
-						newState: event.data.record.u_status_portal,
-						requests: c.data.requests,
-					})
+					action: "stateChangedBackend",
+					itemID: event.data.sys_id,
+					newState: event.data.record.u_status_portal,
+					requests: c.data.requests
+				})
 					.then(function (response) {
-						c.data.requests = response.data.requests;
-					});
+					c.data.requests = response.data.requests;
+				});
 			}
 		}
 	);
@@ -115,14 +124,14 @@
 		if (event.data.record.state) {
 			c.server
 				.get({
-					action: "ritmStateChangedBackend",
-					itemID: event.data.sys_id,
-					newState: event.data.record.state,
-					requests: c.data.requests,
-				})
+				action: "ritmStateChangedBackend",
+				itemID: event.data.sys_id,
+				newState: event.data.record.state,
+				requests: c.data.requests
+			})
 				.then(function (response) {
-					c.data.requests = response.data.requests;
-				});
+				c.data.requests = response.data.requests;
+			});
 		}
 	});
 
@@ -191,17 +200,17 @@
 		) {
 			c.server
 				.get({
-					action: "changeItemState",
-					state: action,
-					item: item,
-					reopeningReason: false,
-				})
+				action: "changeItemState",
+				state: action,
+				item: item,
+				reopeningReason: false,
+			})
 				.then(function (response) {
-					item = response.data.item;
-					c.data.show_survey = response.data.show_survey;
-					c.data.gserviceSurveyCSC = response.data.gserviceSurveyCSC;
-					c.disableAction = false;
-				});
+				item = response.data.item;
+				c.data.show_survey = response.data.show_survey;
+				c.data.gserviceSurveyCSC = response.data.gserviceSurveyCSC;
+				c.disableAction = false;
+			});
 		} else {
 			if (
 				action == "rejectSolution" ||
@@ -267,45 +276,44 @@
 				c.needComment = false;
 				c.server
 					.get({
-						action: "changeItemState",
-						state: c.state,
-						item: c.requestItem,
-						comment: c.requestComment,
-						reopeningReason: c.reopeningReason,
-					})
-					.then(function (response) {
-						$("#requestCommentModalCSC").modal("hide");
-						c.requestComment = "";
-						$timeout(function () {
-							c.disableAction = false;
-						}, 1500);
-					});
-			} else c.needComment = true;
-		} else {
-			c.needReason = false;
-			c.needComment = false;
-			c.server
-				.get({
 					action: "changeItemState",
 					state: c.state,
 					item: c.requestItem,
 					comment: c.requestComment,
 					reopeningReason: c.reopeningReason,
 				})
-				.then(function (response) {
+					.then(function (response) {
 					$("#requestCommentModalCSC").modal("hide");
 					c.requestComment = "";
 					$timeout(function () {
 						c.disableAction = false;
 					}, 1500);
 				});
+			} else c.needComment = true;
+		} else {
+			c.needReason = false;
+			c.needComment = false;
+			c.server
+				.get({
+				action: "changeItemState",
+				state: c.state,
+				item: c.requestItem,
+				comment: c.requestComment,
+				reopeningReason: c.reopeningReason,
+			})
+				.then(function (response) {
+				$("#requestCommentModalCSC").modal("hide");
+				c.requestComment = "";
+				$timeout(function () {
+					c.disableAction = false;
+				}, 1500);
+			});
 		}
 	};
 
 	c.showDetails = function (item) {
 		var showDetails = false;
 		var index = 0;
-		console.log(c.data.requests);
 		for (var i in c.data.requests) {
 			if (c.data.requests[i].sys_id == item.sys_id) {
 				index = i;
@@ -319,23 +327,19 @@
 			c.data.showConversation = false;
 			c.server
 				.get({
-					action: "getTicketConversationWidget",
-					item: item,
-				})
+				action: "getTicketConversationWidget",
+				item: item,
+			})
 				.then(function (response) {
-					c.data.ticketConversationWidget =
-						response.data.ticketConversationWidget;
-					console.log(
-						" ~ file: GService My Dashboard Requests CSC.client_script.js ~ line 323 ~ response.data.ticketConversationWidget",
-						response.data.ticketConversationWidget
-					);
+				c.data.ticketConversationWidget =
+					response.data.ticketConversationWidget;
 
-					c.data.showConversation = true;
-					if (item.table == "sc_request") {
-						c.data.requests[index] = response.data.newItem;
-						c.data.ritm_fields = response.data.ritm_fields;
-					}
-				});
+				c.data.showConversation = true;
+				if (item.table == "sc_request") {
+					c.data.requests[index] = response.data.newItem;
+					c.data.ritm_fields = response.data.ritm_fields;
+				}
+			});
 		}
 	};
 
@@ -424,14 +428,14 @@
 				if (event.data.record.u_status_portal) {
 					c.server
 						.get({
-							action: "stateChangedBackend",
-							itemID: event.data.sys_id,
-							newState: event.data.record.u_status_portal,
-							requests: c.data.requests,
-						})
+						action: "stateChangedBackend",
+						itemID: event.data.sys_id,
+						newState: event.data.record.u_status_portal,
+						requests: c.data.requests,
+					})
 						.then(function (response) {
-							c.data.requests = response.data.requests;
-						});
+						c.data.requests = response.data.requests;
+					});
 				}
 			}
 		);
@@ -471,14 +475,14 @@
 		c.data.showRecordDetails = false;
 		c.server
 			.get({
-				action: "openRITM",
-				ritm: ritm,
-			})
+			action: "openRITM",
+			ritm: ritm,
+		})
 			.then(function (response) {
-				c.data.recordDetailsWidget = response.data.recordDetailsWidget;
-				c.data.showRecordDetails = true;
-				$("#ritmDetails").modal("show");
-			});
+			c.data.recordDetailsWidget = response.data.recordDetailsWidget;
+			c.data.showRecordDetails = true;
+			$("#ritmDetails").modal("show");
+		});
 	};
 
 	$scope.$on("closeEditModal", function (event) {
@@ -1716,7 +1720,7 @@ tbody {&#13;
 					send_image: "GService_SS_TV.png",
 					comment_image: "GS_Resposta_Roxo.png",
 					color_class: "color_category2",
-					bd_color_class: "bdcolor_category2",
+					bd_color_class: "bdcolor_category2"
 				};
 				data.ticketConversationWidget = $sp.getWidget(
 					"gservice_custom_conversation",
@@ -1767,7 +1771,7 @@ tbody {&#13;
 		data.reopeningReason.push({
 			label: grReopening.getDisplayValue("label"),
 			value: grReopening.getDisplayValue("value"),
-			selected: false,
+			selected: false
 		});
 	}
 
@@ -1792,7 +1796,7 @@ tbody {&#13;
 			category_bg_color: "",
 			category_bd_color: "",
 			category_submit_img: "",
-			broadcast_name: "editItem",
+			broadcast_name: "editItem"
 		};
 
 		data.gserviceCatalogItem = $sp.getWidget(
@@ -2010,7 +2014,6 @@ tbody {&#13;
 				data.order = localInput.dateOrder;
 				data.direction = -1;
 				data.dateFilter = localInput.dateFilter;
-				console.log("data.dateFilter =" + data.dateFilter);
 				data.typeFilter = localInput.typeFilter;
 				data.statusFilter = localInput.statusFilter;
 				data.query = portalUtils.mountQuery(
@@ -2066,7 +2069,7 @@ tbody {&#13;
 				var ritm = localInput.ritm;
 				var gservice_record_details_options = {
 					table: ritm.table,
-					sys_id: ritm.sys_id,
+					sys_id: ritm.sys_id
 				};
 				data.recordDetailsWidget = $sp.getWidget(
 					"gservice_record_details",
@@ -2260,14 +2263,14 @@ tbody {&#13;
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 17:40:05</sys_created_on>
         <sys_id>2988eebf1ba2d05097c0dca0f54bcba7</sys_id>
-        <sys_mod_count>655</sys_mod_count>
+        <sys_mod_count>706</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2988eebf1ba2d05097c0dca0f54bcba7</sys_update_name>
-        <sys_updated_by>carlos.schiavi@accenture.com</sys_updated_by>
-        <sys_updated_on>2021-10-19 14:22:40</sys_updated_on>
+        <sys_updated_by>accenture.emily</sys_updated_by>
+        <sys_updated_on>2021-12-07 16:25:33</sys_updated_on>
         <template><![CDATA[<div class="content_request">
 	<div class="title_category" ng-click="c.openContent()">
 		${Solicitações de Finanças, Jurídico e Infraestrutura}
