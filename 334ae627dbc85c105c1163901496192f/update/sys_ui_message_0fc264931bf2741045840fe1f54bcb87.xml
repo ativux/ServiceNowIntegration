@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_message">
+    <sys_ui_message action="INSERT_OR_UPDATE">
+        <application/>
+        <key>Edit Request</key>
+        <language>pb</language>
+        <message>Editar Solicitação</message>
+        <sys_class_name>sys_ui_message</sys_class_name>
+        <sys_created_by>felipe.m.machado@accenture.com</sys_created_by>
+        <sys_created_on>2021-09-29 21:17:14</sys_created_on>
+        <sys_id>0fc264931bf2741045840fe1f54bcb87</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Edit Request</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_ui_message_0fc264931bf2741045840fe1f54bcb87</sys_update_name>
+        <sys_updated_by>felipe.m.machado@accenture.com</sys_updated_by>
+        <sys_updated_on>2021-09-29 21:17:14</sys_updated_on>
+    </sys_ui_message>
+</record_update>
