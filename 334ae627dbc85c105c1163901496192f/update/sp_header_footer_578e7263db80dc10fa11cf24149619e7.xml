@@ -6,8 +6,6 @@
 	
 	$scope.kb_categories = c.data.kb_categories;
 	
-	console.log("NOGS - KB Categories: " + JSON.stringify($scope.kb_categories));
-	
 	c.sendKBCategories = true;
 	c.categoryID = false;
 	c.secondCategory = false;
@@ -866,14 +864,14 @@ nav {&#13;
         <sys_created_by>organize.vinicius.oliveira</sys_created_by>
         <sys_created_on>2020-04-14 18:00:53</sys_created_on>
         <sys_id>578e7263db80dc10fa11cf24149619e7</sys_id>
-        <sys_mod_count>1048</sys_mod_count>
+        <sys_mod_count>1049</sys_mod_count>
         <sys_name>GService Stock Header</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_header_footer_578e7263db80dc10fa11cf24149619e7</sys_update_name>
-        <sys_updated_by>lucas.nogueira_nuvolax@prestador.globo</sys_updated_by>
-        <sys_updated_on>2021-04-09 15:41:35</sys_updated_on>
+        <sys_updated_by>accenture.emily</sys_updated_by>
+        <sys_updated_on>2021-12-07 16:27:58</sys_updated_on>
         <template><![CDATA[<div class="content">
 
   <!-- SIDE BAR -->

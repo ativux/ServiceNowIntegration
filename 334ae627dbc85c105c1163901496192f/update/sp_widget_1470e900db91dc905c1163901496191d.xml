@@ -266,7 +266,6 @@
 			categories[i].count = count;
 		}
 		data.categories = categories;
-		//console.log(data.categories);
 	}
 })();]]></script>
         <servicenow>false</servicenow>
@@ -274,14 +273,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-04 17:30:49</sys_created_on>
         <sys_id>1470e900db91dc905c1163901496191d</sys_id>
-        <sys_mod_count>455</sys_mod_count>
+        <sys_mod_count>456</sys_mod_count>
         <sys_name>GService Categories Knowledge</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_1470e900db91dc905c1163901496191d</sys_update_name>
-        <sys_updated_by>organize.fernando</sys_updated_by>
-        <sys_updated_on>2021-02-13 11:41:35</sys_updated_on>
+        <sys_updated_by>accenture.emily</sys_updated_by>
+        <sys_updated_on>2021-12-07 16:29:34</sys_updated_on>
         <template><![CDATA[<div class="content_categories_knowledge" id="categoriesKnowledge" ng-class="c.categorySelected ? 'content_margin' : 'content_margin_bottom'">
   <div class="content">
 
