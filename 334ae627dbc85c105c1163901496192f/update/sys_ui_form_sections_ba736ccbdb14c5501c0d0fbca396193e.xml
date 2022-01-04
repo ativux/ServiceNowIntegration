@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_form_sections form_id="ba736ccbdb14c5501c0d0fbca396193e" sys_domain="global" table="x_gmeps_csc_manutencao" version="3">
+        <sys_ui_form_section action="INSERT_OR_UPDATE">
+            <position>0</position>
+            <sys_created_by>j.martins.oliveira@accenture.com</sys_created_by>
+            <sys_created_on>2021-12-12 16:17:44</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>f6f3ec0fdb14c5501c0d0fbca39619ec</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_overrides/>
+            <sys_ui_form display_value="x_gmeps_csc_manutencao" name="x_gmeps_csc_manutencao" sys_domain="global" view="7b1d72bf1b767c1045840fe1f54bcb9d">ba736ccbdb14c5501c0d0fbca396193e</sys_ui_form>
+            <sys_ui_section caption="NULL" display_value="" name="x_gmeps_csc_manutencao" sys_domain="global" view="7b1d72bf1b767c1045840fe1f54bcb9d">6383288bdb14c5501c0d0fbca39619dc</sys_ui_section>
+            <sys_updated_by>j.martins.oliveira@accenture.com</sys_updated_by>
+            <sys_updated_on>2021-12-12 16:17:44</sys_updated_on>
+        </sys_ui_form_section>
+        <sys_ui_form action="INSERT_OR_UPDATE">
+            <name>x_gmeps_csc_manutencao</name>
+            <roles/>
+            <sys_class_name>sys_ui_form</sys_class_name>
+            <sys_created_by>j.martins.oliveira@accenture.com</sys_created_by>
+            <sys_created_on>2021-12-12 16:16:42</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>ba736ccbdb14c5501c0d0fbca396193e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_gmeps_csc_manutencao</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+            <sys_update_name>sys_ui_form_sections_ba736ccbdb14c5501c0d0fbca396193e</sys_update_name>
+            <sys_updated_by>j.martins.oliveira@accenture.com</sys_updated_by>
+            <sys_updated_on>2021-12-12 16:16:42</sys_updated_on>
+            <sys_user/>
+            <view display_value="Edit_request_view" name="edit_request_view">7b1d72bf1b767c1045840fe1f54bcb9d</view>
+            <view_name/>
+        </sys_ui_form>
+    </sys_ui_form_sections>
+</record_update>
