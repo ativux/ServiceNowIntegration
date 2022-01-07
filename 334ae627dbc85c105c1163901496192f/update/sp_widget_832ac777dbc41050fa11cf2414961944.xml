@@ -28,6 +28,8 @@
 		c.data.showSelectedItem = false;
 		c.data.showSelectedProducer = false;
 		c.data.showSelectedOrder = false;
+		c.data.showSelectedOrderCSC = false;
+
 		c.data.showLinkItem = false;
 		if(category.url){
 			c.data.categoryURL = category.url;
@@ -80,7 +82,7 @@
 			c.data.showSelectedItem = false; 
 			c.data.showSelectedProducer = false;
 			c.data.showSelectedOrder = false;
-
+			c.data.showSelectedOrderCSC = false;
 			for(var i in c.data.arrayItems){
 				if(c.data.arrayItems[i].sys_id == itemID){
 					c.data.arrayItems[i].selected = true;
@@ -104,23 +106,28 @@
 						c.data.showSelectedItem = false;
 					}
 					else{
+						
+						c.data.showSelectedItem = false;
+						c.data.showSelectedOrder = false;
+						c.data.showSelectedOrderCSC = false;
+						c.data.showSelectedProducer = false;
+						
 						//var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
 						var isAllowedRP = c.data.allowed_record_producers.indexOf(itemID) > -1;
 						if(item.table == "sc_cat_item_producer" && !isAllowedRP){
-							c.data.showSelectedItem = false;
-							c.data.showSelectedOrder = false;
 							c.data.showSelectedProducer = true;
 						}
 						else if(item.table != "sc_cat_item_guide" || isAllowedRP){
 							c.data.showSelectedItem = true;
-							c.data.showSelectedOrder = false;
-							c.data.showSelectedProducer = false;
 						}
 						else{
-							c.data.showSelectedOrder = true;
-							c.data.showSelectedItem = false;
-							c.data.showSelectedProducer = false;
-							$rootScope.$broadcast("selectedOrder", itemID);
+							if(c.data.arrayItems[i].catalog == "CSC"){
+								c.data.showSelectedOrderCSC = true;
+								$rootScope.$broadcast("selectedOrderCSC", itemID);
+							} else {
+								c.data.showSelectedOrder = true;
+								$rootScope.$broadcast("selectedOrder", itemID);
+							}
 						}
 
 						c.data.itemDescription = item.short_description || item.description;
@@ -213,6 +220,7 @@
 		c.data.showSelectedItem = false;
 		c.data.showSelectedProducer = false;
 		c.data.showSelectedOrder = false;
+		c.data.showSelectedOrderCSC = false;
 		c.data.showLinkItem = false;
 		if(category.url){
 			c.data.categoryURL = category.url;
@@ -418,24 +426,27 @@
 				else{
 					c.selected_item = c.data.arrayItems[i];
 					c.data.arrayItems[i].selected = c.data.arrayItems[i].title;
-
+					c.data.showSelectedItem = false;
+					c.data.showSelectedOrder = false;
+					c.data.showSelectedOrderCSC = false;
+					c.data.showSelectedProducer = false;
+					
 					//var isAllowedRP = c.data.allowed_record_producers.includes(itemID);
 					var isAllowedRP = c.data.allowed_record_producers.indexOf(itemID) > -1;
 					if(c.data.arrayItems[i].table == "sc_cat_item_producer"){
-						c.data.showSelectedItem = false;
-						c.data.showSelectedOrder = false;
 						c.data.showSelectedProducer = true;
 					}
 					else if(c.data.arrayItems[i].table != "sc_cat_item_guide" || isAllowedRP){
 						c.data.showSelectedItem = true;
-						c.data.showSelectedOrder = false;
-						c.data.showSelectedProducer = false;
 					}
 					else{
-						c.data.showSelectedOrder = true;
-						c.data.showSelectedItem = false;
-						c.data.showSelectedProducer = false;
-						$rootScope.$broadcast("selectedOrder", itemID);
+						if(c.data.arrayItems[i].catalog == "CSC"){
+							c.data.showSelectedOrderCSC = true;
+							$rootScope.$broadcast("selectedOrderCSC", itemID);
+						} else {
+							c.data.showSelectedOrder = true;
+							$rootScope.$broadcast("selectedOrder", itemID);
+						}
 					}
 					c.data.itemDescription = c.data.arrayItems[i].short_description || c.data.arrayItems[i].description;
 				}
@@ -946,6 +957,7 @@
 
 	data.gserviceCatalogItem = $sp.getWidget('gservice_custom_catalog_item', sc_catalog_item_options);
 	data.gserviceOrderGuide = $sp.getWidget('gservice_order_guide', order_guide_options);
+	data.gserviceOrderGuideCSC = $sp.getWidget('gservice_order_guide_csc', order_guide_options);
 
 	var custom_catalog_item_incident = {"show_add_cart_button": "true",
 																			"show_field_validation_messages": "false",
@@ -1143,14 +1155,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-15 13:30:17</sys_created_on>
         <sys_id>832ac777dbc41050fa11cf2414961944</sys_id>
-        <sys_mod_count>1815</sys_mod_count>
+        <sys_mod_count>1824</sys_mod_count>
         <sys_name>GService Categories</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_832ac777dbc41050fa11cf2414961944</sys_update_name>
-        <sys_updated_by>renanlui</sys_updated_by>
-        <sys_updated_on>2021-07-30 13:04:18</sys_updated_on>
+        <sys_updated_by>j.martins.oliveira@accenture.com</sys_updated_by>
+        <sys_updated_on>2021-11-13 17:03:14</sys_updated_on>
         <template><![CDATA[<div id="widget-category" class="content" ng-show="data.showWidget">
   <div>
 
@@ -1270,8 +1282,11 @@
         <div ng-show="c.data.showSelectedItem">
           <sp-widget widget="data.gserviceCatalogItem"></sp-widget>
         </div>
-        <div ng-show="c.data.showSelectedOrder">
+        <div ng-show="c.data.showSelectedOrder"> 
           <sp-widget widget="data.gserviceOrderGuide"></sp-widget>
+        </div>
+        <div ng-show="c.data.showSelectedOrderCSC">
+          <sp-widget widget="data.gserviceOrderGuideCSC"></sp-widget>
         </div>
         <div ng-show="c.data.showSelectedProducer">
           <sp-widget widget="data.gserviceRecordProducer"></sp-widget>
