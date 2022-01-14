@@ -159,7 +159,7 @@
         <script><![CDATA[(function() {	
 	
 	if(input){
-		if(!input.isValid){
+		if(!input.isValid && input.errorMsg){
 			gs.addErrorMessage(input.errorMsg);
 		}
 	}
@@ -192,14 +192,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-04-16 11:08:03</sys_created_on>
         <sys_id>233373c0dbdc5050fa11cf241496194f</sys_id>
-        <sys_mod_count>171</sys_mod_count>
+        <sys_mod_count>175</sys_mod_count>
         <sys_name>GService Main User</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_233373c0dbdc5050fa11cf241496194f</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-12-04 14:47:00</sys_updated_on>
+        <sys_updated_by>glorusso</sys_updated_by>
+        <sys_updated_on>2022-01-14 16:15:51</sys_updated_on>
         <template><![CDATA[<div ng-if="user.logged_in" class="align-all">
   <div class="main-avatar">
     <a title="Avatar Pic">
