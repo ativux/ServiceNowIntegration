@@ -156,13 +156,14 @@
 		});
 	});
 
-	$scope.$on("applyDateCSC", function (event, daysAgo) {
+	$scope.$on("applyDateCSC", function (event, daysAgo, dateOrder) {
 		c.data.dateFilter = daysAgo;
+		c.data.fieldFilter = dateOrder; 
 		c.data.action = "applyDate";
 		c.server.update().then(function (response) {
-			$timeout(function () {
-				items - content - csc("list-columns-csc");
-			}, 200);
+			//$timeout(function () {
+				//items - content - csc("list-columns-csc");
+		//	}, 200);
 			c.verifyEmptySearch();
 			c.newRecordWatch();
 		});
@@ -334,7 +335,6 @@
 			}
 		}
 		if (showDetails) {
-			console.log(item);
 			c.data.showConversation = false;
 			c.server
 				.get({
@@ -1836,10 +1836,13 @@ tbody {
 				data.statusFilter = localInput.statusFilter;
 				data.query = portalUtils.mountQuery(
 					data.typeFilter,
+					"",
 					data.statusFilter,
+					"",
 					"",
 					""
 				);
+
 				var requests = portalUtils.getRequests(
 					data.order,
 					data.direction,
@@ -1925,17 +1928,21 @@ tbody {
 
 			case "applyDate":
 				preparePages();
-				data.order = "opened_at";
 				data.direction = -1;
 				data.dateFilter = localInput.dateFilter;
 				data.typeFilter = localInput.typeFilter;
 				data.statusFilter = localInput.statusFilter;
+				data.fieldFilter = localInput.fieldFilter;
 				data.query = portalUtils.mountQuery(
 					data.typeFilter,
+					data.fieldFilter,
 					data.statusFilter,
 					data.dateFilter,
+					"",
+					"",
 					""
 				);
+				
 				var requests = portalUtils.getRequests(
 					data.order,
 					data.direction,
@@ -1995,7 +2002,8 @@ tbody {
 			case "searchResult":
 				data.searchTerm = localInput.searchTerm;
 				prepareColumns();
-				data.query = portalUtils.mountQuery("", "", "", data.searchTerm);
+				//typeFilter, fieldFilter, statusFilter, date, searchQuery, item_id
+				data.query = portalUtils.mountQuery("", "", "", "", data.searchTerm, "");
 				preparePages();
 				var requests = portalUtils.getRequests(
 					"",
@@ -2029,20 +2037,22 @@ tbody {
 				data.requests = requests.items;
 				prepareRecordWatch();
 				break;
-			case "applyDate":
+			/* case "applyDate":
 				preparePages();
 				data.order = localInput.dateOrder;
 				data.direction = -1;
 				data.dateFilter = localInput.dateFilter;
 				data.typeFilter = localInput.typeFilter;
-				data.statusFilter = localInput.statusFilter;
+				data.statusFilter = localInput.statusFilter
+				//typeFilter, fieldFilter, statusFilter, date, searchQuery, item_id
 				data.query = portalUtils.mountQuery(
 					data.typeFilter,
-					data.order,
+					"",
 					data.statusFilter,
 					data.dateFilter,
+					"",
 					""
-				);
+				); */
 				var requests = portalUtils.getRequests(
 					data.order,
 					data.direction,
@@ -2054,6 +2064,7 @@ tbody {
 				prepareColumns();
 				prepareRecordWatch();
 				break;
+				
 			case "sendDate":
 				preparePages();
 				data.order = localInput.dateOrder;
@@ -2061,13 +2072,16 @@ tbody {
 				data.dateFormated = localInput.dateFormated;
 				data.typeFilter = localInput.typeFilter;
 				data.statusFilter = localInput.statusFilter;
+				data.dateOrder = localInput.dateOrder;
 				data.query = portalUtils.mountQuery(
 					data.typeFilter,
-					data.order,
+					data.dateOrder,
 					data.statusFilter,
 					data.dateFormated,
+					"",
 					""
 				);
+				
 				var requests = portalUtils.getRequests(
 					data.order,
 					data.direction,
@@ -2283,14 +2297,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 17:40:05</sys_created_on>
         <sys_id>2988eebf1ba2d05097c0dca0f54bcba7</sys_id>
-        <sys_mod_count>724</sys_mod_count>
+        <sys_mod_count>747</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2988eebf1ba2d05097c0dca0f54bcba7</sys_update_name>
         <sys_updated_by>accenture.emily</sys_updated_by>
-        <sys_updated_on>2021-12-31 15:39:49</sys_updated_on>
+        <sys_updated_on>2022-01-27 20:24:47</sys_updated_on>
         <template><![CDATA[<div class="content_request">
 	<div class="title_category" ng-click="c.openContent()">
 		${Solicitações de Finanças, Jurídico e Infraestrutura}
