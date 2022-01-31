@@ -54,7 +54,8 @@
 	}
 	
 	
-	c.convertDate = function(dateCalendar){
+	c.convertDate = function(dateCalendar){ 
+		var formattedDates = []; 
 		var dateString = dateCalendar.toString();
 		var day = dateString.substring(8, 10);
 		var year = dateString.substring(11, 15);
@@ -98,8 +99,10 @@
 				month = "12";
 				break;
 		}
-		var dateConverted = year+'-'+month+'-'+day;
-		return dateConverted;
+		
+		formattedDates.dateConvertedOpened = year+'-'+month+'-'+day;
+		formattedDates.dateConvertedForecast = year+'-'+day+'-'+month;
+		return formattedDates;
 	}
 	
 
@@ -398,14 +401,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 18:23:24</sys_created_on>
         <sys_id>40723a331b26d05097c0dca0f54bcbb8</sys_id>
-        <sys_mod_count>187</sys_mod_count>
+        <sys_mod_count>194</sys_mod_count>
         <sys_name>GService List Filter CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_40723a331b26d05097c0dca0f54bcbb8</sys_update_name>
         <sys_updated_by>accenture.emily</sys_updated_by>
-        <sys_updated_on>2022-01-27 20:24:08</sys_updated_on>
+        <sys_updated_on>2022-01-28 17:42:00</sys_updated_on>
         <template><![CDATA[<div class="content_list col-md-12">
   <div class="col-md-2 filter-padding filter_type">
     <div ng-click="c.typeFilterState()" class="filter-click-size">

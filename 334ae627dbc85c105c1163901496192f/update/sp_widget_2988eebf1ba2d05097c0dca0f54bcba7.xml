@@ -161,18 +161,24 @@
 		c.data.fieldFilter = dateOrder; 
 		c.data.action = "applyDate";
 		c.server.update().then(function (response) {
-			//$timeout(function () {
-				//items - content - csc("list-columns-csc");
-		//	}, 200);
+			$timeout(function () {
+				scrollTo("list-columns-csc");
+			}, 200);
 			c.verifyEmptySearch();
 			c.newRecordWatch();
 		});
 	});
 
 	$scope.$on("sendDateCSC", function (event, dateFormated, dateOrder) {
-		c.data.dateFormated = dateFormated;
-		c.data.action = "sendDate";
 		c.data.dateOrder = dateOrder;
+		
+		if (dateOrder == 'forecast') {
+			c.data.dateFormated = dateFormated.dateConvertedForecast
+		} else if (dateOrder == 'opened_at') {
+			c.data.dateFormated = dateFormated.dateConvertedOpened
+		}
+		
+		c.data.action = "sendDate";
 		c.server.update().then(function (response) {
 			c.verifyEmptySearch();
 			c.newRecordWatch();
@@ -2067,16 +2073,13 @@ tbody {
 				
 			case "sendDate":
 				preparePages();
-				data.order = localInput.dateOrder;
 				data.direction = -1;
 				data.dateFormated = localInput.dateFormated;
-				data.typeFilter = localInput.typeFilter;
-				data.statusFilter = localInput.statusFilter;
 				data.dateOrder = localInput.dateOrder;
 				data.query = portalUtils.mountQuery(
-					data.typeFilter,
+					"",
 					data.dateOrder,
-					data.statusFilter,
+					"",
 					data.dateFormated,
 					"",
 					""
@@ -2171,11 +2174,12 @@ tbody {
 						data.urlItem
 					);
 				} else {
+					//typeFilter, fieldFilter, statusFilter, date, searchQuery, item_id
 					data.showFilterClean = true;
-					data.query = portalUtils.mountQuery("", "", data.statusFilter);
+					data.query = portalUtils.mountQuery("", "", data.statusFilter, "", "", "");
 				}
 			} else {
-				data.query = portalUtils.mountQuery("", "", data.statusFilter);
+				data.query = portalUtils.mountQuery("", "", data.statusFilter, "", "", "");
 			}
 		} else if (item_id) {
 			data.query = portalUtils.mountQuery(
@@ -2186,7 +2190,7 @@ tbody {
 				item_id
 			);
 		} else {
-			data.query = portalUtils.mountQuery("", data.statusFilter);
+			data.query = portalUtils.mountQuery("", "", data.statusFilter, "", "", "");
 		}
 		var requests;
 		if (data.urlItem && first_load) {
@@ -2297,14 +2301,14 @@ tbody {
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 17:40:05</sys_created_on>
         <sys_id>2988eebf1ba2d05097c0dca0f54bcba7</sys_id>
-        <sys_mod_count>747</sys_mod_count>
+        <sys_mod_count>756</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2988eebf1ba2d05097c0dca0f54bcba7</sys_update_name>
         <sys_updated_by>accenture.emily</sys_updated_by>
-        <sys_updated_on>2022-01-27 20:24:47</sys_updated_on>
+        <sys_updated_on>2022-01-28 17:44:00</sys_updated_on>
         <template><![CDATA[<div class="content_request">
 	<div class="title_category" ng-click="c.openContent()">
 		${Solicitações de Finanças, Jurídico e Infraestrutura}
