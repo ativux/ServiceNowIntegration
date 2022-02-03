@@ -1,71 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_search_source">
     <sp_search_source action="INSERT_OR_UPDATE">
         <advanced_typeahead_config>false</advanced_typeahead_config>
-        <condition table="sc_cat_item">category.sc_catalog=6ee2487cdba344105c1163901496194f^sys_class_name=sc_cat_item^active=true^name!=Faça você mesmo^EQ<item display_table="sc_catalog" display_value="TI" endquery="false" field="category.sc_catalog" goto="false" newquery="false" operator="=" or="false" value="6ee2487cdba344105c1163901496194f"/>
+        <condition table="sc_cat_item">category.sc_catalog=6ee2487cdba344105c1163901496194f^ORcategory.sc_catalog=04f80b68dbe590105c116390149619eb^sys_class_name=sc_cat_item^ORsys_class_name=sc_cat_item_producer^ORsys_class_name=sc_cat_item_guide^active=true^name!=Faça você mesmo^EQ<item display_table="sc_catalog" display_value="TI" endquery="false" field="category.sc_catalog" goto="false" newquery="false" operator="=" or="false" value="6ee2487cdba344105c1163901496194f"/>
+            <item display_table="sc_catalog" display_value="CSC" endquery="false" field="category.sc_catalog" goto="false" newquery="false" operator="=" or="true" value="04f80b68dbe590105c116390149619eb"/>
             <item display_value="Catalog Item" endquery="false" field="sys_class_name" goto="false" newquery="false" operator="=" or="false" value="sc_cat_item"/>
+            <item display_value="Record Producer" endquery="false" field="sys_class_name" goto="false" newquery="false" operator="=" or="true" value="sc_cat_item_producer"/>
+            <item display_value="Order guide" endquery="false" field="sys_class_name" goto="false" newquery="false" operator="=" or="true" value="sc_cat_item_guide"/>
             <item endquery="false" field="active" goto="false" newquery="false" operator="=" or="false" value="true"/>
             <item endquery="false" field="name" goto="false" newquery="false" operator="!=" or="false" value="Faça você mesmo"/>
             <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
         </condition>
         <data_fetch_script><![CDATA[(function(query) {
-	var results = [];
-	//Here goes the logic. Compute results however you want!
-	if (!gs.isLoggedIn())
-		return results;
-
-	var sc = new GlideRecord('sc_cat_item');
-	sc.addQuery('123TEXTQUERY321', query);
-	sc.addQuery('active',true);
-	sc.addQuery('no_search', '!=', true);
-	sc.addQuery('visible_standalone', true);
-	sc.addQuery('sys_class_name', 'NOT IN', 'sc_cat_item_wizard');
-	sc.query();
-	var catCount = 0;
-	while (sc.next() && catCount < data.limit) {
-		if (!$sp.canReadRecord(sc))
-			continue;
-
-		var item = {};
-		item.type = "sc";
-		item.page = "cat_item_itsm";
-
-		if (sc.getRecordClassName() == "sc_cat_item_guide")
-			item.page = "sc_cat_item_guide";
-		else if (sc.getRecordClassName() == "sc_cat_item_content") {
-			var gr = new GlideRecord('sc_cat_item_content');
-			gr.get(sc.getUniqueValue());
-			$sp.getRecordValues(item, gr, 'url,content_type,kb_article');
-			item.type = "sc_content";
-		}
-		else
-			item.type = "sc";
-
-		$sp.getRecordDisplayValues(item, sc, 'name,short_description,picture,price,sys_id,sys_class_name');
-		item.score = parseInt(sc.ir_query_score.getDisplayValue());
-		item.label = item.name;
-		item.primary = item.name;
-
-		//calculating URL
-		if (item.type == "sc")
-			item.url = '?id=' + item.page + '&sys_id=' + item.sys_id;
-		if (item.type == "sc_content") {
-			if (item.content_type == "kb")
-				item.url = '?id=article_kb&sys_id=' + item.kb_article;
-			else if (item.content_type == "external")
-				item.target = '_blank';
-			else
-				item.url = '?id=cat_item&sys_id=' + item.sys_id;
-		}
-		if (item.type == "sc_guide")
-			item.url = '?id=sc_cat_item_guide&sys_id=' + item.sys_id;
-
-		results.push(item);
-		catCount++;
-	}
-
-	return results;
-})(query);
-]]></data_fetch_script>
+  var results = [];
+  /* Calculate your results here. */
+  
+  return results;
+})(query);]]></data_fetch_script>
         <display_fields>short_description</display_fields>
         <enable_typeahead>true</enable_typeahead>
         <facet_generation_script><![CDATA[(function(query, facetService, searchResults) {
@@ -89,25 +39,20 @@
     <span class="m-l-xs m-r-xs" ng-if="!$first"> &middot; </span>
     {{f.label}}: <span ng-bind-html="highlight(f.display_value, data.q)"></span>
   </span>
-</div>
-
-
-
-
-]]></search_page_template>
+</div>]]></search_page_template>
         <source_table>sc_cat_item</source_table>
         <sys_class_name>sp_search_source</sys_class_name>
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-04-27 15:39:36</sys_created_on>
         <sys_id>c98a9dffdb585010fa11cf24149619e4</sys_id>
-        <sys_mod_count>23</sys_mod_count>
+        <sys_mod_count>11</sys_mod_count>
         <sys_name>Solicite Serviços</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_search_source_c98a9dffdb585010fa11cf24149619e4</sys_update_name>
-        <sys_updated_by>organize.willian</sys_updated_by>
-        <sys_updated_on>2020-09-17 20:52:02</sys_updated_on>
+        <sys_updated_by>accenture.emily</sys_updated_by>
+        <sys_updated_on>2022-01-31 14:38:31</sys_updated_on>
         <typeahead_glyph/>
         <typeahead_template/>
     </sp_search_source>
