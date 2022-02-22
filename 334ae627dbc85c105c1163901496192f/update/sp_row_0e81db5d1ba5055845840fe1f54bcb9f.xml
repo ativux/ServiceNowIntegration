@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_row">
+    <sp_row action="INSERT_OR_UPDATE">
+        <class_name/>
+        <order>1</order>
+        <sp_column/>
+        <sp_container display_value="Dispositivos da  Alm_Hardwre - Container 1">10611b1d1ba5055845840fe1f54bcbf0</sp_container>
+        <sys_class_name>sp_row</sys_class_name>
+        <sys_created_by>candrule</sys_created_by>
+        <sys_created_on>2022-02-07 21:45:07</sys_created_on>
+        <sys_id>0e81db5d1ba5055845840fe1f54bcb9f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>1</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_row_0e81db5d1ba5055845840fe1f54bcb9f</sys_update_name>
+        <sys_updated_by>candrule</sys_updated_by>
+        <sys_updated_on>2022-02-07 21:45:07</sys_updated_on>
+    </sp_row>
+</record_update>
