@@ -36,12 +36,12 @@
     // Add your code here
     var body = current.getValue('body');
 	var approval_infos = JSON.parse(body.substring(body.indexOf("approval")+9, body.indexOf("/approval")-1));
-	var comments = body.substring(body.indexOf("comments")+9, body.indexOf("/comments")-1);
+	//var comments = body.substring(body.indexOf("comments")+9, body.indexOf("/comments")-1);
     
 	var gr_approval = new GlideRecord('sysapproval_approver');
     gr_approval.get(approval_infos.u_approval);
     gr_approval.setValue('state', approval_infos.u_action);
-	if (!approval_infos.result) gr_approval.comments = comments;
+	if (!approval_infos.result) gr_approval.comments = approval_infos.comment;
     gr_approval.update();
 
 
@@ -52,15 +52,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>ea332ed4dbbb30501c0d0fbca39619ba</sys_id>
-        <sys_mod_count>44</sys_mod_count>
+        <sys_mod_count>45</sys_mod_count>
         <sys_name>GS: Auto Approval Email</sys_name>
         <sys_overrides/>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sys_script_ea332ed4dbbb30501c0d0fbca39619ba</sys_update_name>
-        <sys_updated_by>diego_pinheiroACCENTURE</sys_updated_by>
-        <sys_updated_on>2021-11-11 19:20:25</sys_updated_on>
+        <sys_updated_by>tfesilva</sys_updated_by>
+        <sys_updated_on>2022-02-15 15:47:17</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>
