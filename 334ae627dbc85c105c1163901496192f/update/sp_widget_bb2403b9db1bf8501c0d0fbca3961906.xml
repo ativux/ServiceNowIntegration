@@ -554,6 +554,9 @@
     border-top: 1px solid #ddd;&#13;
 }&#13;
 &#13;
+.guide-line-padding &gt; td{&#13;
+  padding-left: 30px !important;&#13;
+}&#13;
 #items-content-csc-guide &gt; tr &gt; td {&#13;
     border-top: none;&#13;
     padding: 0px;&#13;
@@ -2000,7 +2003,7 @@ tbody {&#13;
                     }
                 }
                 data.requests = data.newItem;
-                data.guideTotal = requests.total;
+				data.guideTotal = localInput.requests.total; // data.guideTotal = requests.total;
                 break;
 
             case "applyDate":
@@ -2012,6 +2015,7 @@ tbody {&#13;
                 data.statusFilter = localInput.statusFilter;
                 data.query = portalUtils.mountQuery(
                     data.typeFilter,
+                    data.order,
                     data.statusFilter,
                     data.dateFilter,
                     ""
@@ -2077,8 +2081,17 @@ tbody {&#13;
                 break;
             case "searchResult":
                 data.searchTerm = localInput.searchTerm;
+				data.order = "opened_at";
+                data.dateFilter = localInput.dateFilter;
+                data.typeFilter = localInput.typeFilter;
+                data.statusFilter = localInput.statusFilter;
                 prepareColumns();
-                data.query = portalUtils.mountQuery("", "", "", data.searchTerm);
+				data.query = portalUtils.mountQuery(      
+                    data.typeFilter,
+                    data.order,
+                    data.statusFilter,
+                    "", 
+                    data.searchTerm);
                 preparePages();
                 var requests = portalUtils.getGuideRequests(
                     "",
@@ -2237,6 +2250,7 @@ tbody {&#13;
                     data.user_id == request_for ||
                     watchList.includes(data.user_id)
                 ) {
+					
                     data.query = portalUtils.mountQuery(
                         "",
                         "",
@@ -2255,13 +2269,14 @@ tbody {&#13;
         } else if (item_id) {
             data.query = portalUtils.mountQuery(
                 "",
+				"",
                 data.statusFilter,
                 "",
                 null,
                 item_id
             );
         } else {
-            data.query = portalUtils.mountQuery("", data.statusFilter);
+            data.query = portalUtils.mountQuery("", "", data.statusFilter);
         }
         var requests;
         if (data.urlItem && first_load) {
@@ -2372,14 +2387,14 @@ tbody {&#13;
         <sys_created_by>gabriel.casagrande</sys_created_by>
         <sys_created_on>2021-10-20 13:42:29</sys_created_on>
         <sys_id>bb2403b9db1bf8501c0d0fbca3961906</sys_id>
-        <sys_mod_count>165</sys_mod_count>
+        <sys_mod_count>185</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_bb2403b9db1bf8501c0d0fbca3961906</sys_update_name>
         <sys_updated_by>j.martins.oliveira.accenture</sys_updated_by>
-        <sys_updated_on>2022-02-15 22:55:46</sys_updated_on>
+        <sys_updated_on>2022-03-02 12:24:13</sys_updated_on>
         <template><![CDATA[<div class="content_request">
     <div class="title_category" ng-click="c.openContent()">
         ${Solicitações de Finanças, Jurídico e Infraestrutura}
@@ -2439,8 +2454,11 @@ tbody {&#13;
                                                                     <div class="tooltip_text">{{guide.watchTooltip}}</div>
                                                                 </span>
                                                             </div>
-                                                            <div class="more_detail" ng-click="c.showDetails(guide)">
+                                                            <div class="more_detail" ng-if="!guide.showDetails" ng-click="c.showDetails(guide)">
                                                                 ${GService Details}
+                                                            </div>
+                                                          	<div class="more_detail" ng-if="guide.showDetails" ng-click="c.showDetails(guide)">
+                                                                ${GService Less Details}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2608,8 +2626,11 @@ tbody {&#13;
                                                 <div class="number_text"><b>#{{guide.number}}</b></div>
                                             </div>
                                             <div class="item_text">{{guide.title}}</div>
-                                            <div class="more_detail" ng-click="guide.showDetails = !guide.showDetails">
+                                            <div class="more_detail" ng-if="!guide.showDetails" ng-click="guide.showDetails = !guide.showDetails">
                                                 ${GService Details}
+                                            </div>
+                                         	 <div class="more_detail" ng-if="guide.showDetails" ng-click="guide.showDetails = !guide.showDetails">
+                                                ${GService Less Details}
                                             </div>
                                         </div>
                                     </div>
@@ -2647,7 +2668,7 @@ tbody {&#13;
                                     </div>
                                 </td>
                             </tr>
-                            <tr ng-if="guide.showDetails">
+                            <tr ng-if="guide.showDetails" class="guide-line-padding">
                                 <td colspan="{{data.columns.length}}">
                                     <table class="table b-t table-condensed cart-table">
                                         <tbody id="items-content-csc" ng-repeat="item in guide.items track by item.sys_id">
@@ -2667,8 +2688,11 @@ tbody {&#13;
                                                                     <div class="tooltip_text">{{item.watchTooltip}}</div>
                                                                 </span>
                                                             </div>
-                                                            <div class="more_detail" ng-click="c.showDetails(item)">
+                                                            <div class="more_detail" ng-if="!item.showDetails" ng-click="c.showDetails(item)">
                                                                 ${GService Details}
+                                                            </div>
+                                                          	<div class="more_detail" ng-if="item.showDetails" ng-click="c.showDetails(item)">
+                                                                ${GService Less Details}
                                                             </div>
                                                         </div>
                                                     </div>
