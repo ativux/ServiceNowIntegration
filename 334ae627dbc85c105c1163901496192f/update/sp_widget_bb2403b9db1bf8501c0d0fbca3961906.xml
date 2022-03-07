@@ -1888,6 +1888,7 @@ tbody {&#13;
                 data.statusFilter = localInput.statusFilter;
                 data.query = portalUtils.mountQuery(
                     data.typeFilter,
+                    null,
                     data.statusFilter,
                     "",
                     ""
@@ -2094,8 +2095,8 @@ tbody {&#13;
                     data.searchTerm);
                 preparePages();
                 var requests = portalUtils.getGuideRequests(
-                    "",
-                    "",
+					data.order,
+                    data.direction,
                     data.query,
                     data.window_start,
                     data.window_end
@@ -2387,14 +2388,14 @@ tbody {&#13;
         <sys_created_by>gabriel.casagrande</sys_created_by>
         <sys_created_on>2021-10-20 13:42:29</sys_created_on>
         <sys_id>bb2403b9db1bf8501c0d0fbca3961906</sys_id>
-        <sys_mod_count>185</sys_mod_count>
+        <sys_mod_count>187</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_bb2403b9db1bf8501c0d0fbca3961906</sys_update_name>
         <sys_updated_by>j.martins.oliveira.accenture</sys_updated_by>
-        <sys_updated_on>2022-03-02 12:24:13</sys_updated_on>
+        <sys_updated_on>2022-03-04 12:21:16</sys_updated_on>
         <template><![CDATA[<div class="content_request">
     <div class="title_category" ng-click="c.openContent()">
         ${Solicitações de Finanças, Jurídico e Infraestrutura}
