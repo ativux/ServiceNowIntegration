@@ -207,6 +207,16 @@
                     reopeningReason: false,
                 })
                 .then(function(response) {
+					for(var i in c.data.requests){
+						if(c.data.requests[i].sys_id == item.sys_id){
+							c.data.requests[i] = response.data.item;
+						}
+						for(var ii in c.data.requests[i].items){
+							if(c.data.requests[i].items[ii].sys_id == item.sys_id){
+								c.data.requests[i].items[ii] = response.data.item;
+							}
+						}
+					}
                     item = response.data.item;
                     c.data.show_survey = response.data.show_survey;
                     c.data.gserviceSurveyCSC = response.data.gserviceSurveyCSC;
@@ -1920,11 +1930,12 @@ tbody {&#13;
                 var state = localInput.newState;
                 var itemID = localInput.itemID;
                 data.requests = localInput.requests;
-                data.guideTotal = requests.total;
+                data.guideTotal = localInput.requests.total;
+				var grItem;
                 for (var r in data.requests) {
                     for (i in data.requests[r].items) {
                         if (data.requests[r].items[i].sys_id == itemID) {
-                            var grItem = new GlideRecord(data.requests[r].items[i].table);
+                            grItem = new GlideRecord(data.requests[r].items[i].table);
                             grItem.get(data.requests[r].items[i].sys_id);
                             data.requests[r].items[i].stage = grItem.getValue("stage");
                             data.requests[r].items[i].statusValue = state.value;
@@ -1945,6 +1956,29 @@ tbody {&#13;
                             );
                         }
                     }
+					if(data.requests[r].items.length == 0){
+						if (data.requests[r].sys_id == itemID) {
+                            grItem = new GlideRecord(data.requests[r].table);
+                            grItem.get(data.requests[r].sys_id);
+                            data.requests[r].stage = grItem.getValue("stage");
+                            data.requests[r].statusValue = state.value;
+                            /*if(state.value == "-5" || state.value == "3"){
+                            	var objHold = portalUtils.getHoldReason(data.requests[i].table, data.requests[i].sys_id);
+                            	data.requests[i].hold_reason = objHold.hold_reason;
+                            	data.requests[i].forecast = objHold.forecast;
+                            }*/
+                            data.requests[r].statusLabel = state.display_value;
+                            data.requests[r] = portalUtils.verifyButtons(data.requests[r]);
+                            data.requests[r].colorClass = portalUtils.getColorClass(
+                                data.requests[r].statusValue,
+                                data.requests[r].table
+                            );
+                            data.requests[r].processFlow = portalUtils.getProcessFlow(
+                                data.requests[r].table,
+                                data.requests[r].stage
+                            );
+                        }
+					}
                 }
                 break;
 
@@ -2338,14 +2372,14 @@ tbody {&#13;
         <sys_created_by>gabriel.casagrande</sys_created_by>
         <sys_created_on>2021-10-20 13:42:29</sys_created_on>
         <sys_id>bb2403b9db1bf8501c0d0fbca3961906</sys_id>
-        <sys_mod_count>159</sys_mod_count>
+        <sys_mod_count>165</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_bb2403b9db1bf8501c0d0fbca3961906</sys_update_name>
         <sys_updated_by>j.martins.oliveira.accenture</sys_updated_by>
-        <sys_updated_on>2022-02-08 14:06:50</sys_updated_on>
+        <sys_updated_on>2022-02-15 22:55:46</sys_updated_on>
         <template><![CDATA[<div class="content_request">
     <div class="title_category" ng-click="c.openContent()">
         ${Solicitações de Finanças, Jurídico e Infraestrutura}
@@ -2434,49 +2468,49 @@ tbody {&#13;
                                                 </td>
                                                 <td class="column_buttons">
                                                     <div class="disable_buttons" ng-show="c.disableAction"></div>
-                                                    <div ng-if="guide.eraseButton" class="buttons" ng-click="c.itemAction(item, 'cancelItem')">
+                                                    <div ng-if="guide.eraseButton" class="buttons" ng-click="c.itemAction(guide, 'cancelItem')">
                                                         <img src="trash.png" />
                                                         <span class="tooltip tooltip_right">
                                                             <div class="tooltip_arrow arrow_left"></div>
                                                             <div class="tooltip_text">${Cancel Request}</div>
                                                         </span>
                                                     </div>
-                                                    <div ng-if="guide.acceptButton" class="buttons" ng-click="c.itemAction(item, 'acceptSolution')">
+                                                    <div ng-if="guide.acceptButton" class="buttons" ng-click="c.itemAction(guide, 'acceptSolution')">
                                                         <img src="GS_Confirmar_PB.png" />
                                                         <span class="tooltip tooltip_bottom">
                                                             <div class="tooltip_arrow arrow_top"></div>
                                                             <div class="tooltip_text">${Accept Solution}</div>
                                                         </span>
                                                     </div>
-                                                    <div ng-if="guide.reopenButton" class="buttons" ng-click="c.itemAction(item, 'rejectSolution')">
+                                                    <div ng-if="guide.reopenButton" class="buttons" ng-click="c.itemAction(guide, 'rejectSolution')">
                                                         <img src="GS_Reabrir_Roxo.png" />
                                                         <span class="tooltip tooltip_bottom">
                                                             <div class="tooltip_arrow arrow_top"></div>
                                                             <div class="tooltip_text">${Reopen Request}</div>
                                                         </span>
                                                     </div>
-                                                    <div ng-if="guide.cancelButton" class="buttons" ng-click="c.itemAction(item, 'acceptCancellation')">
+                                                    <div ng-if="guide.cancelButton" class="buttons" ng-click="c.itemAction(guide, 'acceptCancellation')">
                                                         <img src="GS_Confirmar_PB.png" />
                                                         <span class="tooltip tooltip_bottom">
                                                             <div class="tooltip_arrow arrow_top"></div>
                                                             <div class="tooltip_text">${Accept Cancellation}</div>
                                                         </span>
                                                     </div>
-                                                    <div ng-if="guide.rejectButton" class="buttons" ng-click="c.itemAction(item, 'rejectCancellation')">
+                                                    <div ng-if="guide.rejectButton" class="buttons" ng-click="c.itemAction(guide, 'rejectCancellation')">
                                                         <img src="GS_Reabrir_Roxo.png" />
                                                         <span class="tooltip tooltip_bottom">
                                                             <div class="tooltip_arrow arrow_top"></div>
                                                             <div class="tooltip_text">${Reopen Request}</div>
                                                         </span>
                                                     </div>
-                                                    <div ng-if="guide.approveButton" class="buttons" ng-click="c.itemAction(item, 'approveItem')">
+                                                    <div ng-if="guide.approveButton" class="buttons" ng-click="c.itemAction(guide, 'approveItem')">
                                                         <img src="GS_Confirmar_PB.png" />
                                                         <span class="tooltip tooltip_bottom">
                                                             <div class="tooltip_arrow arrow_top"></div>
                                                             <div class="tooltip_text">${Approve}</div>
                                                         </span>
                                                     </div>
-                                                    <div ng-if="guide.disapproveButton" class="buttons" ng-click="c.itemAction(item, 'disapproveItem')">
+                                                    <div ng-if="guide.disapproveButton" class="buttons" ng-click="c.itemAction(guide, 'disapproveItem')">
                                                         <img src="GS_Reabrir_Roxo.png" />
                                                         <span class="tooltip tooltip_bottom">
                                                             <div class="tooltip_arrow arrow_top"></div>
@@ -2808,7 +2842,7 @@ tbody {&#13;
                         <div class="modal-content">
                             <div class="modal-body">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&amp;times;</span>
+                                    <span aria-hidden="true">&times;</span>
                                 </button>
                                 <div class="panel-body wrapper-xl wrapper-sc-cat-item">
                                     <div class="modal_title">{{c.modalMessage}}</div>
@@ -2852,7 +2886,7 @@ tbody {&#13;
         <div class="modal-content">
             <div class="modal-body">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&amp;times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
                 <div class="panel-body wrapper-sm wrapper-sc-cat-item">
                     <div class="form-group">
@@ -2868,7 +2902,7 @@ tbody {&#13;
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&amp;times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title" id="myModalLabel">Modal title</h4>
             </div>
