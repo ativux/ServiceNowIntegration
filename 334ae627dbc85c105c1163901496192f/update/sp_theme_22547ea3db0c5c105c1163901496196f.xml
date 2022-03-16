@@ -844,6 +844,16 @@ iframe {&#13;
 		height: 60px;&#13;
     }&#13;
 &#13;
+}&#13;
+&#13;
+/* Ajustes portal */&#13;
+&#13;
+div:not(.input-group-btn) .btn:not(.btn-link):not(.lookup):not(.btn-clear) {&#13;
+	height: 72px;&#13;
+}&#13;
+&#13;
+.avatar-container .avatar.soloAvatar .sub-avatar span {&#13;
+	vertical-align: unset;&#13;
 }</css_variables>
         <footer/>
         <footer_fixed>false</footer_fixed>
@@ -854,13 +864,13 @@ iframe {&#13;
         <sys_created_by>organize.matias</sys_created_by>
         <sys_created_on>2020-04-14 17:17:27</sys_created_on>
         <sys_id>22547ea3db0c5c105c1163901496196f</sys_id>
-        <sys_mod_count>343</sys_mod_count>
+        <sys_mod_count>344</sys_mod_count>
         <sys_name>OCL: ITSM Unification</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_theme_22547ea3db0c5c105c1163901496196f</sys_update_name>
-        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2021-02-09 12:00:15</sys_updated_on>
+        <sys_updated_by>tfesilva</sys_updated_by>
+        <sys_updated_on>2022-03-07 13:20:48</sys_updated_on>
     </sp_theme>
 </record_update>
