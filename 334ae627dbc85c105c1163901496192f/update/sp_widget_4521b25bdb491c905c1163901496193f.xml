@@ -1048,14 +1048,14 @@ ul {&#13;
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-02 15:30:08</sys_created_on>
         <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
-        <sys_mod_count>644</sys_mod_count>
+        <sys_mod_count>645</sys_mod_count>
         <sys_name>GService Custom Conversation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
         <sys_updated_by>tfesilva</sys_updated_by>
-        <sys_updated_on>2022-03-03 21:14:20</sys_updated_on>
+        <sys_updated_on>2022-03-22 15:55:15</sys_updated_on>
         <template><![CDATA[<div class="content_conversation_all dynamic_{{data.color_class}}">
   <div ng-if="data.hide_title == false" class="conversation_title">{{data.hist}}</div>
   
@@ -1206,15 +1206,6 @@ ul {&#13;
             <div class="panel-body">
               <div class="activity_content">
                 <ul role="list" class="timeline" aria-label="${Ticket history}">
-                  <li class="conversation_entries conversation_fixed" role="listitem" aria-label="{{data.stream.user_full_name}}">
-                    <div class="conversation_mark"></div><span class="hide_timeline_property"></span><span class="new_radio_mark"></span>
-                    <div class="conversation_fixed_text">
-                      <div>
-                        <div class="simple_conversation_title">${Abertura da Solicitação}</div>
-                      </div>
-                      <div class="conversation_date">{{data.createdDate}}		{{data.createdTime}}</div>
-                    </div>
-                  </li>
                   <li id="comment_{{e.id}}" class="conversation_entries conversation_dynamic" ng-if="data.mergedEntries.length > 0" ng-repeat="e in data.mergedEntriesAll">
                     <div class="conversation_mark"></div>
                     <div ng-style="{'border-color': getFieldColor(e.element)}">
@@ -1267,6 +1258,15 @@ ul {&#13;
                     </div>
                     <div ng-if="!e.showingAll && e.showAll" ng-click="c.showAllModal(e)" class="view_more_color">{{data.showAll}}</div>
                     <div class="conversation_date">{{e.createdDate}}		{{e.createdTime}}</div>
+                  </li>
+                  <li class="conversation_entries conversation_fixed" role="listitem" aria-label="{{data.stream.user_full_name}}">
+                    <div class="conversation_mark"></div><span class="hide_timeline_property"></span><span class="new_radio_mark"></span>
+                    <div class="conversation_fixed_text">
+                      <div>
+                        <div class="simple_conversation_title">${Abertura da Solicitação}</div>
+                      </div>
+                      <div class="conversation_date">{{data.createdDate}}		{{data.createdTime}}</div>
+                    </div>
                   </li>
                 </ul>
               </div>
