@@ -131,743 +131,748 @@
 	}
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.content_conversation_all {
-  .conversation_title {
-    text-transform: uppercase;
-    font-size: 14px;
-    font-family: $text-bolder;
-  }
-  .activity_content {
-    max-height: 410px;
-    overflow: auto;
-    margin-bottom: 20px;
-    margin-left: -4px;
-    padding-left: 4px;
-  }
-  .timeline {
-    padding-top: 0;
-  }
-  .timeline:before {
-    top: 8px;
-    border-right: 2px solid $slate-gray;
-    right: 100%;
-    height: calc(100% - 80px);
-    z-index: 1;
-  }
-  .conversation_entries {
-    padding-left: 30px;
-
-    .conversation_mark {
-      width: 10px;
-      height: 10px;
-      border-radius: 5px;
-      background-color: white;
-      border: 1px solid $deep-sky-blue;
-      position: absolute;
-      top: 5px;
-      left: -4px;
-      z-index: 3;
-    }
-    .hide_timeline_property{
-      background: white;
-      height: 10px;
-      width: 10px;
-      z-index: 4;
-      position: absolute;
-      left: -4px;
-    }
-    .new_radio_mark{
-      width: 10px;
-      height: 10px;
-      border-radius: 5px;
-      background-color: white;
-      border: 1px solid $deep-sky-blue;
-      position: absolute;
-      top: 5px;
-      left: -4px;
-      z-index: 5;
-    }
-  }
-  .conversation_entries:first-child {
-    .conversation_action {
-      text-decoration: underline;
-    }
-  }
-  .conversation_entries:last-child {
-    .conversation_mark {
-      background-color: $deep-sky-blue;
-    }
-  }
-  .conversation_fixed {
-    position: sticky;
-    top: 0;
-    z-index: 4;
-
-    .conversation_fixed_text {
-      background-color: white;
-    }
-  }
-  .content_conversation_dynamic {
-    height: 260px;
-    overflow: auto;
-  }
-
-  .conversation_action {
-    font-size: 12px;
-    color: $deep-sky-blue;
-    font-family: $text-bold;
-  }
-  .simple_conversation_title{
-    font-size: 12px;
-    color: $deep-sky-blue;
-    font-family: $text-bold;
-  }
-  .conversation_description {
-    font-size: 12px;
-    color: $slate-gray;
-  }
-  .conversation_date {
-    font-size: 10px;
-  }
-
-  .conversation_form {
-    margin-left: 30px;
-
-    .conversation_user {
-      margin-left: -46px;
-
-      img {
-        width: 36px;
-        height: 36px;
-      }
-      .user_name {
-        margin-left: 7px;
-        font-family: $text-bold;
-      }
-    }
-
-    .submit_name {
-      text-transform: uppercase;
-      margin-left: 8px;
-      color: $deep-sky-blue;
-      font-size: 18px;
-      font-family: $text-bold;
-    }
-
-    textarea {
-      min-height: 80px;
-      margin-bottom: 20px;
-      border: 2px solid $deep-sky-blue;
-    }
-  }
-  .view_more_color{
-    font-size: 12px;
-    color: $deep-sky-blue;
-    font-family: $text-bold;
-  }
-}
-
-.content_conversation {
-  padding-bottom: 50px;
-
-  .number_title {
-    .ticket_number {
-      font-size: 12px;
-    }
-    .ticket_title {
-      font-size: 16px;
-      text-decoration: underline;
-      font-family: $text-bold;
-    }
-  }
-
-  .avatar_list {
-    padding-left: 15px;
-  }
-  .avatar-custom-size {
-    float: left;
-  }
-
-  .avatar-container {
-    cursor: default;
-  }
-  .avatar {
-    height: 40px !important;
-    width: 40px !important;
-    margin-top: -10px;
-  }
-  .avatar-container.avatar-large .avatar.soloAvatar .sub-avatar{
-    background: white;
-    border: solid 2px $deep-sky-blue;
-    border-radius: 50%;
-    line-height: 4rem;
-
-    span {
-      font-family: $text-bold;
-      color: $deep-sky-blue;
-    }
-  }
-  .all-avatar {
-    .avatar-container .avatar.soloAvatar {
-      .sub-avatar {
-        color: white !important;
-        background: white !important;
-        border: solid 2px $deep-sky-blue !important;
-        border-radius: 50% !important;
-      }
-    }
-  }
-
-  .history-name-size {
-    font-family: $text-bold;
-  }
-
-
-  .time-text {
-    font-size: 10px;
-    margin-left: 49px;
-    margin-top: -8px;
-  }
-
-  .message_user {
-    img {
-      height: 40px;
-    }
-    .user_name {
-      font-family: $text-bold;
-      margin-left: 5px;
-    }
-  }
-
-  .form-control {
-    overflow-x: hidden !important;
-    overflow-wrap: break-word !important;
-    height: 120px !important;
-    width: 400px;
-    border: solid 2px #00BFFF;
-    margin: 0 66px !important;
-  }
-
-  .conversation_form {
-
-    input[type="image"] {
-      width: 50px;
-      height: 50px;
-      margin-right: 65px;
-      margin-top: 10px;
-    }
-  }
-
-  .attach_button {
-    float: left;
-    margin-left: 42px;
-    margin-right: -18px;
-    transform: scaleX(-1);
-
-    .glyphicon-paperclip {
-      color: $deep-sky-blue;
-      transform: rotate(135deg);
-      font-size: 22px;
-    }
-  }
-  .attach_title {
-    margin-left: 5px;
-    margin-top: -40px;
-    color: $deep-sky-blue;
-    font-family: $text-bold;
-    text-transform: uppercase;
-  }
-}
-
-.panel-title {
-  display: inline;
-}
-
-.panel-title-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.panel-title-icons {
-
-  ul {
-    display: flex;
-    align-items: center;
-    padding: 0;
-    margin: 0;
-  }
-  li {
-    padding: 0;
-    margin: 0;
-
-    .panel-button {
-      display: flex;
-      align-items: center;
-      margin: 0 0 0 15px;
-      line-height: initial;
-
-      &amp;:hover, &amp;:focus {
-        text-decoration: none;
-      }
-    }
-  }
-}
-
-
-.timeline-heading test {
-  float:right;
-}
-
-.timeline-body &gt; p {
-  white-space: pre-wrap;
-  overflow-x: hidden;
-}
-
-.timeline-body ul &gt; li {
-  float: none;
-}
-
-.no-resize {
-  resize: none;
-}
-
-.journal-field-indicator {
-  width: 5px;
-  left: 5px;
-  top: 5px;
-  bottom: 5px;
-  z-index: 3;
-}
-
-.panel-heading {
-  word-wrap: break-word;
-}
-
-ul {
-  list-style: none;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.timeline-badge-wrap {
-  margin: auto;
-  max-width: 115px;
-}
-
-.timeline-badge.success {
-  background-color: $success;
-}
-
-.timeline-badge {
-  position: relative;
-  left:25%;
-  width:50%;
-  padding-bottom:50%;
-  border-radius:50%;
-}
-
-.timeline-badge span {
-  top:50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size:13px;
-  color: #fff;
-}
-
-.journal-type {
-  display: inline-flex;
-  display: -ms-inline-flexbox;
-  flex-wrap: wrap;
-  -webkit-justify-content: flex-end;
-}
-
-.fa-circle {
-  font-size: 4px;
-  padding: 7px;
-}
-
-@media (max-width: 768px) {
-  .timeline-badge-wrap {
-    margin: 0;
-  }
-  .timeline-badge {
-    left: 10%;
-  }
-}
-
-.translation-font {
-  font-size: 12px;
-}
-
-.translate-link {
-  cursor: pointer;
-  @extend .translation-font;
-}
-
-.translation-credits {
-  font-style: italic;
-}
-
-.translation-message {
-  padding-top: 10px;
-  font-size: 14px;
-  white-space: pre-wrap;
-}
-
-.toggle-link-show {
-  display: none;
-}
-
-.translation-credits {
-  font-style: italic;
-}
-
-.translation-icon {
-  width: 12px;
-  height: 12px;
-  padding-right: 4px;
-  @extend .translation-font;
-}
-
-.translation-container {
-  border: 1px solid $well-border;
-  border-radius: 3px;
-  background-color: $well-bg;
-  padding: 10px;
-  color: $text-color;
-  margin-top: 10px;
-  @extend .translation-font;
-}
-
-.translation-delimiter {
-  padding: 7px;
-  @extend .translation-font;
-}
-
-.translate-wrap {
-  white-space: nowrap;
-}
-
-//Changed, not OOTB
-.white-circle{
-  height: 40px !important;
-  width: 40px !important;
-  line-height: 4.8rem;
-  background: white;
-  border: solid 2px $deep-sky-blue;
-  border-radius: 50%;
-  left: 25px !important;
-}
-
-.request-history-title {
-  color: #708090;
-  font-family: $text-bold;
-  font-size: 24px;
-}
-
-.title-info {
-  color: $deep-sky-blue;
-  font-family: $text-bold;
-  font-size: 16px;
-}
-
-.modal-body .wrapper-xl {
-  padding: 0 !important;
-}
-.modal-body{
-  border: 0 20px solid white;
-  padding: 40px 50px !important;
-  .wrapper-xl {
-    margin-right: -20px;
-  }
-  button {
-    z-index: 5;
-    position: absolute;
-    right: -1px;
-    top: -8px;
-    font-size: 32px;
-    font-family: $text-light;
-  }
-  .title_property{
-    font-size: 32px;
-    text-transform: capitalize;
-  }
-  .turn_bold{
-    font-weight: bold;
-    margin-top: 20px;
-  }
-  .color_change{
-    color: $deep-sky-blue;
-  }
-
-  .activity_content {
-    height: 350px;
-  }
-}
-
-/* Template Notifications */
-.content_notifications {
-  .content_conversation {
-    .attach_button {
-      margin-left: 60px;
-    }
-    .attach_title {
-      margin-top: 20px;
-    }
-    .submit_button {
-      position: absolute;
-      left: 360px;
-    }
-  }
-}
-
-/* TOOLTIPS */
-.conversation_action:hover {
-  .tooltip {
-    visibility: visible;
-    opacity: 1;
-  }
-}
-.tooltip_right {
-  top: -1px;
-  left: 170px;
-}
-
-//ATTACHMENT WIDGET
-.content_attach {
-  display: flex;
-  margin-left: 45px;
-
-  .attach_left {
-    width: 47%;
-
-    img {
-      width: 250px;
-      height: 140px;
-      margin-bottom: 10px;
-    }
-    .button_attach {
-      margin-left: -27px;
-
-      .panel-button {
-        float: none;
-      }
-      .btn-link {
-        transform: scaleX(-1);
-
-        .glyphicon-paperclip {
-          color: $deep-sky-blue;
-          transform: rotate(135deg);
-          font-size: 18px;
-        }
-      }
-    }
-    .attach_text {
-      text-transform: uppercase;
-      color: $deep-sky-blue;
-      font-family: $text-bold;
-      font-size: 12px;
-    }
-  }
-
-  .attach_right {
-    width: 53%;
-
-    .attachment_list {
-      .list-group-item {
-        border: 0;
-      }
-      .view-attachment, time {
-        display: none;
-      }
-      .tools {
-        margin-top: -25px;
-      }
-    }
-  }
-}
-
-.conversation_fixed_text {
-  .fixed_title { 
-    cursor: pointer;
-    transition: .4s ease-in-out; 
-  }
-  &amp;:hover {
-    .fixed_title {
-      transition: .2s ease-in-out;
-      transform: scale(1.02);
-      -webkit-transform: scale(1.02);
-      -ms-transform: scale(1.02);
-      -moz-transform: scale(1.02);
-      -o-transform: scale(1.02);
-    }
-  }
-}
-.buttons {
-  transition: .4s ease-in-out;
-  &amp;:hover {
-    transition: .2s ease-in-out;
-    transform: scale(1.02);
-    -webkit-transform: scale(1.02);
-    -ms-transform: scale(1.02);
-    -moz-transform: scale(1.02);
-    -o-transform: scale(1.02);
-  }
-}
-.button_size{
-  img{
-    width: 50px;
-    height: 50px;
-  }
-}
-
-.bg_content_feedback {
-  position: fixed;
-  top: -100vh;
-  left: -100vw;
-  width: 200vw;
-  height: 200vh;
-  z-index: 2000;
-  background: rgba(0,0,0,.5);
-  border: 1px solid #7e7e7e;
-  cursor: default;
-}
-
-.content_feedback_ {
-  position: fixed;
-  top: 30px;
-  left: calc(50% - 400px);
-  z-index: 2001;
-}
-.content_feedback {
-  width: 800px;
-  height: 450px;
-  padding: 15px;
-  background: white;
-  text-align: left;
-  position: relative;
-
-  .wrapper-xl {
-    padding: 10px 50px 0 20px !important;
-  }
-
-  .close_feedback {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    font-size: 32px;
-    font-family: $text-light;
-  }
-  .feedback_title {
-    font-size: 24px;
-    color: $dodger-blue;
-    margin-bottom: 20px;
-  }
-  .send_message {
-    color: $coral;
-    margin-bottom: 15px;
-  }
-  .notification_feedback {
-    color: $coral;
-  }
-  .feedback_send {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
-
-    img {width: 50px;}
-  }
-}
-
-.detail_ticket_close {
-  transition: .2s ease-in-out;
-  top: 15px !important;
-  right: 23px !important;
-
-  &amp;:hover {
-    transition: .2s ease-in-out;
-    opacity: .5;
-  }
-}
-
-.dynamic_color_category2 {
-  .conversation_entries:first-child {
-    .conversation_action {
-      text-decoration: underline;
-      color: $dark-orchid !important;
-    }
-  }
-  .new_radio_mark, .conversation_mark{
-    border: 1px solid $dark-orchid !important;
-  }
-  .conversation_entries:last-child {
-    .conversation_mark {
-      background-color: $dark-orchid !important;
-    }
-  }
-  .conversation_form textarea {
-    border: 2px solid $dark-orchid !important;
-  }
-  .submit_name, .glyphicon-paperclip, .attach_text {
-    color: $dark-orchid !important;
-  }
-
-  .modal {
-    .color_change {
-      color: $globo-purple !important;
-    }
-  }
-
-  .view_more_color, .conversation_action, .simple_conversation_title, strong, .file-name a {
-    color: $globo-purple !important;
-  }
-}
-.teste{
-  padding-left: 2em;
-}
-
-@media only screen and (min-width: 768px) {
-  .content_conversation_all {
-    .forecast_field {
-      display: none;
-    }
-  }
-}
-
-.modal_article{
-  .modal-body {
-    overflow: auto !important;
-  }
-}
-
-@media only screen and (max-width: 768px) {
-
-  .content_conversation_all {
-    .timeline:before {
-      left: 0 !important;
-    }
-    .content_feedback_{
-      left: 10px;
-      right: 10px;
-
-      .content_feedback {
-        width: 100%;
-      }
-    }
-  }
-
-  .modal-content {
-    height: 350px;
-    overflow: auto;
-
-    .modal-body {
-      padding: 20px !important;
-    }
-  }
-
+        <css>.content_conversation_all {&#13;
+  .conversation_title {&#13;
+    text-transform: uppercase;&#13;
+    font-size: 14px;&#13;
+    font-family: $text-bolder;&#13;
+  }&#13;
+  .activity_content {&#13;
+    max-height: 410px;&#13;
+    overflow: auto;&#13;
+    margin-bottom: 20px;&#13;
+    margin-left: -4px;&#13;
+    padding-left: 4px;&#13;
+  }&#13;
+  .timeline {&#13;
+    padding-top: 0;&#13;
+  }&#13;
+  .timeline:before {&#13;
+    top: 8px;&#13;
+    border-right: 2px solid $slate-gray;&#13;
+    right: 100%;&#13;
+    height: calc(100% - 78px);&#13;
+    z-index: 1;&#13;
+  }&#13;
+  .conversation_entries {&#13;
+    padding-left: 30px;&#13;
+&#13;
+    .conversation_mark {&#13;
+      width: 10px;&#13;
+      height: 10px;&#13;
+      border-radius: 5px;&#13;
+      background-color: white;&#13;
+      border: 1px solid $deep-sky-blue;&#13;
+      position: absolute;&#13;
+      top: 5px;&#13;
+      left: -4px;&#13;
+      z-index: 3;&#13;
+    }&#13;
+    .hide_timeline_property{&#13;
+      background: white;&#13;
+      height: 18px;&#13;
+      width: 10px;&#13;
+      z-index: 4;&#13;
+      position: absolute;&#13;
+      left: -4px;&#13;
+      bottom: 0;&#13;
+    }&#13;
+    .new_radio_mark{&#13;
+      width: 10px;&#13;
+      height: 10px;&#13;
+      border-radius: 5px;&#13;
+      background-color: white;&#13;
+      border: 1px solid $deep-sky-blue;&#13;
+      position: absolute;&#13;
+      top: 5px;&#13;
+      left: -4px;&#13;
+      z-index: 5;&#13;
+    }&#13;
+  }&#13;
+  .conversation_entries:last-child {&#13;
+    .conversation_action {&#13;
+      text-decoration: underline;&#13;
+    }&#13;
+  }&#13;
+  .conversation_entries:first-child {&#13;
+    .conversation_mark {&#13;
+      background-color: $deep-sky-blue;&#13;
+    }&#13;
+  }&#13;
+  .conversation_fixed {&#13;
+    position: sticky;&#13;
+    bottom: -40px;&#13;
+    z-index: 4;&#13;
+    padding-bottom: 23px;&#13;
+&#13;
+    .conversation_fixed_text {&#13;
+      background-color: white;&#13;
+      height: 40px;&#13;
+    }&#13;
+  }&#13;
+  .content_conversation_dynamic {&#13;
+    height: 260px;&#13;
+    overflow: auto;&#13;
+  }&#13;
+&#13;
+  .conversation_action {&#13;
+    font-size: 12px;&#13;
+    color: $deep-sky-blue;&#13;
+    font-family: $text-bold;&#13;
+  }&#13;
+  .simple_conversation_title{&#13;
+    font-size: 12px;&#13;
+    color: $deep-sky-blue;&#13;
+    font-family: $text-bold;&#13;
+  }&#13;
+  .conversation_description {&#13;
+    font-size: 12px;&#13;
+    color: $slate-gray;&#13;
+  }&#13;
+  .conversation_date {&#13;
+    font-size: 10px;&#13;
+  }&#13;
+&#13;
+  .conversation_form {&#13;
+    margin-left: 30px;&#13;
+&#13;
+    .conversation_user {&#13;
+      margin-left: -46px;&#13;
+&#13;
+      img {&#13;
+        width: 36px;&#13;
+        height: 36px;&#13;
+      }&#13;
+      .user_name {&#13;
+        margin-left: 7px;&#13;
+        font-family: $text-bold;&#13;
+      }&#13;
+    }&#13;
+&#13;
+    .submit_name {&#13;
+      text-transform: uppercase;&#13;
+      margin-left: 8px;&#13;
+      color: $deep-sky-blue;&#13;
+      font-size: 18px;&#13;
+      font-family: $text-bold;&#13;
+    }&#13;
+&#13;
+    textarea {&#13;
+      min-height: 80px;&#13;
+      margin-bottom: 20px;&#13;
+      border: 2px solid $deep-sky-blue;&#13;
+    }&#13;
+  }&#13;
+  .view_more_color{&#13;
+    font-size: 12px;&#13;
+    color: $deep-sky-blue;&#13;
+    font-family: $text-bold;&#13;
+  }&#13;
+}&#13;
+&#13;
+.content_conversation {&#13;
+  padding-bottom: 50px;&#13;
+&#13;
+  .number_title {&#13;
+    .ticket_number {&#13;
+      font-size: 12px;&#13;
+    }&#13;
+    .ticket_title {&#13;
+      font-size: 16px;&#13;
+      text-decoration: underline;&#13;
+      font-family: $text-bold;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .avatar_list {&#13;
+    padding-left: 15px;&#13;
+  }&#13;
+  .avatar-custom-size {&#13;
+    float: left;&#13;
+  }&#13;
+&#13;
+  .avatar-container {&#13;
+    cursor: default;&#13;
+  }&#13;
+  .avatar {&#13;
+    height: 40px !important;&#13;
+    width: 40px !important;&#13;
+    margin-top: -10px;&#13;
+  }&#13;
+  .avatar-container.avatar-large .avatar.soloAvatar .sub-avatar{&#13;
+    background: white;&#13;
+    border: solid 2px $deep-sky-blue;&#13;
+    border-radius: 50%;&#13;
+    line-height: 4rem;&#13;
+&#13;
+    span {&#13;
+      font-family: $text-bold;&#13;
+      color: $deep-sky-blue;&#13;
+    }&#13;
+  }&#13;
+  .all-avatar {&#13;
+    .avatar-container .avatar.soloAvatar {&#13;
+      .sub-avatar {&#13;
+        color: white !important;&#13;
+        background: white !important;&#13;
+        border: solid 2px $deep-sky-blue !important;&#13;
+        border-radius: 50% !important;&#13;
+      }&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .history-name-size {&#13;
+    font-family: $text-bold;&#13;
+  }&#13;
+&#13;
+&#13;
+  .time-text {&#13;
+    font-size: 10px;&#13;
+    margin-left: 49px;&#13;
+    margin-top: -8px;&#13;
+  }&#13;
+&#13;
+  .message_user {&#13;
+    img {&#13;
+      height: 40px;&#13;
+    }&#13;
+    .user_name {&#13;
+      font-family: $text-bold;&#13;
+      margin-left: 5px;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .form-control {&#13;
+    overflow-x: hidden !important;&#13;
+    overflow-wrap: break-word !important;&#13;
+    height: 120px !important;&#13;
+    width: 400px;&#13;
+    border: solid 2px #00BFFF;&#13;
+    margin: 0 66px !important;&#13;
+  }&#13;
+&#13;
+  .conversation_form {&#13;
+&#13;
+    input[type="image"] {&#13;
+      width: 50px;&#13;
+      height: 50px;&#13;
+      margin-right: 65px;&#13;
+      margin-top: 10px;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .attach_button {&#13;
+    float: left;&#13;
+    margin-left: 42px;&#13;
+    margin-right: -18px;&#13;
+    transform: scaleX(-1);&#13;
+&#13;
+    .glyphicon-paperclip {&#13;
+      color: $deep-sky-blue;&#13;
+      transform: rotate(135deg);&#13;
+      font-size: 22px;&#13;
+    }&#13;
+  }&#13;
+  .attach_title {&#13;
+    margin-left: 5px;&#13;
+    margin-top: -40px;&#13;
+    color: $deep-sky-blue;&#13;
+    font-family: $text-bold;&#13;
+    text-transform: uppercase;&#13;
+  }&#13;
+}&#13;
+&#13;
+.panel-title {&#13;
+  display: inline;&#13;
+}&#13;
+&#13;
+.panel-title-container {&#13;
+  display: flex;&#13;
+  justify-content: space-between;&#13;
+  align-items: center;&#13;
+}&#13;
+&#13;
+.panel-title-icons {&#13;
+&#13;
+  ul {&#13;
+    display: flex;&#13;
+    align-items: center;&#13;
+    padding: 0;&#13;
+    margin: 0;&#13;
+  }&#13;
+  li {&#13;
+    padding: 0;&#13;
+    margin: 0;&#13;
+&#13;
+    .panel-button {&#13;
+      display: flex;&#13;
+      align-items: center;&#13;
+      margin: 0 0 0 15px;&#13;
+      line-height: initial;&#13;
+&#13;
+      &amp;:hover, &amp;:focus {&#13;
+        text-decoration: none;&#13;
+      }&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+&#13;
+.timeline-heading test {&#13;
+  float:right;&#13;
+}&#13;
+&#13;
+.timeline-body &gt; p {&#13;
+  white-space: pre-wrap;&#13;
+  overflow-x: hidden;&#13;
+}&#13;
+&#13;
+.timeline-body ul &gt; li {&#13;
+  float: none;&#13;
+}&#13;
+&#13;
+.no-resize {&#13;
+  resize: none;&#13;
+}&#13;
+&#13;
+.journal-field-indicator {&#13;
+  width: 5px;&#13;
+  left: 5px;&#13;
+  top: 5px;&#13;
+  bottom: 5px;&#13;
+  z-index: 3;&#13;
+}&#13;
+&#13;
+.panel-heading {&#13;
+  word-wrap: break-word;&#13;
+}&#13;
+&#13;
+ul {&#13;
+  list-style: none;&#13;
+}&#13;
+&#13;
+.overflow-hidden {&#13;
+  overflow: hidden;&#13;
+}&#13;
+&#13;
+.timeline-badge-wrap {&#13;
+  margin: auto;&#13;
+  max-width: 115px;&#13;
+}&#13;
+&#13;
+.timeline-badge.success {&#13;
+  background-color: $success;&#13;
+}&#13;
+&#13;
+.timeline-badge {&#13;
+  position: relative;&#13;
+  left:25%;&#13;
+  width:50%;&#13;
+  padding-bottom:50%;&#13;
+  border-radius:50%;&#13;
+}&#13;
+&#13;
+.timeline-badge span {&#13;
+  top:50%;&#13;
+  left: 50%;&#13;
+  transform: translate(-50%, -50%);&#13;
+  font-size:13px;&#13;
+  color: #fff;&#13;
+}&#13;
+&#13;
+.journal-type {&#13;
+  display: inline-flex;&#13;
+  display: -ms-inline-flexbox;&#13;
+  flex-wrap: wrap;&#13;
+  -webkit-justify-content: flex-end;&#13;
+}&#13;
+&#13;
+.fa-circle {&#13;
+  font-size: 4px;&#13;
+  padding: 7px;&#13;
+}&#13;
+&#13;
+@media (max-width: 768px) {&#13;
+  .timeline-badge-wrap {&#13;
+    margin: 0;&#13;
+  }&#13;
+  .timeline-badge {&#13;
+    left: 10%;&#13;
+  }&#13;
+}&#13;
+&#13;
+.translation-font {&#13;
+  font-size: 12px;&#13;
+}&#13;
+&#13;
+.translate-link {&#13;
+  cursor: pointer;&#13;
+  @extend .translation-font;&#13;
+}&#13;
+&#13;
+.translation-credits {&#13;
+  font-style: italic;&#13;
+}&#13;
+&#13;
+.translation-message {&#13;
+  padding-top: 10px;&#13;
+  font-size: 14px;&#13;
+  white-space: pre-wrap;&#13;
+}&#13;
+&#13;
+.toggle-link-show {&#13;
+  display: none;&#13;
+}&#13;
+&#13;
+.translation-credits {&#13;
+  font-style: italic;&#13;
+}&#13;
+&#13;
+.translation-icon {&#13;
+  width: 12px;&#13;
+  height: 12px;&#13;
+  padding-right: 4px;&#13;
+  @extend .translation-font;&#13;
+}&#13;
+&#13;
+.translation-container {&#13;
+  border: 1px solid $well-border;&#13;
+  border-radius: 3px;&#13;
+  background-color: $well-bg;&#13;
+  padding: 10px;&#13;
+  color: $text-color;&#13;
+  margin-top: 10px;&#13;
+  @extend .translation-font;&#13;
+}&#13;
+&#13;
+.translation-delimiter {&#13;
+  padding: 7px;&#13;
+  @extend .translation-font;&#13;
+}&#13;
+&#13;
+.translate-wrap {&#13;
+  white-space: nowrap;&#13;
+}&#13;
+&#13;
+//Changed, not OOTB&#13;
+.white-circle{&#13;
+  height: 40px !important;&#13;
+  width: 40px !important;&#13;
+  line-height: 4.8rem;&#13;
+  background: white;&#13;
+  border: solid 2px $deep-sky-blue;&#13;
+  border-radius: 50%;&#13;
+  left: 25px !important;&#13;
+}&#13;
+&#13;
+.request-history-title {&#13;
+  color: #708090;&#13;
+  font-family: $text-bold;&#13;
+  font-size: 24px;&#13;
+}&#13;
+&#13;
+.title-info {&#13;
+  color: $deep-sky-blue;&#13;
+  font-family: $text-bold;&#13;
+  font-size: 16px;&#13;
+}&#13;
+&#13;
+.modal-body .wrapper-xl {&#13;
+  padding: 0 !important;&#13;
+}&#13;
+.modal-body{&#13;
+  border: 0 20px solid white;&#13;
+  padding: 40px 50px !important;&#13;
+  .wrapper-xl {&#13;
+    margin-right: -20px;&#13;
+  }&#13;
+  button {&#13;
+    z-index: 5;&#13;
+    position: absolute;&#13;
+    right: -1px;&#13;
+    top: -8px;&#13;
+    font-size: 32px;&#13;
+    font-family: $text-light;&#13;
+  }&#13;
+  .title_property{&#13;
+    font-size: 32px;&#13;
+    text-transform: capitalize;&#13;
+  }&#13;
+  .turn_bold{&#13;
+    font-weight: bold;&#13;
+    margin-top: 20px;&#13;
+  }&#13;
+  .color_change{&#13;
+    color: $deep-sky-blue;&#13;
+  }&#13;
+&#13;
+  .activity_content {&#13;
+    height: 350px;&#13;
+  }&#13;
+}&#13;
+&#13;
+/* Template Notifications */&#13;
+.content_notifications {&#13;
+  .content_conversation {&#13;
+    .attach_button {&#13;
+      margin-left: 60px;&#13;
+    }&#13;
+    .attach_title {&#13;
+      margin-top: 20px;&#13;
+    }&#13;
+    .submit_button {&#13;
+      position: absolute;&#13;
+      left: 360px;&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+/* TOOLTIPS */&#13;
+.conversation_action:hover {&#13;
+  .tooltip {&#13;
+    visibility: visible;&#13;
+    opacity: 1;&#13;
+  }&#13;
+}&#13;
+.tooltip_right {&#13;
+  top: -1px;&#13;
+  left: 170px;&#13;
+}&#13;
+&#13;
+//ATTACHMENT WIDGET&#13;
+.content_attach {&#13;
+  display: flex;&#13;
+  margin-left: 45px;&#13;
+&#13;
+  .attach_left {&#13;
+    width: 47%;&#13;
+&#13;
+    img {&#13;
+      width: 250px;&#13;
+      height: 140px;&#13;
+      margin-bottom: 10px;&#13;
+    }&#13;
+    .button_attach {&#13;
+      margin-left: -27px;&#13;
+&#13;
+      .panel-button {&#13;
+        float: none;&#13;
+      }&#13;
+      .btn-link {&#13;
+        transform: scaleX(-1);&#13;
+&#13;
+        .glyphicon-paperclip {&#13;
+          color: $deep-sky-blue;&#13;
+          transform: rotate(135deg);&#13;
+          font-size: 18px;&#13;
+        }&#13;
+      }&#13;
+    }&#13;
+    .attach_text {&#13;
+      text-transform: uppercase;&#13;
+      color: $deep-sky-blue;&#13;
+      font-family: $text-bold;&#13;
+      font-size: 12px;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .attach_right {&#13;
+    width: 53%;&#13;
+&#13;
+    .attachment_list {&#13;
+      .list-group-item {&#13;
+        border: 0;&#13;
+      }&#13;
+      .view-attachment, time {&#13;
+        display: none;&#13;
+      }&#13;
+      .tools {&#13;
+        margin-top: -25px;&#13;
+      }&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.conversation_fixed_text {&#13;
+  .fixed_title { &#13;
+    cursor: pointer;&#13;
+    transition: .4s ease-in-out;&#13;
+    padding-top: 8px;&#13;
+    margin-top: -8px;&#13;
+  }&#13;
+  &amp;:hover {&#13;
+    .fixed_title {&#13;
+      transition: .2s ease-in-out;&#13;
+      transform: translateX(-8px);&#13;
+      -webkit-transform: translateX(-8px);&#13;
+      -ms-transform: translateX(-8px);&#13;
+      -moz-transform: translateX(-8px);&#13;
+      -o-transform: translateX(-8px);&#13;
+    }&#13;
+  }&#13;
+}&#13;
+.buttons {&#13;
+  transition: .4s ease-in-out;&#13;
+  &amp;:hover {&#13;
+    transition: .2s ease-in-out;&#13;
+    transform: scale(1.02);&#13;
+    -webkit-transform: scale(1.02);&#13;
+    -ms-transform: scale(1.02);&#13;
+    -moz-transform: scale(1.02);&#13;
+    -o-transform: scale(1.02);&#13;
+  }&#13;
+}&#13;
+.button_size{&#13;
+  img{&#13;
+    width: 50px;&#13;
+    height: 50px;&#13;
+  }&#13;
+}&#13;
+&#13;
+.bg_content_feedback {&#13;
+  position: fixed;&#13;
+  top: -100vh;&#13;
+  left: -100vw;&#13;
+  width: 200vw;&#13;
+  height: 200vh;&#13;
+  z-index: 2000;&#13;
+  background: rgba(0,0,0,.5);&#13;
+  border: 1px solid #7e7e7e;&#13;
+  cursor: default;&#13;
+}&#13;
+&#13;
+.content_feedback_ {&#13;
+  position: fixed;&#13;
+  top: 30px;&#13;
+  left: calc(50% - 400px);&#13;
+  z-index: 2001;&#13;
+}&#13;
+.content_feedback {&#13;
+  width: 800px;&#13;
+  height: 450px;&#13;
+  padding: 15px;&#13;
+  background: white;&#13;
+  text-align: left;&#13;
+  position: relative;&#13;
+&#13;
+  .wrapper-xl {&#13;
+    padding: 10px 50px 0 20px !important;&#13;
+  }&#13;
+&#13;
+  .close_feedback {&#13;
+    position: absolute;&#13;
+    top: 30px;&#13;
+    right: 30px;&#13;
+    font-size: 32px;&#13;
+    font-family: $text-light;&#13;
+  }&#13;
+  .feedback_title {&#13;
+    font-size: 24px;&#13;
+    color: $dodger-blue;&#13;
+    margin-bottom: 20px;&#13;
+  }&#13;
+  .send_message {&#13;
+    color: $coral;&#13;
+    margin-bottom: 15px;&#13;
+  }&#13;
+  .notification_feedback {&#13;
+    color: $coral;&#13;
+  }&#13;
+  .feedback_send {&#13;
+    display: flex;&#13;
+    justify-content: flex-end;&#13;
+    margin-top: 20px;&#13;
+&#13;
+    img {width: 50px;}&#13;
+  }&#13;
+}&#13;
+&#13;
+.detail_ticket_close {&#13;
+  transition: .2s ease-in-out;&#13;
+  top: 15px !important;&#13;
+  right: 23px !important;&#13;
+&#13;
+  &amp;:hover {&#13;
+    transition: .2s ease-in-out;&#13;
+    opacity: .5;&#13;
+  }&#13;
+}&#13;
+&#13;
+.dynamic_color_category2 {&#13;
+  .conversation_entries:first-child {&#13;
+    .conversation_action {&#13;
+      text-decoration: underline;&#13;
+      color: $dark-orchid !important;&#13;
+    }&#13;
+  }&#13;
+  .new_radio_mark, .conversation_mark{&#13;
+    border: 1px solid $dark-orchid !important;&#13;
+  }&#13;
+  .conversation_entries:last-child {&#13;
+    .conversation_mark {&#13;
+      background-color: $dark-orchid !important;&#13;
+    }&#13;
+  }&#13;
+  .conversation_form textarea {&#13;
+    border: 2px solid $dark-orchid !important;&#13;
+  }&#13;
+  .submit_name, .glyphicon-paperclip, .attach_text {&#13;
+    color: $dark-orchid !important;&#13;
+  }&#13;
+&#13;
+  .modal {&#13;
+    .color_change {&#13;
+      color: $globo-purple !important;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .view_more_color, .conversation_action, .simple_conversation_title, strong, .file-name a {&#13;
+    color: $globo-purple !important;&#13;
+  }&#13;
+}&#13;
+.teste{&#13;
+  padding-left: 2em;&#13;
+}&#13;
+&#13;
+@media only screen and (min-width: 768px) {&#13;
+  .content_conversation_all {&#13;
+    .forecast_field {&#13;
+      display: none;&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.modal_article{&#13;
+  .modal-body {&#13;
+    overflow: auto !important;&#13;
+  }&#13;
+}&#13;
+&#13;
+@media only screen and (max-width: 768px) {&#13;
+&#13;
+  .content_conversation_all {&#13;
+    .timeline:before {&#13;
+      left: 0 !important;&#13;
+    }&#13;
+    .content_feedback_{&#13;
+      left: 10px;&#13;
+      right: 10px;&#13;
+&#13;
+      .content_feedback {&#13;
+        width: 100%;&#13;
+      }&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .modal-content {&#13;
+    height: 350px;&#13;
+    overflow: auto;&#13;
+&#13;
+    .modal-body {&#13;
+      padding: 20px !important;&#13;
+    }&#13;
+  }&#13;
+&#13;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -938,7 +943,7 @@ ul {
 		var statusEntries = portalUtils.getStateChange(data.sys_id, data.table);
 		var mergedEntries = portalUtils.joinEntries(entries, statusEntries);
 
-		data.mergedEntries = portalUtils.sortDateTime(mergedEntries, "sys_created_on_adjusted", 1);
+		data.mergedEntries = portalUtils.sortDateTime(mergedEntries, "sys_created_on_adjusted", -1);
 		data.mergedEntriesAll = data.mergedEntries;
 
 		for(var i in data.mergedEntries){
@@ -1010,7 +1015,7 @@ ul {
 				data.mergedEntries = data.stream.entries;
 				data.statusEntries = portalUtils.getStateChange(localInput.sys_id, localInput.table);
 				var mergedEntries = portalUtils.joinEntries(data.mergedEntries, data.statusEntries);
-				data.mergedEntries = portalUtils.sortDateTime(mergedEntries, "sys_created_on_adjusted", 1);
+				data.mergedEntries = portalUtils.sortDateTime(mergedEntries, "sys_created_on_adjusted", -1);
 				break;
 		}
 	}
@@ -1043,14 +1048,14 @@ ul {
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-02 15:30:08</sys_created_on>
         <sys_id>4521b25bdb491c905c1163901496193f</sys_id>
-        <sys_mod_count>635</sys_mod_count>
+        <sys_mod_count>644</sys_mod_count>
         <sys_name>GService Custom Conversation</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_4521b25bdb491c905c1163901496193f</sys_update_name>
-        <sys_updated_by>glorusso</sys_updated_by>
-        <sys_updated_on>2022-01-03 21:17:36</sys_updated_on>
+        <sys_updated_by>tfesilva</sys_updated_by>
+        <sys_updated_on>2022-03-03 21:14:20</sys_updated_on>
         <template><![CDATA[<div class="content_conversation_all dynamic_{{data.color_class}}">
   <div ng-if="data.hide_title == false" class="conversation_title">{{data.hist}}</div>
   
@@ -1058,26 +1063,10 @@ ul {
     <div class="panel-body">
       <div class="activity_content">
         <ul role="list" class="timeline" aria-label="${Ticket history}">
-          <li class="conversation_entries conversation_fixed" role="listitem" aria-label="{{data.stream.user_full_name}}">
-            <div class="conversation_mark"></div><span class="hide_timeline_property"></span><span class="new_radio_mark"></span>
-            <div class="conversation_fixed_text">
-              <div ng-if="data.table != 'sc_request' && !data.hide_title" class="conversation_action" data-toggle="modal" data-target="#moreDetails{{data.sys_id}}">
-                <div class="fixed_title {{data.color_class}}">${Abertura da Solicitação}</div>
-                <span class="tooltip tooltip_right">
-                  <div class="tooltip_arrow arrow_left"></div>
-                  <div class="tooltip_text">${See summary}</div>
-                </span>
-              </div>
-              <div ng-if="data.table == 'sc_request' || data.hide_title">
-                <div class="simple_conversation_title">${Abertura da Solicitação}</div>
-              </div>
-              <div class="conversation_date">{{data.createdDate}}		{{data.createdTime}}</div>
-            </div>
-          </li>
           <li class="conversation_entries conversation_dynamic" ng-if="data.mergedEntries.length > 0" ng-repeat="e in data.mergedEntries">
             <div class="conversation_mark"></div>
             <div ng-style="{'border-color': getFieldColor(e.element)}">
-              <div class="conversation_action {{data.color_class}}">{{e.name}}</div>
+              <div class="conversation_action {{data.color_class}}">{{e.createdDate}} {{e.createdTime}} - {{e.name}}</div>
               <div class="conversation_description">{{e.field_label}}</div>
               <div>
                 <div class="conversation_description" ng-if="(e.element != '
@@ -1126,7 +1115,23 @@ ul {
               </div>
             </div>
             <div ng-if="e.showAll" ng-click="c.showConversation(e)" class="view_more_color">{{data.showAll}}</div>
-            <div class="conversation_date">{{e.createdDate}}		{{e.createdTime}}</div>
+            <!--<div class="conversation_date">{{e.createdDate}}		{{e.createdTime}}</div>-->
+          </li>
+          <li class="conversation_entries conversation_fixed" role="listitem" aria-label="{{data.stream.user_full_name}}">
+            <div class="conversation_mark"></div><span class="hide_timeline_property"></span><span class="new_radio_mark"></span>
+            <div class="conversation_fixed_text">
+              <div ng-if="data.table != 'sc_request' && !data.hide_title" class="conversation_action" data-toggle="modal" data-target="#moreDetails{{data.sys_id}}">
+                <div class="fixed_title {{data.color_class}}">{{data.createdDate}} {{data.createdTime}} - ${Abertura da Solicitação}</div>
+                <span class="tooltip tooltip_right">
+                  <div class="tooltip_arrow arrow_left"></div>
+                  <div class="tooltip_text">${See summary}</div>
+                </span>
+              </div>
+              <div ng-if="data.table == 'sc_request' || data.hide_title">
+                <div class="simple_conversation_title">{{data.createdDate}} {{data.createdTime}} - ${Abertura da Solicitação}</div>
+              </div>
+              <!--<div class="conversation_date">{{data.createdDate}}		{{data.createdTime}}</div>-->
+            </div>
           </li>
         </ul>
       </div>
