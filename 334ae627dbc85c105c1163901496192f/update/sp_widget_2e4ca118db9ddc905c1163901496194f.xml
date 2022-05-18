@@ -852,14 +852,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-06-05 12:59:42</sys_created_on>
         <sys_id>2e4ca118db9ddc905c1163901496194f</sys_id>
-        <sys_mod_count>823</sys_mod_count>
+        <sys_mod_count>826</sys_mod_count>
         <sys_name>GService Categories Knowledge Content</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_2e4ca118db9ddc905c1163901496194f</sys_update_name>
-        <sys_updated_by>organize.anzolin</sys_updated_by>
-        <sys_updated_on>2021-01-29 16:44:17</sys_updated_on>
+        <sys_updated_by>candrule</sys_updated_by>
+        <sys_updated_on>2022-05-18 12:03:21</sys_updated_on>
         <template><![CDATA[<div id="widgetKBcategory" class="content" ng-show="data.showWidget">
 
   <div class="header-loader" ng-show="c.isLoading">
@@ -983,17 +983,17 @@
           <div class="otherchannel_buttons">
             <div class="item_button">
               <img src="gservice_call.png">
-              <div class="button_text">${Suporte Tecnologia}<br>{{data.phone_number}}</div>
+              <div class="button_text">${Suporte Telefônico}<br>{{data.phone_number}}</div>
             </div>
             <div class="item_button" ng-click="c.buttonClicked('write')">
               <img ng-if="!c.messageClicked" src="gservice_write_doubt.png">
               <img ng-if="c.messageClicked" src="gservice_write_doubt_after.png">
               <div class="button_text">${Escreva<br>sua dúvida}</div>
             </div>
-            <div class="item_button">
+           <!-- <div class="item_button">
               <img src="gservice_call.png">
-              <div class="button_text">${Suporte FJ&I}<br>(21) 2155 2777</div>
-            </div>
+              <div class="button_text">${Suporte FJ&I}<br>(21) 3004 3911</div>
+            </div> -->
           </div>
         </div>
       </div>
