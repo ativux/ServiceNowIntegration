@@ -2,342 +2,342 @@
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
         <client_script><![CDATA[function a($scope, $timeout, spModal, spUtil, $location, $rootScope) {
-    var c = this;
-    c.requestComment = "";
-    c.requestItem = false;
-    c.needComment = false;
-    c.needReason = false;
-    c.modalMessage = "";
-    c.isLoading = true;
-    c.reopeningReason = false;
-    c.disableAction = false;
+	var c = this;
+	c.requestComment = "";
+	c.requestItem = false;
+	c.needComment = false;
+	c.needReason = false;
+	c.modalMessage = "";
+	c.isLoading = true;
+	c.reopeningReason = false;
+	c.disableAction = false;
 
-    // === INICIO Properites do botão Editar INCIO ===
-    var variableSetsToBeReadOnly = [
-        "5105fae2dbea30101c0d0fbca3961926",
-        "6694fb9c1b6278d045840fe1f54bcb6d",
-    ];
+	// === INICIO Properites do botão Editar INCIO ===
+	var variableSetsToBeReadOnly = [
+		"5105fae2dbea30101c0d0fbca3961926",
+		"6694fb9c1b6278d045840fe1f54bcb6d",
+	];
 
-    var excludeFields = [];
+	var excludeFields = [];
 
-    c.cantEditStates = ["60", "117", "116", "115"];
+	c.cantEditStates = ["60", "117", "116", "115"];
 
-    c.canEditItems = [
-        "4eaecef71b0a7c5045840fe1f54bcb47",
-        "870c4d1b1b86f45045840fe1f54bcbee",
-        "f3579ee31b42f85045840fe1f54bcbe2",
-    ];
+	c.canEditItems = [
+		"4eaecef71b0a7c5045840fe1f54bcb47",
+		"870c4d1b1b86f45045840fe1f54bcbee",
+		"f3579ee31b42f85045840fe1f54bcbe2",
+	];
 
-    // === FIM Properites do botão Editar FIM ===
+	// === FIM Properites do botão Editar FIM ===
 
-    c.contentOpened = false;
+	c.contentOpened = false;
 
-    $scope.loadingIndicator = $rootScope.loadingIndicator;
-    //Show widget after loaded
-    $scope.$on("sp_loading_indicator", function(e, value) {
-        if ($scope.loadingIndicator && !value) {
-            c.isLoading = false;
-        }
-        $scope.loadingIndicator = value;
-    });
+	$scope.loadingIndicator = $rootScope.loadingIndicator;
+	//Show widget after loaded
+	$scope.$on("sp_loading_indicator", function(e, value) {
+		if ($scope.loadingIndicator && !value) {
+			c.isLoading = false;
+		}
+		$scope.loadingIndicator = value;
+	});
 
-    c.onWidget = function(widgetId, itemSysID, item) {
-        /*
+	c.onWidget = function(widgetId, itemSysID, item) {
+		/*
          * O evento spModel.gForm.initialized é disparado pelo widget de "form"/"acn_form_v2"
          * sempre que um formulário é instanciado no portal.
          * escutando esse evento permite a utilização do gFormInstance (g_form)
          */
-        $scope.gFormInstance = null;
-        $rootScope.$on("spModel.gForm.initialized", function(e, gFormInstance) {
-            // Store gFormInstance inside $scope to be used on save form
-            if (!$scope.gFormInstance)
-                $scope.gFormInstance = gFormInstance;
-        });
+		$scope.gFormInstance = null;
+		$rootScope.$on("spModel.gForm.initialized", function(e, gFormInstance) {
+			// Store gFormInstance inside $scope to be used on save form
+			if (!$scope.gFormInstance)
+				$scope.gFormInstance = gFormInstance;
+		});
 
-        c.server
-            .get({
-                action: "getVsetFields",
-                vsets: variableSetsToBeReadOnly,
-                exceptions: excludeFields,
-            })
-            .then(function(response) {
-                var fields = response.data.fields;
-                spModal
-                    .open({
-                        title: "ATENÇÃO! Você está editando uma solicitação em andamento.",
-                        widget: widgetId,
-                        widgetInput: {
-                            table: "x_gmeps_csc_alimentacao",
-                            sys_id: itemSysID,
-                            view: "edit_request_view",
-                            fields: fields,
-                            hideActions: true,
-                        },
-                        buttons: [{
-                                label: "${Cancel}",
-                                cancel: true
-                            },
-                            {
-                                label: "${Save}",
-                                primary: true
-                            },
-                        ],
-                    })
-                    .then(function() {
-                        if ($scope.gFormInstance != undefined) {
-                            $scope.gFormInstance.submit("save");
-                            $scope.server
-                                .get({
-                                    action: "sendNotification",
-                                    itemSysID: itemSysID
-                                })
-                                .then(function() {
-                                    $location.url("?id=globoservice_my_dashboard");
-                                });
-                        }
-                    });
-            });
-    };
+		c.server
+			.get({
+			action: "getVsetFields",
+			vsets: variableSetsToBeReadOnly,
+			exceptions: excludeFields,
+		})
+			.then(function(response) {
+			var fields = response.data.fields;
+			spModal
+				.open({
+				title: "ATENÇÃO! Você está editando uma solicitação em andamento.",
+				widget: widgetId,
+				widgetInput: {
+					table: "x_gmeps_csc_alimentacao",
+					sys_id: itemSysID,
+					view: "edit_request_view",
+					fields: fields,
+					hideActions: true,
+				},
+				buttons: [{
+					label: "${Cancel}",
+					cancel: true
+				},
+									{
+										label: "${Save}",
+										primary: true
+									},
+								 ],
+			})
+				.then(function() {
+				if ($scope.gFormInstance != undefined) {
+					$scope.gFormInstance.submit("save");
+					$scope.server
+						.get({
+						action: "sendNotification",
+						itemSysID: itemSysID
+					})
+						.then(function() {
+						$location.url("?id=globoservice_my_dashboard");
+					});
+				}
+			});
+		});
+	};
 
-    spUtil.recordWatch(
-        $scope,
-        "x_gmeps_csc_csc",
-        c.data.requestsID,
-        function(event) {
-            if (event.data.record.u_status_portal) {
-                c.server
-                    .get({
-                        action: "stateChangedBackend",
-                        itemID: event.data.sys_id,
-                        newState: event.data.record.u_status_portal,
-                        requests: c.data.requests,
-                    })
-                    .then(function(response) {
-                        c.data.requests = response.data.requests;
-                    });
-            }
-        }
-    );
+	spUtil.recordWatch(
+		$scope,
+		"x_gmeps_csc_csc",
+		c.data.requestsID,
+		function(event) {
+			if (event.data.record.u_status_portal) {
+				c.server
+					.get({
+					action: "stateChangedBackend",
+					itemID: event.data.sys_id,
+					newState: event.data.record.u_status_portal,
+					requests: c.data.requests,
+				})
+					.then(function(response) {
+					c.data.requests = response.data.requests;
+				});
+			}
+		}
+	);
 
 
-    spUtil.recordWatch($scope, "sc_req_item", c.data.ritmID, function(event) {
-        if (event.data.record.state) {
-            c.server
-                .get({
-                    action: "ritmStateChangedBackend",
-                    itemID: event.data.sys_id,
-                    newState: event.data.record.state,
-                    requests: c.data.requests,
-                })
-                .then(function(response) {
-                    c.data.requests = response.data.requests;
-                });
-        }
-    });
+	spUtil.recordWatch($scope, "sc_req_item", c.data.ritmID, function(event) {
+		if (event.data.record.state) {
+			c.server
+				.get({
+				action: "ritmStateChangedBackend",
+				itemID: event.data.sys_id,
+				newState: event.data.record.state,
+				requests: c.data.requests,
+			})
+				.then(function(response) {
+				c.data.requests = response.data.requests;
+			});
+		}
+	});
 
-    $scope.$on("applyFilterCSC", function(event, filters) {
-        c.data.statusFilter = filters.statusFilter;
-        c.data.typeFilter = filters.typeFilter;
-        c.isLoading = true;
-        c.data.action = "applyFilter";
-        c.server.update().then(function(response) {
-            c.verifyEmptySearch();
-            c.newRecordWatch();
-        });
-    });
+	$scope.$on("applyFilterCSC", function(event, filters) {
+		c.data.statusFilter = filters.statusFilter;
+		c.data.typeFilter = filters.typeFilter;
+		c.isLoading = true;
+		c.data.action = "applyFilter";
+		c.server.update().then(function(response) {
+			c.verifyEmptySearch();
+			c.newRecordWatch();
+		});
+	});
 
-    $scope.$on("applyDateCSC", function(event, daysAgo) {
-        c.data.dateFilter = daysAgo;
-        c.data.action = "applyDate";
-        c.server.update().then(function(response) {
-            $timeout(function() {
-                items - content - csc("list-columns-csc");
-            }, 200);
-            c.verifyEmptySearch();
-            c.newRecordWatch();
-        });
-    });
+	$scope.$on("applyDateCSC", function(event, daysAgo) {
+		c.data.dateFilter = daysAgo;
+		c.data.action = "applyDate";
+		c.server.update().then(function(response) {
+			$timeout(function() {
+				items - content - csc("list-columns-csc");
+			}, 200);
+			c.verifyEmptySearch();
+			c.newRecordWatch();
+		});
+	});
 
-    $scope.$on("sendDateCSC", function(event, dateFormated, dateOrder) {
-        c.data.dateFormated = dateFormated;
-        c.data.action = "sendDate";
-        c.data.dateOrder = dateOrder;
-        c.server.update().then(function(response) {
-            c.verifyEmptySearch();
-            c.newRecordWatch();
-        });
-    });
+	$scope.$on("sendDateCSC", function(event, dateFormated, dateOrder) {
+		c.data.dateFormated = dateFormated;
+		c.data.action = "sendDate";
+		c.data.dateOrder = dateOrder;
+		c.server.update().then(function(response) {
+			c.verifyEmptySearch();
+			c.newRecordWatch();
+		});
+	});
 
-    $scope.$on("clearAllFiltersCSC", function(event) {
-        c.data.requests = [];
-        for (var i in c.data.typeFilter) {
-            c.data.typeFilter[i].selected = false;
-        }
-        for (i in c.data.statusFilter) {
-            c.data.statusFilter[i].selected = false;
-        }
-        c.verifyEmptySearch();
-    });
+	$scope.$on("clearAllFiltersCSC", function(event) {
+		c.data.requests = [];
+		for (var i in c.data.typeFilter) {
+			c.data.typeFilter[i].selected = false;
+		}
+		for (i in c.data.statusFilter) {
+			c.data.statusFilter[i].selected = false;
+		}
+		c.verifyEmptySearch();
+	});
 
-    c.verifyEmptySearch = function() {
-        c.data.showFilterClean = true;
-        if (c.data.requests.length > 0) {
-            c.data.showFilterClean = false;
-        }
-    };
+	c.verifyEmptySearch = function() {
+		c.data.showFilterClean = true;
+		if (c.data.requests.length > 0) {
+			c.data.showFilterClean = false;
+		}
+	};
 
-    c.itemAction = function(item, action) {
-        c.disableAction = true;
-        c.requestComment = "";
-        c.needReason = false;
-        c.needComment = false;
+	c.itemAction = function(item, action) {
+		c.disableAction = true;
+		c.requestComment = "";
+		c.needReason = false;
+		c.needComment = false;
 
-        if (
-            action == "acceptSolution" ||
-            action == "acceptCancellation" ||
-            action == "approveItem" ||
-            (action == "cancelItem" && item.table == "u_question")
+		if (
+			action == "acceptSolution" ||
+			action == "acceptCancellation" ||
+			action == "approveItem" ||
+			(action == "cancelItem" && item.table == "u_question")
 
-        ) {
-            c.server
-                .get({
-                    action: "changeItemState",
-                    state: action,
-                    item: item,
-                    reopeningReason: false,
-                })
-                .then(function(response) {
-					for(var i in c.data.requests){
-						if(c.data.requests[i].sys_id == item.sys_id){
-							c.data.requests[i] = response.data.item;
-						}
-						for(var ii in c.data.requests[i].items){
-							if(c.data.requests[i].items[ii].sys_id == item.sys_id){
-								c.data.requests[i].items[ii] = response.data.item;
-							}
+		) {
+			c.server
+				.get({
+				action: "changeItemState",
+				state: action,
+				item: item,
+				reopeningReason: false,
+			})
+				.then(function(response) {
+				for(var i in c.data.requests){
+					if(c.data.requests[i].sys_id == item.sys_id){
+						c.data.requests[i] = response.data.item;
+					}
+					for(var ii in c.data.requests[i].items){
+						if(c.data.requests[i].items[ii].sys_id == item.sys_id){
+							c.data.requests[i].items[ii] = response.data.item;
 						}
 					}
-                    item = response.data.item;
-                    c.data.show_survey = response.data.show_survey;
-                    c.data.gserviceSurveyCSC = response.data.gserviceSurveyCSC;
-                    c.disableAction = false;
-                });
-        } else {
-            if (
-                action == "rejectSolution" ||
-                action == "rejectCancellation" ||
-                action == "disapproveItem"
-            ) {
-                c.modalMessage = c.data.msgs.reject;
-                for (var i in c.data.reopeningReason) {
-                    c.data.reopeningReason[i].selected = false;
-                    c.requestComment = "";
-                }
-            } else c.modalMessage = c.data.msgs.cancel;
-            for (var i in c.data.reopeningReason) {
-                c.data.reopeningReason[i].selected = false;
-            }
-            $("#requestCommentModalCSC").modal("show");
-            c.requestItem = item;
-            c.state = action;
-            $timeout(function() {
-                c.disableAction = false;
-            }, 1000);
-        }
-    };
+				}
+				item = response.data.item;
+				c.data.show_survey = response.data.show_survey;
+				c.data.gserviceSurveyCSC = response.data.gserviceSurveyCSC;
+				c.disableAction = false;
+			});
+		} else {
+			if (
+				action == "rejectSolution" ||
+				action == "rejectCancellation" ||
+				action == "disapproveItem"
+			) {
+				c.modalMessage = c.data.msgs.reject;
+				for (var i in c.data.reopeningReason) {
+					c.data.reopeningReason[i].selected = false;
+					c.requestComment = "";
+				}
+			} else c.modalMessage = c.data.msgs.cancel;
+			for (var i in c.data.reopeningReason) {
+				c.data.reopeningReason[i].selected = false;
+			}
+			$("#requestCommentModalCSC").modal("show");
+			c.requestItem = item;
+			c.state = action;
+			$timeout(function() {
+				c.disableAction = false;
+			}, 1000);
+		}
+	};
 
-    c.submitRequestComment = function() {
-        if (c.state == "rejectSolution") {
-            var stop = false;
-            if (!c.requestComment) {
-                c.needComment = true;
-                stop = true;
-            } else if (c.requestComment.length < 20) {
-                c.needComment = true;
-                stop = true;
-            } else {
-                c.needComment = false;
-            }
-            if (!c.reopeningReason) {
-                c.needReason = true;
-                stop = true;
-            } else c.needReason = false;
-            if (stop) {
-                return;
-            }
-        } else if (c.state == "cancelItem" || c.state == "cancelGuideItem") {
-            var stop = false;
-            if (!c.requestComment) {
-                c.needComment = true;
-                stop = true;
-            } else if (c.requestComment.length < 20) {
-                c.needComment = true;
-                stop = true;
-            } else {
-                c.needComment = false;
-            }
-            if (stop) {
-                return;
-            }
-        }
-        c.disableAction = true;
+	c.submitRequestComment = function() {
+		if (c.state == "rejectSolution") {
+			var stop = false;
+			if (!c.requestComment) {
+				c.needComment = true;
+				stop = true;
+			} else if (c.requestComment.length < 20) {
+				c.needComment = true;
+				stop = true;
+			} else {
+				c.needComment = false;
+			}
+			if (!c.reopeningReason) {
+				c.needReason = true;
+				stop = true;
+			} else c.needReason = false;
+			if (stop) {
+				return;
+			}
+		} else if (c.state == "cancelItem" || c.state == "cancelGuideItem") {
+			var stop = false;
+			if (!c.requestComment) {
+				c.needComment = true;
+				stop = true;
+			} else if (c.requestComment.length < 20) {
+				c.needComment = true;
+				stop = true;
+			} else {
+				c.needComment = false;
+			}
+			if (stop) {
+				return;
+			}
+		}
+		c.disableAction = true;
 
-        if (c.state != "rejectSolution") {
-            if (c.requestComment) {
-                c.reopeningReason = false;
-                c.needComment = false;
-                c.server
-                    .get({
-                        action: "changeItemState",
-                        state: c.state,
-                        item: c.requestItem,
-                        comment: c.requestComment,
-                        reopeningReason: c.reopeningReason,
-                    })
-                    .then(function(response) {
-                        $("#requestCommentModalCSC").modal("hide");
-                        c.requestComment = "";
+		if (c.state != "rejectSolution") {
+			if (c.requestComment) {
+				c.reopeningReason = false;
+				c.needComment = false;
+				c.server
+					.get({
+					action: "changeItemState",
+					state: c.state,
+					item: c.requestItem,
+					comment: c.requestComment,
+					reopeningReason: c.reopeningReason,
+				})
+					.then(function(response) {
+					$("#requestCommentModalCSC").modal("hide");
+					c.requestComment = "";
 
-                        for (var i in $scope.data.requests) {
-                            if ($scope.data.requests[i].sys_id == response.data.item.sys_id) {
-                                $scope.data.requests[i].eraseButton = false;
-                                $scope.data.requests[i].state = response.data.item.state;
-                                $scope.data.requests[i].stateColorClass = response.data.item.stateColorClass;
-                                $scope.data.requests[i].items = response.data.item.items;
-                                break;
-                            }
-                        }
-                        $timeout(function() {
-                            c.disableAction = false;
-                        }, 1500);
-                    });
-            } else c.needComment = true;
-        } else {
-            c.needReason = false;
-            c.needComment = false;
-            c.server
-                .get({
-                    action: "changeItemState",
-                    state: c.state,
-                    item: c.requestItem,
-                    comment: c.requestComment,
-                    reopeningReason: c.reopeningReason,
-                })
-                .then(function(response) {
-                    $("#requestCommentModalCSC").modal("hide");
-                    c.requestComment = "";
-                    $timeout(function() {
-                        c.disableAction = false;
-                    }, 1500);
-                });
-        }
-    };
+					for (var i in $scope.data.requests) {
+						if ($scope.data.requests[i].sys_id == response.data.item.sys_id) {
+							$scope.data.requests[i].eraseButton = false;
+							$scope.data.requests[i].state = response.data.item.state;
+							$scope.data.requests[i].stateColorClass = response.data.item.stateColorClass;
+							$scope.data.requests[i].items = response.data.item.items;
+							break;
+						}
+					}
+					$timeout(function() {
+						c.disableAction = false;
+					}, 1500);
+				});
+			} else c.needComment = true;
+		} else {
+			c.needReason = false;
+			c.needComment = false;
+			c.server
+				.get({
+				action: "changeItemState",
+				state: c.state,
+				item: c.requestItem,
+				comment: c.requestComment,
+				reopeningReason: c.reopeningReason,
+			})
+				.then(function(response) {
+				$("#requestCommentModalCSC").modal("hide");
+				c.requestComment = "";
+				$timeout(function() {
+					c.disableAction = false;
+				}, 1500);
+			});
+		}
+	};
 
-    c.showDetails = function(item) {
-        var showDetails = false;
-        var index = 0;
-        var reqIndex = 0;
-        for (var r in c.data.requests) {
+	c.showDetails = function(item) {
+		var showDetails = false;
+		var index = 0;
+		var reqIndex = 0;
+		for (var r in c.data.requests) {
 			if(c.data.requests[r].items.length == 0){
 				if (c.data.requests[r].sys_id == item.sys_id) {
 					reqIndex = r;
@@ -359,183 +359,183 @@
 					}
 				}
 			}
-        }
-        if (showDetails) {
-            c.data.showConversation = false;
-            c.server
-                .get({
-                    action: "getTicketConversationWidget",
-                    item: item,
-                })
-                .then(function(response) {
-                    c.data.ticketConversationWidget = response.data.ticketConversationWidget;
-                    c.data.showConversation = true;
-                    if (item.table == "sc_request") {
-                        c.data.requests[reqIndex].items[index] = response.data.newItem;
-                        c.data.ritm_fields = response.data.ritm_fields;
-                    }
-                });
-        }
-    };
+		}
+		if (showDetails) {
+			c.data.showConversation = false;
+			c.server
+				.get({
+				action: "getTicketConversationWidget",
+				item: item,
+			})
+				.then(function(response) {
+				c.data.ticketConversationWidget = response.data.ticketConversationWidget;
+				c.data.showConversation = true;
+				if (item.table == "sc_request") {
+					c.data.requests[reqIndex].items[index] = response.data.newItem;
+					c.data.ritm_fields = response.data.ritm_fields;
+				}
+			});
+		}
+	};
 
-    c.orderBy = function(order, items) {
-        c.data.action = "orderBy";
-        c.data.order = order;
-        c.server.update().then(function(response) {
-            c.newRecordWatch();
-        });
-    };
+	c.orderBy = function(order, items) {
+		c.data.action = "orderBy";
+		c.data.order = order;
+		c.server.update().then(function(response) {
+			c.newRecordWatch();
+		});
+	};
 
-    c.statusColor = function(status) {
-        var statusClass = "";
-        if (status == 2) {
-            statusClass = "status_flow_empty";
-        } else if (status == true) {
-            statusClass = "status_flow_active";
-        } else if (!status) {
-            statusClass = "status_flow_completed";
-        }
-        return statusClass;
-    };
+	c.statusColor = function(status) {
+		var statusClass = "";
+		if (status == 2) {
+			statusClass = "status_flow_empty";
+		} else if (status == true) {
+			statusClass = "status_flow_active";
+		} else if (!status) {
+			statusClass = "status_flow_completed";
+		}
+		return statusClass;
+	};
 
-    $scope.$on("getSearchedItemsFilterCSC", function(event, searchTerm) {
-        c.data.searchTerm = searchTerm;
-        c.data.action = "searchResult";
-        c.server.update().then(function(response) {
-            c.verifyEmptySearch();
-            c.newRecordWatch();
-        });
-    });
+	$scope.$on("getSearchedItemsFilterCSC", function(event, searchTerm) {
+		c.data.searchTerm = searchTerm;
+		c.data.action = "searchResult";
+		c.server.update().then(function(response) {
+			c.verifyEmptySearch();
+			c.newRecordWatch();
+		});
+	});
 
-    $scope.$on("getSearchedItemsFilterCSCClear", function(event) {
-        c.data.action = "applyDefaultFilter";
-        c.server.update().then(function(response) {
-            c.verifyEmptySearch();
-            c.newRecordWatch();
-        });
-    });
+	$scope.$on("getSearchedItemsFilterCSCClear", function(event) {
+		c.data.action = "applyDefaultFilter";
+		c.server.update().then(function(response) {
+			c.verifyEmptySearch();
+			c.newRecordWatch();
+		});
+	});
 
-    $scope.$on("selectRequestCSC", function(event, item_id) {
-        c.data.item_id = item_id;
-        c.data.action = "selectRequest";
-        c.server.update().then(function(response) {
-            c.openContent();
-            $timeout(function() {
-                scrollTo("list-columns-csc");
-            }, 200);
-            c.verifyEmptySearch();
-            c.newRecordWatch();
-        });
-    });
+	$scope.$on("selectRequestCSC", function(event, item_id) {
+		c.data.item_id = item_id;
+		c.data.action = "selectRequest";
+		c.server.update().then(function(response) {
+			c.openContent();
+			$timeout(function() {
+				scrollTo("list-columns-csc");
+			}, 200);
+			c.verifyEmptySearch();
+			c.newRecordWatch();
+		});
+	});
 
-    $("#requestCommentModalCSC").on("hide.bs.modal", function() {
-        c.disableAction = false;
-        c.requestComment = "";
-        c.reopeningReason = false;
-        c.needComment = "";
-        c.needReason = false;
-    });
+	$("#requestCommentModalCSC").on("hide.bs.modal", function() {
+		c.disableAction = false;
+		c.requestComment = "";
+		c.reopeningReason = false;
+		c.needComment = "";
+		c.needReason = false;
+	});
 
-    c.previousPage = function() {
-        c.data.actualPage--;
-        c.updatePageCount();
-    };
-    c.nextPage = function() {
-        c.data.actualPage++;
-        c.updatePageCount();
-    };
+	c.previousPage = function() {
+		c.data.actualPage--;
+		c.updatePageCount();
+	};
+	c.nextPage = function() {
+		c.data.actualPage++;
+		c.updatePageCount();
+	};
 
-    c.updatePageCount = function() {
-        c.data.window_start = c.data.actualPage * c.data.items_per_page;
-        c.data.window_end = c.data.window_start + c.data.items_per_page;
-        c.data.action = "changePage";
-        c.server.update().then(function(response) {
-            c.newRecordWatch();
-        });
-    };
+	c.updatePageCount = function() {
+		c.data.window_start = c.data.actualPage * c.data.items_per_page;
+		c.data.window_end = c.data.window_start + c.data.items_per_page;
+		c.data.action = "changePage";
+		c.server.update().then(function(response) {
+			c.newRecordWatch();
+		});
+	};
 
-    c.newRecordWatch = function() {
-        spUtil.recordWatch(
-            $scope,
-            "x_gmeps_csc_csc",
-            c.data.requestsID,
-            function(event) {
-                if (event.data.record.u_status_portal) {
-                    c.server
-                        .get({
-                            action: "stateChangedBackend",
-                            itemID: event.data.sys_id,
-                            newState: event.data.record.u_status_portal,
-                            requests: c.data.requests,
-                        })
-                        .then(function(response) {
-                            c.data.requests = response.data.requests;
-                        });
-                }
-            }
-        );
-    };
-    c.editDraft = function(table, item_id, sys_id, index) {
-        c.data.editIndex = index;
-        var jsonItem = {
-            itemID: item_id,
-            breadcrumb: "",
-            table: table,
-            duplicatedItemID: false,
-            sys_id: sys_id,
-        };
-        $rootScope.$broadcast("editItem", jsonItem, "editItem");
-        $("#editModal").modal("show");
-    };
+	c.newRecordWatch = function() {
+		spUtil.recordWatch(
+			$scope,
+			"x_gmeps_csc_csc",
+			c.data.requestsID,
+			function(event) {
+				if (event.data.record.u_status_portal) {
+					c.server
+						.get({
+						action: "stateChangedBackend",
+						itemID: event.data.sys_id,
+						newState: event.data.record.u_status_portal,
+						requests: c.data.requests,
+					})
+						.then(function(response) {
+						c.data.requests = response.data.requests;
+					});
+				}
+			}
+		);
+	};
+	c.editDraft = function(table, item_id, sys_id, index) {
+		c.data.editIndex = index;
+		var jsonItem = {
+			itemID: item_id,
+			breadcrumb: "",
+			table: table,
+			duplicatedItemID: false,
+			sys_id: sys_id,
+		};
+		$rootScope.$broadcast("editItem", jsonItem, "editItem");
+		$("#editModal").modal("show");
+	};
 
-    if (c.data.urlItem && c.data.first_load) {
-        $timeout(function() {
-            c.openContent();
-            $timeout(function() {
-                scrollToRow("items-content-csc-row0");
-            }, 500);
-        }, 500);
-    }
+	if (c.data.urlItem && c.data.first_load) {
+		$timeout(function() {
+			c.openContent();
+			$timeout(function() {
+				scrollToRow("items-content-csc-row0");
+			}, 500);
+		}, 500);
+	}
 
-    c.selectedChoice = function(index) {
-        for (var i in c.data.reopeningReason) {
-            c.data.reopeningReason[i].selected = false;
-        }
-        c.data.reopeningReason[index].selected =
-            c.data.reopeningReason[index].label;
-        c.reopeningReason = c.data.reopeningReason[index].label;
-    };
+	c.selectedChoice = function(index) {
+		for (var i in c.data.reopeningReason) {
+			c.data.reopeningReason[i].selected = false;
+		}
+		c.data.reopeningReason[index].selected =
+			c.data.reopeningReason[index].label;
+		c.reopeningReason = c.data.reopeningReason[index].label;
+	};
 
-    c.openItem = function(ritm) {
-        c.data.showRecordDetails = false;
-        c.server
-            .get({
-                action: "openRITM",
-                ritm: ritm,
-            })
-            .then(function(response) {
-                c.data.recordDetailsWidget = response.data.recordDetailsWidget;
-                c.data.showRecordDetails = true;
-                $("#ritmDetails").modal("show");
-            });
-    };
+	c.openItem = function(ritm) {
+		c.data.showRecordDetails = false;
+		c.server
+			.get({
+			action: "openRITM",
+			ritm: ritm,
+		})
+			.then(function(response) {
+			c.data.recordDetailsWidget = response.data.recordDetailsWidget;
+			c.data.showRecordDetails = true;
+			$("#ritmDetails").modal("show");
+		});
+	};
 
-    $scope.$on("closeEditModal", function(event) {
-        $("#editModal").modal("hide");
-    });
+	$scope.$on("closeEditModal", function(event) {
+		$("#editModal").modal("hide");
+	});
 
-    c.copyItem = function(id, obj) {
+	c.copyItem = function(id, obj) {
 		if(!obj){
 			$location.search("id=globoservice_index&copy_id=" + id);
 		} else {
 			$location.search("id=globoservice_index&item_id="+obj.cat_item_id+"&guide_copy_id=" + id);
 		}
 
-    };
+	};
 
-    $scope.$on("surveyClosed", function(event) {
-        c.data.show_survey = false;
-    });
+	$scope.$on("surveyClosed", function(event) {
+		c.data.show_survey = false;
+	});
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.guide-line td {&#13;
@@ -1771,1181 +1771,1184 @@ tbody {&#13;
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
-    /* Actions*/
-    if (input && input.action) {
-        switch (input.action) {
-            case "sendNotification":
-                var gr = new GlideRecord("x_gmeps_csc_csc");
-                if (gr.get(input.itemSysID)) {
-                    gs.eventQueue("x_gmeps_csc.request.edited", gr, gs.getUserID());
-                }
-                break;
-            case "getTicketConversationWidget":
-                gs.info("called getTicketConversationWidget");
-                var hide_new_comments = false;
-                var state = input.item.statusValue;
-                if (state == "5" || state == "7" || state == "8" || state == "9") {
-                    hide_new_comments = true;
-                }
-                var gservice_ticket_conversation_options = {
-                    table: input.item.table,
-                    sys_id: input.item.sys_id,
-                    item_status: input.item.colorClass,
-                    hide_new_comments: hide_new_comments,
-                    send_image: "GService_SS_TV.png",
-                    comment_image: "GS_Resposta_Roxo.png",
-                    color_class: "color_category2",
-                    bd_color_class: "bdcolor_category2",
-                };
-                data.ticketConversationWidget = $sp.getWidget(
-                    "gservice_custom_conversation",
-                    gservice_ticket_conversation_options
-                );
-                break;
-        }
-        //return;
-    }
+	/* Actions*/
+	if (input && input.action) {
+		switch (input.action) {
+			case "sendNotification":
+				var gr = new GlideRecord("x_gmeps_csc_csc");
+				if (gr.get(input.itemSysID)) {
+					gs.eventQueue("x_gmeps_csc.request.edited", gr, gs.getUserID());
+				}
+				break;
+			case "getTicketConversationWidget":
+				gs.info("called getTicketConversationWidget");
+				var hide_new_comments = false;
+				var state = input.item.statusValue;
+				if (state == "5" || state == "7" || state == "8" || state == "9") {
+					hide_new_comments = true;
+				}
+				var gservice_ticket_conversation_options = {
+					table: input.item.table,
+					sys_id: input.item.sys_id,
+					item_status: input.item.colorClass,
+					hide_new_comments: hide_new_comments,
+					send_image: "GService_SS_TV.png",
+					comment_image: "GS_Resposta_Roxo.png",
+					color_class: "color_category2",
+					bd_color_class: "bdcolor_category2",
+				};
+				data.ticketConversationWidget = $sp.getWidget(
+					"gservice_custom_conversation",
+					gservice_ticket_conversation_options
+				);
+				break;
+		}
+		//return;
+	}
 
-    data.taskQuery =
-        "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
-    data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
-    var localInput = input; //to safeguard pullution of "input" via BR or other scripts
-    var portalUtils = new global.OCLPortalUtilsCSC();
-    data.showConversation = false;
+	data.taskQuery =
+		"state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
+	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
+	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+	var portalUtils = new global.OCLPortalUtilsCSC();
+	data.showConversation = false;
 
-    data.showContent = false;
+	data.showContent = false;
 
-    data.showRecordDetails = false;
-    data.requestsID = "";
-    data.showEmptyMessage = false;
+	data.showRecordDetails = false;
+	data.requestsID = "";
+	data.showEmptyMessage = false;
 
-    data.show_survey = false;
+	data.show_survey = false;
 
-    data.msgs = {};
-    data.msgs.reject = gs.getMessage("Justifique sua resposta negativa");
-    data.msgs.cancel = gs.getMessage("Justifique o cancelamento");
+	data.msgs = {};
+	data.msgs.reject = gs.getMessage("Justifique sua resposta negativa");
+	data.msgs.cancel = gs.getMessage("Justifique o cancelamento");
 
-    data.statusFlow = [];
-    var statusFlow = gs
-        .getProperty("gservice_list_filters_status_csc")
-        .split("|");
-    for (var i in statusFlow) {
-        statusFlow[i].number = i + 1;
-        statusFlow[i].selected = false;
-        data.statusFlow.push(JSON.parse(statusFlow[i]));
-    }
+	data.statusFlow = [];
+	var statusFlow = gs
+	.getProperty("gservice_list_filters_status_csc")
+	.split("|");
+	for (var i in statusFlow) {
+		statusFlow[i].number = i + 1;
+		statusFlow[i].selected = false;
+		data.statusFlow.push(JSON.parse(statusFlow[i]));
+	}
 
-    data.reopeningReason = [];
+	data.reopeningReason = [];
 
-    var grReopening = new GlideRecord("sys_choice");
-    grReopening.addEncodedQuery(
-        "nameSTARTSWITHsc_req_item^elementSTARTSWITHu_reopening_reason^language=pb"
-    );
-    grReopening.query();
-    while (grReopening.next()) {
-        data.reopeningReason.push({
-            label: grReopening.getDisplayValue("label"),
-            value: grReopening.getDisplayValue("value"),
-            selected: false,
-        });
-    }
+	var grReopening = new GlideRecord("sys_choice");
+	grReopening.addEncodedQuery(
+		"nameSTARTSWITHsc_req_item^elementSTARTSWITHu_reopening_reason^language=pb"
+	);
+	grReopening.query();
+	while (grReopening.next()) {
+		data.reopeningReason.push({
+			label: grReopening.getDisplayValue("label"),
+			value: grReopening.getDisplayValue("value"),
+			selected: false,
+		});
+	}
 
-    //Used to get the current user sys_id
-    var userID = gs.getUser().getID();
-    data.user_id = userID;
+	//Used to get the current user sys_id
+	var userID = gs.getUser().getID();
+	data.user_id = userID;
 
-    data.filter = false;
-    //Get the columns (from property) to show upside the requests
-    data.columns = [];
-    data.order = "opened_at";
-    data.direction = -1;
-    if (!localInput) {
-        var sc_catalog_item_options = {
-            show_add_cart_button: "true",
-            show_field_validation_messages: "false",
-            show_add_to_wishlist_button: "false",
-            display_cart_on_right: "false",
-            show_less_description: "false",
-            hide_delivery_time: "false",
-            category_color: "",
-            category_bg_color: "",
-            category_bd_color: "",
-            category_submit_img: "",
-            broadcast_name: "editItem",
-        };
+	data.filter = false;
+	//Get the columns (from property) to show upside the requests
+	data.columns = [];
+	data.order = "opened_at";
+	data.direction = -1;
+	if (!localInput) {
+		var sc_catalog_item_options = {
+			show_add_cart_button: "true",
+			show_field_validation_messages: "false",
+			show_add_to_wishlist_button: "false",
+			display_cart_on_right: "false",
+			show_less_description: "false",
+			hide_delivery_time: "false",
+			category_color: "",
+			category_bg_color: "",
+			category_bd_color: "",
+			category_submit_img: "",
+			broadcast_name: "editItem",
+		};
 
-        data.gserviceCatalogItem = $sp.getWidget(
-            "gservice_catalog_item_edit_csc",
-            sc_catalog_item_options
-        );
+		data.gserviceCatalogItem = $sp.getWidget(
+			"gservice_catalog_item_edit_csc",
+			sc_catalog_item_options
+		);
 
-        data.listFilter_widget = $sp.getWidget("gservice_list_filter_csc");
-        prepareDefaultList(true);
-    } else {
-        switch (localInput.action) {
-            case "applyFilter":
-                preparePages();
-                data.order = "opened_at";
-                data.direction = -1;
-                data.typeFilter = localInput.typeFilter;
-                data.statusFilter = localInput.statusFilter;
-                data.query = portalUtils.mountQuery(
-                    data.typeFilter,
-                    null,
-                    data.statusFilter,
-                    "",
-                    ""
-                );
-                var requests = portalUtils.getGuideRequests(
-                    data.order,
-                    data.direction,
-                    data.query,
-                    data.window_start,
-                    data.window_end
-                );
-                data.requests = requests.items;
-                data.guideTotal = requests.total;
-                prepareColumns();
-                prepareRecordWatch();
-                break;
+		data.listFilter_widget = $sp.getWidget("gservice_list_filter_csc");
+		prepareDefaultList(true);
+	} else {
+		switch (localInput.action) {
+			case "applyFilter":
+				preparePages();
+				data.order = "opened_at";
+				data.direction = -1;
+				data.typeFilter = localInput.typeFilter;
+				data.statusFilter = localInput.statusFilter;
+				data.query = portalUtils.mountQuery(
+					data.typeFilter,
+					null,
+					data.statusFilter,
+					"",
+					""
+				);
+				var requests = portalUtils.getGuideRequests(
+					data.order,
+					data.direction,
+					data.query,
+					data.window_start,
+					data.window_end
+				);
+				data.requests = requests.items;
+				data.guideTotal = requests.total;
+				prepareColumns();
+				prepareRecordWatch();
+				break;
 
-            case "changeItemState":
-                var comment = localInput.comment ? localInput.comment : false;
-                data.item = portalUtils.changeItemState(
-                    localInput.item,
-                    localInput.state,
-                    comment,
-                    localInput.reopeningReason
-                );
-                if (localInput.state == "acceptSolution") {
-                    var surveyUtils = new global.OCLPortalSurveyUtils();
-                    var survey_id = surveyUtils.createSurvey(
-                        "6f71cfca1b3ed01094962170f54bcb40",
-                        localInput.item.sys_id
-                    );
-                    data.show_survey = true;
-                    var survey_options = {
-                        survey_id: survey_id
-                    };
-                    data.gserviceSurveyCSC = $sp.getWidget(
-                        "gservice_survey_csc",
-                        survey_options
-                    );
-                }
-                break;
-            case "stateChangedBackend":
-                var state = localInput.newState;
-                var itemID = localInput.itemID;
-                data.requests = localInput.requests;
-                data.guideTotal = localInput.requests.total;
+			case "changeItemState":
+				var comment = localInput.comment ? localInput.comment : false;
+				data.item = portalUtils.changeItemState(
+					localInput.item,
+					localInput.state,
+					comment,
+					localInput.reopeningReason
+				);
+				if (localInput.state == "acceptSolution") {
+					var surveyUtils = new global.OCLPortalSurveyUtils();
+					var survey_id = surveyUtils.createSurvey(
+						"6f71cfca1b3ed01094962170f54bcb40",
+						localInput.item.sys_id
+					);
+					data.show_survey = true;
+					var survey_options = {
+						survey_id: survey_id
+					};
+					data.gserviceSurveyCSC = $sp.getWidget(
+						"gservice_survey_csc",
+						survey_options
+					);
+				}
+				break;
+			case "stateChangedBackend":
+				var state = localInput.newState;
+				var itemID = localInput.itemID;
+				data.requests = localInput.requests;
+				data.guideTotal = localInput.requests.total;
 				var grItem;
-                for (var r in data.requests) {
-                    for (i in data.requests[r].items) {
-                        if (data.requests[r].items[i].sys_id == itemID) {
-                            grItem = new GlideRecord(data.requests[r].items[i].table);
-                            grItem.get(data.requests[r].items[i].sys_id);
-                            data.requests[r].items[i].stage = grItem.getValue("stage");
-                            data.requests[r].items[i].statusValue = state.value;
-                            /*if(state.value == "-5" || state.value == "3"){
+				for (var r in data.requests) {
+					for (i in data.requests[r].items) {
+						if (data.requests[r].items[i].sys_id == itemID) {
+							grItem = new GlideRecord(data.requests[r].items[i].table);
+							grItem.get(data.requests[r].items[i].sys_id);
+							data.requests[r].items[i].stage = grItem.getValue("stage");
+							data.requests[r].items[i].statusValue = state.value;
+							/*if(state.value == "-5" || state.value == "3"){
                             	var objHold = portalUtils.getHoldReason(data.requests[i].table, data.requests[i].sys_id);
                             	data.requests[i].hold_reason = objHold.hold_reason;
                             	data.requests[i].forecast = objHold.forecast;
                             }*/
-                            data.requests[r].items[i].statusLabel = state.display_value;
-                            data.requests[r].items[i] = portalUtils.verifyButtons(data.requests[r].items[i]);
-                            data.requests[r].items[i].colorClass = portalUtils.getColorClass(
-                                data.requests[r].items[i].statusValue,
-                                data.requests[r].items[i].table
-                            );
-                            data.requests[r].items[i].processFlow = portalUtils.getProcessFlow(
-                                data.requests[r].items[i].table,
-                                data.requests[r].items[i].stage
-                            );
-                        }
-                    }
+							data.requests[r].items[i].statusLabel = state.display_value;
+							data.requests[r].items[i] = portalUtils.verifyButtons(data.requests[r].items[i]);
+							data.requests[r].items[i].colorClass = portalUtils.getColorClass(
+								data.requests[r].items[i].statusValue,
+								data.requests[r].items[i].table
+							);
+							data.requests[r].items[i].processFlow = portalUtils.getProcessFlow(
+								data.requests[r].items[i].table,
+								data.requests[r].items[i].stage
+							);
+						}
+					}
 					if(data.requests[r].items.length == 0){
 						if (data.requests[r].sys_id == itemID) {
-                            grItem = new GlideRecord(data.requests[r].table);
-                            grItem.get(data.requests[r].sys_id);
-                            data.requests[r].stage = grItem.getValue("stage");
-                            data.requests[r].statusValue = state.value;
-                            /*if(state.value == "-5" || state.value == "3"){
+							grItem = new GlideRecord(data.requests[r].table);
+							grItem.get(data.requests[r].sys_id);
+							data.requests[r].stage = grItem.getValue("stage");
+							data.requests[r].statusValue = state.value;
+							/*if(state.value == "-5" || state.value == "3"){
                             	var objHold = portalUtils.getHoldReason(data.requests[i].table, data.requests[i].sys_id);
                             	data.requests[i].hold_reason = objHold.hold_reason;
                             	data.requests[i].forecast = objHold.forecast;
                             }*/
-                            data.requests[r].statusLabel = state.display_value;
-                            data.requests[r] = portalUtils.verifyButtons(data.requests[r]);
-                            data.requests[r].colorClass = portalUtils.getColorClass(
-                                data.requests[r].statusValue,
-                                data.requests[r].table
-                            );
-                            data.requests[r].processFlow = portalUtils.getProcessFlow(
-                                data.requests[r].table,
-                                data.requests[r].stage
-                            );
-                        }
+							data.requests[r].statusLabel = state.display_value;
+							data.requests[r] = portalUtils.verifyButtons(data.requests[r]);
+							data.requests[r].colorClass = portalUtils.getColorClass(
+								data.requests[r].statusValue,
+								data.requests[r].table
+							);
+							data.requests[r].processFlow = portalUtils.getProcessFlow(
+								data.requests[r].table,
+								data.requests[r].stage
+							);
+						}
 					}
-                }
-                break;
+				}
+				break;
 
-            case "ritmStateChangedBackend":
-                var state = localInput.newState;
-                var itemID = localInput.itemID;
-                data.newItem = localInput.requests;
-                for (i in data.newItem) {
-                    if (data.newItem[i].table == "sc_request") {
-                        for (var j in data.newItem[i].ritms) {
-                            if (data.newItem[i].ritms[j].sys_id == itemID) {
-                                data.newItem[i].ritms[j].state = state.display_value;
-                                data.newItem[i].ritms[j].colorClass = portalUtils.getColorClass(
-                                    state.value,
-                                    "sc_req_item"
-                                );
-                            }
-                        }
-                    }
-                }
-                data.requests = data.newItem;
+			case "ritmStateChangedBackend":
+				var state = localInput.newState;
+				var itemID = localInput.itemID;
+				data.newItem = localInput.requests;
+				for (i in data.newItem) {
+					if (data.newItem[i].table == "sc_request") {
+						for (var j in data.newItem[i].ritms) {
+							if (data.newItem[i].ritms[j].sys_id == itemID) {
+								data.newItem[i].ritms[j].state = state.display_value;
+								data.newItem[i].ritms[j].colorClass = portalUtils.getColorClass(
+									state.value,
+									"sc_req_item"
+								);
+							}
+						}
+					}
+				}
+				data.requests = data.newItem;
 				data.guideTotal = localInput.requests.total; // data.guideTotal = requests.total;
-                break;
+				break;
 
-            case "applyDate":
-                preparePages();
-                data.order = "opened_at";
-                data.direction = -1;
-                data.dateFilter = localInput.dateFilter;
-                data.typeFilter = localInput.typeFilter;
-                data.statusFilter = localInput.statusFilter;
-                data.query = portalUtils.mountQuery(
-                    data.typeFilter,
-                    data.order,
-                    data.statusFilter,
-                    data.dateFilter,
-                    ""
-                );
-                var requests = portalUtils.getGuideRequests(
-                    data.order,
-                    data.direction,
-                    data.query,
-                    data.window_start,
-                    data.window_end
-                );
-				
-                data.requests = requests.items;
-                data.guideTotal = requests.total;
-                prepareColumns();
-                prepareRecordWatch();
-                break;
-                // case "getTicketConversationWidget":
-                // 	gs.info("called getTicketConversationWidget");
-                // 	var hide_new_comments = false;
-                // 	var state = localInput.item.statusValue;
-                // 	if (state == "5" || state == "7" || state == "8" || state == "9") {
-                // 		hide_new_comments = true;
-                // 	}
-                // 	var gservice_ticket_conversation_options = {
-                // 		table: localInput.item.table,
-                // 		sys_id: localInput.item.sys_id,
-                // 		item_status: localInput.item.colorClass,
-                // 		hide_new_comments: hide_new_comments,
-                // 		send_image: "GService_SS_TV.png",
-                // 		comment_image: "GS_Resposta_Roxo.png",
-                // 		color_class: "color_category2",
-                // 		bd_color_class: "bdcolor_category2",
-                // 	};
-                // 	data.ticketConversationWidget = $sp.getWidget(
-                // 		"gservice_custom_conversation",
-                // 		gservice_ticket_conversation_options
-                // 	);
-                // 	gs.info(
-                // 		"~ file: GService My Dashboard Requests CSC.server_script.js ~ line 231 ~ data.ticketConversationWidget " +
-                // 			data.ticketConversationWidget
-                // 	);
-
-                break;
-
-            case "orderBy":
-                preparePages();
-                data.order = localInput.order;
-                data.columns = localInput.columns;
-                prepareOrderBy();
-
-                data.query = localInput.query;
-                var requests = portalUtils.getGuideRequests(
-                    data.order,
-                    data.direction,
-                    data.query,
-                    data.window_start,
-                    data.window_end
-                );
-                data.requests = requests.items;
-                data.guideTotal = requests.total;
-                prepareRecordWatch();
-                break;
-            case "searchResult":
-                data.searchTerm = localInput.searchTerm;
+			case "applyDate":
+				preparePages();
 				data.order = "opened_at";
-                data.dateFilter = localInput.dateFilter;
-                data.typeFilter = localInput.typeFilter;
-                data.statusFilter = localInput.statusFilter;
-                prepareColumns();
-				data.query = portalUtils.mountQuery(      
-                    data.typeFilter,
-                    data.order,
-                    data.statusFilter,
-                    "", 
-                    data.searchTerm);
-                preparePages();
-                var requests = portalUtils.getGuideRequests(
+				data.direction = -1;
+				data.dateFilter = localInput.dateFilter;
+				data.typeFilter = localInput.typeFilter;
+				data.statusFilter = localInput.statusFilter;
+				data.query = portalUtils.mountQuery(
+					data.typeFilter,
 					data.order,
-                    data.direction,
-                    data.query,
-                    data.window_start,
-                    data.window_end
-                );
-                data.requests = requests.items;
-                data.guideTotal = requests.total;
-                preparePages();
-                prepareRecordWatch();
-                break;
-            case "changePage":
-                //
-                data.items_per_page = localInput.items_per_page;
-                data.actualPage = localInput.actualPage;
-                data.window_start = localInput.window_start;
-                data.window_end = localInput.window_end;
-                //
-                data.query = localInput.query;
-                data.columns = localInput.columns;
-                data.order = localInput.order;
-                data.direction = localInput.direction;
-                var requests = portalUtils.getGuideRequests(
-                    data.order,
-                    data.direction,
-                    data.query,
-                    data.window_start,
-                    data.window_end
-                );
-                data.requests = requests.items;
-                data.guideTotal = requests.total;
-                prepareRecordWatch();
-                break;
-            case "applyDate":
-                preparePages();
-                data.order = localInput.dateOrder;
-                data.direction = -1;
-                data.dateFilter = localInput.dateFilter;
-                console.log("data.dateFilter =" + data.dateFilter);
-                data.typeFilter = localInput.typeFilter;
-                data.statusFilter = localInput.statusFilter;
-                data.query = portalUtils.mountQuery(
-                    data.typeFilter,
-                    data.order,
-                    data.statusFilter,
-                    data.dateFilter,
-                    ""
-                );
-                var requests = portalUtils.getGuideRequests(
-                    data.order,
-                    data.direction,
-                    data.query,
-                    data.window_start,
-                    data.window_end
-                );
-                data.requests = requests.items;
-                data.guideTotal = requests.total;
-                prepareColumns();
-                prepareRecordWatch();
-                break;
-            case "sendDate":
-                preparePages();
-                data.order = localInput.dateOrder;
-                data.direction = -1;
-                data.dateFormated = localInput.dateFormated;
-                data.typeFilter = localInput.typeFilter;
-                data.statusFilter = localInput.statusFilter;
-                data.query = portalUtils.mountQuery(
-                    data.typeFilter,
-                    data.order,
-                    data.statusFilter,
-                    data.dateFormated,
-                    ""
-                );
-                var requests = portalUtils.getGuideRequests(
-                    data.order,
-                    data.direction,
-                    data.query,
-                    data.window_start,
-                    data.window_end
-                );
-                data.requests = requests.items;
-                data.guideTotal = requests.total;
-                prepareColumns();
-                prepareRecordWatch();
-                break;
-            case "applyDefaultFilter":
-                prepareDefaultList();
-                break;
-            case "selectRequest":
-                prepareDefaultList("", localInput.item_id);
-                break;
-            case "openRITM":
-                var ritm = localInput.ritm;
-                var gservice_record_details_options = {
-                    table: ritm.table,
-                    sys_id: ritm.sys_id,
-                };
-                data.recordDetailsWidget = $sp.getWidget(
-                    "gservice_record_details",
-                    gservice_record_details_options
-                );
-                break;
-            case "getVsetFields":
-                data.fields = getVsetFields(localInput.vsets, localInput.exceptions);
-                break;
-            case "getHoursLeftRequest":
-                {
-                    var x = portalUtils.getHoursLeftRequest(localInput.recordSysID);
-                    data.hoursLeftRequest = x;
-                    break;
-                }
-        }
-    }
+					data.statusFilter,
+					data.dateFilter,
+					""
+				);
+				var requests = portalUtils.getGuideRequests(
+					data.order,
+					data.direction,
+					data.query,
+					data.window_start,
+					data.window_end
+				);
 
-    function getVsetFields(vsets, exceptions) {
-        var variableUtils = new x_gmeps_itsm_servi.VariableUtil();
-        var fields = variableUtils.getVsetFields(vsets, exceptions);
-        return fields;
-    }
+				data.requests = requests.items;
+				data.guideTotal = requests.total;
+				prepareColumns();
+				prepareRecordWatch();
+				break;
+				// case "getTicketConversationWidget":
+				// 	gs.info("called getTicketConversationWidget");
+				// 	var hide_new_comments = false;
+				// 	var state = localInput.item.statusValue;
+				// 	if (state == "5" || state == "7" || state == "8" || state == "9") {
+				// 		hide_new_comments = true;
+				// 	}
+				// 	var gservice_ticket_conversation_options = {
+				// 		table: localInput.item.table,
+				// 		sys_id: localInput.item.sys_id,
+				// 		item_status: localInput.item.colorClass,
+				// 		hide_new_comments: hide_new_comments,
+				// 		send_image: "GService_SS_TV.png",
+				// 		comment_image: "GS_Resposta_Roxo.png",
+				// 		color_class: "color_category2",
+				// 		bd_color_class: "bdcolor_category2",
+				// 	};
+				// 	data.ticketConversationWidget = $sp.getWidget(
+				// 		"gservice_custom_conversation",
+				// 		gservice_ticket_conversation_options
+				// 	);
+				// 	gs.info(
+				// 		"~ file: GService My Dashboard Requests CSC.server_script.js ~ line 231 ~ data.ticketConversationWidget " +
+				// 			data.ticketConversationWidget
+				// 	);
 
-    function prepareDefaultList(first_load, item_id) {
-        preparePages();
-        prepareColumns();
-        data.statusFilter = [];
-        var statusFilter = gs
-            .getProperty("gservice_list_filters_status_csc")
-            .split("|");
-        for (var i in statusFilter) {
-            data.statusFilter.push(JSON.parse(statusFilter[i]));
-        }
-        if (first_load) {
-            data.first_load = true;
-            data.urlItem = $sp.getParameter("item_id_csc");
-            if (data.urlItem) {
-                data.showContent = true;
-                data.showConversation = true;
-                var request_for = "";
-                var grTask = new GlideRecord("task");
-                grTask.get(data.urlItem);
-                if (grTask.getValue("sys_class_name") == "sc_req_item") {
-                    var grRitm = new GlideRecord("sc_req_item");
-                    grRitm.get(data.urlItem);
-                    request_for = grRitm.request.requested_for;
-                }
-                var watchList = "";
+				break;
 
-                if (grTask.getValue("watch_list")) {
-                    watchList = grTask.getValue("watch_list");
-                }
+			case "orderBy":
+				preparePages();
+				data.order = localInput.order;
+				data.columns = localInput.columns;
+				prepareOrderBy();
 
-                if (
-                    data.user_id == grTask.getValue("opened_by") ||
-                    data.user_id == request_for ||
-                    watchList.includes(data.user_id)
-                ) {
-					
-                    data.query = portalUtils.mountQuery(
-                        "",
-                        "",
-                        data.statusFilter,
-                        "",
-                        null,
-                        data.urlItem
-                    );
-                } else {
-                    data.showFilterClean = true;
-                    data.query = portalUtils.mountQuery("", "", data.statusFilter);
-                }
-            } else {
-                data.query = portalUtils.mountQuery("", "", data.statusFilter);
-            }
-        } else if (item_id) {
-            data.query = portalUtils.mountQuery(
-                "",
+				data.query = localInput.query;
+				var requests = portalUtils.getGuideRequests(
+					data.order,
+					data.direction,
+					data.query,
+					data.window_start,
+					data.window_end
+				);
+				data.requests = requests.items;
+				data.guideTotal = requests.total;
+				prepareRecordWatch();
+				break;
+			case "searchResult":
+				data.searchTerm = localInput.searchTerm;
+				data.order = "opened_at";
+				data.dateFilter = localInput.dateFilter;
+				data.typeFilter = localInput.typeFilter;
+				data.statusFilter = localInput.statusFilter;
+				prepareColumns();
+				data.query = portalUtils.mountQuery(      
+					data.typeFilter,
+					data.order,
+					data.statusFilter,
+					"", 
+					data.searchTerm);
+				preparePages();
+				var requests = portalUtils.getGuideRequests(
+					data.order,
+					data.direction,
+					data.query,
+					data.window_start,
+					data.window_end
+				);
+				data.requests = requests.items;
+				data.guideTotal = requests.total;
+				preparePages();
+				prepareRecordWatch();
+				break;
+			case "changePage":
+				//
+				data.items_per_page = localInput.items_per_page;
+				data.actualPage = localInput.actualPage;
+				data.window_start = localInput.window_start;
+				data.window_end = localInput.window_end;
+				//
+				data.query = localInput.query;
+				data.columns = localInput.columns;
+				data.order = localInput.order;
+				data.direction = localInput.direction;
+				var requests = portalUtils.getGuideRequests(
+					data.order,
+					data.direction,
+					data.query,
+					data.window_start,
+					data.window_end
+				);
+				data.requests = requests.items;
+				data.guideTotal = requests.total;
+				prepareRecordWatch();
+				break;
+			case "applyDate":
+				preparePages();
+				data.order = localInput.dateOrder;
+				data.direction = -1;
+				data.dateFilter = localInput.dateFilter;
+				console.log("data.dateFilter =" + data.dateFilter);
+				data.typeFilter = localInput.typeFilter;
+				data.statusFilter = localInput.statusFilter;
+				data.query = portalUtils.mountQuery(
+					data.typeFilter,
+					data.order,
+					data.statusFilter,
+					data.dateFilter,
+					""
+				);
+				var requests = portalUtils.getGuideRequests(
+					data.order,
+					data.direction,
+					data.query,
+					data.window_start,
+					data.window_end
+				);
+				data.requests = requests.items;
+				data.guideTotal = requests.total;
+				prepareColumns();
+				prepareRecordWatch();
+				break;
+			case "sendDate":
+				preparePages();
+				data.order = localInput.dateOrder;
+				data.direction = -1;
+				data.dateFormated = localInput.dateFormated;
+				data.typeFilter = localInput.typeFilter;
+				data.statusFilter = localInput.statusFilter;
+				data.query = portalUtils.mountQuery(
+					data.typeFilter,
+					data.order,
+					data.statusFilter,
+					data.dateFormated,
+					""
+				);
+				var requests = portalUtils.getGuideRequests(
+					data.order,
+					data.direction,
+					data.query,
+					data.window_start,
+					data.window_end
+				);
+				data.requests = requests.items;
+				data.guideTotal = requests.total;
+				prepareColumns();
+				prepareRecordWatch();
+				break;
+			case "applyDefaultFilter":
+				prepareDefaultList();
+				break;
+			case "selectRequest":
+				prepareDefaultList("", localInput.item_id);
+				break;
+			case "openRITM":
+				var ritm = localInput.ritm;
+				var gservice_record_details_options = {
+					table: ritm.table,
+					sys_id: ritm.sys_id,
+				};
+				data.recordDetailsWidget = $sp.getWidget(
+					"gservice_record_details",
+					gservice_record_details_options
+				);
+				break;
+			case "getVsetFields":
+				data.fields = getVsetFields(localInput.vsets, localInput.exceptions);
+				break;
+			case "getHoursLeftRequest":
+				{
+					var x = portalUtils.getHoursLeftRequest(localInput.recordSysID);
+					data.hoursLeftRequest = x;
+					break;
+				}
+		}
+	}
+
+	function getVsetFields(vsets, exceptions) {
+		var variableUtils = new x_gmeps_itsm_servi.VariableUtil();
+		var fields = variableUtils.getVsetFields(vsets, exceptions);
+		return fields;
+	}
+
+	function prepareDefaultList(first_load, item_id) {
+		preparePages();
+		prepareColumns();
+		data.statusFilter = [];
+		var statusFilter = gs
+		.getProperty("gservice_list_filters_status_csc")
+		.split("|");
+		for (var i in statusFilter) {
+			data.statusFilter.push(JSON.parse(statusFilter[i]));
+		}
+		if (first_load) {
+			data.first_load = true;
+			data.urlItem = $sp.getParameter("item_id_csc");
+			if (data.urlItem) {
+				data.showContent = true;
+				data.showConversation = true;
+				var request_for = "";
+				var grTask = new GlideRecord("task");
+				grTask.get(data.urlItem);
+				if (grTask.getValue("sys_class_name") == "sc_req_item") {
+					var grRitm = new GlideRecord("sc_req_item");
+					grRitm.get(data.urlItem);
+					request_for = grRitm.request.requested_for;
+				}
+				var watchList = "";
+
+				if (grTask.getValue("watch_list")) {
+					watchList = grTask.getValue("watch_list");
+				}
+
+				if (
+					data.user_id == grTask.getValue("opened_by") ||
+					data.user_id == request_for ||
+					watchList.includes(data.user_id)
+				) {
+
+					data.query = portalUtils.mountQuery(
+						"",
+						"",
+						data.statusFilter,
+						"",
+						null,
+						data.urlItem
+					);
+				} else {
+					data.showFilterClean = true;
+					data.query = portalUtils.mountQuery("", "", data.statusFilter);
+				}
+			} else {
+				data.query = portalUtils.mountQuery("", "", data.statusFilter);
+			}
+		} else if (item_id) {
+			data.query = portalUtils.mountQuery(
 				"",
-                data.statusFilter,
-                "",
-                null,
-                item_id
-            );
-        } else {
-            data.query = portalUtils.mountQuery("", "", data.statusFilter);
-        }
-        var requests;
-        if (data.urlItem && first_load) {
-            requests = portalUtils.getGuideRequests(
-                "opened_at",
-                "-1",
-                data.query,
-                data.window_start,
-                data.window_end,
-                data.urlItem
-            );
-        } else {
-            requests = portalUtils.getGuideRequests(
-                "opened_at",
-                "-1",
-                data.query,
-                data.window_start,
-                data.window_end
-            );
-        }
+				"",
+				data.statusFilter,
+				"",
+				null,
+				item_id
+			);
+		} else {
+			data.query = portalUtils.mountQuery("", "", data.statusFilter);
+		}
+		var requests;
+		if (data.urlItem && first_load) {
+			requests = portalUtils.getGuideRequests(
+				"opened_at",
+				"-1",
+				data.query,
+				data.window_start,
+				data.window_end,
+				data.urlItem
+			);
+		} else {
+			requests = portalUtils.getGuideRequests(
+				"opened_at",
+				"-1",
+				data.query,
+				data.window_start,
+				data.window_end
+			);
+		}
 
-        if (data.urlItem && first_load) {
-            requests.items[0].showDetails = true;
-            var item = requests.items[0];
-            var hide_new_comments = false;
-            var state = item.statusValue;
-            if (state == "5" || state == "7" || state == "8" || state == "9") {
-                hide_new_comments = true;
-            }
-            var gservice_ticket_conversation_options = {
-                table: item.table,
-                sys_id: item.sys_id,
-                item_status: item.colorClass,
-                hide_new_comments: hide_new_comments,
-                send_image: "GService_SS_TV.png",
-                comment_image: "GS_Resposta_Roxo.png",
-                color_class: "color_category2",
-                bd_color_class: "bdcolor_category2",
-            };
-            data.ticketConversationWidget = $sp.getWidget(
-                "gservice_custom_conversation",
-                gservice_ticket_conversation_options
-            );
-            // 			gs.addInfoMessage(data.ticketConversationWidget);
+		if (data.urlItem && first_load) {
+			requests.items[0].showDetails = true;
+			var item = requests.items[0];
+			var hide_new_comments = false;
+			var state = item.statusValue;
+			if (state == "5" || state == "7" || state == "8" || state == "9") {
+				hide_new_comments = true;
+			}
+			var gservice_ticket_conversation_options = {
+				table: item.table,
+				sys_id: item.sys_id,
+				item_status: item.colorClass,
+				hide_new_comments: hide_new_comments,
+				send_image: "GService_SS_TV.png",
+				comment_image: "GS_Resposta_Roxo.png",
+				color_class: "color_category2",
+				bd_color_class: "bdcolor_category2",
+			};
+			data.ticketConversationWidget = $sp.getWidget(
+				"gservice_custom_conversation",
+				gservice_ticket_conversation_options
+			);
+			// 			gs.addInfoMessage(data.ticketConversationWidget);
 
-        }
-        data.requests = requests.items;
-        data.guideTotal = requests.total;
-        if (data.requests.length == 0) {
-            data.showEmptyMessage = true;
-        }
-        prepareRecordWatch();
-    }
+		}
+		data.requests = requests.items;
+		data.guideTotal = requests.total;
+		if (data.requests.length == 0) {
+			data.showEmptyMessage = true;
+		}
+		prepareRecordWatch();
+	}
 
-    function prepareRecordWatch() {
-        data.actualPageCount = data.actualPage + 1;
-        data.actualItemsCount = data.items_per_page * data.actualPageCount;
-        data.requestsID = "sys_idIN";
-        var reqIDs = [];
-        for (var i in data.requests) {
-            reqIDs.push(data.requests[i].sys_id);
-        }
-        data.requestsID += reqIDs.join();
-        data.totalItems = data.guideTotal; //portalUtils.getTotalRequests(data.query);
-        data.actualItemsCount = data.items_per_page * data.actualPageCount;
-        if (data.actualItemsCount > data.totalItems) {
-            data.actualItemsCount = data.totalItems;
-        }
-    }
+	function prepareRecordWatch() {
+		data.actualPageCount = data.actualPage + 1;
+		data.actualItemsCount = data.items_per_page * data.actualPageCount;
+		data.requestsID = "sys_idIN";
+		var reqIDs = [];
+		for (var i in data.requests) {
+			reqIDs.push(data.requests[i].sys_id);
+		}
+		data.requestsID += reqIDs.join();
+		data.totalItems = data.guideTotal; //portalUtils.getTotalRequests(data.query);
+		data.actualItemsCount = data.items_per_page * data.actualPageCount;
+		if (data.actualItemsCount > data.totalItems) {
+			data.actualItemsCount = data.totalItems;
+		}
+	}
 
-    function preparePages() {
-        data.items_per_page = 6;
-        data.actualPage = 0;
+	function preparePages() {
+		data.items_per_page = 6;
+		data.actualPage = 0;
 
-        data.window_start = 0;
-        data.window_end = 6;
-    }
+		data.window_start = 0;
+		data.window_end = 6;
+	}
 
-    function prepareColumns() {
-        //You need to select the columns name on the property
-        //Using checkout as a test, but it`ll change to a dinamic way when you call the widget you send the option
-        var columns_property = gs.getProperty("gservice_dashboard_columns");
+	function prepareColumns() {
+		//You need to select the columns name on the property
+		//Using checkout as a test, but it`ll change to a dinamic way when you call the widget you send the option
+		var columns_property = gs.getProperty("gservice_dashboard_columns");
 
-        var parse = JSON.parse(columns_property);
-        var columns = parse["requestsTab"].columns;
+		var parse = JSON.parse(columns_property);
+		var columns = parse["requestsTab"].columns;
 
-        data.columns = columns;
-        for (i in columns) {
-            data.columns[i].name = gs.getMessage(columns[i].name);
-        }
-    }
+		data.columns = columns;
+		for (i in columns) {
+			data.columns[i].name = gs.getMessage(columns[i].name);
+		}
+	}
 
-    function prepareOrderBy() {
-        for (i in data.columns) {
-            if (data.order == data.columns[i].order) {
-                data.columns[i].direction = !data.columns[i].direction ?
-                    -1 :
-                    -data.columns[i].direction;
-                data.direction = data.columns[i].direction;
-            } else {
-                data.columns[i].direction = false;
-            }
-        }
-    }
+	function prepareOrderBy() {
+		for (i in data.columns) {
+			if (data.order == data.columns[i].order) {
+				data.columns[i].direction = !data.columns[i].direction ?
+					-1 :
+					-data.columns[i].direction;
+				data.direction = data.columns[i].direction;
+			} else {
+				data.columns[i].direction = false;
+			}
+		}
+	}
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>gabriel.casagrande</sys_created_by>
         <sys_created_on>2021-10-20 13:42:29</sys_created_on>
         <sys_id>bb2403b9db1bf8501c0d0fbca3961906</sys_id>
-        <sys_mod_count>188</sys_mod_count>
+        <sys_mod_count>196</sys_mod_count>
         <sys_name>GService My Dashboard Requests CSC v2</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_bb2403b9db1bf8501c0d0fbca3961906</sys_update_name>
-        <sys_updated_by>accenture.jonatas</sys_updated_by>
-        <sys_updated_on>2022-04-20 05:14:23</sys_updated_on>
+        <sys_updated_by>ricsan</sys_updated_by>
+        <sys_updated_on>2022-05-31 20:20:07</sys_updated_on>
         <template><![CDATA[<div class="content_request">
-    <div class="title_category" ng-click="c.openContent()">
-        ${Solicitações de Finanças, Jurídico e Infraestrutura}
-        <span><img src="GService_Seta_PTV.png" ng-class="c.contentOpened ? '' : 'invert-arrow'" /></span>
-    </div>
-    <div class="content_body_mask">
-        <div class="content_body_req_csc">
-            <div class="col-md-12 filter-padding">
-                <sp-widget widget="data.listFilter_widget"></sp-widget>
-            </div>
-            <div ng-if="data.showFilterClean" class="without_notification">
-                ${Ops! Não encontramos resultados para essa busca.}
-            </div>
-            <div ng-if="!data.showFilterClean" class="content_my_requests">
-                <div>
-                    <table class="table table-hover b-t table-condensed cart-table">
-                        <div class="center-loading">
-                            <div class="col-md-12" ng-show="c.isLoading">
-                                <div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                            </div>
-                        </div>
-                        <thead ng-show="!c.isLoading" class="thead_myrequests" id="list-columns-csc">
-                            <tr>
-                                <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
-                                    <div ng-click="c.orderBy(column.order, data.requests)">
-                                        {{column.name}}
-                                        <span ng-if="column.order">
-                                            <span ng-if="!column.direction"></span>
-                                            <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''" } /></span>
-                                        </span>
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="items-content-csc-guide" ng-show="!c.isLoading" ng-repeat="guide in data.requests">
-                            <tr ng-if="guide.items.length == 0">
-                                <td colspan="{{data.columns.length}}">
-                                    <table class="table b-t table-condensed cart-table">
-                                        <tbody id="items-content-csc">
-                                            <tr class="item-row" id="items-content-csc-row{{$index}}">
-                                                <td data-th="Product" class="column_product">
-                                                    <div>
-                                                        <div>
-                                                            <div class="number_text_parent">
-                                                                <div ng-if="guide.diligence_result" class="create_circle circle_{{guide.diligence_result}}"></div>
-                                                                <div class="number_text">#{{guide.number}}</div>
-                                                            </div>
-                                                            <div class="item_text">{{guide.title}}</div>
-                                                            <div ng-if="guide.watch" class="follow_up_properties">
-                                                                {{guide.watch}}
-                                                                <span ng-if="guide.watchTooltip" class="tooltip tooltip_bottom">
-                                                                    <div class="tooltip_arrow arrow_top"></div>
-                                                                    <div class="tooltip_text">{{guide.watchTooltip}}</div>
-                                                                </span>
-                                                            </div>
-                                                            <div class="more_detail" ng-if="!guide.showDetails" ng-click="c.showDetails(guide)">
-                                                                ${GService Details}
-                                                            </div>
-                                                          	<div class="more_detail" ng-if="guide.showDetails" ng-click="c.showDetails(guide)">
-                                                                ${GService Less Details}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="column_status">
-                                                    <div class="">
-                                                        <div>
-                                                            <div class="service_title {{guide.colorClass}}">
-                                                                {{guide.statusLabel}}
-                                                                <span class="tooltip tooltip_bottom" ng-if="guide.hold_reason">
-                                                                    <div class="tooltip_arrow arrow_top"></div>
-                                                                    <div class="tooltip_text">{{guide.hold_reason}}</div>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="column_opened">
-                                                    <div class="item_opened">{{guide.opened}}</div>
-                                                </td>
-                                                <td class="column_sla">
-                                                    <p class="sla_description" ng-if="guide.forecast">
-                                                        {{guide.forecast}}
-                                                    </p>
-                                                </td>
-                                                <td class="column_buttons">
-                                                    <div class="disable_buttons" ng-show="c.disableAction"></div>
-                                                    <div ng-if="guide.eraseButton" class="buttons" ng-click="c.itemAction(guide, 'cancelItem')">
-                                                        <img src="trash.png" />
-                                                        <span class="tooltip tooltip_right">
-                                                            <div class="tooltip_arrow arrow_left"></div>
-                                                            <div class="tooltip_text">${Cancel Request}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div ng-if="guide.acceptButton" class="buttons" ng-click="c.itemAction(guide, 'acceptSolution')">
-                                                        <img src="GS_Confirmar_PB.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Accept Solution}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div ng-if="guide.reopenButton" class="buttons" ng-click="c.itemAction(guide, 'rejectSolution')">
-                                                        <img src="GS_Reabrir_Roxo.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Reopen Request}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div ng-if="guide.cancelButton" class="buttons" ng-click="c.itemAction(guide, 'acceptCancellation')">
-                                                        <img src="GS_Confirmar_PB.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Accept Cancellation}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div ng-if="guide.rejectButton" class="buttons" ng-click="c.itemAction(guide, 'rejectCancellation')">
-                                                        <img src="GS_Reabrir_Roxo.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Reopen Request}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div ng-if="guide.approveButton" class="buttons" ng-click="c.itemAction(guide, 'approveItem')">
-                                                        <img src="GS_Confirmar_PB.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Approve}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div ng-if="guide.disapproveButton" class="buttons" ng-click="c.itemAction(guide, 'disapproveItem')">
-                                                        <img src="GS_Reabrir_Roxo.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Reject}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div class="buttons" ng-if="guide.copyButton" ng-click="c.copyItem(guide.sys_id, null)">
-                                                        <img src="copy-icon.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Copy}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div class="buttons" ng-if="guide.draftButton" ng-click="c.editDraft(guide.table, guide.cat_item_id, guide.sys_id, $index)">
-                                                        <img src="edit-icon.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Edit draft}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div class="buttons" ng-show="c.disableAction"></div>
-                                                    <!--<div ng-if="guide.eraseButton" class="buttons" data-toggle="modal" data-target="#myModal">-->
-                                                    <div ng-if="guide.eraseButton" class="buttons" ng-click="c.onWidget('acn_form_v2', guide.sys_id, item)">
-                                                        <button type="button" class="
-                                                btn btn-default
-                                                button--action button--action-hover
-                                            " ng-if="
-                      !c.isLoading && 
-                      c.canEditItems.indexOf(guide.cat_item_id) > -1 &&
-                      (c.cantEditStates.indexOf(guide.statusValue) == -1 && guide.canEdit) ">
-                                                            <span class="glyphicon glyphicon-edit button--action__icon" />
-                                                        </button>
-                                                        <span class="tooltip tooltip_right">
-                                                            <div class="tooltip_arrow arrow_left"></div>
-                                                            <div class="tooltip_text">${Edit Request}</div>
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td ng-if="guide.showDetails && guide.table == 'sc_request'" class="content_conversation content_service_pack" colspan="5">
-                                                    <div class="pack_title">${Serviços do Pacote}</div>
-                                                    <div ng-repeat="ritm in guide.ritms" class="table_pack">
-                                                        <div class="column_items">
-                                                            <div>#{{ritm.number}}</div>
-                                                            <div ng-click="c.openItem(ritm)" class="item_title">
-                                                                {{ritm.title}}
-                                                            </div>
-                                                        </div>
-                                                        <div class="column_state service_title turn_bold {{ritm.colorClass}}">
-                                                            {{ritm.state}}
-                                                        </div>
-                                                        <span class="tooltip tooltip_bottom" ng-if="ritm.hold_reason">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">{{ritm.hold_reason}}</div>
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td ng-if="guide.showDetails" class="content_conversation" colspan="5">
-                                                    <div ng-if="guide.table != 'sc_request' && guide.table != 'u_question' && guide.table != 'x_gmeps_csc_liberacao_servico'" class="col-md-5 process_flow">
-                                                        <div class="process_flow_title">
-                                                            ${Etapas do Atendimento}
-                                                        </div>
-                                                        <div class="line_flow"></div>
-                                                        <div ng-repeat="status in guide.processFlow" class="items_flow">
-                                                            <div class="status_flow" ng-class="c.statusColor(status.selected)">
-                                                                {{$index+1}}
-                                                            </div>
-                                                            <div ng-class="{'status_active' : status.selected == true}">
-                                                                {{status.name}}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-7">
-                                                        <div class="forecast_field">
-                                                            <b>${Forecast}:</b> {{guide.forecast}}
-                                                        </div>
-                                                        <div ng-if="data.showConversation">
-                                                            <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr ng-if="guide.items.length > 0" class="guide-line">
-                                <td data-th="Product" class="column_product">
-                                    <div>
-                                        <div>
-                                            <div class="number_text_parent">
-                                                <div class="number_text"><b>#{{guide.number}}</b></div>
-                                            </div>
-                                            <div class="item_text">{{guide.title}}</div>
-                                            <div class="more_detail" ng-if="!guide.showDetails" ng-click="guide.showDetails = !guide.showDetails">
-                                                ${GService Details}
-                                            </div>
-                                         	 <div class="more_detail" ng-if="guide.showDetails" ng-click="guide.showDetails = !guide.showDetails">
-                                                ${GService Less Details}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="column_status">
-                                    <div class="">
-                                        <div>
-                                            <div class="service_title {{guide.stateColorClass}}">
-                                                ${{{guide.state}}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="column_opened">
-                                    <div class="item_opened">{{guide.opened}}</div>
-                                </td>
-                                <td class="column_sla">
-                                    -
-                                </td>
-                                <td class="column_buttons">
-                                    <div class="disable_buttons" ng-show="c.disableAction"></div>
-                                    <div ng-if="guide.eraseButton" class="buttons" ng-click="c.itemAction(guide, 'cancelGuideItem')">
-                                        <img src="trash.png" />
-                                        <span class="tooltip tooltip_right">
-                                            <div class="tooltip_arrow arrow_left"></div>
-                                            <div class="tooltip_text">${Cancel Request}</div>
-                                        </span>
-                                    </div>
-                                    <div class="buttons" ng-if="guide.copyButton" ng-click="c.copyItem(guide.sys_id, guide)">
-                                        <img src="copy-icon.png" />
-                                        <span class="tooltip tooltip_bottom">
-                                            <div class="tooltip_arrow arrow_top"></div>
-                                            <div class="tooltip_text">${Copy}</div>
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr ng-if="guide.showDetails" class="guide-line-padding">
-                                <td colspan="{{data.columns.length}}">
-                                    <table class="table b-t table-condensed cart-table">
-                                        <tbody id="items-content-csc" ng-repeat="item in guide.items track by item.sys_id">
-                                            <tr class="item-row" id="items-content-csc-row{{$index}}">
-                                                <td data-th="Product" class="column_product">
-                                                    <div>
-                                                        <div>
-                                                            <div class="number_text_parent">
-                                                                <div ng-if="item.diligence_result" class="create_circle circle_{{item.diligence_result}}"></div>
-                                                                <div class="number_text">#{{item.number}}</div>
-                                                            </div>
-                                                            <div class="item_text">{{item.title}}</div>
-                                                            <div ng-if="item.watch" class="follow_up_properties">
-                                                                {{item.watch}}
-                                                                <span ng-if="item.watchTooltip" class="tooltip tooltip_bottom">
-                                                                    <div class="tooltip_arrow arrow_top"></div>
-                                                                    <div class="tooltip_text">{{item.watchTooltip}}</div>
-                                                                </span>
-                                                            </div>
-                                                            <div class="more_detail" ng-if="!item.showDetails" ng-click="c.showDetails(item)">
-                                                                ${GService Details}
-                                                            </div>
-                                                          	<div class="more_detail" ng-if="item.showDetails" ng-click="c.showDetails(item)">
-                                                                ${GService Less Details}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="column_status">
-                                                    <div class="">
-                                                        <div>
-                                                            <div class="service_title {{item.colorClass}}">
-                                                                {{item.statusLabel}}
-                                                                <span class="tooltip tooltip_bottom" ng-if="item.hold_reason">
-                                                                    <div class="tooltip_arrow arrow_top"></div>
-                                                                    <div class="tooltip_text">{{item.hold_reason}}</div>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="column_opened">
-                                                    <div class="item_opened">{{item.opened}}</div>
-                                                </td>
-                                                <td class="column_sla">
-                                                    <p class="sla_description" ng-if="item.forecast">
-                                                        {{item.forecast}}
-                                                    </p>
-                                                </td>
-                                                <td class="column_buttons">
-                                                    <div class="disable_buttons" ng-show="c.disableAction"></div>
-                                                    <div ng-if="item.eraseButton" class="buttons" ng-click="c.itemAction(item, 'cancelItem')">
-                                                        <img src="trash.png" />
-                                                        <span class="tooltip tooltip_right">
-                                                            <div class="tooltip_arrow arrow_left"></div>
-                                                            <div class="tooltip_text">${Cancel Request}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div ng-if="item.acceptButton" class="buttons" ng-click="c.itemAction(item, 'acceptSolution')">
-                                                        <img src="GS_Confirmar_PB.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Accept Solution}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div ng-if="item.reopenButton" class="buttons" ng-click="c.itemAction(item, 'rejectSolution')">
-                                                        <img src="GS_Reabrir_Roxo.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Reopen Request}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div ng-if="item.cancelButton" class="buttons" ng-click="c.itemAction(item, 'acceptCancellation')">
-                                                        <img src="GS_Confirmar_PB.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Accept Cancellation}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div ng-if="item.rejectButton" class="buttons" ng-click="c.itemAction(item, 'rejectCancellation')">
-                                                        <img src="GS_Reabrir_Roxo.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Reopen Request}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div ng-if="item.approveButton" class="buttons" ng-click="c.itemAction(item, 'approveItem')">
-                                                        <img src="GS_Confirmar_PB.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Approve}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div ng-if="item.disapproveButton" class="buttons" ng-click="c.itemAction(item, 'disapproveItem')">
-                                                        <img src="GS_Reabrir_Roxo.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Reject}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div class="buttons" ng-if="item.copyButton" ng-click="c.copyItem(item.sys_id, null)">
-                                                        <img src="copy-icon.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Copy}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div class="buttons" ng-if="item.draftButton" ng-click="c.editDraft(item.table, item.cat_item_id, item.sys_id, $index)">
-                                                        <img src="edit-icon.png" />
-                                                        <span class="tooltip tooltip_bottom">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">${Edit draft}</div>
-                                                        </span>
-                                                    </div>
-                                                    <div class="buttons" ng-show="c.disableAction"></div>
-                                                    <!--<div ng-if="item.eraseButton" class="buttons" data-toggle="modal" data-target="#myModal">-->
-                                                    <div ng-if="item.eraseButton" class="buttons" ng-click="c.onWidget('acn_form_v2', item.sys_id, item)">
-                                                        <button type="button" class="
-												btn btn-default
-												button--action button--action-hover
-											" ng-if="
-                      !c.isLoading && 
-                      c.canEditItems.indexOf(item.cat_item_id) > -1 &&
-                      (c.cantEditStates.indexOf(item.statusValue) == -1 && item.canEdit) ">
-                                                            <span class="glyphicon glyphicon-edit button--action__icon" />
-                                                        </button>
-                                                        <span class="tooltip tooltip_right">
-                                                            <div class="tooltip_arrow arrow_left"></div>
-                                                            <div class="tooltip_text">${Edit Request}</div>
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td ng-if="item.showDetails && item.table == 'sc_request'" class="content_conversation content_service_pack" colspan="5">
-                                                    <div class="pack_title">${Serviços do Pacote}</div>
-                                                    <div ng-repeat="ritm in item.ritms" class="table_pack">
-                                                        <div class="column_items">
-                                                            <div>#{{ritm.number}}</div>
-                                                            <div ng-click="c.openItem(ritm)" class="item_title">
-                                                                {{ritm.title}}
-                                                            </div>
-                                                        </div>
-                                                        <div class="column_state service_title turn_bold {{ritm.colorClass}}">
-                                                            {{ritm.state}}
-                                                        </div>
-                                                        <span class="tooltip tooltip_bottom" ng-if="ritm.hold_reason">
-                                                            <div class="tooltip_arrow arrow_top"></div>
-                                                            <div class="tooltip_text">{{ritm.hold_reason}}</div>
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td ng-if="item.showDetails" class="content_conversation" colspan="5">
-                                                    <div ng-if="item.table != 'sc_request' && item.table != 'u_question' && item.table != 'x_gmeps_csc_liberacao_servico'" class="col-md-5 process_flow">
-                                                        <div class="process_flow_title">
-                                                            ${Etapas do Atendimento}
-                                                        </div>
-                                                        <div class="line_flow"></div>
-                                                        <div ng-repeat="status in item.processFlow" class="items_flow">
-                                                            <div class="status_flow" ng-class="c.statusColor(status.selected)">
-                                                                {{$index+1}}
-                                                            </div>
-                                                            <div ng-class="{'status_active' : status.selected == true}">
-                                                                {{status.name}}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-7">
-                                                        <div class="forecast_field">
-                                                            <b>${Forecast}:</b> {{item.forecast}}
-                                                        </div>
-                                                        <div ng-if="data.showConversation">
-                                                            <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="content_pagination">
-                        <span class="pag_arrow_left" ng-click="c.previousPage()" ng-if="data.actualPage > 0"><img src="gservice_column_dashboard_arrow.png" /></span>
-                        <span class="pag_arrow_right" ng-click="c.nextPage()" ng-if="data.actualItemsCount < data.totalItems"><img src="gservice_column_dashboard_arrow.png" /></span>
-                        <span class="pag_text">Página {{data.actualPageCount}} - {{data.actualItemsCount}} de
-                            {{data.totalItems}} RESULTADOS</span>
-                    </div>
+  <div class="title_category" ng-click="c.openContent()">
+    ${Solicitações de Finanças, Jurídico e Infraestrutura}
+    <span><img src="GService_Seta_PTV.png" ng-class="c.contentOpened ? '' : 'invert-arrow'" /></span>
+  </div>
+  <div class="content_body_mask">
+    <div class="content_body_req_csc">
+      
+      <span><h3>${Selecione o filtro abaixo para visualizar os chamados.}</h3></span>
+      
+      <div class="col-md-12 filter-padding">
+        <sp-widget widget="data.listFilter_widget"></sp-widget>
+      </div>
+      <div ng-if="data.showFilterClean" class="without_notification">
+        ${Ops! Não encontramos resultados para essa busca.}
+      </div>
+      <div ng-if="!data.showFilterClean" class="content_my_requests">
+        <div>
+          <table class="table table-hover b-t table-condensed cart-table">
+            <div class="center-loading">
+              <div class="col-md-12" ng-show="c.isLoading">
+                <div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator">
+                  <div></div>
+                  <div></div>
+                  <div></div>
                 </div>
-                <div class="modal_reopen modal fade" style="z-index: 1041" id="requestCommentModalCSC" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                <div class="panel-body wrapper-xl wrapper-sc-cat-item">
-                                    <div class="modal_title">{{c.modalMessage}}</div>
-                                    <div>
-                                        <div ng-if="c.state == 'rejectSolution'">
-                                            <div class="reason">${Motivo de rejeição}</div>
-                                            <span class="mandatory_message" ng-if="c.needReason">
-                                                ${Favor preencher a razão da rejeição}
-                                            </span>
-                                            <div class="radio_content" ng-repeat="reopeningReason in data.reopeningReason track by $index">
-                                                <span method="get" class="radio-properties">
-                                                    <label for="{{reopeningReason.label}}">
-                                                        <input type="radio" id="{{reopeningReason.label}}" name="selectedChoice" value="{{reopeningReason.label}}" ng-model="reopeningReason.selected" ng-click="c.selectedChoice($index)" />
-                                                        {{reopeningReason.label}}
-                                                        <span class="new-radio"></span>
-                                                    </label>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <span class="mandatory_message" ng-if="c.needComment">
-                                            ${Favor preencher o comentário com mais de 20 caracteres
-                                            antes de submeter}
-                                        </span>
-                                        <textarea class="form-control" ng-model="c.requestComment" maxlength="255"></textarea>
-                                        <div class="btn_submit" style="cursor: pointer" ng-click="c.submitRequestComment()" title="">
-                                            <img class="resize-img" src="GService_SS_TV.png" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
+            <thead ng-show="!c.isLoading" class="thead_myrequests" id="list-columns-csc">
+              <tr>
+                <th class="col-lg-2 wrapper column_content" ng-repeat="column in data.columns">
+                  <div ng-click="c.orderBy(column.order, data.requests)">
+                    {{column.name}}
+                    <span ng-if="column.order">
+                      <span ng-if="!column.direction"></span>
+                      <span ng-if="column.direction"><img src="gservice_column_dashboard_arrow.png" ng-class="column.direction == 1 ? 'invert-arrow' : ''" } /></span>
+                    </span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="items-content-csc-guide" ng-show="!c.isLoading" ng-repeat="guide in data.requests">
+              <tr ng-if="guide.items.length == 0">
+                <td colspan="{{data.columns.length}}">
+                  <table class="table b-t table-condensed cart-table">
+                    <tbody id="items-content-csc">
+                      <tr class="item-row" id="items-content-csc-row{{$index}}">
+                        <td data-th="Product" class="column_product">
+                          <div>
+                            <div>
+                              <div class="number_text_parent">
+                                <div ng-if="guide.diligence_result" class="create_circle circle_{{guide.diligence_result}}"></div>
+                                <div class="number_text">#{{guide.number}}</div>
+                              </div>
+                              <div class="item_text">{{guide.title}}</div>
+                              <div ng-if="guide.watch" class="follow_up_properties">
+                                {{guide.watch}}
+                                <span ng-if="guide.watchTooltip" class="tooltip tooltip_bottom">
+                                  <div class="tooltip_arrow arrow_top"></div>
+                                  <div class="tooltip_text">{{guide.watchTooltip}}</div>
+                                </span>
+                              </div>
+                              <div class="more_detail" ng-if="!guide.showDetails" ng-click="c.showDetails(guide)">
+                                ${GService Details}
+                              </div>
+                              <div class="more_detail" ng-if="guide.showDetails" ng-click="c.showDetails(guide)">
+                                ${GService Less Details}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="column_status">
+                          <div class="">
+                            <div>
+                              <div class="service_title {{guide.colorClass}}">
+                                {{guide.statusLabel}}
+                                <span class="tooltip tooltip_bottom" ng-if="guide.hold_reason">
+                                  <div class="tooltip_arrow arrow_top"></div>
+                                  <div class="tooltip_text">{{guide.hold_reason}}</div>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="column_opened">
+                          <div class="item_opened">{{guide.opened}}</div>
+                        </td>
+                        <td class="column_sla">
+                          <p class="sla_description" ng-if="guide.forecast">
+                            {{guide.forecast}}
+                          </p>
+                        </td>
+                        <td class="column_buttons">
+                          <div class="disable_buttons" ng-show="c.disableAction"></div>
+                          <div ng-if="guide.eraseButton" class="buttons" ng-click="c.itemAction(guide, 'cancelItem')">
+                            <img src="trash.png" />
+                            <span class="tooltip tooltip_right">
+                              <div class="tooltip_arrow arrow_left"></div>
+                              <div class="tooltip_text">${Cancel Request}</div>
+                            </span>
+                          </div>
+                          <div ng-if="guide.acceptButton" class="buttons" ng-click="c.itemAction(guide, 'acceptSolution')">
+                            <img src="GS_Confirmar_PB.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Accept Solution}</div>
+                            </span>
+                          </div>
+                          <div ng-if="guide.reopenButton" class="buttons" ng-click="c.itemAction(guide, 'rejectSolution')">
+                            <img src="GS_Reabrir_Roxo.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Reopen Request}</div>
+                            </span>
+                          </div>
+                          <div ng-if="guide.cancelButton" class="buttons" ng-click="c.itemAction(guide, 'acceptCancellation')">
+                            <img src="GS_Confirmar_PB.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Accept Cancellation}</div>
+                            </span>
+                          </div>
+                          <div ng-if="guide.rejectButton" class="buttons" ng-click="c.itemAction(guide, 'rejectCancellation')">
+                            <img src="GS_Reabrir_Roxo.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Reopen Request}</div>
+                            </span>
+                          </div>
+                          <div ng-if="guide.approveButton" class="buttons" ng-click="c.itemAction(guide, 'approveItem')">
+                            <img src="GS_Confirmar_PB.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Approve}</div>
+                            </span>
+                          </div>
+                          <div ng-if="guide.disapproveButton" class="buttons" ng-click="c.itemAction(guide, 'disapproveItem')">
+                            <img src="GS_Reabrir_Roxo.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Reject}</div>
+                            </span>
+                          </div>
+                          <div class="buttons" ng-if="guide.copyButton" ng-click="c.copyItem(guide.sys_id, null)">
+                            <img src="copy-icon.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Copy}</div>
+                            </span>
+                          </div>
+                          <div class="buttons" ng-if="guide.draftButton" ng-click="c.editDraft(guide.table, guide.cat_item_id, guide.sys_id, $index)">
+                            <img src="edit-icon.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Edit draft}</div>
+                            </span>
+                          </div>
+                          <div class="buttons" ng-show="c.disableAction"></div>
+                          <!--<div ng-if="guide.eraseButton" class="buttons" data-toggle="modal" data-target="#myModal">-->
+                          <div ng-if="guide.eraseButton" class="buttons" ng-click="c.onWidget('acn_form_v2', guide.sys_id, item)">
+                            <button type="button" class="
+                                                         btn btn-default
+                                                         button--action button--action-hover
+                                                         " ng-if="
+                                                                  !c.isLoading && 
+                                                                  c.canEditItems.indexOf(guide.cat_item_id) > -1 &&
+                                                                  (c.cantEditStates.indexOf(guide.statusValue) == -1 && guide.canEdit) ">
+                              <span class="glyphicon glyphicon-edit button--action__icon" />
+                            </button>
+                            <span class="tooltip tooltip_right">
+                              <div class="tooltip_arrow arrow_left"></div>
+                              <div class="tooltip_text">${Edit Request}</div>
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td ng-if="guide.showDetails && guide.table == 'sc_request'" class="content_conversation content_service_pack" colspan="5">
+                          <div class="pack_title">${Serviços do Pacote}</div>
+                          <div ng-repeat="ritm in guide.ritms" class="table_pack">
+                            <div class="column_items">
+                              <div>#{{ritm.number}}</div>
+                              <div ng-click="c.openItem(ritm)" class="item_title">
+                                {{ritm.title}}
+                              </div>
+                            </div>
+                            <div class="column_state service_title turn_bold {{ritm.colorClass}}">
+                              {{ritm.state}}
+                            </div>
+                            <span class="tooltip tooltip_bottom" ng-if="ritm.hold_reason">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">{{ritm.hold_reason}}</div>
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td ng-if="guide.showDetails" class="content_conversation" colspan="5">
+                          <div ng-if="guide.table != 'sc_request' && guide.table != 'u_question' && guide.table != 'x_gmeps_csc_liberacao_servico'" class="col-md-5 process_flow">
+                            <div class="process_flow_title">
+                              ${Etapas do Atendimento}
+                            </div>
+                            <div class="line_flow"></div>
+                            <div ng-repeat="status in guide.processFlow" class="items_flow">
+                              <div class="status_flow" ng-class="c.statusColor(status.selected)">
+                                {{$index+1}}
+                              </div>
+                              <div ng-class="{'status_active' : status.selected == true}">
+                                {{status.name}}
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-7">
+                            <div class="forecast_field">
+                              <b>${Forecast}:</b> {{guide.forecast}}
+                            </div>
+                            <div ng-if="data.showConversation">
+                              <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr ng-if="guide.items.length > 0" class="guide-line">
+                <td data-th="Product" class="column_product">
+                  <div>
+                    <div>
+                      <div class="number_text_parent">
+                        <div class="number_text"><b>#{{guide.number}}</b></div>
+                      </div>
+                      <div class="item_text">{{guide.title}}</div>
+                      <div class="more_detail" ng-if="!guide.showDetails" ng-click="guide.showDetails = !guide.showDetails">
+                        ${GService Details}
+                      </div>
+                      <div class="more_detail" ng-if="guide.showDetails" ng-click="guide.showDetails = !guide.showDetails">
+                        ${GService Less Details}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="column_status">
+                  <div class="">
+                    <div>
+                      <div class="service_title {{guide.stateColorClass}}">
+                        ${{{guide.state}}}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="column_opened">
+                  <div class="item_opened">{{guide.opened}}</div>
+                </td>
+                <td class="column_sla">
+                  -
+                </td>
+                <td class="column_buttons">
+                  <div class="disable_buttons" ng-show="c.disableAction"></div>
+                  <div ng-if="guide.eraseButton" class="buttons" ng-click="c.itemAction(guide, 'cancelGuideItem')">
+                    <img src="trash.png" />
+                    <span class="tooltip tooltip_right">
+                      <div class="tooltip_arrow arrow_left"></div>
+                      <div class="tooltip_text">${Cancel Request}</div>
+                    </span>
+                  </div>
+                  <div class="buttons" ng-if="guide.copyButton" ng-click="c.copyItem(guide.sys_id, guide)">
+                    <img src="copy-icon.png" />
+                    <span class="tooltip tooltip_bottom">
+                      <div class="tooltip_arrow arrow_top"></div>
+                      <div class="tooltip_text">${Copy}</div>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+              <tr ng-if="guide.showDetails" class="guide-line-padding">
+                <td colspan="{{data.columns.length}}">
+                  <table class="table b-t table-condensed cart-table">
+                    <tbody id="items-content-csc" ng-repeat="item in guide.items track by item.sys_id">
+                      <tr class="item-row" id="items-content-csc-row{{$index}}">
+                        <td data-th="Product" class="column_product">
+                          <div>
+                            <div>
+                              <div class="number_text_parent">
+                                <div ng-if="item.diligence_result" class="create_circle circle_{{item.diligence_result}}"></div>
+                                <div class="number_text">#{{item.number}}</div>
+                              </div>
+                              <div class="item_text">{{item.title}}</div>
+                              <div ng-if="item.watch" class="follow_up_properties">
+                                {{item.watch}}
+                                <span ng-if="item.watchTooltip" class="tooltip tooltip_bottom">
+                                  <div class="tooltip_arrow arrow_top"></div>
+                                  <div class="tooltip_text">{{item.watchTooltip}}</div>
+                                </span>
+                              </div>
+                              <div class="more_detail" ng-if="!item.showDetails" ng-click="c.showDetails(item)">
+                                ${GService Details}
+                              </div>
+                              <div class="more_detail" ng-if="item.showDetails" ng-click="c.showDetails(item)">
+                                ${GService Less Details}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="column_status">
+                          <div class="">
+                            <div>
+                              <div class="service_title {{item.colorClass}}">
+                                {{item.statusLabel}}
+                                <span class="tooltip tooltip_bottom" ng-if="item.hold_reason">
+                                  <div class="tooltip_arrow arrow_top"></div>
+                                  <div class="tooltip_text">{{item.hold_reason}}</div>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="column_opened">
+                          <div class="item_opened">{{item.opened}}</div>
+                        </td>
+                        <td class="column_sla">
+                          <p class="sla_description" ng-if="item.forecast">
+                            {{item.forecast}}
+                          </p>
+                        </td>
+                        <td class="column_buttons">
+                          <div class="disable_buttons" ng-show="c.disableAction"></div>
+                          <div ng-if="item.eraseButton" class="buttons" ng-click="c.itemAction(item, 'cancelItem')">
+                            <img src="trash.png" />
+                            <span class="tooltip tooltip_right">
+                              <div class="tooltip_arrow arrow_left"></div>
+                              <div class="tooltip_text">${Cancel Request}</div>
+                            </span>
+                          </div>
+                          <div ng-if="item.acceptButton" class="buttons" ng-click="c.itemAction(item, 'acceptSolution')">
+                            <img src="GS_Confirmar_PB.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Accept Solution}</div>
+                            </span>
+                          </div>
+                          <div ng-if="item.reopenButton" class="buttons" ng-click="c.itemAction(item, 'rejectSolution')">
+                            <img src="GS_Reabrir_Roxo.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Reopen Request}</div>
+                            </span>
+                          </div>
+                          <div ng-if="item.cancelButton" class="buttons" ng-click="c.itemAction(item, 'acceptCancellation')">
+                            <img src="GS_Confirmar_PB.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Accept Cancellation}</div>
+                            </span>
+                          </div>
+                          <div ng-if="item.rejectButton" class="buttons" ng-click="c.itemAction(item, 'rejectCancellation')">
+                            <img src="GS_Reabrir_Roxo.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Reopen Request}</div>
+                            </span>
+                          </div>
+                          <div ng-if="item.approveButton" class="buttons" ng-click="c.itemAction(item, 'approveItem')">
+                            <img src="GS_Confirmar_PB.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Approve}</div>
+                            </span>
+                          </div>
+                          <div ng-if="item.disapproveButton" class="buttons" ng-click="c.itemAction(item, 'disapproveItem')">
+                            <img src="GS_Reabrir_Roxo.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Reject}</div>
+                            </span>
+                          </div>
+                          <div class="buttons" ng-if="item.copyButton" ng-click="c.copyItem(item.sys_id, null)">
+                            <img src="copy-icon.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Copy}</div>
+                            </span>
+                          </div>
+                          <div class="buttons" ng-if="item.draftButton" ng-click="c.editDraft(item.table, item.cat_item_id, item.sys_id, $index)">
+                            <img src="edit-icon.png" />
+                            <span class="tooltip tooltip_bottom">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">${Edit draft}</div>
+                            </span>
+                          </div>
+                          <div class="buttons" ng-show="c.disableAction"></div>
+                          <!--<div ng-if="item.eraseButton" class="buttons" data-toggle="modal" data-target="#myModal">-->
+                          <div ng-if="item.eraseButton" class="buttons" ng-click="c.onWidget('acn_form_v2', item.sys_id, item)">
+                            <button type="button" class="
+                                                         btn btn-default
+                                                         button--action button--action-hover
+                                                         " ng-if="
+                                                                  !c.isLoading && 
+                                                                  c.canEditItems.indexOf(item.cat_item_id) > -1 &&
+                                                                  (c.cantEditStates.indexOf(item.statusValue) == -1 && item.canEdit) ">
+                              <span class="glyphicon glyphicon-edit button--action__icon" />
+                            </button>
+                            <span class="tooltip tooltip_right">
+                              <div class="tooltip_arrow arrow_left"></div>
+                              <div class="tooltip_text">${Edit Request}</div>
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td ng-if="item.showDetails && item.table == 'sc_request'" class="content_conversation content_service_pack" colspan="5">
+                          <div class="pack_title">${Serviços do Pacote}</div>
+                          <div ng-repeat="ritm in item.ritms" class="table_pack">
+                            <div class="column_items">
+                              <div>#{{ritm.number}}</div>
+                              <div ng-click="c.openItem(ritm)" class="item_title">
+                                {{ritm.title}}
+                              </div>
+                            </div>
+                            <div class="column_state service_title turn_bold {{ritm.colorClass}}">
+                              {{ritm.state}}
+                            </div>
+                            <span class="tooltip tooltip_bottom" ng-if="ritm.hold_reason">
+                              <div class="tooltip_arrow arrow_top"></div>
+                              <div class="tooltip_text">{{ritm.hold_reason}}</div>
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td ng-if="item.showDetails" class="content_conversation" colspan="5">
+                          <div ng-if="item.table != 'sc_request' && item.table != 'u_question' && item.table != 'x_gmeps_csc_liberacao_servico'" class="col-md-5 process_flow">
+                            <div class="process_flow_title">
+                              ${Etapas do Atendimento}
+                            </div>
+                            <div class="line_flow"></div>
+                            <div ng-repeat="status in item.processFlow" class="items_flow">
+                              <div class="status_flow" ng-class="c.statusColor(status.selected)">
+                                {{$index+1}}
+                              </div>
+                              <div ng-class="{'status_active' : status.selected == true}">
+                                {{status.name}}
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-7">
+                            <div class="forecast_field">
+                              <b>${Forecast}:</b> {{item.forecast}}
+                            </div>
+                            <div ng-if="data.showConversation">
+                              <sp-widget widget="c.data.ticketConversationWidget"></sp-widget>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="content_pagination">
+            <span class="pag_arrow_left" ng-click="c.previousPage()" ng-if="data.actualPage > 0"><img src="gservice_column_dashboard_arrow.png" /></span>
+            <span class="pag_arrow_right" ng-click="c.nextPage()" ng-if="data.actualItemsCount < data.totalItems"><img src="gservice_column_dashboard_arrow.png" /></span>
+            <span class="pag_text">Página {{data.actualPageCount}} - {{data.actualItemsCount}} de
+              {{data.totalItems}} RESULTADOS</span>
+          </div>
         </div>
-        <now-message key="Done" value="${Done}" />
+        <div class="modal_reopen modal fade" style="z-index: 1041" id="requestCommentModalCSC" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="panel-body wrapper-xl wrapper-sc-cat-item">
+                  <div class="modal_title">{{c.modalMessage}}</div>
+                  <div>
+                    <div ng-if="c.state == 'rejectSolution'">
+                      <div class="reason">${Motivo de rejeição}</div>
+                      <span class="mandatory_message" ng-if="c.needReason">
+                        ${Favor preencher a razão da rejeição}
+                      </span>
+                      <div class="radio_content" ng-repeat="reopeningReason in data.reopeningReason track by $index">
+                        <span method="get" class="radio-properties">
+                          <label for="{{reopeningReason.label}}">
+                            <input type="radio" id="{{reopeningReason.label}}" name="selectedChoice" value="{{reopeningReason.label}}" ng-model="reopeningReason.selected" ng-click="c.selectedChoice($index)" />
+                            {{reopeningReason.label}}
+                            <span class="new-radio"></span>
+                          </label>
+                        </span>
+                      </div>
+                    </div>
+                    <span class="mandatory_message" ng-if="c.needComment">
+                      ${Favor preencher o comentário com mais de 20 caracteres
+                      antes de submeter}
+                    </span>
+                    <textarea class="form-control" ng-model="c.requestComment" maxlength="255"></textarea>
+                    <div class="btn_submit" style="cursor: pointer" ng-click="c.submitRequestComment()" title="">
+                      <img class="resize-img" src="GService_SS_TV.png" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <now-message key="Done" value="${Done}" />
+  </div>
 </div>
 <div class="modal fade" style="z-index: 1041" id="editModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <div class="panel-body wrapper-sm wrapper-sc-cat-item">
-                    <div class="form-group">
-                        <sp-widget widget="data.gserviceCatalogItem"></sp-widget>
-                    </div>
-                </div>
-            </div>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="panel-body wrapper-sm wrapper-sc-cat-item">
+          <div class="form-group">
+            <sp-widget widget="data.gserviceCatalogItem"></sp-widget>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">...</div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">
-                    Close
-                </button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">...</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
     </div>
+  </div>
 </div>
 <div ng-if="data.show_survey" class="survey_accept">
-    <sp-widget widget="data.gserviceSurveyCSC"></sp-widget>
+  <sp-widget widget="data.gserviceSurveyCSC"></sp-widget>
 </div>]]></template>
     </sp_widget>
 </record_update>
