@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css>.category-title{&#13;
+  color: $40E0D0;&#13;
+}&#13;
+&#13;
+.description-properties {&#13;
+  color: $40E0D0;&#13;
+}</css>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="2">7633555ddb9c14505c1163901496196f</sp_column>
+        <sp_widget display_value="GService Category Items">6d5bdc2ddb5cd450fa11cf24149619c6</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 11:16:32</sys_created_on>
+        <sys_id>ba8b946ddb5cd450fa11cf24149619be</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Infraestrutura e Segurança</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_instance_ba8b946ddb5cd450fa11cf24149619be</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 12:06:25</sys_updated_on>
+        <title>Infraestrutura e Segurança</title>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"parent_id": {
+		"value": "testRequest",
+		"displayValue": "testRequest"
+	},
+	"selected_category": {
+		"value": "1e83047cdba344105c11639014961990",
+		"displayValue": "Infraestrutura e Segurança"
+	}
+}]]></widget_parameters>
+    </sp_instance>
+    <sys_translated_text action="DELETE" query="documentkey=ba8b946ddb5cd450fa11cf24149619be"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_instance_ba8b946ddb5cd450fa11cf24149619be</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_instance"&gt;&lt;sp_instance action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;class_name/&gt;&lt;color&gt;default&lt;/color&gt;&lt;css&gt;.category-title{&amp;#13;
+  color: $40E0D0;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.description-properties {&amp;#13;
+  color: $40E0D0;&amp;#13;
+}&lt;/css&gt;&lt;glyph/&gt;&lt;id/&gt;&lt;order&gt;1&lt;/order&gt;&lt;roles/&gt;&lt;short_description/&gt;&lt;size&gt;md&lt;/size&gt;&lt;sp_column display_value="2"&gt;7633555ddb9c14505c1163901496196f&lt;/sp_column&gt;&lt;sp_widget display_value="GService Category Items"&gt;6d5bdc2ddb5cd450fa11cf24149619c6&lt;/sp_widget&gt;&lt;sys_class_name&gt;sp_instance&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-20 11:16:32&lt;/sys_created_on&gt;&lt;sys_id&gt;ba8b946ddb5cd450fa11cf24149619be&lt;/sys_id&gt;&lt;sys_mod_count&gt;5&lt;/sys_mod_count&gt;&lt;sys_name&gt;Infraestrutura e Segurança&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_instance_ba8b946ddb5cd450fa11cf24149619be&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-20 12:06:25&lt;/sys_updated_on&gt;&lt;title&gt;Infraestrutura e Segurança&lt;/title&gt;&lt;url/&gt;&lt;widget_parameters&gt;&lt;![CDATA[{
+	"parent_id": {
+		"value": "testRequest",
+		"displayValue": "testRequest"
+	},
+	"selected_category": {
+		"value": "1e83047cdba344105c11639014961990",
+		"displayValue": "Infraestrutura e Segurança"
+	}
+}]]&gt;&lt;/widget_parameters&gt;&lt;/sp_instance&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=ba8b946ddb5cd450fa11cf24149619be"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1318760307</payload_hash>
+        <record_name>Infraestrutura e Segurança</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 12:06:25</sys_created_on>
+        <sys_id>21f66c2ddb9cd450fa11cf2414961931</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171977b80dc0000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 12:06:25</sys_updated_on>
+        <type>Instance</type>
+        <update_guid>e5f66c2d549cd4509d27d269e5cde030</update_guid>
+        <update_guid_history>e5f66c2d549cd4509d27d269e5cde030:-1318760307,7166a8e9af9cd450bb7f0d13b87b2b3c:1205759927,97b564e9369cd45052ab0cc2b3487f7e:1554048795,3f1d9cedd75cd45032efaaa33dca53aa:-174627856,34ec18ed9a5cd450f3e1b0cea4431417:-949666484,728b946dcb5cd4509c9da850d36aa3c0:-902560515</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">b448c16ddb501850fa11cf24149619e9</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 14:31:55</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance">sp_instance</sys_db_object>
+        <sys_id>205864e7031042b0bed274cf1f6cd900</sys_id>
+        <sys_metadata>ba8b946ddb5cd450fa11cf24149619be</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Infraestrutura e Segurança</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_instance_ba8b946ddb5cd450fa11cf24149619be</sys_update_name>
+        <sys_update_version display_value="sp_instance_ba8b946ddb5cd450fa11cf24149619be">21f66c2ddb9cd450fa11cf2414961931</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 14:31:55</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

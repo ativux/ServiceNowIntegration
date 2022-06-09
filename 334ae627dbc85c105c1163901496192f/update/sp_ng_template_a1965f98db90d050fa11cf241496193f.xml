@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_ng_template">
+    <sp_ng_template action="INSERT_OR_UPDATE">
+        <id>gservice-sp-typeahead-popup.html</id>
+        <sp_widget/>
+        <sys_class_name>sp_ng_template</sys_class_name>
+        <sys_created_by>organize.matias</sys_created_by>
+        <sys_created_on>2020-04-17 03:41:59</sys_created_on>
+        <sys_id>a1965f98db90d050fa11cf241496193f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>gservice-sp-typeahead-popup.html</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_ng_template_a1965f98db90d050fa11cf241496193f</sys_update_name>
+        <sys_updated_by>organize.matias</sys_updated_by>
+        <sys_updated_on>2020-04-17 03:41:59</sys_updated_on>
+        <template><![CDATA[<ul class="typeahead-popup dropdown-menu" ng-show="isOpen() && !moveInProgress" ng-style="{top: position().top+'px', left: position().left+'px'}" role="listbox" aria-hidden="{{!isOpen()}}">
+    <li role='option' aria-hidden='true' style='display: none'></li>    
+  	<li ng-repeat="match in matches track by $index" ng-class="{active: isActive($index) }" 
+        ng-mouseenter="selectActive($index)" 
+        ng-click="selectMatch($index, $event)" 
+        role="option" id="{{::match.id}}"
+        data-index="{{$index}}"}>
+        <div uib-typeahead-match index="$index" match="match" query="query" template-url="templateUrl"></div>
+    </li>
+</ul>]]></template>
+    </sp_ng_template>
+</record_update>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_dependency">
+    <sp_dependency action="DELETE">
+        <module/>
+        <name>GService Scroll</name>
+        <page_load>true</page_load>
+        <sp_portals>a084feafdb00dc10fa11cf24149619e0</sp_portals>
+        <sys_class_name>sp_dependency</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-05-07 15:54:51</sys_created_on>
+        <sys_id>a71e748fdb689010fa11cf2414961934</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>GService Scroll</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_dependency_a71e748fdb689010fa11cf2414961934</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-05-07 16:00:16</sys_updated_on>
+    </sp_dependency>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_dependency_a71e748fdb689010fa11cf2414961934</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_dependency"><sp_dependency action="INSERT_OR_UPDATE"><module/><name>GService Scroll</name><page_load>true</page_load><sp_portals>a084feafdb00dc10fa11cf24149619e0</sp_portals><sys_class_name>sp_dependency</sys_class_name><sys_created_by>organize.fernando</sys_created_by><sys_created_on>2020-05-07 15:54:51</sys_created_on><sys_id>a71e748fdb689010fa11cf2414961934</sys_id><sys_mod_count>2</sys_mod_count><sys_name>GService Scroll</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_dependency_a71e748fdb689010fa11cf2414961934</sys_update_name><sys_updated_by>organize.fernando</sys_updated_by><sys_updated_on>2020-05-07 16:00:16</sys_updated_on></sp_dependency></record_update>]]></payload>
+        <payload_hash>368011510</payload_hash>
+        <record_name>GService Scroll</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-05-07 16:00:16</sys_created_on>
+        <sys_id>708f7003dba89010fa11cf241496195e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171efddb4ff0000001</sys_recorded_at>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-05-07 16:00:16</sys_updated_on>
+        <type>Widget Dependency</type>
+        <update_guid>388f700366a89010509647610776755d</update_guid>
+        <update_guid_history>388f700366a89010509647610776755d:368011510,ba7e34cfb2689010b5b710b10aef5580:-1311962658,954e30cffd689010a62d9e6b6980aab3:368011510</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">2af04d43dba89010fa11cf241496195c</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-05-07 16:06:40</sys_created_on>
+        <sys_db_object display_value="" name="sp_dependency">sp_dependency</sys_db_object>
+        <sys_id>8f419e4ad32b436d9ec1f81ec3cbd4e1</sys_id>
+        <sys_metadata>a71e748fdb689010fa11cf2414961934</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService Scroll</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_dependency_a71e748fdb689010fa11cf2414961934</sys_update_name>
+        <sys_update_version display_value="sp_dependency_a71e748fdb689010fa11cf2414961934">708f7003dba89010fa11cf241496195e</sys_update_version>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-05-07 16:06:40</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

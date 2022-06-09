@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>261</height>
+        <image>b71a7637db441050fa11cf24149619d1</image>
+        <name>doubts.png</name>
+        <size_bytes>4045</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 12:19:45</sys_created_on>
+        <sys_id>350a3ef3db441050fa11cf24149619d1</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>doubts.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_350a3ef3db441050fa11cf24149619d1</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-15 12:20:00</sys_updated_on>
+        <thumbnail/>
+        <width>293</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#40e0d0</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>dc96991205593cbeabbaa49ba9cebaaeead50f0c35bdf8af9320e4330a436a58</hash>
+        <image_height>261</image_height>
+        <image_width>293</image_width>
+        <size_bytes>4045</size_bytes>
+        <size_compressed>3462</size_compressed>
+        <state>available</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 12:20:00</sys_created_on>
+        <sys_id>b71a7637db441050fa11cf24149619d1</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_updated_by>guest</sys_updated_by>
+        <sys_updated_on>2020-04-15 12:20:01</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>350a3ef3db441050fa11cf24149619d1</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="b71a7637db441050fa11cf24149619d1">b71a7637db441050fa11cf24149619d1</sys_attachment>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 12:20:00</sys_created_on>
+        <sys_id>f71a7637db441050fa11cf24149619d1</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>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</data>
+        <length>4604</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="b71a7637db441050fa11cf24149619d1">b71a7637db441050fa11cf24149619d1</sys_attachment>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 12:20:00</sys_created_on>
+        <sys_id>7b1a7637db441050fa11cf24149619d1</sys_id>
+    </sys_attachment_doc>
+</record_update>

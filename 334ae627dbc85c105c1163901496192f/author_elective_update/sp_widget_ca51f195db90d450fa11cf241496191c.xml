@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope,$rootScope,$timeout) {
+
+	/* widget controller */
+
+	var c = this;
+
+	$scope.showWidget = "";
+
+	$scope.$on('showHideWidget', function(event,data) {
+
+		$timeout(function(){
+
+			$scope.showWidget = data;
+
+		});
+
+	});
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.flex-display{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  padding:10px;
+
+  clear:both;
+
+  margin-left: auto;
+
+  margin-right: auto;
+
+  float: none;
+
+}
+
+.center-div{
+
+  float: none;
+
+  margin-left: auto;
+
+  margin-right: auto;
+
+}
+
+.remove-margin{
+
+  margin-bottom:0px;
+
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>widget_communicate_3_test</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>Widget Communicate 3 Test</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {  /* populate the 'data' object */  /* e.g., data.table = $sp.getValue('table'); */})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-19 22:52:56</sys_created_on>
+        <sys_id>ca51f195db90d450fa11cf241496191c</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Widget Communicate 3 Test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_ca51f195db90d450fa11cf241496191c</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-19 22:53:18</sys_updated_on>
+        <template><![CDATA[<div ng-if="showWidget == 'contact'">
+
+  <div class="container">
+
+    <!-- your widget template -->
+
+    <div class="col-md-10 center-div">
+
+      <h3 style=" border-bottom: 1px solid #ddd;padding-bottom:5px; ">Contact</h3>
+
+      <div class="flex-display col-md-9">
+
+        <div class="">
+
+          <h4>Address:</h4>
+
+          <p class="remove-margin">XYZ Company</p>
+
+          <p class="remove-margin">123 Washington st</p>
+
+          <p class="remove-margin">Washington</p>
+
+        </div>
+
+        <div>
+
+          <div class="">
+
+            <h4>Email:</h4>
+
+            <a href="javascript:void(0)">abc@abc.com</a>
+
+          </div>
+
+          <div class="">
+
+            <h4>phone</h4>
+
+            <a href="javascript:void(0)">(123)4567890</a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_ca51f195db90d450fa11cf241496191c</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function($scope,$rootScope,$timeout) {
+
+	/* widget controller */
+
+	var c = this;
+
+	$scope.showWidget = "";
+
+	$scope.$on('showHideWidget', function(event,data) {
+
+		$timeout(function(){
+
+			$scope.showWidget = data;
+
+		});
+
+	});
+
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.flex-display{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  padding:10px;
+
+  clear:both;
+
+  margin-left: auto;
+
+  margin-right: auto;
+
+  float: none;
+
+}
+
+.center-div{
+
+  float: none;
+
+  margin-left: auto;
+
+  margin-right: auto;
+
+}
+
+.remove-margin{
+
+  margin-bottom:0px;
+
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;widget_communicate_3_test&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;Widget Communicate 3 Test&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {  /* populate the 'data' object */  /* e.g., data.table = $sp.getValue('table'); */})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-19 22:52:56&lt;/sys_created_on&gt;&lt;sys_id&gt;ca51f195db90d450fa11cf241496191c&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;Widget Communicate 3 Test&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_ca51f195db90d450fa11cf241496191c&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-19 22:53:18&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div ng-if="showWidget == 'contact'"&gt;
+
+  &lt;div class="container"&gt;
+
+    &lt;!-- your widget template --&gt;
+
+    &lt;div class="col-md-10 center-div"&gt;
+
+      &lt;h3 style=" border-bottom: 1px solid #ddd;padding-bottom:5px; "&gt;Contact&lt;/h3&gt;
+
+      &lt;div class="flex-display col-md-9"&gt;
+
+        &lt;div class=""&gt;
+
+          &lt;h4&gt;Address:&lt;/h4&gt;
+
+          &lt;p class="remove-margin"&gt;XYZ Company&lt;/p&gt;
+
+          &lt;p class="remove-margin"&gt;123 Washington st&lt;/p&gt;
+
+          &lt;p class="remove-margin"&gt;Washington&lt;/p&gt;
+
+        &lt;/div&gt;
+
+        &lt;div&gt;
+
+          &lt;div class=""&gt;
+
+            &lt;h4&gt;Email:&lt;/h4&gt;
+
+            &lt;a href="javascript:void(0)"&gt;abc@abc.com&lt;/a&gt;
+
+          &lt;/div&gt;
+
+          &lt;div class=""&gt;
+
+            &lt;h4&gt;phone&lt;/h4&gt;
+
+            &lt;a href="javascript:void(0)"&gt;(123)4567890&lt;/a&gt;
+
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-947652623</payload_hash>
+        <record_name>Widget Communicate 3 Test</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-19 22:53:18</sys_created_on>
+        <sys_id>3f61f595db90d450fa11cf24149619d6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17194a562720000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-19 22:53:18</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>f361f5958790d4508188919c4646fcd6</update_guid>
+        <update_guid_history>f361f5958790d4508188919c4646fcd6:-947652623,ca51f195ef90d450ad10c218e8e6461d:981653231</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">34198a51db14d450fa11cf2414961946</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 00:36:36</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>80f64970270349ae8873c89c77505a11</sys_id>
+        <sys_metadata>ca51f195db90d450fa11cf241496191c</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Widget Communicate 3 Test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_ca51f195db90d450fa11cf241496191c</sys_update_name>
+        <sys_update_version display_value="sp_widget_ca51f195db90d450fa11cf241496191c">3f61f595db90d450fa11cf24149619d6</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 00:36:36</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

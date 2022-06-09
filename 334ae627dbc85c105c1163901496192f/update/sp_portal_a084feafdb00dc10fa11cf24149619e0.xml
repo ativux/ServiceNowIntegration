@@ -22,6 +22,8 @@ $btn-default-bg:transparent;&#13;
 $text-muted:#0031FD;&#13;
 </css_variables>
         <default>false</default>
+        <enable_ais>false</enable_ais>
+        <enable_favorites>false</enable_favorites>
         <hide_portal_name>false</hide_portal_name>
         <homepage display_value="globoservice_index">1b567a63db40dc10fa11cf241496196e</homepage>
         <icon/>
@@ -34,6 +36,8 @@ $text-muted:#0031FD;&#13;
         <sc_catalog/>
         <sc_catalog_page/>
         <sc_category_page/>
+        <search_application/>
+        <search_results_configuration/>
         <sp_chat_queue/>
         <sp_rectangle_menu display_value="GService SP Header Menu">02c8f2a7db40dc10fa11cf2414961921</sp_rectangle_menu>
         <sqanda_knowledge_base/>

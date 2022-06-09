@@ -1,0 +1,1923 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>standard</category>
+        <client_script><![CDATA[function spTicketConversation($scope, nowAttachmentHandler, $animate, $rootScope, cabrillo, $timeout, snRecordWatcher, spUtil, spAriaUtil, $http, $window, snAttachmentHandler, i18n, dynamicTranslation) {
+	$scope.showLocationIcon = false;
+	$scope.msg = "";
+	$scope.isNative = cabrillo.isNative();
+	$scope.errorMessages = [];
+	var existingEntries = {};
+	var c = this;
+	var skipNextRecordWatchUpdate = false;
+	$scope.typing = [];
+	if (!$scope.data.hasReadableJournalField && !$scope.data.isNewRecord)
+		console.warn("No readable journal field (comments, work notes, etc.) available in the stream for this record");
+	if ($scope.page && $scope.page.g_form)
+		hideParentJournalFields();
+
+	function hideParentJournalFields() {
+		if (!$scope.data.stream)
+			return;
+
+		var fields = $scope.data.stream.journal_fields;
+		var g_form = $scope.page.g_form;
+		for (var f in fields)
+			g_form.setDisplay(fields[f].name, false);
+	}
+	var liveProfiles = {};
+	liveProfiles[$scope.user.sys_id] = {
+		userID: $scope.user.sys_id,
+		name: $scope.user.name,
+		initials: $window.NOW.user_initials
+	};
+	if ($window.NOW.user_avatar) {
+		liveProfiles[$scope.user.sys_id].userImage = $window.NOW.user_avatar;
+	}
+
+	$scope.getLiveProfileByUserId = function (userId){
+		return liveProfiles[userId];
+	}
+
+	var pending = {};
+
+	//Little caching implementation to make sure we only get a given user's profile once.
+	$scope.hasLiveProfile = function hasLiveProfile(userId){
+		if (!userId)
+			return false;
+
+		if (liveProfiles[userId])
+			return true;
+
+		if (pending[userId])
+			return false;
+
+		pending[userId] = $http.get('/api/now/live/profiles/sys_user.' + userId).then(function (response) {
+			liveProfiles[userId] = {
+				userID: userId,
+				name: response.data.result.name,
+				initials: buildInitials(response.data.result.name),
+				avatar: response.data.result.avatar
+			};
+		});
+		return false;
+	}
+
+	function buildInitials(name) {
+		if (!name)
+			return "--";
+
+		var initials = name.split(" ").map(function(word) {
+			return word.toUpperCase();
+		}).filter(function(word) {
+			return word.match(/^[A-Z]/);
+		}).map(function(word) {
+			return word.substring(0,1);
+		}).join("");
+
+		return (initials.length > 3) ? initials.substr(0, 3) : initials;
+	}
+
+
+	function setupAttachmentHandler(){
+		$scope.attachmentHandler = new nowAttachmentHandler(attachSuccess, appendError);
+
+		function attachSuccess() {
+			$rootScope.$broadcast("sp.attachments.update", $scope.data.sys_id);
+			spAriaUtil.sendLiveMessage($scope.data.attachAddedMsg);
+		}
+
+		function appendError(error) {
+			spUtil.addErrorMessage(error.msg + error.fileName);
+			$scope.errorMessages.push(error);
+			spAriaUtil.sendLiveMessage($scope.data.attachFailMsg);
+		}
+
+		$timeout(function() {
+			$scope.attachmentHandler.setParams($scope.data.table, $scope.data.sys_id, 1024 * 1024 * $scope.data.maxAttachmentSize);
+		})
+	}
+	setupAttachmentHandler();
+
+	var recordWatcherTimer;
+	$scope.$on('record.updated', function(name, data) {
+		// Use record watcher update if:
+		//	This record was updated AND This widget didn't trigger the update.
+		if (data.table_name == $scope.data.table && data.sys_id == $scope.data.sys_id){
+			$timeout.cancel(recordWatcherTimer);
+			recordWatcherTimer = $timeout(function(){
+				if (skipNextRecordWatchUpdate)
+					skipNextRecordWatchUpdate = false;
+				else
+					spUtil.update($scope).then(function(r){
+						$scope.data.stream = r.stream;
+					});
+			}, 250);
+		}
+	});
+
+	$scope.$on('sp.show_location_icon', function(evt) {
+		$scope.data.showLocationIcon = true;
+	});
+
+	$scope.$on('attachment.updated', function(evt,options) {
+		if ($scope.data.sys_id != -1 && options.sys_id == $scope.data.sys_id)
+			updateAttachmentState($scope.data.table, $scope.data.sys_id);
+	});
+
+
+	function updateAttachmentState(table, sys_id) {
+		c.server.update().then(function (data) {
+			if (!data.stream || !data.stream.entries)
+				return;
+			var newEntries = data.stream.entries;
+			var currEntries = $scope.data.mergedEntries;
+			var oldSize = currEntries ? currEntries.length : 0;
+			var newSize = 1;
+			for (var i = 0; i < oldSize; i++) {
+				if (!currEntries[i].attachment)
+					continue;
+				for (var j = 0; j < newSize; j++) {
+					if (currEntries[i].sys_id == newEntries[j].sys_id && newEntries[j].attachment) {
+						currEntries[i].attachment.state = newEntries[j].attachment.state;
+						break;
+					}
+				}
+			}
+		});
+	}
+
+	$scope.scanAttachment = function(attachment){
+		snAttachmentHandler.scanAttachment(attachment);
+	}
+
+	$rootScope.$on('sp.sessions', function(evt, sessions) {
+		$scope.typing = [];
+		Object.keys(sessions).forEach(function (session) {
+			var journalFields = scope.data.stream.journal_fields;
+			var canUserReadJournalField = false;
+			session = sessions[session];
+
+			for (var j = 0; j < journalFields.length; j++) {
+				if (journalFields[j].name === session.field_type) {
+					canUserReadJournalField = journalFields[j].can_read;
+					break;
+				}									
+			}
+
+			if (session.status === 'typing' && canUserReadJournalField)
+				$scope.typing.push(session);
+			else
+				return;
+
+		})
+	})
+
+	$scope.$on('sp.conversation_title.changed', function(evt, text) {
+		$scope.data.ticketTitle = text;
+	})
+
+	$scope.$watch("data.canWrite", function() {
+		$rootScope.$broadcast("sp.record.can_write", $scope.data.canWrite);
+	});
+
+	var streamUpdateTimer;
+	$scope.$watch("data.stream", function() {
+		$timeout.cancel(streamUpdateTimer);
+		streamUpdateTimer = $timeout(function() {
+			mergeStreamEntries();
+		}, 50);
+	});
+
+	function mergeStreamEntries() {
+		$scope.placeholder = $scope.data.placeholderNoEntries;
+		if (!$scope.data.stream || !$scope.data.stream.entries)
+			return;
+
+		$scope.placeholder = $scope.data.placeholder;
+		var entries = $scope.data.stream.entries;
+		if (!$scope.data.mergedEntries) {
+			$scope.data.mergedEntries = $scope.data.stream.entries.slice();
+			for (var i = 0; i < entries.length; i++) {
+				existingEntries[entries[i].sys_id] = true;
+			}
+
+			return;
+		}
+
+		var mergedEntries = $scope.data.mergedEntries;
+		for (var i = entries.length-1; i >= 0; i--) {
+			var curEntry = entries[i];
+			if (isNewEntry(mergedEntries, curEntry)){
+				mergedEntries.unshift(curEntry);
+				existingEntries[curEntry.sys_id] = true;
+			}
+		}
+	}
+
+	function isNewEntry(mergedEntries, item) {
+		for (var i=0; i < mergedEntries.length; i++) {
+			if (mergedEntries[i].sys_id === item.sys_id) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	$scope.getPlaceholder = function() {
+		if ($scope.data.use_dynamic_placeholder && $scope.data.useSecondaryJournalField)
+			return $scope.data.secondaryJournalField.label;
+		return $scope.placeholder;
+	};
+
+	var colorCache;
+	$scope.getFieldColor = function(fieldName) {
+		var defaultColor = "transparent";
+		if (colorCache) {
+			if (fieldName in colorCache)
+				return colorCache[fieldName];
+			else
+				return defaultColor;
+		}
+
+		colorCache = {};
+		var jf = $scope.data.stream.journal_fields;
+		for (var i=0; i<jf.length;i++) {
+			colorCache[jf[i].name] = jf[i].color || defaultColor;
+		}
+		return $scope.getFieldColor(fieldName);
+	}
+
+	$scope.checkInLocation = function() {
+		$rootScope.$broadcast("check_in_location");
+		$rootScope.$broadcast("location.sharing.start");
+	}
+
+	$scope.$on("location.sharing.end", function() {
+		$timeout(function() {$scope.msg = ""}, 500);
+	})
+
+	$scope.$on("location.sharing.start", function() {
+		$scope.msg = $scope.data.sharingLocMsg;
+	})
+
+	$scope.scanBarcode = function() {
+		$rootScope.$broadcast("scan_barcode");
+	}
+
+	$scope.$on("attachment.upload.start", function() {
+		$scope.data.isPosting = true;
+		$scope.msg = $scope.data.uploadingAttachmentMsg;
+	})
+
+	$scope.$on("attachment.upload.stop", function() {
+		$scope.data.isPosting = false;
+		$scope.msg = "";
+		//update the stream so we get the new attachment
+		spUtil.update($scope).then(function(r) {
+			$scope.data.stream = r.stream;
+		});
+	});
+
+	$scope.data.isPosting = false;
+
+	$scope.postEntry = function(input) {
+		post(input);
+	};
+
+	function post(input) {
+		if ($scope.data.isPosting)
+			return;
+
+		if (!input)
+			return;
+
+		input = input.trim();
+		$scope.data.journalEntry = input;
+
+		if ($scope.data.useSecondaryJournalField)
+			$scope.data.journalEntryField = $scope.data.secondaryJournalField.name;
+		else
+			$scope.data.journalEntryField = $scope.data.primaryJournalField.name;
+		$scope.data.isPosting = true;
+		spUtil.update($scope).then(function(){
+			$scope.data.isPosting = false;
+			reset();
+			spAriaUtil.sendLiveMessage($scope.data.messagePostedMsg);
+			$timeout(function() {
+				$scope.setFocus(); // sets focus back on input, defined in "link"
+			});
+		});
+		skipNextRecordWatchUpdate = true;
+		$scope.setFocus(); // sets focus back on input, defined in "link"
+	}
+
+	var reset = function(){
+		$scope.userTyping("");
+		$scope.data.journalEntry = "";
+		$scope.updateFormWithJournalFields();
+		$scope.data.useSecondaryJournalField = false;
+		$scope.data.journalEntryField = "";
+	}
+
+	$scope.keyPress = function(event) {
+		if ($scope.data.isPosting) {
+			if (event.keyCode === 13 && !event.shiftKey)
+				event.preventDefault();
+			return;
+		}
+
+		if ($scope.data.enterKeyAddsNewLine)
+			return; // must click Send button to submit
+
+		if (event.keyCode === 13 && !event.shiftKey) {
+			event.preventDefault();
+			$timeout(function() {
+				if ($scope.data.journalEntry)
+					$scope.postEntry($scope.data.journalEntry);
+			}, 250);
+		}
+	}
+
+	$scope.userTyping = function(input) {
+		var status = "viewing";
+		if (input.length)
+			status = "typing";
+
+		var field = $scope.data.useSecondaryJournalField ? $scope.data.secondaryJournalField.name : $scope.data.primaryJournalField.name;
+		$scope.$emit("record.typing", {status: status, value: input, table: $scope.data.table, sys_id: $scope.data.sys_id, field_type: field});
+		$scope.updateFormWithJournalFields();
+	}
+	$scope.updateFormWithJournalFields = function () {
+		var fieldName, fieldToClear = "";
+		if ($scope.data.useSecondaryJournalField) {
+			fieldName = $scope.data.secondaryJournalField.name;
+			fieldToClear = $scope.data.primaryJournalField.name;
+		} else {
+			fieldName = $scope.data.primaryJournalField.name;
+			fieldToClear = "";
+		}
+		$scope.$emit("activity_stream_is_changed", {"fieldName": fieldName, "fieldToClear": fieldToClear, "input": $scope.data.journalEntry});
+	}
+
+	$scope.toggleTranslation = function(e) {
+		e.showDetails = !e.showDetails;
+		var translationObject = c.data.translation;
+		e.toggleMsg = e.showDetails ? translationObject.hideMsg : translationObject.showMsg;
+	};
+
+	$scope.getTranslatedText = function(translations) {
+		if (!(Array.isArray(translations)))
+			return;
+		var translatedText;
+		var translationsLength = translations.length;
+		for (var index = 0; index < translationsLength; index++) {
+			if (translations[index].targetLanguage === g_lang) {
+				translatedText = translations[index].translatedText;
+				break;
+			}
+		}
+		return translatedText;
+	};
+
+	$scope.getAdditionalParameters = function(e, isRetry) {
+		return {
+			'event': {
+				'eventName': 'Activity Stream - Portal',
+				'fieldType': e.element,
+				'retry': isRetry
+			},
+			'additionalParameters': [{
+				'parameterName': 'textType',
+				'parameterValue': 'html'
+			}, {
+				'parameterName': 'escapeHtml',
+				'parameterValue': e.contains_code
+			}]
+		};
+	}
+
+	$scope.showTranslationInProgress = function(e) {
+		e.showTranslation = true;
+		e.isTranslationInProgress = true;
+		e.isTranslationSuccess = false;
+		e.isTranslationError = false;
+	}
+
+	$scope.showTranslationSuccess = function(e, translatedText, credits) {
+		e.translatedText = translatedText;
+		e.credits = credits;
+		e.toggleMsg = c.data.translation.hideMsg;
+		e.isTranslationInProgress = false;
+		e.isTranslationSuccess = true;
+		e.isTranslationError = false;
+		e.showDetails = true;
+	}
+
+	$scope.showTranslationError = function(e, errorMessage, tryAgain) {
+		e.isTranslationInProgress = false;
+		e.isTranslationSuccess = false;
+		e.isTranslationError = true;
+		e.translatedText = errorMessage;
+		e.tryAgain = tryAgain;
+	}
+
+	$scope.translateText = function(e, isRetry) {
+		$scope.showTranslationInProgress(e);
+		var translationObject = c.data.translation;
+		dynamicTranslation.getTranslation(e.value, $scope.getAdditionalParameters(e, isRetry)).then(
+			function(successResponse) {
+				if (successResponse.detectedLanguage.code === g_lang) {
+					$scope.showTranslationError(e, translationObject.sameLanguageErrorMsg, false);
+					return;
+				}
+				var translatedText = $scope.getTranslatedText(successResponse.translations);
+				if (translatedText) {
+					var credits = i18n.format(translationObject.creditsMsg, successResponse.translator);
+					$scope.showTranslationSuccess(e, translatedText, credits);
+				} else {
+					translatedText = translationObject.genericErrorMsg;
+					$scope.showTranslationError(e, translatedText, true);
+				}
+			},
+			function(errorResponse) {
+				var errorCode = errorResponse.code;
+				var errorMessage;
+				var showRetry = false;
+				switch (errorCode) {
+					case '40052':
+						errorMessage = translationObject.maxLengthErrorMsg;
+						break;
+					case '40055':
+						errorMessage = translationObject.credentialsErrorMsg;
+						break;
+					case '40053':
+					case '40054':
+					case '40056':
+						errorMessage = translationObject.langNotSupportedErrorMsg;
+						break;
+					default:
+						errorMessage = translationObject.genericErrorMsg;
+						showRetry = true;
+				}
+				$scope.showTranslationError(e, errorMessage, showRetry);
+			}
+		);
+	}
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.panel-title {
+  display: inline;
+}
+
+.panel-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-title-icons {
+
+  ul {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    padding: 0;
+    margin: 0;
+
+    .panel-button {
+      display: flex;
+      align-items: center;
+      margin: 0 0 0 15px;
+      line-height: initial;
+
+      &amp;:hover, &amp;:focus {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+
+.timeline-heading test {
+  float:right;
+}
+
+.timeline-body &gt; p {
+  white-space: pre-wrap;
+  overflow-x: hidden;
+}
+
+.timeline-body ul &gt; li {
+  float: none;
+}
+
+.no-resize {
+  resize: none;
+}
+
+.journal-field-indicator {
+  width: 5px;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  bottom: 5px;
+  z-index: 3;
+}
+
+.panel-heading {
+  word-wrap: break-word;
+}
+
+.avatar-container {
+  cursor: default;
+}
+
+ul {
+  list-style: none;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+
+.timeline-badge-wrap {
+  margin: auto;
+  max-width: 115px;
+}
+
+.timeline-badge.success {
+  background-color: $success;
+}
+
+.timeline-badge {
+  position: relative;
+  left:25%;
+  width:50%;
+  padding-bottom:50%;
+  border-radius:50%;
+}
+
+.timeline-badge span{
+  position:absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size:13px;
+  color: #fff;
+}
+
+.journal-type {
+  display: inline-flex;
+  display: -ms-inline-flexbox;
+  flex-wrap: wrap;
+  -webkit-justify-content: flex-end;
+}
+
+.fa-circle {
+  font-size: 4px;
+  padding: 7px;
+}
+
+@media (max-width: 768px) {
+  .timeline-badge-wrap {
+    margin: 0;
+  }
+  .timeline-badge {
+    left: 10%;
+  }
+}
+
+.translation-font {
+  font-size: 12px;
+}
+
+.translate-link {
+  cursor: pointer;
+  @extend .translation-font;
+}
+
+.translation-credits {
+  font-style: italic;
+}
+
+.translation-message {
+  padding-top: 10px;
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+.toggle-link-show {
+  display: none;
+}
+
+.translation-credits {
+  font-style: italic;
+}
+
+.translation-icon {
+  width: 12px;
+  height: 12px;
+  padding-right: 4px;
+  @extend .translation-font;
+}
+
+.translation-container {
+  border: 1px solid $well-border;
+  border-radius: 3px;
+  background-color: $well-bg;
+  padding: 10px;
+  color: $text-color;
+  margin-top: 10px;
+  @extend .translation-font;
+}
+
+.translation-delimiter {
+  padding: 7px;
+  @extend .translation-font;
+}
+
+.translate-wrap {
+  white-space: nowrap;
+}
+
+//Todos os CSS Inseridos after OOTB
+
+.avatar-container .avatar .sub-avatar {
+  background: white;
+  font-family: $text-bold !important;
+}
+
+.avatar-custom-size{
+  font-family: $text-bold !important;
+  color: $deep-sky-blue;
+  height:40px;
+  width:40px;
+  box-shadow: 0 0 0 2px $deep-sky-blue;
+  font-size: 10px !important;
+}
+
+.history-name-size{
+  font-family: $text-bold;
+  font-size: 16px;
+}
+
+//Change the submit button size
+button, input, optgroup, select, textarea {
+  height: 70px;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data>{"options": {
+	"sys_id": -1,
+		"table": "incident"
+	}
+}</demo_data>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_ticket_conversation</id>
+        <internal>false</internal>
+        <link><![CDATA[function(scope, elm) {
+	// Set the focus back on the input for IE11
+	scope.setFocus = function() {
+		var input = $(elm[0]).find('textarea#post-input');
+		if (input[0])
+			input[0].focus();
+	}
+}]]></link>
+        <name>GService Ticket Conversation</name>
+        <option_schema>[{"hint":"Enter key behavior is specified by system property (glide.service_portal.comment.enter_adds_newline) unless overridden here","name":"enter_key_behavior","section":"Behavior","default_value":"System property","label":"Enter key behavior","type":"choice","choices":[{"label":"System property","value":"System property"},{"label":"Submit","value":"Submit"},{"label":"New line","value":"New line"}]},{"hint":"What is the table of the record?","name":"table","section":"Data","label":"Table","type":"string"},{"hint":"What is the sys_id of the record?","name":"sys_id","section":"Data","label":"Sys_ID","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles>snc_external,snc_internal</roles>
+        <script><![CDATA[(function() {
+	//Used to get the current user sys_id
+	var userID = gs.getUser().getID();
+	data.user_id = userID;
+	data.username = gs.getUserDisplayName();
+	data.table = options.table;
+	data.sys_id = options.sys_id;
+
+	data.currentUserID = gs.getUserID();
+	data.maxAttachmentSize = parseInt(gs.getProperty("com.glide.attachment.max_size", 1024));
+	if (isNaN(data.maxAttachmentSize))
+		data.maxAttachmentSize = 24;
+	data.uploadingAttachmentMsg = gs.getMessage("Uploading attachment...");
+	data.sharingLocMsg = gs.getMessage("Sharing location...");
+	data.scanBarcodeMsg = gs.getMessage("Scan barcode");
+	data.checkInLocMsg = gs.getMessage("Check in location");
+	data.messagePostedMsg = gs.getMessage("Message has been sent");
+	data.viewMsg = gs.getMessage("View");
+	data.attachAddedMsg = gs.getMessage("Attachment added");
+	data.attachFailMsg = gs.getMessage("Failed to add attachment");
+	data.scanFailedMsg = gs.getMessage("File failed security scan");
+	//Sys_ID of the record producer
+	//data.sys_id = (input && input.sys_id) || options.sys_id || $sp.getParameter("sys_id");
+	//Table of the record producer
+	//data.table = (input && input.table) || options.table || $sp.getParameter("table");
+	// don't use options.title unless sys_id and table also come from options
+	if (options && options.sys_id && options.table)
+		data.ticketTitle = options.title;
+	data.placeholder = options.placeholder || gs.getMessage("Type your message here...");
+	data.placeholderNoEntries = options.placeholderNoEntries || gs.getMessage("Type your message here...");
+	data.btnLabel = options.btnLabel || gs.getMessage("Send");
+	data.includeExtended = options.includeExtended || false;
+	data.use_dynamic_placeholder = options.use_dynamic_placeholder;
+	data.hideAttachmentBtn = options.hideAttachmentBtn;
+
+	var translationLuaParameters = {
+		'event': {
+			'eventName': 'Activity Stream - Portal'
+		}
+	};
+	var isDynamicTranslationInstalled = GlidePluginManager.isActive("com.glide.dynamic_translation");
+	if (isDynamicTranslationInstalled) {
+		var isDynamicTranslationEnabled	= sn_dt_api.DynamicTranslation.isEnabled(translationLuaParameters);
+		data.isTranslationEnabled = isDynamicTranslationEnabled && isDynamicTranslationEnabled.translation;
+		if(data.isTranslationEnabled)
+			initDynamicTranslation();
+	}
+
+	function initDynamicTranslation() {
+		var translation = {};
+		translation.translateLinkMsg = gs.getMessage("Translate");
+		translation.sameLanguageErrorMsg = gs.getMessage("This content is written in your preferred language. No need to translate.");
+		translation.genericErrorMsg = gs.getMessage("Unable to translate.");
+		translation.credentialsErrorMsg = gs.getMessage("Credentials are missing or invalid. Contact your administrator.");
+		translation.maxLengthErrorMsg = gs.getMessage("Text has exceeded the maximum length.");
+		translation.langNotSupportedErrorMsg = gs.getMessage("Text cannot be translated to your preferred language.");
+		translation.creditsMsg = gs.getMessage("Translated by {0}");
+		translation.translationProgressMsg = gs.getMessage("Translating...");
+		translation.hideMsg = gs.getMessage("Hide");
+		translation.showMsg = gs.getMessage("Show");
+		translation.tryAgainMsg = gs.getMessage("Try Again");
+		data.translation = translation;
+	}
+
+	data.enterKeyAddsNewLine = false;
+	if (options.enter_key_behavior == "System property")
+		data.enterKeyAddsNewLine = gs.getProperty("glide.service_portal.comment.enter_adds_newline") == "true";
+	else if (options.enter_key_behavior == "New line")
+		data.enterKeyAddsNewLine = true;
+
+	var gr = new GlideRecord(data.table);
+	if (!gr.isValid())
+		return;
+
+	gr.get(data.sys_id);
+	if (!gr.canRead())
+		return;
+
+	data.isNewRecord = data.sys_id == -1 || gr.isNewRecord();
+	data.table = gr.getRecordClassName(); // use actual table for the record
+	options.no_readable_journal_field_message = options.no_readable_journal_field_message || gs.getMessage("No readable comment field");
+	data.number = gr.getDisplayValue('number');
+	data.created_on = gr.getValue('sys_created_on');
+
+	if (input) { // if we have input then we're saving
+		if (input.journalEntry && input.journalEntryField){
+			if (gr.canWrite(input.journalEntryField)){
+				gr[input.journalEntryField].setDisplayValue(input.journalEntry);
+				gr.update();
+				$sp.logStat('Comments', data.table, data.sys_id, input.journalEntry);
+			}
+		}
+		data.ticketTitle = input.ticketTitle;
+		data.placeholder = input.placeholder;
+		data.btnLabel = input.btnLabel;
+		data.includeExtended = input.includeExtended;
+	} else {
+		if (!data.ticketTitle) {
+			if (gr.short_description.canRead())
+				data.ticketTitle = gr.getDisplayValue("short_description");
+			if (!data.ticketTitle)
+				data.ticketTitle = data.number;
+		}
+
+		$sp.logStat('Task View', data.table, data.sys_id);
+	}
+
+	data.canWrite = gr.canWrite();
+	data.canAttach = userCanAttach(gr);
+	data.canRead = gr.canRead();
+	data.hasWritableJournalField = false;
+	data.hasReadableJournalField = false;
+	if (data.canRead && !data.isNewRecord) {
+		data.stream = $sp.getStream(data.table, data.sys_id);
+		// Journal fields come in correct order already
+		// so grab the first 2 writeable fields
+		if ('journal_fields' in data.stream) {
+			var jf = data.stream.journal_fields;
+			for(var i=0; i < jf.length; i++){
+				if (jf[i].can_read === true)
+					data.hasReadableJournalField = true;
+				if (jf[i].can_write === true){
+					data.hasWritableJournalField = true;
+					if (!data.primaryJournalField)
+						data.primaryJournalField = jf[i];
+					else if (data.includeExtended && !data.secondaryJournalField)
+						data.secondaryJournalField = jf[i];
+					else
+						break;
+				}
+			}
+		}
+
+	}
+
+	data.tableLabel = gr.getLabel();
+
+	function userCanAttach(originalRecord) {
+		if (!gs.hasRole(gs.getProperty("glide.attachment.role")))
+			return false;
+
+		// To check whether user can upload attachments, need to check "no_attachment" table
+		// attribute of the target record (e.g., incident vs. task), so fetch it if we need to.
+		// GlideRecordScriptUtil.getRealRecord is not available to scoped apps, so can't use it.
+		var targetRecordForAttributes = originalRecord;
+		if (originalRecord.getRecordClassName() != originalRecord.getTableName()) {
+			targetRecordForAttributes = new GlideRecord(originalRecord.getRecordClassName());
+			targetRecordForAttributes.get(originalRecord.getUniqueValue());
+		}
+		return targetRecordForAttributes.getAttribute("no_attachment") != "true";
+	}
+
+})()]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-18 13:43:15</sys_created_on>
+        <sys_id>b0a9c16adbb01410fa11cf2414961949</sys_id>
+        <sys_mod_count>112</sys_mod_count>
+        <sys_name>GService Ticket Conversation</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_b0a9c16adbb01410fa11cf2414961949</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-19 14:31:56</sys_updated_on>
+        <template><![CDATA[<div ng-if="!data.canRead && !data.isNewRecord">
+  ${GService Without Notifications}
+</div>
+
+<div ng-if="data.canRead && !data.isNewRecord" class="">
+  <div class="col-md-5 col-sm-5">
+    <div class="panel-heading">
+
+      <div class="">
+        <div>
+          {{data.number}}          
+        </div>
+        <div>
+          {{data.ticketTitle}}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="panel-body">
+      <div ng-if="data.hasReadableJournalField">
+        <div class="row">
+          <ul role="list" class="" aria-label="${Ticket history}">
+            <li class="" ng-repeat="e in data.mergedEntries | limitTo : 1">
+              <sn-avatar ng-if="hasLiveProfile(e.user_sys_id)" primary="getLiveProfileByUserId(e.user_sys_id)" class="avatar-large avatar-custom-size" show-presence="false" enable-context-menu="false">
+              </sn-avatar>
+              <div class="history-name-size">{{e.name}}</div>
+              <div class="">
+                <p ng-if="(e.element != 'attachment')" ng-bind-html="e.value"></p>
+                <div ng-if="(e.element == 'attachment')">
+                  <a ng-if="(e.attachment.state == 'available')" target="_blank" href="/sys_attachment.do?view=true&sys_id={{e.attachment.sys_id}}" title="${View}">
+                    <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/>
+                  </a>
+                  <a ng-if="(e.attachment.state == '' || e.attachment.state == 'pending' || e.attachment.state == 'available_conditionally')" ng-click="scanAttachment(e.attachment)" href="javascript:void(0)" title="${View}">
+                    <img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/>
+                  </a>
+                  <div>
+                    <div ng-if="(e.attachment.state == 'available')">
+                      <a href="/sys_attachment.do?sys_id={{e.attachment.sys_id}}" target="_blank" title="{{dataViewMsg}}"><strong>{{e.attachment.file_name}}</strong></a><br/>
+                      {{e.attachment.size}}
+                    </div>
+                    <div ng-if="(e.attachment.state == 'not_available')">
+                      <span title="{{dataViewMsg}}" class="not_available">{{e.attachment.file_name}}</span><br/>
+                      <span class="error">{{data.scanFailedMsg}}</span>
+                    </div>
+                    <div ng-if="(e.attachment.state == '' || e.attachment.state == 'pending' || e.attachment.state == 'available_conditionally')">
+                      <a href="javascript:void(0)" ng-click="scanAttachment(e.attachment)" title="{{dataViewMsg}}"><strong>{{e.attachment.file_name}}</strong></a><br/>
+                      {{e.attachment.size}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class = "time-text">
+                <small class="text-muted">
+                  {{e.sys_created_on}}
+                </small>
+              </p>
+            </li>
+          </ul>
+        </div>
+
+        <img src="GService_DASH_ReportarErro.png" height="40px">
+        <span> {{data.username}} </span>
+
+        <div ng-if="(!data.hideAttachmentBtn)" class="attach_text">
+          <sp-attachment-button ng-if="data.canWrite && data.canAttach">
+            ${Add attachments}
+          </sp-attachment-button>
+          <now-attachments-list class="attachment-list" template="sp_attachment_single_line" >
+          </now-attachments-list>
+        </div>
+
+        <form ng-submit="postEntry(data.journalEntry)" id="sand">
+          <div ng-show="data.hasWritableJournalField" class="input-group">
+            <textarea ng-keypress="keyPress($event)" sn-resize-height="trim" rows="1" id="post-input" class="form-control no-resize overflow-hidden" ng-model='data.journalEntry' ng-model-options='{debounce: 250}' ng-attr-placeholder="{{getPlaceholder()}}" aria-label="{{getPlaceholder()}}" autocomplete="off" ng-change="userTyping(data.journalEntry)"/>
+            <span class="journal-field-indicator" ng-style="({'background-color': data.useSecondaryJournalField ? data.secondaryJournalField.color : data.primaryJournalField.color})"></span>
+            <input type="image" src="GService_SS_Digital.png" ng-disabled="data.isPosting" value="{{data.btnLabel}}" style="cursor: pointer"/>
+          </div>
+          <!--<div ng-if="(data.secondaryJournalField && data.secondaryJournalField.can_write)">
+<label class="pull-right">
+<input type="checkbox" ng-model="data.useSecondaryJournalField" ng-change="updateFormWithJournalFields()"/>
+<span>{{data.secondaryJournalField.label}}</span>
+</label>
+</div>-->
+        </form>
+      </div>  
+    </div>
+
+    <div ng-if="!data.hasReadableJournalField">
+      {{options.no_readable_journal_field_message}}
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_b0a9c16adbb01410fa11cf2414961949</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;standard&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function spTicketConversation($scope, nowAttachmentHandler, $animate, $rootScope, cabrillo, $timeout, snRecordWatcher, spUtil, spAriaUtil, $http, $window, snAttachmentHandler, i18n, dynamicTranslation) {
+	$scope.showLocationIcon = false;
+	$scope.msg = "";
+	$scope.isNative = cabrillo.isNative();
+	$scope.errorMessages = [];
+	var existingEntries = {};
+	var c = this;
+	var skipNextRecordWatchUpdate = false;
+	$scope.typing = [];
+	if (!$scope.data.hasReadableJournalField &amp;&amp; !$scope.data.isNewRecord)
+		console.warn("No readable journal field (comments, work notes, etc.) available in the stream for this record");
+	if ($scope.page &amp;&amp; $scope.page.g_form)
+		hideParentJournalFields();
+
+	function hideParentJournalFields() {
+		if (!$scope.data.stream)
+			return;
+
+		var fields = $scope.data.stream.journal_fields;
+		var g_form = $scope.page.g_form;
+		for (var f in fields)
+			g_form.setDisplay(fields[f].name, false);
+	}
+	var liveProfiles = {};
+	liveProfiles[$scope.user.sys_id] = {
+		userID: $scope.user.sys_id,
+		name: $scope.user.name,
+		initials: $window.NOW.user_initials
+	};
+	if ($window.NOW.user_avatar) {
+		liveProfiles[$scope.user.sys_id].userImage = $window.NOW.user_avatar;
+	}
+
+	$scope.getLiveProfileByUserId = function (userId){
+		return liveProfiles[userId];
+	}
+
+	var pending = {};
+
+	//Little caching implementation to make sure we only get a given user's profile once.
+	$scope.hasLiveProfile = function hasLiveProfile(userId){
+		if (!userId)
+			return false;
+
+		if (liveProfiles[userId])
+			return true;
+
+		if (pending[userId])
+			return false;
+
+		pending[userId] = $http.get('/api/now/live/profiles/sys_user.' + userId).then(function (response) {
+			liveProfiles[userId] = {
+				userID: userId,
+				name: response.data.result.name,
+				initials: buildInitials(response.data.result.name),
+				avatar: response.data.result.avatar
+			};
+		});
+		return false;
+	}
+
+	function buildInitials(name) {
+		if (!name)
+			return "--";
+
+		var initials = name.split(" ").map(function(word) {
+			return word.toUpperCase();
+		}).filter(function(word) {
+			return word.match(/^[A-Z]/);
+		}).map(function(word) {
+			return word.substring(0,1);
+		}).join("");
+
+		return (initials.length &gt; 3) ? initials.substr(0, 3) : initials;
+	}
+
+
+	function setupAttachmentHandler(){
+		$scope.attachmentHandler = new nowAttachmentHandler(attachSuccess, appendError);
+
+		function attachSuccess() {
+			$rootScope.$broadcast("sp.attachments.update", $scope.data.sys_id);
+			spAriaUtil.sendLiveMessage($scope.data.attachAddedMsg);
+		}
+
+		function appendError(error) {
+			spUtil.addErrorMessage(error.msg + error.fileName);
+			$scope.errorMessages.push(error);
+			spAriaUtil.sendLiveMessage($scope.data.attachFailMsg);
+		}
+
+		$timeout(function() {
+			$scope.attachmentHandler.setParams($scope.data.table, $scope.data.sys_id, 1024 * 1024 * $scope.data.maxAttachmentSize);
+		})
+	}
+	setupAttachmentHandler();
+
+	var recordWatcherTimer;
+	$scope.$on('record.updated', function(name, data) {
+		// Use record watcher update if:
+		//	This record was updated AND This widget didn't trigger the update.
+		if (data.table_name == $scope.data.table &amp;&amp; data.sys_id == $scope.data.sys_id){
+			$timeout.cancel(recordWatcherTimer);
+			recordWatcherTimer = $timeout(function(){
+				if (skipNextRecordWatchUpdate)
+					skipNextRecordWatchUpdate = false;
+				else
+					spUtil.update($scope).then(function(r){
+						$scope.data.stream = r.stream;
+					});
+			}, 250);
+		}
+	});
+
+	$scope.$on('sp.show_location_icon', function(evt) {
+		$scope.data.showLocationIcon = true;
+	});
+
+	$scope.$on('attachment.updated', function(evt,options) {
+		if ($scope.data.sys_id != -1 &amp;&amp; options.sys_id == $scope.data.sys_id)
+			updateAttachmentState($scope.data.table, $scope.data.sys_id);
+	});
+
+
+	function updateAttachmentState(table, sys_id) {
+		c.server.update().then(function (data) {
+			if (!data.stream || !data.stream.entries)
+				return;
+			var newEntries = data.stream.entries;
+			var currEntries = $scope.data.mergedEntries;
+			var oldSize = currEntries ? currEntries.length : 0;
+			var newSize = 1;
+			for (var i = 0; i &lt; oldSize; i++) {
+				if (!currEntries[i].attachment)
+					continue;
+				for (var j = 0; j &lt; newSize; j++) {
+					if (currEntries[i].sys_id == newEntries[j].sys_id &amp;&amp; newEntries[j].attachment) {
+						currEntries[i].attachment.state = newEntries[j].attachment.state;
+						break;
+					}
+				}
+			}
+		});
+	}
+
+	$scope.scanAttachment = function(attachment){
+		snAttachmentHandler.scanAttachment(attachment);
+	}
+
+	$rootScope.$on('sp.sessions', function(evt, sessions) {
+		$scope.typing = [];
+		Object.keys(sessions).forEach(function (session) {
+			var journalFields = scope.data.stream.journal_fields;
+			var canUserReadJournalField = false;
+			session = sessions[session];
+
+			for (var j = 0; j &lt; journalFields.length; j++) {
+				if (journalFields[j].name === session.field_type) {
+					canUserReadJournalField = journalFields[j].can_read;
+					break;
+				}									
+			}
+
+			if (session.status === 'typing' &amp;&amp; canUserReadJournalField)
+				$scope.typing.push(session);
+			else
+				return;
+
+		})
+	})
+
+	$scope.$on('sp.conversation_title.changed', function(evt, text) {
+		$scope.data.ticketTitle = text;
+	})
+
+	$scope.$watch("data.canWrite", function() {
+		$rootScope.$broadcast("sp.record.can_write", $scope.data.canWrite);
+	});
+
+	var streamUpdateTimer;
+	$scope.$watch("data.stream", function() {
+		$timeout.cancel(streamUpdateTimer);
+		streamUpdateTimer = $timeout(function() {
+			mergeStreamEntries();
+		}, 50);
+	});
+
+	function mergeStreamEntries() {
+		$scope.placeholder = $scope.data.placeholderNoEntries;
+		if (!$scope.data.stream || !$scope.data.stream.entries)
+			return;
+
+		$scope.placeholder = $scope.data.placeholder;
+		var entries = $scope.data.stream.entries;
+		if (!$scope.data.mergedEntries) {
+			$scope.data.mergedEntries = $scope.data.stream.entries.slice();
+			for (var i = 0; i &lt; entries.length; i++) {
+				existingEntries[entries[i].sys_id] = true;
+			}
+
+			return;
+		}
+
+		var mergedEntries = $scope.data.mergedEntries;
+		for (var i = entries.length-1; i &gt;= 0; i--) {
+			var curEntry = entries[i];
+			if (isNewEntry(mergedEntries, curEntry)){
+				mergedEntries.unshift(curEntry);
+				existingEntries[curEntry.sys_id] = true;
+			}
+		}
+	}
+
+	function isNewEntry(mergedEntries, item) {
+		for (var i=0; i &lt; mergedEntries.length; i++) {
+			if (mergedEntries[i].sys_id === item.sys_id) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	$scope.getPlaceholder = function() {
+		if ($scope.data.use_dynamic_placeholder &amp;&amp; $scope.data.useSecondaryJournalField)
+			return $scope.data.secondaryJournalField.label;
+		return $scope.placeholder;
+	};
+
+	var colorCache;
+	$scope.getFieldColor = function(fieldName) {
+		var defaultColor = "transparent";
+		if (colorCache) {
+			if (fieldName in colorCache)
+				return colorCache[fieldName];
+			else
+				return defaultColor;
+		}
+
+		colorCache = {};
+		var jf = $scope.data.stream.journal_fields;
+		for (var i=0; i&lt;jf.length;i++) {
+			colorCache[jf[i].name] = jf[i].color || defaultColor;
+		}
+		return $scope.getFieldColor(fieldName);
+	}
+
+	$scope.checkInLocation = function() {
+		$rootScope.$broadcast("check_in_location");
+		$rootScope.$broadcast("location.sharing.start");
+	}
+
+	$scope.$on("location.sharing.end", function() {
+		$timeout(function() {$scope.msg = ""}, 500);
+	})
+
+	$scope.$on("location.sharing.start", function() {
+		$scope.msg = $scope.data.sharingLocMsg;
+	})
+
+	$scope.scanBarcode = function() {
+		$rootScope.$broadcast("scan_barcode");
+	}
+
+	$scope.$on("attachment.upload.start", function() {
+		$scope.data.isPosting = true;
+		$scope.msg = $scope.data.uploadingAttachmentMsg;
+	})
+
+	$scope.$on("attachment.upload.stop", function() {
+		$scope.data.isPosting = false;
+		$scope.msg = "";
+		//update the stream so we get the new attachment
+		spUtil.update($scope).then(function(r) {
+			$scope.data.stream = r.stream;
+		});
+	});
+
+	$scope.data.isPosting = false;
+
+	$scope.postEntry = function(input) {
+		post(input);
+	};
+
+	function post(input) {
+		if ($scope.data.isPosting)
+			return;
+
+		if (!input)
+			return;
+
+		input = input.trim();
+		$scope.data.journalEntry = input;
+
+		if ($scope.data.useSecondaryJournalField)
+			$scope.data.journalEntryField = $scope.data.secondaryJournalField.name;
+		else
+			$scope.data.journalEntryField = $scope.data.primaryJournalField.name;
+		$scope.data.isPosting = true;
+		spUtil.update($scope).then(function(){
+			$scope.data.isPosting = false;
+			reset();
+			spAriaUtil.sendLiveMessage($scope.data.messagePostedMsg);
+			$timeout(function() {
+				$scope.setFocus(); // sets focus back on input, defined in "link"
+			});
+		});
+		skipNextRecordWatchUpdate = true;
+		$scope.setFocus(); // sets focus back on input, defined in "link"
+	}
+
+	var reset = function(){
+		$scope.userTyping("");
+		$scope.data.journalEntry = "";
+		$scope.updateFormWithJournalFields();
+		$scope.data.useSecondaryJournalField = false;
+		$scope.data.journalEntryField = "";
+	}
+
+	$scope.keyPress = function(event) {
+		if ($scope.data.isPosting) {
+			if (event.keyCode === 13 &amp;&amp; !event.shiftKey)
+				event.preventDefault();
+			return;
+		}
+
+		if ($scope.data.enterKeyAddsNewLine)
+			return; // must click Send button to submit
+
+		if (event.keyCode === 13 &amp;&amp; !event.shiftKey) {
+			event.preventDefault();
+			$timeout(function() {
+				if ($scope.data.journalEntry)
+					$scope.postEntry($scope.data.journalEntry);
+			}, 250);
+		}
+	}
+
+	$scope.userTyping = function(input) {
+		var status = "viewing";
+		if (input.length)
+			status = "typing";
+
+		var field = $scope.data.useSecondaryJournalField ? $scope.data.secondaryJournalField.name : $scope.data.primaryJournalField.name;
+		$scope.$emit("record.typing", {status: status, value: input, table: $scope.data.table, sys_id: $scope.data.sys_id, field_type: field});
+		$scope.updateFormWithJournalFields();
+	}
+	$scope.updateFormWithJournalFields = function () {
+		var fieldName, fieldToClear = "";
+		if ($scope.data.useSecondaryJournalField) {
+			fieldName = $scope.data.secondaryJournalField.name;
+			fieldToClear = $scope.data.primaryJournalField.name;
+		} else {
+			fieldName = $scope.data.primaryJournalField.name;
+			fieldToClear = "";
+		}
+		$scope.$emit("activity_stream_is_changed", {"fieldName": fieldName, "fieldToClear": fieldToClear, "input": $scope.data.journalEntry});
+	}
+
+	$scope.toggleTranslation = function(e) {
+		e.showDetails = !e.showDetails;
+		var translationObject = c.data.translation;
+		e.toggleMsg = e.showDetails ? translationObject.hideMsg : translationObject.showMsg;
+	};
+
+	$scope.getTranslatedText = function(translations) {
+		if (!(Array.isArray(translations)))
+			return;
+		var translatedText;
+		var translationsLength = translations.length;
+		for (var index = 0; index &lt; translationsLength; index++) {
+			if (translations[index].targetLanguage === g_lang) {
+				translatedText = translations[index].translatedText;
+				break;
+			}
+		}
+		return translatedText;
+	};
+
+	$scope.getAdditionalParameters = function(e, isRetry) {
+		return {
+			'event': {
+				'eventName': 'Activity Stream - Portal',
+				'fieldType': e.element,
+				'retry': isRetry
+			},
+			'additionalParameters': [{
+				'parameterName': 'textType',
+				'parameterValue': 'html'
+			}, {
+				'parameterName': 'escapeHtml',
+				'parameterValue': e.contains_code
+			}]
+		};
+	}
+
+	$scope.showTranslationInProgress = function(e) {
+		e.showTranslation = true;
+		e.isTranslationInProgress = true;
+		e.isTranslationSuccess = false;
+		e.isTranslationError = false;
+	}
+
+	$scope.showTranslationSuccess = function(e, translatedText, credits) {
+		e.translatedText = translatedText;
+		e.credits = credits;
+		e.toggleMsg = c.data.translation.hideMsg;
+		e.isTranslationInProgress = false;
+		e.isTranslationSuccess = true;
+		e.isTranslationError = false;
+		e.showDetails = true;
+	}
+
+	$scope.showTranslationError = function(e, errorMessage, tryAgain) {
+		e.isTranslationInProgress = false;
+		e.isTranslationSuccess = false;
+		e.isTranslationError = true;
+		e.translatedText = errorMessage;
+		e.tryAgain = tryAgain;
+	}
+
+	$scope.translateText = function(e, isRetry) {
+		$scope.showTranslationInProgress(e);
+		var translationObject = c.data.translation;
+		dynamicTranslation.getTranslation(e.value, $scope.getAdditionalParameters(e, isRetry)).then(
+			function(successResponse) {
+				if (successResponse.detectedLanguage.code === g_lang) {
+					$scope.showTranslationError(e, translationObject.sameLanguageErrorMsg, false);
+					return;
+				}
+				var translatedText = $scope.getTranslatedText(successResponse.translations);
+				if (translatedText) {
+					var credits = i18n.format(translationObject.creditsMsg, successResponse.translator);
+					$scope.showTranslationSuccess(e, translatedText, credits);
+				} else {
+					translatedText = translationObject.genericErrorMsg;
+					$scope.showTranslationError(e, translatedText, true);
+				}
+			},
+			function(errorResponse) {
+				var errorCode = errorResponse.code;
+				var errorMessage;
+				var showRetry = false;
+				switch (errorCode) {
+					case '40052':
+						errorMessage = translationObject.maxLengthErrorMsg;
+						break;
+					case '40055':
+						errorMessage = translationObject.credentialsErrorMsg;
+						break;
+					case '40053':
+					case '40054':
+					case '40056':
+						errorMessage = translationObject.langNotSupportedErrorMsg;
+						break;
+					default:
+						errorMessage = translationObject.genericErrorMsg;
+						showRetry = true;
+				}
+				$scope.showTranslationError(e, errorMessage, showRetry);
+			}
+		);
+	}
+
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.panel-title {
+  display: inline;
+}
+
+.panel-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-title-icons {
+
+  ul {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    padding: 0;
+    margin: 0;
+
+    .panel-button {
+      display: flex;
+      align-items: center;
+      margin: 0 0 0 15px;
+      line-height: initial;
+
+      &amp;amp;:hover, &amp;amp;:focus {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+
+.timeline-heading test {
+  float:right;
+}
+
+.timeline-body &amp;gt; p {
+  white-space: pre-wrap;
+  overflow-x: hidden;
+}
+
+.timeline-body ul &amp;gt; li {
+  float: none;
+}
+
+.no-resize {
+  resize: none;
+}
+
+.journal-field-indicator {
+  width: 5px;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  bottom: 5px;
+  z-index: 3;
+}
+
+.panel-heading {
+  word-wrap: break-word;
+}
+
+.avatar-container {
+  cursor: default;
+}
+
+ul {
+  list-style: none;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+
+.timeline-badge-wrap {
+  margin: auto;
+  max-width: 115px;
+}
+
+.timeline-badge.success {
+  background-color: $success;
+}
+
+.timeline-badge {
+  position: relative;
+  left:25%;
+  width:50%;
+  padding-bottom:50%;
+  border-radius:50%;
+}
+
+.timeline-badge span{
+  position:absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size:13px;
+  color: #fff;
+}
+
+.journal-type {
+  display: inline-flex;
+  display: -ms-inline-flexbox;
+  flex-wrap: wrap;
+  -webkit-justify-content: flex-end;
+}
+
+.fa-circle {
+  font-size: 4px;
+  padding: 7px;
+}
+
+@media (max-width: 768px) {
+  .timeline-badge-wrap {
+    margin: 0;
+  }
+  .timeline-badge {
+    left: 10%;
+  }
+}
+
+.translation-font {
+  font-size: 12px;
+}
+
+.translate-link {
+  cursor: pointer;
+  @extend .translation-font;
+}
+
+.translation-credits {
+  font-style: italic;
+}
+
+.translation-message {
+  padding-top: 10px;
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+.toggle-link-show {
+  display: none;
+}
+
+.translation-credits {
+  font-style: italic;
+}
+
+.translation-icon {
+  width: 12px;
+  height: 12px;
+  padding-right: 4px;
+  @extend .translation-font;
+}
+
+.translation-container {
+  border: 1px solid $well-border;
+  border-radius: 3px;
+  background-color: $well-bg;
+  padding: 10px;
+  color: $text-color;
+  margin-top: 10px;
+  @extend .translation-font;
+}
+
+.translation-delimiter {
+  padding: 7px;
+  @extend .translation-font;
+}
+
+.translate-wrap {
+  white-space: nowrap;
+}
+
+//Todos os CSS Inseridos after OOTB
+
+.avatar-container .avatar .sub-avatar {
+  background: white;
+  font-family: $text-bold !important;
+}
+
+.avatar-custom-size{
+  font-family: $text-bold !important;
+  color: $deep-sky-blue;
+  height:40px;
+  width:40px;
+  box-shadow: 0 0 0 2px $deep-sky-blue;
+  font-size: 10px !important;
+}
+
+.history-name-size{
+  font-family: $text-bold;
+  font-size: 16px;
+}
+
+//Change the submit button size
+button, input, optgroup, select, textarea {
+  height: 70px;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data&gt;{"options": {
+	"sys_id": -1,
+		"table": "incident"
+	}
+}&lt;/demo_data&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;gservice_ticket_conversation&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function(scope, elm) {
+	// Set the focus back on the input for IE11
+	scope.setFocus = function() {
+		var input = $(elm[0]).find('textarea#post-input');
+		if (input[0])
+			input[0].focus();
+	}
+}]]&gt;&lt;/link&gt;&lt;name&gt;GService Ticket Conversation&lt;/name&gt;&lt;option_schema&gt;[{"hint":"Enter key behavior is specified by system property (glide.service_portal.comment.enter_adds_newline) unless overridden here","name":"enter_key_behavior","section":"Behavior","default_value":"System property","label":"Enter key behavior","type":"choice","choices":[{"label":"System property","value":"System property"},{"label":"Submit","value":"Submit"},{"label":"New line","value":"New line"}]},{"hint":"What is the table of the record?","name":"table","section":"Data","label":"Table","type":"string"},{"hint":"What is the sys_id of the record?","name":"sys_id","section":"Data","label":"Sys_ID","type":"string"}]&lt;/option_schema&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles&gt;snc_external,snc_internal&lt;/roles&gt;&lt;script&gt;&lt;![CDATA[(function() {
+	//Used to get the current user sys_id
+	var userID = gs.getUser().getID();
+	data.user_id = userID;
+	data.username = gs.getUserDisplayName();
+	data.table = options.table;
+	data.sys_id = options.sys_id;
+
+	data.currentUserID = gs.getUserID();
+	data.maxAttachmentSize = parseInt(gs.getProperty("com.glide.attachment.max_size", 1024));
+	if (isNaN(data.maxAttachmentSize))
+		data.maxAttachmentSize = 24;
+	data.uploadingAttachmentMsg = gs.getMessage("Uploading attachment...");
+	data.sharingLocMsg = gs.getMessage("Sharing location...");
+	data.scanBarcodeMsg = gs.getMessage("Scan barcode");
+	data.checkInLocMsg = gs.getMessage("Check in location");
+	data.messagePostedMsg = gs.getMessage("Message has been sent");
+	data.viewMsg = gs.getMessage("View");
+	data.attachAddedMsg = gs.getMessage("Attachment added");
+	data.attachFailMsg = gs.getMessage("Failed to add attachment");
+	data.scanFailedMsg = gs.getMessage("File failed security scan");
+	//Sys_ID of the record producer
+	//data.sys_id = (input &amp;&amp; input.sys_id) || options.sys_id || $sp.getParameter("sys_id");
+	//Table of the record producer
+	//data.table = (input &amp;&amp; input.table) || options.table || $sp.getParameter("table");
+	// don't use options.title unless sys_id and table also come from options
+	if (options &amp;&amp; options.sys_id &amp;&amp; options.table)
+		data.ticketTitle = options.title;
+	data.placeholder = options.placeholder || gs.getMessage("Type your message here...");
+	data.placeholderNoEntries = options.placeholderNoEntries || gs.getMessage("Type your message here...");
+	data.btnLabel = options.btnLabel || gs.getMessage("Send");
+	data.includeExtended = options.includeExtended || false;
+	data.use_dynamic_placeholder = options.use_dynamic_placeholder;
+	data.hideAttachmentBtn = options.hideAttachmentBtn;
+
+	var translationLuaParameters = {
+		'event': {
+			'eventName': 'Activity Stream - Portal'
+		}
+	};
+	var isDynamicTranslationInstalled = GlidePluginManager.isActive("com.glide.dynamic_translation");
+	if (isDynamicTranslationInstalled) {
+		var isDynamicTranslationEnabled	= sn_dt_api.DynamicTranslation.isEnabled(translationLuaParameters);
+		data.isTranslationEnabled = isDynamicTranslationEnabled &amp;&amp; isDynamicTranslationEnabled.translation;
+		if(data.isTranslationEnabled)
+			initDynamicTranslation();
+	}
+
+	function initDynamicTranslation() {
+		var translation = {};
+		translation.translateLinkMsg = gs.getMessage("Translate");
+		translation.sameLanguageErrorMsg = gs.getMessage("This content is written in your preferred language. No need to translate.");
+		translation.genericErrorMsg = gs.getMessage("Unable to translate.");
+		translation.credentialsErrorMsg = gs.getMessage("Credentials are missing or invalid. Contact your administrator.");
+		translation.maxLengthErrorMsg = gs.getMessage("Text has exceeded the maximum length.");
+		translation.langNotSupportedErrorMsg = gs.getMessage("Text cannot be translated to your preferred language.");
+		translation.creditsMsg = gs.getMessage("Translated by {0}");
+		translation.translationProgressMsg = gs.getMessage("Translating...");
+		translation.hideMsg = gs.getMessage("Hide");
+		translation.showMsg = gs.getMessage("Show");
+		translation.tryAgainMsg = gs.getMessage("Try Again");
+		data.translation = translation;
+	}
+
+	data.enterKeyAddsNewLine = false;
+	if (options.enter_key_behavior == "System property")
+		data.enterKeyAddsNewLine = gs.getProperty("glide.service_portal.comment.enter_adds_newline") == "true";
+	else if (options.enter_key_behavior == "New line")
+		data.enterKeyAddsNewLine = true;
+
+	var gr = new GlideRecord(data.table);
+	if (!gr.isValid())
+		return;
+
+	gr.get(data.sys_id);
+	if (!gr.canRead())
+		return;
+
+	data.isNewRecord = data.sys_id == -1 || gr.isNewRecord();
+	data.table = gr.getRecordClassName(); // use actual table for the record
+	options.no_readable_journal_field_message = options.no_readable_journal_field_message || gs.getMessage("No readable comment field");
+	data.number = gr.getDisplayValue('number');
+	data.created_on = gr.getValue('sys_created_on');
+
+	if (input) { // if we have input then we're saving
+		if (input.journalEntry &amp;&amp; input.journalEntryField){
+			if (gr.canWrite(input.journalEntryField)){
+				gr[input.journalEntryField].setDisplayValue(input.journalEntry);
+				gr.update();
+				$sp.logStat('Comments', data.table, data.sys_id, input.journalEntry);
+			}
+		}
+		data.ticketTitle = input.ticketTitle;
+		data.placeholder = input.placeholder;
+		data.btnLabel = input.btnLabel;
+		data.includeExtended = input.includeExtended;
+	} else {
+		if (!data.ticketTitle) {
+			if (gr.short_description.canRead())
+				data.ticketTitle = gr.getDisplayValue("short_description");
+			if (!data.ticketTitle)
+				data.ticketTitle = data.number;
+		}
+
+		$sp.logStat('Task View', data.table, data.sys_id);
+	}
+
+	data.canWrite = gr.canWrite();
+	data.canAttach = userCanAttach(gr);
+	data.canRead = gr.canRead();
+	data.hasWritableJournalField = false;
+	data.hasReadableJournalField = false;
+	if (data.canRead &amp;&amp; !data.isNewRecord) {
+		data.stream = $sp.getStream(data.table, data.sys_id);
+		// Journal fields come in correct order already
+		// so grab the first 2 writeable fields
+		if ('journal_fields' in data.stream) {
+			var jf = data.stream.journal_fields;
+			for(var i=0; i &lt; jf.length; i++){
+				if (jf[i].can_read === true)
+					data.hasReadableJournalField = true;
+				if (jf[i].can_write === true){
+					data.hasWritableJournalField = true;
+					if (!data.primaryJournalField)
+						data.primaryJournalField = jf[i];
+					else if (data.includeExtended &amp;&amp; !data.secondaryJournalField)
+						data.secondaryJournalField = jf[i];
+					else
+						break;
+				}
+			}
+		}
+
+	}
+
+	data.tableLabel = gr.getLabel();
+
+	function userCanAttach(originalRecord) {
+		if (!gs.hasRole(gs.getProperty("glide.attachment.role")))
+			return false;
+
+		// To check whether user can upload attachments, need to check "no_attachment" table
+		// attribute of the target record (e.g., incident vs. task), so fetch it if we need to.
+		// GlideRecordScriptUtil.getRealRecord is not available to scoped apps, so can't use it.
+		var targetRecordForAttributes = originalRecord;
+		if (originalRecord.getRecordClassName() != originalRecord.getTableName()) {
+			targetRecordForAttributes = new GlideRecord(originalRecord.getRecordClassName());
+			targetRecordForAttributes.get(originalRecord.getUniqueValue());
+		}
+		return targetRecordForAttributes.getAttribute("no_attachment") != "true";
+	}
+
+})()]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-05-18 13:43:15&lt;/sys_created_on&gt;&lt;sys_id&gt;b0a9c16adbb01410fa11cf2414961949&lt;/sys_id&gt;&lt;sys_mod_count&gt;112&lt;/sys_mod_count&gt;&lt;sys_name&gt;GService Ticket Conversation&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_b0a9c16adbb01410fa11cf2414961949&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-05-19 14:31:56&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div ng-if="!data.canRead &amp;&amp; !data.isNewRecord"&gt;
+  ${GService Without Notifications}
+&lt;/div&gt;
+
+&lt;div ng-if="data.canRead &amp;&amp; !data.isNewRecord" class=""&gt;
+  &lt;div class="col-md-5 col-sm-5"&gt;
+    &lt;div class="panel-heading"&gt;
+
+      &lt;div class=""&gt;
+        &lt;div&gt;
+          {{data.number}}          
+        &lt;/div&gt;
+        &lt;div&gt;
+          {{data.ticketTitle}}
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class="panel-body"&gt;
+      &lt;div ng-if="data.hasReadableJournalField"&gt;
+        &lt;div class="row"&gt;
+          &lt;ul role="list" class="" aria-label="${Ticket history}"&gt;
+            &lt;li class="" ng-repeat="e in data.mergedEntries | limitTo : 1"&gt;
+              &lt;sn-avatar ng-if="hasLiveProfile(e.user_sys_id)" primary="getLiveProfileByUserId(e.user_sys_id)" class="avatar-large avatar-custom-size" show-presence="false" enable-context-menu="false"&gt;
+              &lt;/sn-avatar&gt;
+              &lt;div class="history-name-size"&gt;{{e.name}}&lt;/div&gt;
+              &lt;div class=""&gt;
+                &lt;p ng-if="(e.element != 'attachment')" ng-bind-html="e.value"&gt;&lt;/p&gt;
+                &lt;div ng-if="(e.element == 'attachment')"&gt;
+                  &lt;a ng-if="(e.attachment.state == 'available')" target="_blank" href="/sys_attachment.do?view=true&amp;sys_id={{e.attachment.sys_id}}" title="${View}"&gt;
+                    &lt;img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/&gt;
+                  &lt;/a&gt;
+                  &lt;a ng-if="(e.attachment.state == '' || e.attachment.state == 'pending' || e.attachment.state == 'available_conditionally')" ng-click="scanAttachment(e.attachment)" href="javascript:void(0)" title="${View}"&gt;
+                    &lt;img ng-if="e.attachment.thumbnail_path" alt="" ng-src="/{{e.attachment.path}}?t=medium" class="img-responsive"/&gt;
+                  &lt;/a&gt;
+                  &lt;div&gt;
+                    &lt;div ng-if="(e.attachment.state == 'available')"&gt;
+                      &lt;a href="/sys_attachment.do?sys_id={{e.attachment.sys_id}}" target="_blank" title="{{dataViewMsg}}"&gt;&lt;strong&gt;{{e.attachment.file_name}}&lt;/strong&gt;&lt;/a&gt;&lt;br/&gt;
+                      {{e.attachment.size}}
+                    &lt;/div&gt;
+                    &lt;div ng-if="(e.attachment.state == 'not_available')"&gt;
+                      &lt;span title="{{dataViewMsg}}" class="not_available"&gt;{{e.attachment.file_name}}&lt;/span&gt;&lt;br/&gt;
+                      &lt;span class="error"&gt;{{data.scanFailedMsg}}&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div ng-if="(e.attachment.state == '' || e.attachment.state == 'pending' || e.attachment.state == 'available_conditionally')"&gt;
+                      &lt;a href="javascript:void(0)" ng-click="scanAttachment(e.attachment)" title="{{dataViewMsg}}"&gt;&lt;strong&gt;{{e.attachment.file_name}}&lt;/strong&gt;&lt;/a&gt;&lt;br/&gt;
+                      {{e.attachment.size}}
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;p class = "time-text"&gt;
+                &lt;small class="text-muted"&gt;
+                  {{e.sys_created_on}}
+                &lt;/small&gt;
+              &lt;/p&gt;
+            &lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+
+        &lt;img src="GService_DASH_ReportarErro.png" height="40px"&gt;
+        &lt;span&gt; {{data.username}} &lt;/span&gt;
+
+        &lt;div ng-if="(!data.hideAttachmentBtn)" class="attach_text"&gt;
+          &lt;sp-attachment-button ng-if="data.canWrite &amp;&amp; data.canAttach"&gt;
+            ${Add attachments}
+          &lt;/sp-attachment-button&gt;
+          &lt;now-attachments-list class="attachment-list" template="sp_attachment_single_line" &gt;
+          &lt;/now-attachments-list&gt;
+        &lt;/div&gt;
+
+        &lt;form ng-submit="postEntry(data.journalEntry)" id="sand"&gt;
+          &lt;div ng-show="data.hasWritableJournalField" class="input-group"&gt;
+            &lt;textarea ng-keypress="keyPress($event)" sn-resize-height="trim" rows="1" id="post-input" class="form-control no-resize overflow-hidden" ng-model='data.journalEntry' ng-model-options='{debounce: 250}' ng-attr-placeholder="{{getPlaceholder()}}" aria-label="{{getPlaceholder()}}" autocomplete="off" ng-change="userTyping(data.journalEntry)"/&gt;
+            &lt;span class="journal-field-indicator" ng-style="({'background-color': data.useSecondaryJournalField ? data.secondaryJournalField.color : data.primaryJournalField.color})"&gt;&lt;/span&gt;
+            &lt;input type="image" src="GService_SS_Digital.png" ng-disabled="data.isPosting" value="{{data.btnLabel}}" style="cursor: pointer"/&gt;
+          &lt;/div&gt;
+          &lt;!--&lt;div ng-if="(data.secondaryJournalField &amp;&amp; data.secondaryJournalField.can_write)"&gt;
+&lt;label class="pull-right"&gt;
+&lt;input type="checkbox" ng-model="data.useSecondaryJournalField" ng-change="updateFormWithJournalFields()"/&gt;
+&lt;span&gt;{{data.secondaryJournalField.label}}&lt;/span&gt;
+&lt;/label&gt;
+&lt;/div&gt;--&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;  
+    &lt;/div&gt;
+
+    &lt;div ng-if="!data.hasReadableJournalField"&gt;
+      {{options.no_readable_journal_field_message}}
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>883650149</payload_hash>
+        <record_name>GService Ticket Conversation</record_name>
+        <reverted_from/>
+        <source>5aa638a6db701410fa11cf2414961932</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-19 14:31:56</sys_created_on>
+        <sys_id>7b5e1672dbf05410fa11cf24149619e5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1722d5926d80000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-19 14:31:56</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>335e1672f8f05410a6d68aef38c08ce5</update_guid>
+        <update_guid_history>335e1672f8f05410a6d68aef38c08ce5:883650149,af2e927208f054104027d1c8dceaab54:-535548167,854d163267f05410e145fc64d6f20b49:934818937,504dd23267f054101e7ae2de0bd09835:1108432014,702d9efec3b054105533636ddf1668bc:1230395446,4b4c12fe80b05410a3d43780f5ba5b91:-113138248,f73cdabe40b05410892e0f4745e37d28:-1757691698,d2bbd2be2db0541021d76db73b5cbea1:-323462874,e35b967e3fb054106f9d6f12dfef1245:-12006976,37ea127e27b054105e56a40651190eb1:2119941254,9f6a523e1ab05410cc95b03d0199d824:432051180,f02ad2fa36b054107f09419cb84317c7:667412282,cfd9deba10b054106d9765933b112440:338499818,7517123a47b054101fc0fecf066faae4:883650149,15d61ef682b05410e087e5a337d06870:-535548167,27761af666b05410e43398b931c85619:1574660975,09951ab601b054101862c099ba926cc1:-535548167,48e4de7602b054104c702451dfa7cc7f:-717060334,7fa41e769eb054103042a28e1fa32044:654096589,b4845a769cb05410aaa0ccdb2a724463:1737426480,89a1da72d3b05410ef72aa37d23a582a:-717060334,1186ce369870541075f266ad82035084:1574660975,172cda6291f41410843c7b09ccdf0c51:-535548167,e02c56628ef41410e02899057366b91d:1653506605,e1fec626a7b41410189dd5c73126e022:-535548167,7b668e2e42741410589f76ec8b5326e2:-1429117479,8826c22e1b74141015638735b8d4fe5e:730666219,7c25c22e14741410da5f7e54d2baa349:-1240967566,c705422eda74141042f93e71967432f0:1048960593,3df4ceea0d741410446e20b65eb1f624:-470958907,e7b40aea04741410ca41a93fe969ec78:-737131740,227ffde62f741410bc2144b54b1aee3c:1547003402,57be39e6de74141059c84958490fbb22:1902534762,3a8e31e6d4741410d671c25d52832fac:1552374735,de4eb9a6a274141088d6f5c7b2372b3f:-338878,0eedf9a6dc741410a123cdb5c386a941:1479369142,bacdf5a652741410202e17f02607fa71:937806428,6d9df5a6b974141019281b2299945721:56713780,cf6d75a677741410d2e77d462a0b25ac:-161088167,f54c79664d741410ec45b4fed02ea055:-1716373497,312c7566367414108e9cd1b5c5f09ff2:-1063729491,16fb3166db741410ab2fba6d19cbeae2:-1367303613,757bbd26c17414108a22063d743728a1:-158597002,ca0b792609741410f7cf3e4749588570:1274498943,acdab52622741410cfb2c0dfc3d29c85:-125248783,1d8ab126927414100616c95c63a628bb:1885312815,dee9f9e2d1741410d409de6531965802:-2000248021,be49f1e26e7414108aeffcfbbcac6922:503239945,c72971e241741410a1048e383c94a87b:179498679,251931e2a7741410bee4d886c611b92e:-1837671732,f9f8f9a26d7414108ece5fe7340ea6f7:-12006976,44e83da25674141068931126cbc0c310:1556411929,83c8f9a287741410201654a8c3e3f653:-934070430,c098b5a21a741410e71aa2e99274ada9:231368815,ae78fd62237414102eb6530857d1843f:-1300482446,6c583d620c741410693203ce0f3544b7:-2025075757,3ff7bd62527414106bd21bc1dc888d97:914996196,1ef73d62cb74141079b7a666bcaf85f2:-386586724,82c7756241741410d53afa42cfc98293:524421467,9ca73962d4741410d323c9abf4b8d72e:1400445844,21e6fd220d7414107ef78dc2470de1d2:547519630,30967522c67414103aff8569a67a50bc:914139895,0686f1226f741410b5524c623b97a2a5:-424119209,88c539eef2341410aa638d062dbbc882:-878518701,e97535ee5a34141037bed97d38bacc0e:1030824901,5e35bdae0d341410fe6e834523f5e2aa:1075638972,1905bdae523414104a7e99d51fb7188a:1129380277,0a14f96e3b3414103b1967448078d8f0:744165612,a514716ebd341410d34c83f884580035:271461645,41e239ea613414109c0be070f05580d6:1658073581,5a8139eac534141005780a4e13437a8d:-540484303,8951fdaaed34141097e857b9cac8d2ad:714157237,a23135ea9134141026272a961ea4c96e:-824231236,95d0fdaa35341410e4d6e26abb44da6e:240229746,1ab07daa3334141062d6a7e0e73e9f03:-214301720,62903daaf73414104b470061b8bf9e9d:1248463732,c770f9aafa3414108e6c6192dcb0f319:-934967429,96aee56afe34141059724d8a4a8603c4:-775566446,448ea16a5d34141062be0bbc9aa6183e:2121835654,117e216a1f3414108e2003545b0cefb4:-1461170692,996ea16ae234141074c669b45c40791e:-1368677656,4f3e616aef34141031f0705aac7a66c9:1671408366,031eed2ad6341410e86cc8ffa04cb8ec:118199819,601eed2a3a34141033f542031f59dfb4:404377276,84eda92ae4341410c80241d23ce060d4:1358291179,36ada92a34341410fecbd48bd608b083:1090006367,054ca9e670341410bbc234502d0b28de:-962602863,93aba1e6713414101cf623493b6ab9c4:1752402025,f59b61e6cc3414101863c8332b8323ef:-893671428,128be9a64b34141096f87c593deec33d:1741562879,867b21e6913414105e065b4b9dd61c8e:-537152621,225ba9a6463414105f5b0f710be3569f:751067731,6dfaa9a6d43414105cb73014e6543b58:-659432962,90da29a69d341410866009ebed371b58:-1077736302,7abae5a6a1341410b42da13d0445077b:-1322620345,de7a2966dd341410763a73902db65aec:-523197965,cc6aa9665e3414106aa10c15eb0efb3b:-24678422,2d2a21a69d341410b3e725c210d1966d:-511075203,f8f9a966f33414108674ee9d84d4c920:-179034905,3979e56635341410f96d7a7553ad667c:1276284168,0339a16694341410456b19871d6cbb48:431890648,dc296166f434141031c982df0afde06c:-388022151,7ee8a52626341410c2f075a6fdb8d0b1:170479214,aba8692611341410497c33df503bd62f:-1702139162,bc1069ae75f0141029d0930faf0c5f6b:-1606181708,89eed16e8ef014104e62e812f85cb545:240559591,790e116ed5f01410a1e62fae62b7d4c8:716352669,e56d992efdf01410db28fe6373dc3e5a:-712593924,bc4dd52e04f0141006823927ebfb4c55:-2070257161,1ffcd12ee5f014109c627f824e77bfee:234624680,eabcd1ea09f0141085e1b7b2b6d30904:-1957840643,1e8cd9ea77f0141086705d44aac71371:-563425876,dd5c19eaf3f014104f4588f301204bf4:587626229,2a3cd5ea77f01410bbccca106e75538e:351041621,9849192a6af01410d4d9029ea0e56077:-1794308398,20d71da6e4f014104da043bfee88f0bf:1545506389,0f0311a2c6f014107a48c444b92d67bc:-595109996,4b82d96249f0141045360f3093ee8af8:1487366830,da421d6299f0141009c88d13b6b91da3:-1652441689,0222d96207f01410baf16508708a94cd:-1584523805,7a12596285f014106915092444a70ef7:1824158382,fbf1596274f014100c3ee6232521854e:411955730,dc11552243f014105214be961973eb22:-926577,d7805522f6f0141028fcd5753284f33f:1134939336,e520ddee04b01410f27fa9cf7f8e8183:-747221553,42fdc96e14b0141024f6a95e5278c016:-323462874,37b9856a0db014105feba2d6648eccd8:-1725334643,bca9c16aefb01410472e58e80e83d64a:-607627531</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">000f56b2dbf05410fa11cf2414961961</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-19 14:34:41</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>43f43d1b44414f92a957f011af4a7611</sys_id>
+        <sys_metadata>b0a9c16adbb01410fa11cf2414961949</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService Ticket Conversation</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_b0a9c16adbb01410fa11cf2414961949</sys_update_name>
+        <sys_update_version display_value="sp_widget_b0a9c16adbb01410fa11cf2414961949">7b5e1672dbf05410fa11cf24149619e5</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-19 14:34:41</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

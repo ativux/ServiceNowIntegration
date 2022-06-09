@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_portal_search_source">
+    <m2m_sp_portal_search_source action="INSERT_OR_UPDATE">
+        <order>100</order>
+        <sp_portal display_value="Globo Service">a084feafdb00dc10fa11cf24149619e0</sp_portal>
+        <sp_search_source display_value="Solicite Serviços (Categorias)">e1806577db985010fa11cf2414961920</sp_search_source>
+        <sys_class_name>m2m_sp_portal_search_source</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-02 12:43:21</sys_created_on>
+        <sys_id>8e7b64c5db7d14505c11639014961951</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService.Solicite Serviços Categorias</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_portal_search_source_8e7b64c5db7d14505c11639014961951</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-02 12:43:21</sys_updated_on>
+    </m2m_sp_portal_search_source>
+</record_update>

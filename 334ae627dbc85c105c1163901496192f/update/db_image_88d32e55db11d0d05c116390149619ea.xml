@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category/>
+        <format>png</format>
+        <height>20</height>
+        <image>77d36a55db11d0d05c1163901496199c</image>
+        <name>GService_Seta_PD_Transparent.png</name>
+        <size_bytes>307</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-06-08 19:36:20</sys_created_on>
+        <sys_id>88d32e55db11d0d05c116390149619ea</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>GService_Seta_PD_Transparent.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_88d32e55db11d0d05c116390149619ea</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-06-08 19:36:28</sys_updated_on>
+        <thumbnail/>
+        <width>34</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#0</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>3d8135100982cb44dc958124cbd85f67dcb9fb536d7797de676b187437685ad6</hash>
+        <image_height>20</image_height>
+        <image_width>34</image_width>
+        <size_bytes>307</size_bytes>
+        <size_compressed>328</size_compressed>
+        <state>available</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-06-08 19:36:28</sys_created_on>
+        <sys_id>77d36a55db11d0d05c1163901496199c</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-06-08 19:36:28</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>88d32e55db11d0d05c116390149619ea</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="77d36a55db11d0d05c1163901496199c">77d36a55db11d0d05c1163901496199c</sys_attachment>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-06-08 19:36:28</sys_created_on>
+        <sys_id>b7d36a55db11d0d05c1163901496199c</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>6wzwc+flkuJiYGDg9fRwCQLSSkAswsEGJF+kvC8CUpwFHpHFDAzigiDMeErtsz1Q8Kmni2OIR+fZa92czQYCbA/sjzJaebl3TL7hu8tp7oLSydIn/SZMElC5sUdPfCl7k8zyugpF8dSeg/ZHEni7FjCW34zoPfbZY7bSHcY9TVcsfkh3V7C0mi+O/SjJIT7d5e8SjvebBRRTbKUmO+q4NW87+sreSpXLNVdL4c7u7dd+HBHSFPs7U4rlW/YS82ViH5lfdj5UWDRBTkJPiXNiQpRApAf3MtHAlgIDoZbqfWUvnn6TZFBx3KDA6qMTIZ240TQx5dYW/m95Z5oW8F02EboxgWlZpZ6pI9MZngePgzenWHT1d3UVfN1wI3CRHkMNo2FwS9ff96yzgR5m8HT1c1nnlNAEACwxiSIzAQAA</data>
+        <length>424</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="77d36a55db11d0d05c1163901496199c">77d36a55db11d0d05c1163901496199c</sys_attachment>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-06-08 19:36:28</sys_created_on>
+        <sys_id>3bd36a55db11d0d05c1163901496199c</sys_id>
+    </sys_attachment_doc>
+</record_update>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>43</height>
+        <image>20ca6384db615410fa11cf241496190b</image>
+        <name>arrow-down-white.png</name>
+        <size_bytes>484</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-17 13:49:18</sys_created_on>
+        <sys_id>c5baa384db615410fa11cf241496198c</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>arrow-down-white.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_c5baa384db615410fa11cf241496198c</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-17 13:49:28</sys_updated_on>
+        <thumbnail/>
+        <width>80</width>
+    </db_image>
+    <sys_attachment action="INSERT_OR_UPDATE">
+        <average_image_color>#0</average_image_color>
+        <chunk_size_bytes>700000</chunk_size_bytes>
+        <compressed>true</compressed>
+        <content_type>image/png</content_type>
+        <encryption_context/>
+        <file_name>image</file_name>
+        <hash>8a74d0035a80fb13b131e04370d5564a8cee9fcf7029d577a440e0f6a9cd04d8</hash>
+        <image_height>43</image_height>
+        <image_width>80</image_width>
+        <size_bytes>484</size_bytes>
+        <size_compressed>507</size_compressed>
+        <state>available</state>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-17 13:49:28</sys_created_on>
+        <sys_id>20ca6384db615410fa11cf241496190b</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-17 13:49:28</sys_updated_on>
+        <table_name>ZZ_YYdb_image</table_name>
+        <table_sys_id>c5baa384db615410fa11cf241496198c</table_sys_id>
+    </sys_attachment>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>H4sIAAAAAAAAAA==</data>
+        <length>16</length>
+        <position>0</position>
+        <sys_attachment display_value="image" sys_id="20ca6384db615410fa11cf241496190b">20ca6384db615410fa11cf241496190b</sys_attachment>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-17 13:49:28</sys_created_on>
+        <sys_id>60ca6384db615410fa11cf241496190b</sys_id>
+    </sys_attachment_doc>
+    <sys_attachment_doc action="INSERT_OR_UPDATE">
+        <data>AeQBG/6JUE5HDQoaCgAAAA1JSERSAAAAUAAAACsIBgAAAO/0D68AAAAJcEhZcwAAFiUAABYlAUlSJPAAAAGWSURBVGje7doxTgMxEIXhPzlBbgAtNHAjwgXouUUQDeVScY0cgYo6N3k0iUiWZLP22p7ZXT9pGkuWrK/wNA9Jj5J2+stGEnX+zUrS9shpK2m1kLQDbjjNJ7Cm5pAVsAUe2k7LM3gAT0BT3TrxAG6XHRcrYjceAEvgrSLG4QGbwwfZqDvNDBfG9xWTtSSOL1XEQLw2YEUMxDsHOGfEYLxLgHNEjMLrApwTYjTeNcA5IA7C6wM4ZcTBeH0Bp4iYBC8EcEqIyfBCAaeAmBQvBnDMiMnxYgHHiJgFbwjgmBCz4Q0FHANiVrwUgJ4Rs+OlAvSIWAQvJaAnxGJ4qQE9IBbFywFoiVgcLxegBaIJXk7AkohmeLkBSyCa4pUAzIlojlcKMAeiC7ySgCkR3eCVBkyB6ArPAnAIojs8K8AYRJd4loAhiG7xJLGQZFkha/YVukv5Au6vVMyeLSt41oB9EPGKdyhYWme972SPDs8LYAyiCzxPgCGIbvC8AfZBdIXnZYmcyw9w1zp7B168PdQrIK2G/Afw6vGRv+yyFGCtn5wwAAAAAElFTkSuQmCCe7zVbOQBAAA=</data>
+        <length>664</length>
+        <position>1</position>
+        <sys_attachment display_value="image" sys_id="20ca6384db615410fa11cf241496190b">20ca6384db615410fa11cf241496190b</sys_attachment>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-17 13:49:28</sys_created_on>
+        <sys_id>e0ca6384db615410fa11cf241496190b</sys_id>
+    </sys_attachment_doc>
+</record_update>

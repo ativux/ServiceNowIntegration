@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope) {
+	//$scope.accessibilityModeEnabled = spAriaUtil.isAccessibilityEnabled();
+ var c = this;
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.iconlink a label,h2 {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 300;
+  line-height: 1.1;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+/* TOP ICON ---------- */
+
+a.top_icon {
+  display: block;
+  padding: 20px;
+  text-align: center;
+}
+
+a.top_icon .fa {
+  display: block;
+  text-align: center;
+}
+
+/* CIRCLE ICON ---------- */
+
+a.circle_icon {
+  display: block;
+  padding: 20px 0px 20px 70px;
+  position: relative;
+}
+
+a.circle_icon .fa {
+  position:absolute;
+  left: 0px;
+  top: 10px;
+}
+
+/* COLOR BOX ---------- */
+
+a.color_box {
+  display: block;
+  position: relative;
+  padding: 20px 20px 20px 82px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+a.color_box .fa {
+  position:absolute;
+  left: 20px;
+  top: 20px;
+  width:42px;
+  text-align: center;
+}
+
+.icon-link-background-primary {
+  background-color: $brand-primary;
+}
+
+.icon-link-background-info {
+  background-color: $brand-info;
+}
+
+.icon-link-background-success {
+  background-color: $brand-success;
+}
+
+.icon-link-background-warning {
+  background-color: $brand-warning;
+}
+
+.icon-link-background-danger {
+  background-color: $brand-danger;
+}
+
+.icon-link-background-default {
+  background-color: $brand-primary;
+}
+
+.text-primary {
+  color: $brand-primary;
+  
+  &amp;:hover {
+    color: darken($brand-primary, 20%);
+  }
+}
+
+.text-info {
+  color: $brand-info;
+  
+  &amp;:hover {
+    color: darken($brand-info, 20%);
+  }
+}
+
+.text-success {
+  color: $brand-success;
+  
+  &amp;:hover {
+    color: darken($brand-success, 20%);
+  }
+}
+
+.text-warning {
+  color: $brand-warning;
+  
+  &amp;:hover {
+    color: darken($brand-warning, 20%);
+  }
+}
+
+.text-danger {
+  color: $brand-danger;
+  
+  &amp;:hover {
+    color: darken($brand-danger, 20%);
+  }
+}
+
+.text-default {
+  color: $brand-primary;
+  
+  &amp;:hover {
+    color: darken($brand-primary, 20%);
+  }
+}
+
+.high-contrast {
+  .text-primary {
+    color: darken($brand-primary, 10%);
+  }
+
+  .text-info {
+    color: darken($brand-info, 10%);
+  }
+
+  .text-success {
+    color: darken($brand-success, 10%);
+  }
+
+  .text-warning {
+    color: darken($brand-warning, 10%);
+  }
+
+  .text-danger {
+    color: darken($brand-danger, 10%);
+  }
+
+  .text-default {
+    color: darken($brand-primary, 10%);
+  }
+}
+
+</css>
+        <data_table>sp_instance_link</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list>type,url,sc_category,sc_cat_item,kb_topic,kb_article,kb_category,sp_page,title,short_description,color,class_name,glyph</field_list>
+        <has_preview>false</has_preview>
+        <id>gservice_main</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>GService Main</name>
+        <option_schema>[{"name":"link_template","section":"Presentation","label":"Template","type":"choice","choices":[{"label":"Top Icon","value":"Top Icon"},{"label":"Circle Icon","value":"Circle Icon"},{"label":"Color Box","value":"Color Box"}]}]</option_schema>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function(){
+	/*
+	var gr = $sp.getInstanceRecord();
+	data.href = $sp.getMenuHREF(gr);
+	data.target = options.target || "";
+	*/
+	/*
+	var grService = new GlideRecord("sc_category");
+	grService.getUniqueValue();
+
+	data.categories = grService;
+	*/
+	/*
+	var allid = [];
+	
+	var grCategory = new GlideRecord('sc_category');
+	grCategory.query();
+	while(grCategory.next()){
+		var uniqueid = grCategory.getUniqueValue();
+		allid.push(uniqueid);	
+	}
+	data.category = allid;
+	*/
+	
+	var grCategory = new GlideRecord("sc_category");
+	grCategory.getUniqueValue();
+	console.log(grCategory);
+	data.testCategory = grCategory;
+	var title = grCategory.getValue("title", string);
+	console.log(title);
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 12:55:25</sys_created_on>
+        <sys_id>dcdb8498db509050fa11cf241496195e</sys_id>
+        <sys_mod_count>47</sys_mod_count>
+        <sys_name>GService Main</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_dcdb8498db509050fa11cf241496195e</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 15:00:37</sys_updated_on>
+        <template><![CDATA[<!--<div class="iconlink" ng-class="{'high-contrast': accessibilityModeEnabled}">-->
+<!--// Top Icon -->
+<!--<a ng-if="::(options.link_template == 'Top Icon' || !options.link_template)" ng-href="{{::data.href}}" class="top_icon {{::options.class_name}}" target="{{::data.target}}">
+<div class="m-b fa fa-{{::options.glyph}} fa-4x {{::options.class_name}} text-{{::options.color}}"></div>
+<h2>{{::options.title}}</h2>
+<span class="text-muted">{{::options.short_description}}</span>
+</a>-->
+
+<!--// Circle Icon -->
+<!--<a ng-if="::(options.link_template == 'Circle Icon')" ng-href="{{::data.href}}" class="circle_icon {{::options.class_name}} text-{{::options.color}}" target="{{::data.target}}">
+<span class="fa fa-stack fa-2x">
+<i class="fa fa-circle fa-stack-2x"></i>
+<i class="fa fa-{{::options.glyph}} fa-stack-1x fa-inverse"></i>
+</span>
+<h2>{{::options.title}}</h2>
+<span class="text-muted">{{::options.short_description}}</span>
+</a>-->
+
+<!--// Color Box -->
+<!--<a ng-if="::(options.link_template == 'Color Box')" ng-href="{{::data.href}}" class="color_box {{::options.class_name}} icon-link-background-{{::options.color}} text-white" target="{{::data.target}}">
+<div class="fa fa-{{::options.glyph}} fa-3x {{::options.class_name}}"></div>
+<h2>{{::options.title}}</h2>
+<span>{{::options.short_description}}</span>
+</a>
+</div>-->
+<!--
+<div class="test-class" ng-repeat="titles in c.data.testCategory">
+<li >{{c.data.title }} </li>
+<li></li>
+</div>
+-->]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_dcdb8498db509050fa11cf241496195e</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function($scope) {
+	//$scope.accessibilityModeEnabled = spAriaUtil.isAccessibilityEnabled();
+ var c = this;
+
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.iconlink a label,h2 {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 300;
+  line-height: 1.1;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+/* TOP ICON ---------- */
+
+a.top_icon {
+  display: block;
+  padding: 20px;
+  text-align: center;
+}
+
+a.top_icon .fa {
+  display: block;
+  text-align: center;
+}
+
+/* CIRCLE ICON ---------- */
+
+a.circle_icon {
+  display: block;
+  padding: 20px 0px 20px 70px;
+  position: relative;
+}
+
+a.circle_icon .fa {
+  position:absolute;
+  left: 0px;
+  top: 10px;
+}
+
+/* COLOR BOX ---------- */
+
+a.color_box {
+  display: block;
+  position: relative;
+  padding: 20px 20px 20px 82px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+a.color_box .fa {
+  position:absolute;
+  left: 20px;
+  top: 20px;
+  width:42px;
+  text-align: center;
+}
+
+.icon-link-background-primary {
+  background-color: $brand-primary;
+}
+
+.icon-link-background-info {
+  background-color: $brand-info;
+}
+
+.icon-link-background-success {
+  background-color: $brand-success;
+}
+
+.icon-link-background-warning {
+  background-color: $brand-warning;
+}
+
+.icon-link-background-danger {
+  background-color: $brand-danger;
+}
+
+.icon-link-background-default {
+  background-color: $brand-primary;
+}
+
+.text-primary {
+  color: $brand-primary;
+  
+  &amp;amp;:hover {
+    color: darken($brand-primary, 20%);
+  }
+}
+
+.text-info {
+  color: $brand-info;
+  
+  &amp;amp;:hover {
+    color: darken($brand-info, 20%);
+  }
+}
+
+.text-success {
+  color: $brand-success;
+  
+  &amp;amp;:hover {
+    color: darken($brand-success, 20%);
+  }
+}
+
+.text-warning {
+  color: $brand-warning;
+  
+  &amp;amp;:hover {
+    color: darken($brand-warning, 20%);
+  }
+}
+
+.text-danger {
+  color: $brand-danger;
+  
+  &amp;amp;:hover {
+    color: darken($brand-danger, 20%);
+  }
+}
+
+.text-default {
+  color: $brand-primary;
+  
+  &amp;amp;:hover {
+    color: darken($brand-primary, 20%);
+  }
+}
+
+.high-contrast {
+  .text-primary {
+    color: darken($brand-primary, 10%);
+  }
+
+  .text-info {
+    color: darken($brand-info, 10%);
+  }
+
+  .text-success {
+    color: darken($brand-success, 10%);
+  }
+
+  .text-warning {
+    color: darken($brand-warning, 10%);
+  }
+
+  .text-danger {
+    color: darken($brand-danger, 10%);
+  }
+
+  .text-default {
+    color: darken($brand-primary, 10%);
+  }
+}
+
+&lt;/css&gt;&lt;data_table&gt;sp_instance_link&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list&gt;type,url,sc_category,sc_cat_item,kb_topic,kb_article,kb_category,sp_page,title,short_description,color,class_name,glyph&lt;/field_list&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;gservice_main&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;GService Main&lt;/name&gt;&lt;option_schema&gt;[{"name":"link_template","section":"Presentation","label":"Template","type":"choice","choices":[{"label":"Top Icon","value":"Top Icon"},{"label":"Circle Icon","value":"Circle Icon"},{"label":"Color Box","value":"Color Box"}]}]&lt;/option_schema&gt;&lt;public&gt;true&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function(){
+	/*
+	var gr = $sp.getInstanceRecord();
+	data.href = $sp.getMenuHREF(gr);
+	data.target = options.target || "";
+	*/
+	/*
+	var grService = new GlideRecord("sc_category");
+	grService.getUniqueValue();
+
+	data.categories = grService;
+	*/
+	/*
+	var allid = [];
+	
+	var grCategory = new GlideRecord('sc_category');
+	grCategory.query();
+	while(grCategory.next()){
+		var uniqueid = grCategory.getUniqueValue();
+		allid.push(uniqueid);	
+	}
+	data.category = allid;
+	*/
+	
+	var grCategory = new GlideRecord("sc_category");
+	grCategory.getUniqueValue();
+	console.log(grCategory);
+	data.testCategory = grCategory;
+	var title = grCategory.getValue("title", string);
+	console.log(title);
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-16 12:55:25&lt;/sys_created_on&gt;&lt;sys_id&gt;dcdb8498db509050fa11cf241496195e&lt;/sys_id&gt;&lt;sys_mod_count&gt;47&lt;/sys_mod_count&gt;&lt;sys_name&gt;GService Main&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_dcdb8498db509050fa11cf241496195e&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-16 15:00:37&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;!--&lt;div class="iconlink" ng-class="{'high-contrast': accessibilityModeEnabled}"&gt;--&gt;
+&lt;!--// Top Icon --&gt;
+&lt;!--&lt;a ng-if="::(options.link_template == 'Top Icon' || !options.link_template)" ng-href="{{::data.href}}" class="top_icon {{::options.class_name}}" target="{{::data.target}}"&gt;
+&lt;div class="m-b fa fa-{{::options.glyph}} fa-4x {{::options.class_name}} text-{{::options.color}}"&gt;&lt;/div&gt;
+&lt;h2&gt;{{::options.title}}&lt;/h2&gt;
+&lt;span class="text-muted"&gt;{{::options.short_description}}&lt;/span&gt;
+&lt;/a&gt;--&gt;
+
+&lt;!--// Circle Icon --&gt;
+&lt;!--&lt;a ng-if="::(options.link_template == 'Circle Icon')" ng-href="{{::data.href}}" class="circle_icon {{::options.class_name}} text-{{::options.color}}" target="{{::data.target}}"&gt;
+&lt;span class="fa fa-stack fa-2x"&gt;
+&lt;i class="fa fa-circle fa-stack-2x"&gt;&lt;/i&gt;
+&lt;i class="fa fa-{{::options.glyph}} fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;
+&lt;h2&gt;{{::options.title}}&lt;/h2&gt;
+&lt;span class="text-muted"&gt;{{::options.short_description}}&lt;/span&gt;
+&lt;/a&gt;--&gt;
+
+&lt;!--// Color Box --&gt;
+&lt;!--&lt;a ng-if="::(options.link_template == 'Color Box')" ng-href="{{::data.href}}" class="color_box {{::options.class_name}} icon-link-background-{{::options.color}} text-white" target="{{::data.target}}"&gt;
+&lt;div class="fa fa-{{::options.glyph}} fa-3x {{::options.class_name}}"&gt;&lt;/div&gt;
+&lt;h2&gt;{{::options.title}}&lt;/h2&gt;
+&lt;span&gt;{{::options.short_description}}&lt;/span&gt;
+&lt;/a&gt;
+&lt;/div&gt;--&gt;
+&lt;!--
+&lt;div class="test-class" ng-repeat="titles in c.data.testCategory"&gt;
+&lt;li &gt;{{c.data.title }} &lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/div&gt;
+--&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1103663249</payload_hash>
+        <record_name>GService Main</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 15:00:37</sys_created_on>
+        <sys_id>927828dcdbd09050fa11cf24149619fd</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17183818bf10000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 15:00:37</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>5a7828dc91d09050b68d72c4dd4ce2fc</update_guid>
+        <update_guid_history>5a7828dc91d09050b68d72c4dd4ce2fc:1103663249,7f3868dcb4d0905068593a97ad7b0275:-561978250,3f08a4dc7dd09050dedd2a29411e75c1:-1443169253,b8f7e49cffd090505edef76292b83b80:-561937637,79c7e0dcbed09050d5fae37fd4c33b13:-108318703,a2a7ac9c86d090508e390c3592d9d0d8:-355649735,6187ac9cf0d090506b71b83461b03fb4:625054150,d647e49c7ed09050b04d3247471f6b99:-212389802,9d37e49c7bd090502ed61e8a9d3a6c31:167188364,ae27e49c31d090502d1eb6197beef078:-383044997,27e6a09cadd0905075229b66d3d70d90:-66319607,6ad6209cb9d090501c25222e6249aec2:-703007501,68c6245c60d09050d6ffc68ed24e36f1:1159915435,00b6645c5dd090504b5ecc63774601f5:826618747,8696e05c78d090506d81b1fba2661821:944017533,6066645c3fd0905043d67f66700cf0ea:-1578229208,c316e41c88d09050d32beebbd9ac6cd1:631269159,36a5681cc8d090500471916d91731133:1227192966,1585641c06d09050997cb99bf15d5d87:1569534598,f965241c92d09050cd070797642d2c0f:-428434395,3c65e01c00d090504fdf0babb9b58eaa:-1790180763,d8456cd852d09050ac60ecee9e5c2904:-1364982778,6c1560d8d6d09050b4d21cc43ca6b820:-337968750,4405a4d8f8d09050746af61ce1015016:2116523900,75f4ac98a8d090508204179ec2456ecf:1003198418,fae460d88dd09050c4c4768abca8da38:-933288996,08d42c181fd09050c92f2f757fbdbb5c:-1623337331,68c460d8a9d09050e7ff9421a9b867ed:-513270911,d4a4a49885d0905050e559ad11931980:-966339259,d170a85405d09050659f0f1199e6efbb:682617405,0bcf9814c5d090508ff7f83c5a3262e5:-1770703381,31afd4144bd09050079dded5f26bf2af:-336618961,b89f54140bd090508f74c212f44740ef:-1538200946,224f1cd084d090501a18752162d337f9:777169966,5a3e18907ad09050e0dafc6aad534c0e:1922539778,fc2edc5063d0905072250b741586d2d2:1709327324,a91e5450d3d09050d2d7af9ba8d65a77:1892306884,1acddc5094d09050fe436e739431dd67:-885401709,ffbd9c5052d09050366ff1c680b89ab7:-827921979,2f5c5cdc899090509b0104f92c9799ab:-1337452919,545c5010e0d090508136d6ea6eae5f6b:-1059210823,494cdcdc4b9090504be58557fd3aa67e:460616599,662c18dc9690905047d39f1a9f9090b3:-1896037673,a4bb50dc6c909050cd295c29b3952ce9:-1468747144,a95b949cb5909050dc70b2fa8d6a1b97:-199708776,daba1c5cf6909050a719fa6f896fbb07:-1638497249,2595d8d41890905051c05ea700e9249d:-175177227,94db8498e1509050dcf57975a2e80460:-101635492</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">ece0381cdb149050fa11cf24149619a1</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 15:37:21</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>10cec19edad843fc8227ee98b42aac90</sys_id>
+        <sys_metadata>dcdb8498db509050fa11cf241496195e</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService Main</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_dcdb8498db509050fa11cf241496195e</sys_update_name>
+        <sys_update_version display_value="sp_widget_dcdb8498db509050fa11cf241496195e">927828dcdbd09050fa11cf24149619fd</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 15:37:21</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

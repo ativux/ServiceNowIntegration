@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_message">
+    <sys_ui_message action="INSERT_OR_UPDATE">
+        <application/>
+        <code/>
+        <commented_message/>
+        <key>Equipment</key>
+        <language>en</language>
+        <message>Equipamento</message>
+        <sys_class_name>sys_ui_message</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-07-10 11:27:53</sys_created_on>
+        <sys_id>e4e62567db751810fa11cf24149619f0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Equipment</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_ui_message_e4e62567db751810fa11cf24149619f0</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-10 11:27:53</sys_updated_on>
+    </sys_ui_message>
+</record_update>

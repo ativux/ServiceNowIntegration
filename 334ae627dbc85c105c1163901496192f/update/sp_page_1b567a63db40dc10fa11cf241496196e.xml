@@ -15,6 +15,7 @@
         <dynamic_title_structure/>
         <id>globoservice_index</id>
         <internal>false</internal>
+        <omit_watcher>false</omit_watcher>
         <public>false</public>
         <roles/>
         <seo_script/>

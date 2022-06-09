@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_rel_widget_clone">
     <sp_rel_widget_clone action="INSERT_OR_UPDATE">
-        <child display_value="Copy of Ticket Conversations">420f56b2dbf05410fa11cf24149619ab</child>
+        <child display_value="GService Ticket Conversations">420f56b2dbf05410fa11cf24149619ab</child>
         <cloned>2020-05-19 14:34:49</cloned>
         <last_validated>2020-05-19 14:34:49</last_validated>
         <parent display_value="Ticket Conversations">85357f52cb30020000f8d856634c9c24</parent>

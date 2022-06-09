@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, spAriaUtil) {
+	$scope.accessibilityModeEnabled = spAriaUtil.isAccessibilityEnabled();
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.icon-img{position: absolute;&#13;
+    right: 0;&#13;
+    height: 75%;&#13;
+	bottom:0&#13;
+}&#13;
+.image-link-header{&#13;
+	font-size: 18px;&#13;
+    margin: 5px 0;&#13;
+}&#13;
+&#13;
+h2 {&#13;
+  font-size: 18px;&#13;
+}&#13;
+&#13;
+.iconlink a label,h2 {&#13;
+  display: block;&#13;
+  font-size: 2.5rem;&#13;
+  font-weight: 300;&#13;
+  line-height: 1.1;&#13;
+  padding: 0;&#13;
+  margin: 0 0 10px 0;&#13;
+}&#13;
+&#13;
+/* TOP ICON ---------- */&#13;
+&#13;
+a.top_icon {&#13;
+  display: block;&#13;
+  padding: 20px;&#13;
+  text-align: center;&#13;
+}&#13;
+&#13;
+a.top_icon .fa {&#13;
+  display: block;&#13;
+  text-align: center;&#13;
+}&#13;
+&#13;
+/* CIRCLE ICON ---------- */&#13;
+&#13;
+a.circle_icon {&#13;
+  display: block;&#13;
+  padding: 20px 0px 20px 70px;&#13;
+  position: relative;&#13;
+}&#13;
+&#13;
+a.circle_icon .fa {&#13;
+  position:absolute;&#13;
+  left: 0px;&#13;
+  top: 10px;&#13;
+}&#13;
+&#13;
+/* COLOR BOX ---------- */&#13;
+&#13;
+a.color_box {&#13;
+  display: block;&#13;
+  position: relative;&#13;
+  padding: 20px 20px 20px 82px;&#13;
+  border-radius: 4px;&#13;
+  margin-bottom: 20px;&#13;
+}&#13;
+&#13;
+a.color_box .fa {&#13;
+  position:absolute;&#13;
+  left: 20px;&#13;
+  top: 20px;&#13;
+  width:42px;&#13;
+  text-align: center;&#13;
+}&#13;
+&#13;
+.icon-link-background-primary {&#13;
+  background-color: $brand-primary;&#13;
+}&#13;
+&#13;
+.icon-link-background-info {&#13;
+  background-color: $brand-info;&#13;
+}&#13;
+&#13;
+.icon-link-background-success {&#13;
+  background-color: $brand-success;&#13;
+}&#13;
+&#13;
+.icon-link-background-warning {&#13;
+  background-color: $brand-warning;&#13;
+}&#13;
+&#13;
+.icon-link-background-danger {&#13;
+  background-color: $brand-danger;&#13;
+}&#13;
+&#13;
+.icon-link-background-default {&#13;
+  background-color: $brand-primary;&#13;
+}&#13;
+&#13;
+.text-primary {&#13;
+  color: $brand-primary;&#13;
+  &#13;
+  &amp;:hover {&#13;
+    color: darken($brand-primary, 20%);&#13;
+  }&#13;
+}&#13;
+&#13;
+.text-info {&#13;
+  color: $brand-info;&#13;
+  &#13;
+  &amp;:hover {&#13;
+    color: darken($brand-info, 20%);&#13;
+  }&#13;
+}&#13;
+&#13;
+.text-success {&#13;
+  color: $brand-success;&#13;
+  &#13;
+  &amp;:hover {&#13;
+    color: darken($brand-success, 20%);&#13;
+  }&#13;
+}&#13;
+&#13;
+.text-warning {&#13;
+  color: $brand-warning;&#13;
+  &#13;
+  &amp;:hover {&#13;
+    color: darken($brand-warning, 20%);&#13;
+  }&#13;
+}&#13;
+&#13;
+.text-danger {&#13;
+  color: $brand-danger;&#13;
+  &#13;
+  &amp;:hover {&#13;
+    color: darken($brand-danger, 20%);&#13;
+  }&#13;
+}&#13;
+&#13;
+.text-default {&#13;
+  color: $brand-primary;&#13;
+  &#13;
+  &amp;:hover {&#13;
+    color: darken($brand-primary, 20%);&#13;
+  }&#13;
+}&#13;
+&#13;
+.high-contrast {&#13;
+  .text-primary {&#13;
+    color: darken($brand-primary, 10%);&#13;
+  }&#13;
+&#13;
+  .text-info {&#13;
+    color: darken($brand-info, 10%);&#13;
+  }&#13;
+&#13;
+  .text-success {&#13;
+    color: darken($brand-success, 10%);&#13;
+  }&#13;
+&#13;
+  .text-warning {&#13;
+    color: darken($brand-warning, 10%);&#13;
+  }&#13;
+&#13;
+  .text-danger {&#13;
+    color: darken($brand-danger, 10%);&#13;
+  }&#13;
+&#13;
+  .text-default {&#13;
+    color: darken($brand-primary, 10%);&#13;
+  }&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list>ref_sp_instance_link.type,url,ref_sp_instance_link.sc_category,ref_sp_instance_link.sc_cat_item,ref_sp_instance_link.kb_topic,ref_sp_instance_link.kb_article,ref_sp_instance_link.kb_category,ref_sp_instance_link.sp_page,short_description,color,class_name,glyph,title</field_list>
+        <has_preview>false</has_preview>
+        <id>image_test_link</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>Image Test Link</name>
+        <option_schema>[{"name":"image","section":"Presentation","label":"Image","type":"string"},{"name":"link","section":"Presentation","label":"Link","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function(){
+	var gr = $sp.getInstanceRecord();
+	data.href = $sp.getMenuHREF(gr);
+	data.target = options.target || "";
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 17:20:07</sys_created_on>
+        <sys_id>356881dcdb949050fa11cf2414961937</sys_id>
+        <sys_mod_count>28</sys_mod_count>
+        <sys_name>Image Test Link</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_356881dcdb949050fa11cf2414961937</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 17:40:47</sys_updated_on>
+        <template><![CDATA[<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-20 imagelink">
+  <img src="{{c.options.image}}" class="icon-img" alt=""/>
+  <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+    <div class="black image-link-header">
+      <h2>{{c.options.image}}</h2>
+    </div>
+    <!--<p>
+${{{c.options.description}}}
+</p>-->
+    <!--<a href="{{c.options.link}}" target="_blank" class="btn btn-xs btn-primary" aria-label="{{c.options.description}} which opens in a new window">
+${{{c.options.link_title}}}
+</a>-->
+  </div>
+</div>
+
+  <!--// Circle Icon -->
+  <a ng-if="::(options.link_template == 'Circle Icon')" ng-href="{{::data.href}}" class="circle_icon {{::options.class_name}} text-{{::options.color}}" target="{{::data.target}}">
+    <span class="fa fa-stack fa-2x">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-{{::options.glyph}} fa-stack-1x fa-inverse"></i>
+    </span>
+    <h2>{{::options.title}}</h2>
+    <span class="text-muted">{{::options.short_description}}</span>
+  </a>
+
+  <!--// Color Box -->
+  <a ng-if="::(options.link_template == 'Color Box')" ng-href="{{::data.href}}" class="color_box {{::options.class_name}} icon-link-background-{{::options.color}} text-white" target="{{::data.target}}">
+    <div class="fa fa-{{::options.glyph}} fa-3x {{::options.class_name}}"></div>
+    <span>{{::options.short_description}}</span>
+  </a>
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_356881dcdb949050fa11cf2414961937</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function($scope, spAriaUtil) {
+	$scope.accessibilityModeEnabled = spAriaUtil.isAccessibilityEnabled();
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.icon-img{position: absolute;&amp;#13;
+    right: 0;&amp;#13;
+    height: 75%;&amp;#13;
+	bottom:0&amp;#13;
+}&amp;#13;
+.image-link-header{&amp;#13;
+	font-size: 18px;&amp;#13;
+    margin: 5px 0;&amp;#13;
+}&amp;#13;
+&amp;#13;
+h2 {&amp;#13;
+  font-size: 18px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.iconlink a label,h2 {&amp;#13;
+  display: block;&amp;#13;
+  font-size: 2.5rem;&amp;#13;
+  font-weight: 300;&amp;#13;
+  line-height: 1.1;&amp;#13;
+  padding: 0;&amp;#13;
+  margin: 0 0 10px 0;&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* TOP ICON ---------- */&amp;#13;
+&amp;#13;
+a.top_icon {&amp;#13;
+  display: block;&amp;#13;
+  padding: 20px;&amp;#13;
+  text-align: center;&amp;#13;
+}&amp;#13;
+&amp;#13;
+a.top_icon .fa {&amp;#13;
+  display: block;&amp;#13;
+  text-align: center;&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* CIRCLE ICON ---------- */&amp;#13;
+&amp;#13;
+a.circle_icon {&amp;#13;
+  display: block;&amp;#13;
+  padding: 20px 0px 20px 70px;&amp;#13;
+  position: relative;&amp;#13;
+}&amp;#13;
+&amp;#13;
+a.circle_icon .fa {&amp;#13;
+  position:absolute;&amp;#13;
+  left: 0px;&amp;#13;
+  top: 10px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* COLOR BOX ---------- */&amp;#13;
+&amp;#13;
+a.color_box {&amp;#13;
+  display: block;&amp;#13;
+  position: relative;&amp;#13;
+  padding: 20px 20px 20px 82px;&amp;#13;
+  border-radius: 4px;&amp;#13;
+  margin-bottom: 20px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+a.color_box .fa {&amp;#13;
+  position:absolute;&amp;#13;
+  left: 20px;&amp;#13;
+  top: 20px;&amp;#13;
+  width:42px;&amp;#13;
+  text-align: center;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-link-background-primary {&amp;#13;
+  background-color: $brand-primary;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-link-background-info {&amp;#13;
+  background-color: $brand-info;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-link-background-success {&amp;#13;
+  background-color: $brand-success;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-link-background-warning {&amp;#13;
+  background-color: $brand-warning;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-link-background-danger {&amp;#13;
+  background-color: $brand-danger;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-link-background-default {&amp;#13;
+  background-color: $brand-primary;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.text-primary {&amp;#13;
+  color: $brand-primary;&amp;#13;
+  &amp;#13;
+  &amp;amp;:hover {&amp;#13;
+    color: darken($brand-primary, 20%);&amp;#13;
+  }&amp;#13;
+}&amp;#13;
+&amp;#13;
+.text-info {&amp;#13;
+  color: $brand-info;&amp;#13;
+  &amp;#13;
+  &amp;amp;:hover {&amp;#13;
+    color: darken($brand-info, 20%);&amp;#13;
+  }&amp;#13;
+}&amp;#13;
+&amp;#13;
+.text-success {&amp;#13;
+  color: $brand-success;&amp;#13;
+  &amp;#13;
+  &amp;amp;:hover {&amp;#13;
+    color: darken($brand-success, 20%);&amp;#13;
+  }&amp;#13;
+}&amp;#13;
+&amp;#13;
+.text-warning {&amp;#13;
+  color: $brand-warning;&amp;#13;
+  &amp;#13;
+  &amp;amp;:hover {&amp;#13;
+    color: darken($brand-warning, 20%);&amp;#13;
+  }&amp;#13;
+}&amp;#13;
+&amp;#13;
+.text-danger {&amp;#13;
+  color: $brand-danger;&amp;#13;
+  &amp;#13;
+  &amp;amp;:hover {&amp;#13;
+    color: darken($brand-danger, 20%);&amp;#13;
+  }&amp;#13;
+}&amp;#13;
+&amp;#13;
+.text-default {&amp;#13;
+  color: $brand-primary;&amp;#13;
+  &amp;#13;
+  &amp;amp;:hover {&amp;#13;
+    color: darken($brand-primary, 20%);&amp;#13;
+  }&amp;#13;
+}&amp;#13;
+&amp;#13;
+.high-contrast {&amp;#13;
+  .text-primary {&amp;#13;
+    color: darken($brand-primary, 10%);&amp;#13;
+  }&amp;#13;
+&amp;#13;
+  .text-info {&amp;#13;
+    color: darken($brand-info, 10%);&amp;#13;
+  }&amp;#13;
+&amp;#13;
+  .text-success {&amp;#13;
+    color: darken($brand-success, 10%);&amp;#13;
+  }&amp;#13;
+&amp;#13;
+  .text-warning {&amp;#13;
+    color: darken($brand-warning, 10%);&amp;#13;
+  }&amp;#13;
+&amp;#13;
+  .text-danger {&amp;#13;
+    color: darken($brand-danger, 10%);&amp;#13;
+  }&amp;#13;
+&amp;#13;
+  .text-default {&amp;#13;
+    color: darken($brand-primary, 10%);&amp;#13;
+  }&amp;#13;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list&gt;ref_sp_instance_link.type,url,ref_sp_instance_link.sc_category,ref_sp_instance_link.sc_cat_item,ref_sp_instance_link.kb_topic,ref_sp_instance_link.kb_article,ref_sp_instance_link.kb_category,ref_sp_instance_link.sp_page,short_description,color,class_name,glyph,title&lt;/field_list&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;image_test_link&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;Image Test Link&lt;/name&gt;&lt;option_schema&gt;[{"name":"image","section":"Presentation","label":"Image","type":"string"},{"name":"link","section":"Presentation","label":"Link","type":"string"}]&lt;/option_schema&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function(){
+	var gr = $sp.getInstanceRecord();
+	data.href = $sp.getMenuHREF(gr);
+	data.target = options.target || "";
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-16 17:20:07&lt;/sys_created_on&gt;&lt;sys_id&gt;356881dcdb949050fa11cf2414961937&lt;/sys_id&gt;&lt;sys_mod_count&gt;28&lt;/sys_mod_count&gt;&lt;sys_name&gt;Image Test Link&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_356881dcdb949050fa11cf2414961937&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-16 17:40:47&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-20 imagelink"&gt;
+  &lt;img src="{{c.options.image}}" class="icon-img" alt=""/&gt;
+  &lt;div class="col-lg-10 col-md-10 col-sm-10 col-xs-10"&gt;
+    &lt;div class="black image-link-header"&gt;
+      &lt;h2&gt;{{c.options.image}}&lt;/h2&gt;
+    &lt;/div&gt;
+    &lt;!--&lt;p&gt;
+${{{c.options.description}}}
+&lt;/p&gt;--&gt;
+    &lt;!--&lt;a href="{{c.options.link}}" target="_blank" class="btn btn-xs btn-primary" aria-label="{{c.options.description}} which opens in a new window"&gt;
+${{{c.options.link_title}}}
+&lt;/a&gt;--&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+  &lt;!--// Circle Icon --&gt;
+  &lt;a ng-if="::(options.link_template == 'Circle Icon')" ng-href="{{::data.href}}" class="circle_icon {{::options.class_name}} text-{{::options.color}}" target="{{::data.target}}"&gt;
+    &lt;span class="fa fa-stack fa-2x"&gt;
+      &lt;i class="fa fa-circle fa-stack-2x"&gt;&lt;/i&gt;
+      &lt;i class="fa fa-{{::options.glyph}} fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+    &lt;/span&gt;
+    &lt;h2&gt;{{::options.title}}&lt;/h2&gt;
+    &lt;span class="text-muted"&gt;{{::options.short_description}}&lt;/span&gt;
+  &lt;/a&gt;
+
+  &lt;!--// Color Box --&gt;
+  &lt;a ng-if="::(options.link_template == 'Color Box')" ng-href="{{::data.href}}" class="color_box {{::options.class_name}} icon-link-background-{{::options.color}} text-white" target="{{::data.target}}"&gt;
+    &lt;div class="fa fa-{{::options.glyph}} fa-3x {{::options.class_name}}"&gt;&lt;/div&gt;
+    &lt;span&gt;{{::options.short_description}}&lt;/span&gt;
+  &lt;/a&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-507764039</payload_hash>
+        <record_name>Image Test Link</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 17:40:47</sys_created_on>
+        <sys_id>a82d45d4dbd49050fa11cf24149619df</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17184142f420000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 17:40:47</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>602d45d44dd490505d6b6b41ad025ddf</update_guid>
+        <update_guid_history>602d45d44dd490505d6b6b41ad025ddf:-507764039,c3ac8194ded49050107fa0b2385842b6:-1053775275,e39c419401d49050e8eda019338b718d:-1184540872,ac9cc19486d49050cde454d2e0995d72:1887400639,ae5c895424d490505036d58bfb354815:-87035716,e14c8d5438d4905043e1f1646fda6c9a:1174355546,633c89543cd4905042f49c91fa47a011:1700949147,0c3c49548fd49050f4e92ccb2d4d44c9:-1546176501,9c2c4d548cd4905018759c2004d791d4:-541447136,620c05547bd49050ac6711564da6e01a:-1500807994,14fb49542dd49050ed79e3ff3130f920:822044703,f1dbcd146dd490507d32eda886f834d0:-221510902,75bb4154b4d490506652e5035b1c5252:-1489188579,5aab4154abd490504e559d43fb27e3ec:-1873095452,678b0d14fdd49050205e1542ea67b52d:-1515653934,ab6b891411d49050f2c123ffed4576d5:-1873095452,934bc9d036d4905092e0c510cf81d0db:-60696911,bb2b8dd05ed490502b1762dc54a3b35e:290991557,230b09d034d49050a76bc5c11d9234f4:730940060,5fca41d0a7d49050757f39a88c40d14f:-1586174982,6d9a41d0e5d49050594f549a9edaee4a:-1772445397,2d5a8d9038d49050cd59b2d7970f2112:2123468933,86f9419098d490502b89c8a2445f119c:-1345408854,a7d98190cbd49050ecafed88e591b41d:1694151155,38c901900cd490501cba24467cfa66bf:-200662238,e4994d50d0d49050eb4568208fc1b54d:-182694717,1469c150b9d490505734e13d7f798e1b:1901754168,18290d10add4905076df9363b581327f:864741816,f9684ddc649490508086fcf749732858:-807915009</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">f13dc158dbd49050fa11cf2414961906</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 17:41:09</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>0f7f916c1b374374a3bb42087620da04</sys_id>
+        <sys_metadata>356881dcdb949050fa11cf2414961937</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Image Test Link</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_356881dcdb949050fa11cf2414961937</sys_update_name>
+        <sys_update_version display_value="sp_widget_356881dcdb949050fa11cf2414961937">a82d45d4dbd49050fa11cf24149619df</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 17:41:09</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

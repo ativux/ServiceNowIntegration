@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scope_privilege">
+    <sys_scope_privilege action="INSERT_OR_UPDATE">
+        <operation>execute</operation>
+        <source_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</source_scope>
+        <status>allowed</status>
+        <sys_class_name>sys_scope_privilege</sys_class_name>
+        <sys_created_by>julialve</sys_created_by>
+        <sys_created_on>2021-11-30 19:21:48</sys_created_on>
+        <sys_id>820b5f8bdbc88590623563901496196b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>getGroupsManagedByUser</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_scope_privilege_820b5f8bdbc88590623563901496196b</sys_update_name>
+        <sys_updated_by>julialve</sys_updated_by>
+        <sys_updated_on>2021-11-30 19:21:48</sys_updated_on>
+        <target_name>getGroupsManagedByUser</target_name>
+        <target_scope display_value="Coaching">40ff6761733313005e4a73a24ff6a792</target_scope>
+        <target_type>sys_script_include</target_type>
+    </sys_scope_privilege>
+</record_update>

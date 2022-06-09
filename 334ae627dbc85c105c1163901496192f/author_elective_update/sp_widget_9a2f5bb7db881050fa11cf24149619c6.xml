@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function() {  /* widget controller */  var c = this;}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.align-all{
+  text-align:center;
+}
+
+.img-border{
+	padding-bottom: 30px;
+}
+
+.yourself-color{
+	color: $orange;
+}
+
+.yourself-size{
+	font-size: $font-size-h1;
+}
+
+.yourself-description-size{
+	font-size: $font-size-h4;
+}
+
+.bottom-border {
+	padding-bottom: 50px
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>do_it_yourself</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>GService Do It Yourself</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {  /* populate the 'data' object */  /* e.g., data.table = $sp.getValue('table'); */})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 15:01:50</sys_created_on>
+        <sys_id>9a2f5bb7db881050fa11cf24149619c6</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>GService Do It Yourself</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_9a2f5bb7db881050fa11cf24149619c6</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-15 16:59:25</sys_updated_on>
+        <template><![CDATA[<div class="align-all">
+  <div class="img-border">
+  	<a title="Do it yourself" href=""><img src="doItYourself.png" height="125px" alt="" /></a>  
+  </div>
+	<div class="yourself-color yourself-size">
+    	FAÇA VOCÊ MESMO
+  </div>
+	<div class="yourself-description-size yourself-color bottom-border">
+    Se você é daqueles que gosta de resolver as coisas do seu jeito e no seu tempo, o seu caminho é por aqui!
+  </div>
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_9a2f5bb7db881050fa11cf24149619c6</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function() {  /* widget controller */  var c = this;}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.align-all{
+  text-align:center;
+}
+
+.img-border{
+	padding-bottom: 30px;
+}
+
+.yourself-color{
+	color: $orange;
+}
+
+.yourself-size{
+	font-size: $font-size-h1;
+}
+
+.yourself-description-size{
+	font-size: $font-size-h4;
+}
+
+.bottom-border {
+	padding-bottom: 50px
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;do_it_yourself&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;GService Do It Yourself&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {  /* populate the 'data' object */  /* e.g., data.table = $sp.getValue('table'); */})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-15 15:01:50&lt;/sys_created_on&gt;&lt;sys_id&gt;9a2f5bb7db881050fa11cf24149619c6&lt;/sys_id&gt;&lt;sys_mod_count&gt;6&lt;/sys_mod_count&gt;&lt;sys_name&gt;GService Do It Yourself&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_9a2f5bb7db881050fa11cf24149619c6&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-15 16:59:25&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div class="align-all"&gt;
+  &lt;div class="img-border"&gt;
+  	&lt;a title="Do it yourself" href=""&gt;&lt;img src="doItYourself.png" height="125px" alt="" /&gt;&lt;/a&gt;  
+  &lt;/div&gt;
+	&lt;div class="yourself-color yourself-size"&gt;
+    	FAÇA VOCÊ MESMO
+  &lt;/div&gt;
+	&lt;div class="yourself-description-size yourself-color bottom-border"&gt;
+    Se você é daqueles que gosta de resolver as coisas do seu jeito e no seu tempo, o seu caminho é por aqui!
+  &lt;/div&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-2048160632</payload_hash>
+        <record_name>GService Do It Yourself</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 16:59:25</sys_created_on>
+        <sys_id>341a7ff3db4c1050fa11cf241496193e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1717ec7f4d70000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-15 16:59:25</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>f81a7ff3c44c10509d96d4d5252d903d</update_guid>
+        <update_guid_history>f81a7ff3c44c10509d96d4d5252d903d:-2048160632,32d2a73f2b88105028a407a1c08051f0:-1954723658,66d1efbbca881050b055b90fa5ea0644:2112031429,d891abbb73881050ae756c87dddb3a23:-1946264217,87e0eb7bce881050ca70afd9755a06f2:2112031429,bf00a33b2388105088f05f1c74b4ac80:-1563452169,522f5bb7fa881050835b3959635c0dc8:-25118434</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">a7be9d58db589050fa11cf2414961920</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 18:57:44</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>0f3c1941a1f847b4b30bd6d1a2c7f784</sys_id>
+        <sys_metadata>9a2f5bb7db881050fa11cf24149619c6</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService Do It Yourself</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_9a2f5bb7db881050fa11cf24149619c6</sys_update_name>
+        <sys_update_version display_value="sp_widget_9a2f5bb7db881050fa11cf24149619c6">341a7ff3db4c1050fa11cf241496193e</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 18:57:44</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

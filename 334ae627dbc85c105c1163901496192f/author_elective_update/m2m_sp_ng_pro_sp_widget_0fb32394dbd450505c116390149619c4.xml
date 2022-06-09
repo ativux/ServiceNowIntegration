@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_ng_pro_sp_widget">
+    <m2m_sp_ng_pro_sp_widget action="DELETE">
+        <sp_angular_provider display_value="scBasicSelect">e225f8b43b0523008ed00d8044efc4fe</sp_angular_provider>
+        <sp_widget display_value="Henrique Test">47b32394dbd450505c116390149619c2</sp_widget>
+        <sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-17 04:38:46</sys_created_on>
+        <sys_id>0fb32394dbd450505c116390149619c4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>scBasicSelect.Henrique Test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_0fb32394dbd450505c116390149619c4</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-17 04:38:46</sys_updated_on>
+    </m2m_sp_ng_pro_sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>m2m_sp_ng_pro_sp_widget_0fb32394dbd450505c116390149619c4</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_ng_pro_sp_widget"><m2m_sp_ng_pro_sp_widget action="INSERT_OR_UPDATE"><sp_angular_provider display_value="scBasicSelect">e225f8b43b0523008ed00d8044efc4fe</sp_angular_provider><sp_widget display_value="Henrique Test">47b32394dbd450505c116390149619c2</sp_widget><sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-04-17 04:38:46</sys_created_on><sys_id>0fb32394dbd450505c116390149619c4</sys_id><sys_mod_count>0</sys_mod_count><sys_name>scBasicSelect.Henrique Test</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>m2m_sp_ng_pro_sp_widget_0fb32394dbd450505c116390149619c4</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-04-17 04:38:46</sys_updated_on></m2m_sp_ng_pro_sp_widget></record_update>]]></payload>
+        <payload_hash>469579766</payload_hash>
+        <record_name>scBasicSelect.Henrique Test</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-17 04:38:46</sys_created_on>
+        <sys_id>83b3efd4dbd450505c11639014961994</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171866e97580000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-17 04:38:46</sys_updated_on>
+        <type>Angular Providers</type>
+        <update_guid>07b3239485d45050a315e808f66ef1c6</update_guid>
+        <update_guid_history>07b3239485d45050a315e808f66ef1c6:469579766</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">4a0b456cdb5c50505c116390149619df</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-17 12:10:05</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_ng_pro_sp_widget">m2m_sp_ng_pro_sp_widget</sys_db_object>
+        <sys_id>6458b464e31e48bdbededdb374c99fd9</sys_id>
+        <sys_metadata>0fb32394dbd450505c116390149619c4</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>scBasicSelect.Henrique Test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_0fb32394dbd450505c116390149619c4</sys_update_name>
+        <sys_update_version display_value="m2m_sp_ng_pro_sp_widget_0fb32394dbd450505c116390149619c4">83b3efd4dbd450505c11639014961994</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-17 12:10:05</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

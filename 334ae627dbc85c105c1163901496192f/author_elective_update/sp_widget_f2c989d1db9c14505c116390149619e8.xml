@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function($rootScope,$scope,$timeout) {
+
+	/* widget controller */
+
+	var c = this;
+
+	c.selectedPill = ''; // When page loads, default pill selected
+
+	/*broadcast to other widgets after waiting for 500 milliseconds,
+
+      just to make sure other widgets are loaded and ready to listen when we broadcast.          
+
+  */
+
+	$timeout(function(){
+
+		$rootScope.$broadcast('showHideWidget', '');
+
+	},500);
+
+	//broadcast the selection when ever cliked on each pill
+
+	var x = 'servico';
+
+	$scope.learn = function(x){
+		c.selectedPill = x;
+		$rootScope.$broadcast('showHideWidget', x);	
+
+
+	}
+
+	$scope.selectPill = function(selection){
+
+		c.selectedPill = selection;
+
+		$rootScope.$broadcast('showHideWidget', selection);
+
+	};
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.text-align {
+  text-align:center;
+}
+
+.text-format-custom{
+	
+}
+
+.icon-img{
+  display: block;
+  margin: 0 auto;
+  height: 125px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.block {
+  width: 100%;
+  display: inline-block;
+}
+
+.image-link-header{
+  font-family: $text-bold;
+  font-size: $font-size-h1;
+  padding-bottom: 25px;
+}
+
+.description {
+  font-family: $text-bold;
+  font-size: $font-size-h4;
+}
+
+.imagelink {
+}
+
+
+// A partir daqui
+
+
+.pill-background {
+
+  background: url(sp-landing-back.jpg) no-repeat center center fixed;
+
+  -webkit-background-size: cover;
+
+  -moz-background-size: cover;
+
+  -o-background-size: cover;
+
+  background-size: cover;
+
+  height: 300px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-around;
+
+  .each-pill {
+
+    &amp;.active {
+
+      color: #c70000;
+
+    }
+
+    height:150px;
+
+    width:200px;
+
+    background:#ddd;
+
+    padding:50px;
+
+    text-align:center;
+
+    border-radius:4px;
+
+    cursor:pointer;
+
+
+
+    p{
+
+      margin-top:5px;
+
+    }
+
+  }
+
+}
+
+.color-red {
+
+  color: #c70000;
+
+}
+
+.remove-margin {
+
+  margin-bottom: 0px;
+
+}
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list>ref_sp_instance_link.type,url,ref_sp_instance_link.sc_category,ref_sp_instance_link.sc_cat_item,ref_sp_instance_link.kb_topic,ref_sp_instance_link.kb_article,ref_sp_instance_link.kb_category,ref_sp_instance_link.sp_page,title,color,class_name</field_list>
+        <has_preview>false</has_preview>
+        <id/>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>Copy of GService Icon Link</name>
+        <option_schema>[{"name":"image","section":"Presentation","label":"Image","type":"string"},{"name":"description","section":"Presentation","label":"Description","type":"string"},{"name":"link","section":"Presentation","label":"Link","type":"string"},{"name":"link_title","section":"Presentation","label":"Link Title","type":"string"},{"hint":"Nome de ID para vincular widgets dependentes","name":"id_name","section":"Data","label":"ID Name","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function(){
+	
+	
+	data.id = options.id_name;
+	
+	
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-19 20:00:07</sys_created_on>
+        <sys_id>f2c989d1db9c14505c116390149619e8</sys_id>
+        <sys_mod_count>15</sys_mod_count>
+        <sys_name>Copy of GService Icon Link</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_f2c989d1db9c14505c116390149619e8</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-19 20:45:49</sys_updated_on>
+        <template><![CDATA[<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-20 imagelink block" ng-click="learn('test'))">
+  <!-- Widget nativo para imagens com customizações-->
+  <a href="" target="" aria-label="{{c.options.description}}" class="text-align"> <!--Link para criar modal ou page-->
+    ${{{c.options.link_title}}}
+
+    <img src="{{c.options.image}}" class="icon-img"/>
+    <div class="image-link-header text-truncate">
+      {{c.options.title}}
+    </div>
+    <div class="description"><p class="text-format-custom">
+      ${{{c.options.description}}}
+      </p>
+    </div>
+  </a>
+</div>
+]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_f2c989d1db9c14505c116390149619e8</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function($rootScope,$scope,$timeout) {
+
+	/* widget controller */
+
+	var c = this;
+
+	c.selectedPill = ''; // When page loads, default pill selected
+
+	/*broadcast to other widgets after waiting for 500 milliseconds,
+
+      just to make sure other widgets are loaded and ready to listen when we broadcast.          
+
+  */
+
+	$timeout(function(){
+
+		$rootScope.$broadcast('showHideWidget', '');
+
+	},500);
+
+	//broadcast the selection when ever cliked on each pill
+
+	var x = 'servico';
+
+	$scope.learn = function(x){
+		c.selectedPill = x;
+		$rootScope.$broadcast('showHideWidget', x);	
+
+
+	}
+
+	$scope.selectPill = function(selection){
+
+		c.selectedPill = selection;
+
+		$rootScope.$broadcast('showHideWidget', selection);
+
+	};
+
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.text-align {
+  text-align:center;
+}
+
+.text-format-custom{
+	
+}
+
+.icon-img{
+  display: block;
+  margin: 0 auto;
+  height: 125px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.block {
+  width: 100%;
+  display: inline-block;
+}
+
+.image-link-header{
+  font-family: $text-bold;
+  font-size: $font-size-h1;
+  padding-bottom: 25px;
+}
+
+.description {
+  font-family: $text-bold;
+  font-size: $font-size-h4;
+}
+
+.imagelink {
+}
+
+
+// A partir daqui
+
+
+.pill-background {
+
+  background: url(sp-landing-back.jpg) no-repeat center center fixed;
+
+  -webkit-background-size: cover;
+
+  -moz-background-size: cover;
+
+  -o-background-size: cover;
+
+  background-size: cover;
+
+  height: 300px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-around;
+
+  .each-pill {
+
+    &amp;amp;.active {
+
+      color: #c70000;
+
+    }
+
+    height:150px;
+
+    width:200px;
+
+    background:#ddd;
+
+    padding:50px;
+
+    text-align:center;
+
+    border-radius:4px;
+
+    cursor:pointer;
+
+
+
+    p{
+
+      margin-top:5px;
+
+    }
+
+  }
+
+}
+
+.color-red {
+
+  color: #c70000;
+
+}
+
+.remove-margin {
+
+  margin-bottom: 0px;
+
+}
+&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list&gt;ref_sp_instance_link.type,url,ref_sp_instance_link.sc_category,ref_sp_instance_link.sc_cat_item,ref_sp_instance_link.kb_topic,ref_sp_instance_link.kb_article,ref_sp_instance_link.kb_category,ref_sp_instance_link.sp_page,title,color,class_name&lt;/field_list&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id/&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;Copy of GService Icon Link&lt;/name&gt;&lt;option_schema&gt;[{"name":"image","section":"Presentation","label":"Image","type":"string"},{"name":"description","section":"Presentation","label":"Description","type":"string"},{"name":"link","section":"Presentation","label":"Link","type":"string"},{"name":"link_title","section":"Presentation","label":"Link Title","type":"string"},{"hint":"Nome de ID para vincular widgets dependentes","name":"id_name","section":"Data","label":"ID Name","type":"string"}]&lt;/option_schema&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function(){
+	
+	
+	data.id = options.id_name;
+	
+	
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-19 20:00:07&lt;/sys_created_on&gt;&lt;sys_id&gt;f2c989d1db9c14505c116390149619e8&lt;/sys_id&gt;&lt;sys_mod_count&gt;15&lt;/sys_mod_count&gt;&lt;sys_name&gt;Copy of GService Icon Link&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_f2c989d1db9c14505c116390149619e8&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-19 20:45:49&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-20 imagelink block" ng-click="learn('test'))"&gt;
+  &lt;!-- Widget nativo para imagens com customizações--&gt;
+  &lt;a href="" target="" aria-label="{{c.options.description}}" class="text-align"&gt; &lt;!--Link para criar modal ou page--&gt;
+    ${{{c.options.link_title}}}
+
+    &lt;img src="{{c.options.image}}" class="icon-img"/&gt;
+    &lt;div class="image-link-header text-truncate"&gt;
+      {{c.options.title}}
+    &lt;/div&gt;
+    &lt;div class="description"&gt;&lt;p class="text-format-custom"&gt;
+      ${{{c.options.description}}}
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/a&gt;
+&lt;/div&gt;
+]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-148274572</payload_hash>
+        <record_name>Copy of GService Icon Link</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-19 20:45:49</sys_created_on>
+        <sys_id>1844d19ddb9c14505c116390149619b9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1719430ab430000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-19 20:45:49</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>dc44d19d269c145093111888a708fcb8</update_guid>
+        <update_guid_history>dc44d19d269c145093111888a708fcb8:-148274572,eff3d19de99c1450e78f9990a0f6be81:1823012828,c2a3595d519c1450cfc818c5f6505e86:-1934383178,4ff2515d939c1450d573c303bc822822:-1323959636,d7b25d1dbc9c1450f365c33b40f6bb33:-1476503068,4b02511d249c1450f0c1b8107d99a1ef:-2063583293,07f159d9499c1450dbb66e1261c0e1ce:-1168698673,fdc195d9d29c1450a3d765771e779eb1:297745027,ff511999a09c1450b5e586e9dd9e96a2:-609041367,dccec919659c14504f9e29b7a3e137ce:-1168698673,5fcdc195e29c1450b519382f84abb269:297745027,dd9b0555389c1450d9e43eefa839d601:2088681967,2a6b8dd1e89c1450a714c5c720f4de8c:1899443535,d34b85d1eb9c1450b2be034fa15e059e:1958112755,5aca0dd1c69c14505220a32b6ac10555:-414721953,f6c989d12d9c14509ea50a61eb7251e9:162750036</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">a17599dddb9c14505c116390149619ba</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-19 20:51:06</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>1b2b19e7decc48f4bbf23e56f1aa9510</sys_id>
+        <sys_metadata>f2c989d1db9c14505c116390149619e8</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Copy of GService Icon Link</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_f2c989d1db9c14505c116390149619e8</sys_update_name>
+        <sys_update_version display_value="sp_widget_f2c989d1db9c14505c116390149619e8">1844d19ddb9c14505c116390149619b9</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-19 20:51:06</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

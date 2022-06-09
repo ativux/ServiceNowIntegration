@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance_table">
+    <sp_instance_table action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <display_field/>
+        <field_list>number,caller_id,priority,resolved_at</field_list>
+        <filter table="incident">assignment_groupDYNAMICd6435e965f510100a9ad2572f2b47744^stateIN1,2,3,6,9,11<item endquery="false" field="assignment_group" goto="false" newquery="false" operator="DYNAMIC" or="false" value="d6435e965f510100a9ad2572f2b47744"/>
+            <item display_value="1,2,3,6,9,11" endquery="false" field="state" goto="false" newquery="false" operator="IN" or="false" value="1,2,3,6,9,11"/>
+        </filter>
+        <glyph/>
+        <id/>
+        <maximum_entries>6</maximum_entries>
+        <order>1</order>
+        <order_by>number</order_by>
+        <order_direction>asc</order_direction>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">53ce506adb619c10fa11cf24149619a7</sp_column>
+        <sp_page/>
+        <sp_widget display_value="Data Table from Instance Definition">38058ff1cb11020000f8d856634c9c8c</sp_widget>
+        <sys_class_name>sp_instance_table</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-24 17:23:16</sys_created_on>
+        <sys_id>78de546adb619c10fa11cf24149619c3</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>Teste</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_instance_table_78de546adb619c10fa11cf24149619c3</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-24 17:46:29</sys_updated_on>
+        <table>incident</table>
+        <title>Teste</title>
+        <url/>
+        <widget_parameters/>
+    </sp_instance_table>
+    <sys_translated_text action="DELETE" query="documentkey=78de546adb619c10fa11cf24149619c3"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_instance_table_78de546adb619c10fa11cf24149619c3</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance_table"><sp_instance_table action="INSERT_OR_UPDATE"><active>true</active><class_name/><color>default</color><css/><display_field/><field_list>number,caller_id,priority,resolved_at</field_list><filter table="incident">assignment_groupDYNAMICd6435e965f510100a9ad2572f2b47744^stateIN1,2,3,6,9,11<item endquery="false" field="assignment_group" goto="false" newquery="false" operator="DYNAMIC" or="false" value="d6435e965f510100a9ad2572f2b47744"/><item display_value="1,2,3,6,9,11" endquery="false" field="state" goto="false" newquery="false" operator="IN" or="false" value="1,2,3,6,9,11"/></filter><glyph/><id/><maximum_entries>6</maximum_entries><order>1</order><order_by>number</order_by><order_direction>asc</order_direction><roles/><short_description/><size>md</size><sp_column display_value="1">53ce506adb619c10fa11cf24149619a7</sp_column><sp_page/><sp_widget display_value="Data Table from Instance Definition">38058ff1cb11020000f8d856634c9c8c</sp_widget><sys_class_name>sp_instance_table</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-06-24 17:23:16</sys_created_on><sys_id>78de546adb619c10fa11cf24149619c3</sys_id><sys_mod_count>4</sys_mod_count><sys_name>Teste</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_instance_table_78de546adb619c10fa11cf24149619c3</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-06-24 17:46:29</sys_updated_on><table>incident</table><title>Teste</title><url/><widget_parameters/></sp_instance_table><sys_translated_text action="delete_multiple" query="documentkey=78de546adb619c10fa11cf24149619c3"/></record_update>]]></payload>
+        <payload_hash>1896458450</payload_hash>
+        <record_name>Teste</record_name>
+        <reverted_from/>
+        <source>7d96c115dbe514105c11639014961916</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-24 17:46:29</sys_created_on>
+        <sys_id>f024a466dba19c10fa11cf241496194c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172e77034d00000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-24 17:46:29</sys_updated_on>
+        <type>Instance with Table</type>
+        <update_guid>b824a466f0a19c10b4f1117c5f9be34b</update_guid>
+        <update_guid_history>b824a466f0a19c10b4f1117c5f9be34b:1896458450,a4e3a826d0a19c10752b5c111a05d25d:-385265999,48efdcea76619c10f17d2efb6bee2f70:1896458450,1a0f986a0b619c107f319db11075c9f3:1613522459,30de546a26619c1018370562a0765dc6:-1947724195</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">be85e42adba19c10fa11cf24149619b0</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-24 17:52:38</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance_table">sp_instance_table</sys_db_object>
+        <sys_id>9d85555f43264a26b77ea8c96a629741</sys_id>
+        <sys_metadata>78de546adb619c10fa11cf24149619c3</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Teste</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_instance_table_78de546adb619c10fa11cf24149619c3</sys_update_name>
+        <sys_update_version display_value="sp_instance_table_78de546adb619c10fa11cf24149619c3">f024a466dba19c10fa11cf241496194c</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-24 17:52:38</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

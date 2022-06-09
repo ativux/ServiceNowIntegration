@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency">
+    <m2m_sp_widget_dependency action="DELETE">
+        <sp_dependency display_value="angular-truncate">09e1f1416712220023c82e08f585ef1e</sp_dependency>
+        <sp_widget display_value="Copy of Header Menu">0b48ba67db40dc10fa11cf241496195f</sp_widget>
+        <sys_class_name>m2m_sp_widget_dependency</sys_class_name>
+        <sys_created_by>organize.vinicius.oliveira</sys_created_by>
+        <sys_created_on>2020-04-14 17:33:33</sys_created_on>
+        <sys_id>0348ba67db40dc10fa11cf2414961962</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>angular-truncate.Copy of Header Menu</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_widget_dependency_0348ba67db40dc10fa11cf2414961962</sys_update_name>
+        <sys_updated_by>organize.vinicius.oliveira</sys_updated_by>
+        <sys_updated_on>2020-04-14 17:33:33</sys_updated_on>
+    </m2m_sp_widget_dependency>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>m2m_sp_widget_dependency_0348ba67db40dc10fa11cf2414961962</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency"><m2m_sp_widget_dependency action="INSERT_OR_UPDATE"><sp_dependency display_value="angular-truncate">09e1f1416712220023c82e08f585ef1e</sp_dependency><sp_widget display_value="Copy of Header Menu">0b48ba67db40dc10fa11cf241496195f</sp_widget><sys_class_name>m2m_sp_widget_dependency</sys_class_name><sys_created_by>organize.vinicius.oliveira</sys_created_by><sys_created_on>2020-04-14 17:33:33</sys_created_on><sys_id>0348ba67db40dc10fa11cf2414961962</sys_id><sys_mod_count>0</sys_mod_count><sys_name>angular-truncate.Copy of Header Menu</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>m2m_sp_widget_dependency_0348ba67db40dc10fa11cf2414961962</sys_update_name><sys_updated_by>organize.vinicius.oliveira</sys_updated_by><sys_updated_on>2020-04-14 17:33:33</sys_updated_on></m2m_sp_widget_dependency></record_update>]]></payload>
+        <payload_hash>-1979050898</payload_hash>
+        <record_name>angular-truncate.Copy of Header Menu</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.vinicius.oliveira</sys_created_by>
+        <sys_created_on>2020-04-14 17:33:33</sys_created_on>
+        <sys_id>4b4872a7db40dc10fa11cf24149619ba</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17179c0d7f80000001</sys_recorded_at>
+        <sys_updated_by>organize.vinicius.oliveira</sys_updated_by>
+        <sys_updated_on>2020-04-14 17:33:33</sys_updated_on>
+        <type>Widget Dependency</type>
+        <update_guid>434872a76840dc1046314f54b1d10cba</update_guid>
+        <update_guid_history>434872a76840dc1046314f54b1d10cba:-1979050898</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">da987ea7db40dc10fa11cf24149619e7</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.vinicius.oliveira</sys_created_by>
+        <sys_created_on>2020-04-14 17:34:52</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_widget_dependency">m2m_sp_widget_dependency</sys_db_object>
+        <sys_id>04f935c449c44ce4a485c8abf7637610</sys_id>
+        <sys_metadata>0348ba67db40dc10fa11cf2414961962</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>angular-truncate.Copy of Header Menu</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>m2m_sp_widget_dependency_0348ba67db40dc10fa11cf2414961962</sys_update_name>
+        <sys_update_version display_value="m2m_sp_widget_dependency_0348ba67db40dc10fa11cf2414961962">4b4872a7db40dc10fa11cf24149619ba</sys_update_version>
+        <sys_updated_by>organize.vinicius.oliveira</sys_updated_by>
+        <sys_updated_on>2020-04-14 17:34:52</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

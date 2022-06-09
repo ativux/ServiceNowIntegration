@@ -1,0 +1,1141 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $location, $timeout, $window, $document, $rootScope, spUtil,spAriaUtil) {
+	var c = this;
+	/*$scope.selectedCatalog = c.data.catalogSelectorArr[c.data.selectedCatalogIndex];
+	$scope.changeCatalog = function (selectedCatalog) {
+		$timeout(function() {
+			if (selectedCatalog && selectedCatalog.hasOwnProperty("value")) {
+				$location.search('catalog_id', selectedCatalog.value ? selectedCatalog.value : -1);
+				$location.search('sys_id', null);
+			}
+		});
+	}
+	$scope.handleKeyPressOnCategory = function($event, category) {
+		$event.stopPropagation();
+		var currentElement = $($event.currentTarget);
+		var allCategories = currentElement.closest('ul.category-list').find('.group-item');
+		var index = -1;
+		if(allCategories.length > 0) {
+			index = allCategories.index(currentElement);
+		}
+		switch($event.which) {
+			case 40: // bottom key
+				if(index+1 < allCategories.length) {
+					allCategories.get(index+1).focus();
+				}
+				break;
+			case 38: // top key
+				if(index > 0) {
+					allCategories.get(index-1).focus();
+				}
+				break;
+			case 37: // Left key
+				if(category.showChildren) {
+					$scope.displayChildren($event, category);
+				}
+				break;
+			case 39: //right key
+				if(!category.showChildren) {
+					$scope.displayChildren($event, category);
+				}
+				break;
+		}
+		
+	}
+	$scope.hideCategoryWidgetInXS = (c.options.hide_xs == 'true');
+	if (c.data.categoryId) {
+		if (!$scope.hideCategoryWidgetInXS)
+			$scope.hideCategoryWidgetInXS = true;
+	} else {
+		if ($scope.hideCategoryWidgetInXS)
+			$scope.hideCategoryWidgetInXS = false;
+	}
+	
+	spUtil.getPreference('glide.ui.accessibility', function(value) {
+		if (value == "true")
+			$scope.tabindex = 0;
+		else
+			$scope.tabindex = -1;
+	});
+	$scope.displayChildren = function($event, category) {
+		$event.stopPropagation();
+		if(!category || !category.subcategories || category.subcategories.length === 0) {
+			return;
+		}
+		category.showChildren = !category.showChildren;
+		if (category.showChildren) {
+			spAriaUtil.sendLiveMessage(category.title + ' '+ c.data.messages.expanded);
+		} 
+		else {
+			spAriaUtil.sendLiveMessage(category.title + ' ' +c.data.messages.collapsed);
+		}
+	};
+	
+	$scope.toggleSubCategories =  function(val) {
+		toggleSubCategories(c.data.categoriesList, val);
+	};
+	
+	function toggleSubCategories(categories, val) {
+		categories.forEach(function(category) {
+			category.showChildren = val;
+			if (category.subcategories && category.subcategories.length > 0) {
+				toggleSubCategories(category.subcategories, val);
+			}
+		});
+	}
+	
+	$scope.loadMore =  function() {
+		c.data.new_limit = c.data.limit + (c.options.number_of_categories_to_load || 15);
+		c.data.more_msg = c.data.pleaseWait;
+		c.server.update();
+	};
+	
+	$scope.categorySelected = function(category) {
+			$timeout(function() {
+				$location.search('sys_id', category.sys_id);
+				$location.search('catalog_id', c.data.catalog_id);
+				$location.search('id', c.data.page ||'sc_category');
+			});
+	};
+	
+	var listenerForBrowseCategories = $scope.$on("$sp.service_catelog.show.categories_widget", function() {
+		$scope.hideCategoryWidgetInXS = false;
+	});
+	
+	$scope.hideBrowseCategory = function () {
+		$scope.hideCategoryWidgetInXS = true;
+		$rootScope.$broadcast("$sp.service_catelog.show.items_widget");
+	}
+	
+	$scope.$on("$destroy", function() {
+		listenerForBrowseCategories();
+	});
+	
+	$scope.isTouchDevice = function() {
+		return ('ontouchstart' in $window);
+	}
+	
+	$scope.getCategoryPadding = function(categoryLevel) {
+		if (categoryLevel >= 4)
+			categoryLevel = 4;
+		return 15*categoryLevel + "px";
+	}*/
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>/*
+.category-widget {
+	border: 1px solid $panel-inner-border;
+  
+  .category-list {
+    .fa {
+      margin-right: 5px;
+    }
+    .l-h-1_6x {
+      line-height: 1.6em;
+    }
+    a {
+		width: 100%;
+      	vertical-align: middle;
+	    display: inline-block;
+    }
+    .list-group {
+      margin-bottom: 0;
+    }
+    .list-group-item {
+      padding: 0;
+      border: 0;
+    }
+    .group-item {
+      padding: 10px 15px;
+    }
+    .group-item-default {
+      &amp;:hover, &amp;:focus {
+        background-color: darken($panel-default-heading-bg, 2%);
+      }
+    }
+    .group-item-primary {
+      &amp;:hover, &amp;:focus {
+        border-left: 3px solid $primary !important;
+      }
+    }
+    .group-item-success {
+      &amp;:hover {
+        background-color: lighten($panel-success-heading-bg, 3%)
+      }
+    }
+    .group-item-info {
+      &amp;:hover, &amp;:focus {
+        background-color: lighten($panel-info-heading-bg, 3%)
+      }
+    }
+    .group-item-warning {
+      &amp;:hover, &amp;:focus {
+        background-color: $panel-warning-heading-bg
+      }
+    }
+    .group-item-danger {
+      &amp;:hover, &amp;:focus {
+        background-color: lighten($panel-danger-heading-bg, 3%)
+      }
+    }
+    
+    .list-bg-default {
+      background-color: $panel-default-heading-bg;
+    }
+    .list-bg-primary {
+      background-color: lighten($panel-info-heading-bg, 6%);
+    }
+    .list-bg-success {
+      background-color: lighten($panel-success-heading-bg, 6%);
+    }
+    .list-bg-info {
+      background-color: lighten($panel-info-heading-bg, 6%);
+    }
+    .list-bg-warning {
+      background-color: lighten($panel-warning-heading-bg, 3%);
+    }
+    .list-bg-danger {
+      background-color: lighten($panel-danger-heading-bg, 6%);
+    }
+  }
+}
+.panel-primary .badge {
+  background-color: $primary;
+  color: white;
+}
+.panel-default .badge {
+  background-color: $panel-default-text;
+  color: white
+}
+.panel-success .badge {
+  background-color:  $panel-success-text;
+  color: white;
+}
+.panel-info .badge {
+  background-color: $panel-info-text;
+  color: white;
+}
+.panel-warning .badge {
+  background-color: $panel-warning-text;
+  color: white;
+}
+.panel-danger .badge {
+  background-color: $panel-danger-text;
+  color: white;
+}
+.category-list .badge {
+  text-align: right;
+}
+.text-active {
+   color: $link-color;
+   border-left: 3px solid $primary
+}
+.text-default {
+   color: $text-muted;
+}*/</css>
+        <data_table>sp_instance</data_table>
+        <demo_data>{"options" :&#13;
+   {&#13;
+      "hide_xs" : false&#13;
+   }&#13;
+}</demo_data>
+        <description/>
+        <docs/>
+        <field_list>color</field_list>
+        <has_preview>true</has_preview>
+        <id>test_service_categories</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>Test Service Categories</name>
+        <option_schema>[{"name":"hide_xs","default_value":false,"section":"Behavior","label":"Hide at XS","type":"boolean"},{"name":"omit_badges","section":"Behavior","label":"Omit badges (may impact performance for large items in categories)","type":"boolean"},{"name":"check_can_view","default_value":"true","section":"Behavior","label":"Check canView per item","type":"boolean"},{"hint":"Choose between a flattened and a nested category structure (Nested may impact performance for large items in categories)","name":"category_layout","section":"Presentation","label":"Category Layout","type":"choice","choices":[{"label":"Flat","value":"Flat"},{"label":"Nested","value":"Nested"}]},{"displayValue":"Page","name":"page","section":"Data","label":"page","type":"reference","value":"sp_page","ed":{"reference":"sp_page"}},{"hint":"Number of categories to load on page load","name":"number_of_categories_to_load","section":"Data","default_value":"15","label":"Number of categories to load","type":"integer"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+
+	//var catalog_id = $sp.getParameter("catalog_id") ? $sp.getParameter("catalog_id") + "" : "-1";
+	//var catalogSelectorArr = [{value: "-1", displayValue: gs.getMessage("All")}];
+	var grCatalog = new GlideRecord("sc_catalog");
+	grCatalog.addQuery("title", "TI");
+	grCatalog.query();
+	grCatalog.next();
+	var scItCatalog = grCatalog.getUniqueValue()
+
+	console.log(scItCatalog);
+	
+	var grCategory = new GlideRecord("sc_category");
+	grCategory.addActiveQuery();
+	grCategory.addQuery("sc_catalog",scItCatalog);
+	grCategory.addQuery("parent","");
+	grCategory.query();
+
+
+	var itCategories = [];
+	var itCategoriesTitle = [];
+	while (grCategory.next()){
+		itCategories.push(grCategory.getUniqueValue());
+		itCategoriesTitle.push(grCategory.getValue("title"))
+	}
+
+	console.log(itCategoriesTitle);
+	data.itCategories = grCategory;
+	data.itCategory = itCategoriesTitle;
+
+	
+	/*
+	var scCategories = [];
+
+	while (grItCatalog.next()){
+		var scCategory = grItCatalog.getUniqueValue();
+		scCategories.push(scCategory);
+		console.log(scCategory);
+	}
+	*/
+
+
+	//data.selectedCatalogIndex = catalog_id == -1 ? 0 : -1;
+	//console.log(catalogSelectorArr); 
+	/*
+	var catalogIDs = $sp.getCatalogs().value + "";
+	var catalogs = catalogIDs.split(",");
+	var isCatalogAccessibleViaPortal = catalog_id == -1 ? true : false;
+	catalogs.forEach(function(catalogSysId) {
+		if (catalog_id == catalogSysId) {
+			isCatalogAccessibleViaPortal = true;
+		}
+	});
+
+	var counter = 1;
+	catalogs.forEach(function(catalogSysId) {
+		var catalog = new sn_sc.Catalog(catalogSysId);
+		var catalogObj = {value: catalogSysId, displayValue: catalog.getTitle()};
+		if (catalog.canView()) {
+			if (catalog_id === catalogSysId) {
+				data.selectedCatalogIndex = counter;
+			}
+			catalogSelectorArr.push(catalogObj);
+			counter++;
+		}
+	});
+	data.catalogSelectorArr = catalogSelectorArr;
+
+	data.catalog_id = catalog_id ? catalog_id : "-1";
+	data.showMoreMsg = gs.getMessage("Show More");
+	data.pleaseWait = gs.getMessage("Please wait... fetching categories");
+	var categoryId = JSUtil.nil($sp.getParameter('sys_id')) ? "" : $sp.getParameter('sys_id') + "";
+	data.categoryId = categoryId;
+	var catalogIDs = (data.catalog_id && data.catalog_id !== "-1") ? data.catalog_id : $sp.getCatalogs().value + "";
+	var viewType = '';
+	var checkCanView = false;
+	var nestedLayout = (options.category_layout !== "Flat");
+	var dynamicCategory = false;
+
+	var catalogArr = catalogIDs.split(",");
+	var catalogs = [];
+	catalogArr.forEach(function(catalogSysId) {
+		var catalog = new sn_sc.Catalog(catalogSysId);
+		if (catalog.canView()) {
+			catalogs.push(catalogSysId);
+		}
+	});
+
+	data.categoryId = categoryId;
+	var msg = data.messages = {};
+	msg.expanded = gs.getMessage("Expanded");
+	msg.collapsed = gs.getMessage("Collapsed");
+	msg.catalogTitle = options.catalog_title? gs.getMessage(options.catalog_title) : gs.getMessage('Catalogs');
+
+	data.largeDataSet = gs.getProperty("glide.sc.largeSet.optimization.enable", "false");
+	if (data.largeDataSet == 'true')
+		 nestedLayout = false;
+
+	if (options.page) {
+		var page = new GlideRecord('sp_page');
+		if (page.get(options.page))
+			data.page = page.id + '';
+	}
+	checkCanView = (options.check_can_view == 'true');
+
+	if(!isCatalogAccessibleViaPortal) {
+		return;
+	}
+	data.categoriesList = [];
+	var categoriesInPage = options.number_of_categories_to_load || 15;
+	data.limit = categoriesInPage;
+
+	if (input && input.new_limit)
+		data.limit = input.new_limit;
+	if (input && input.categoriesList)
+		data.categoriesList = input.categoriesList.slice(); //Copy the input array
+
+	if (input && input.startWindow) {
+		data.endWindow = input.endWindow;
+	}
+	else {
+		data.startWindow = 0;
+		data.endWindow = 0;
+	}
+
+	while (data.categoriesList.length < data.limit + 1) {
+			data.startWindow = data.endWindow;
+			data.endWindow = data.endWindow + categoriesInPage;
+			var catGr = queryCategory(catalogs, nestedLayout, dynamicCategory, data.startWindow, data.endWindow);
+			if (!catGr.hasNext())
+				break;
+			fetchCategories(catGr, data.categoriesList);
+	}
+
+	if (data.categoriesList.length > data.limit)
+			data.showMore = true;
+	else
+		data.showMore = false;
+
+	data.more_msg = gs.getMessage("Showing {0} categories", data.limit);
+
+
+	function fetchCategories(categoriesGr, categories) {
+		while (categoriesGr.next()) {
+			var categoryJS = new sn_sc.CatCategory(categoriesGr.getUniqueValue() + '');
+			if (!categoryJS.canView())
+				continue;
+
+			var categoryDetails = getCategoryDetails(categoryJS, 0);
+			categoryDetails.sys_id = categoriesGr.getUniqueValue();
+			categories.push(categoryDetails);
+		}
+	}
+
+	function queryCategory(catalogs, nestedLayout, dynamicCategory, startWindow, endWindow) {
+			var categoriesGr = new GlideRecord('sc_category');
+			categoriesGr.addQuery("sc_catalog", catalogs);
+			if (!dynamicCategory)
+				categoriesGr.addQuery("sys_class_name", "sc_category");
+			categoriesGr.addActiveQuery();
+			categoriesGr.orderBy('order');
+			categoriesGr.orderBy('title');
+			if (nestedLayout)
+				categoriesGr.addNullQuery("parent");
+			categoriesGr.chooseWindow(startWindow, endWindow);
+			categoriesGr.query();
+			return categoriesGr;
+	}
+
+	function getCategoryDetails(categoryJS, level) {
+		var categoryDetails = {};
+		var showChildren = false;
+		if (!categoryJS) {
+			return categoryDetails;
+		}
+		categoryDetails.title = categoryJS.getTitle();
+		categoryDetails.level = level;
+		categoryDetails.description = categoryJS.getDescription();
+		categoryDetails.full_description = categoryJS.getFullDescription();
+		categoryDetails.icon = categoryJS.getIconSRC();
+		categoryDetails.header_icon = categoryJS.getHeaderIconSRC();
+		categoryDetails.homepage_image = categoryJS.getHomepageImageSRC();
+		categoryDetails.sys_id = categoryJS.getID();
+		categoryDetails.showChildren = (categoryDetails.sys_id === categoryId);
+		categoryDetails.catalog = {"sys_id": categoryJS.getCatalog(), "title": new sn_sc.Catalog(categoryJS.getCatalog()).getTitle()}
+		if (catalog_id == -1 && catalogSelectorArr.length > 2)
+			categoryDetails.catalog_tooltip = gs.getMessage("[{0}]", categoryDetails.catalog.title);
+		else
+			categoryDetails.catalog_tooltip = '';
+
+		if (data.largeDataSet != 'true') {
+			if (checkCanView)
+					categoryDetails.count = categoryDetails.totalCount = categoryJS.getViewableItemsCount(true);
+				else
+					categoryDetails.count = categoryDetails.totalCount = categoryJS.getItemsCount(true);
+		}
+		else {
+			categoryDetails.count = 1;
+		}
+
+		var subCategoryCounts = 0;
+		if (nestedLayout) {
+			var subcategories = categoryJS.getViewableSubCategories();
+
+			if (subcategories.length == 0) {
+				categoryDetails.subcategories = [];
+			} 
+			else {
+					categoryDetails.subcategories = [];
+					subcategories.forEach(function(subCategory) {
+						var subCategoryJS = new sn_sc.CatCategory(subCategory.sys_id + '');
+						var category = getCategoryDetails(subCategoryJS, level + 1);
+						categoryDetails.totalCount = categoryDetails.totalCount + category.totalCount;
+						categoryDetails.subcategories.push(category);
+						categoryDetails.showChildren = categoryDetails.showChildren || category.showChildren;
+					});
+				}
+		}
+		else {
+			categoryDetails.totalCount = categoryDetails.count;
+		}
+		return categoryDetails;
+	}*/
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-17 04:08:30</sys_created_on>
+        <sys_id>27ccd310dbd450505c116390149619f4</sys_id>
+        <sys_mod_count>54</sys_mod_count>
+        <sys_name>Test Service Categories</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_27ccd310dbd450505c116390149619f4</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-17 11:54:25</sys_updated_on>
+        <template><![CDATA[<h1>
+  {{c.data.itCategory}}
+</h1>
+<!--<div ng-if="c.data.catalogSelectorArr.length > 2" ng-class="{'hidden-xs' : hideCategoryWidgetInXS}" class="panel panel-{{::options.color}} category-widget no-border">
+  <div class="panel-primary panel-heading">
+    <h2 class="h4 panel-title">
+      {{::data.messages.catalogTitle}}
+    </h2>
+  </div>
+  <ul class="list-group category-list" role="list" aria-label="{{::data.messages.catalogTitle}}">
+    <li role="listitem" class="list-group-item text-overflow-ellipsis" ng-include="'catalog-template.html'"/>
+  </ul>
+</div>
+<script type="text/ng-template" id="catalog-template.html">
+  <select class="sc-basic-select" aria-label="{{::data.messages.catalogTitle}}" ng-change="changeCatalog(selectedCatalog)" sn-focus="true" ng-model="selectedCatalog" ng-options="catalog.displayValue for catalog in c.data.catalogSelectorArr track by catalog.value"/>
+</script>
+
+<div ng-class="{'hidden-xs' : hideCategoryWidgetInXS}" class="panel panel-{{::options.color}} category-widget no-border">
+  <div class="panel-heading">
+    <h2 class="h4 panel-title">
+      <span class="pull-right visible-xs" >
+      	<i class="fa fa-times-circle" ng-click="hideBrowseCategory()" aria-label="${Show Items}" tabindex="0"/>
+      </span>
+      <span ng-if="::options.glyph">
+        <fa name="{{::options.glyph}}" />
+      </span>{{::options.title}}</h2>
+  </div>
+  <ul class="list-group category-list" role="list" aria-label="${Categories}">
+    <li role="listitem" 
+        class="list-group-item text-overflow-ellipsis" 
+        ng-if="category.totalCount > 0" ng-include="'category-template.html'" 
+        ng-repeat="category in data.categoriesList | limitTo: data.limit track by category.sys_id">
+    </li>
+  </ul>
+  <div class="panel-footer text-center" ng-if="data.showMore">
+    <a href="javascript:void(0)" role="button" class="text-center" ng-click="loadMore()" >{{::data.showMoreMsg}}</a>
+    <div class="text-muted text-center">
+      {{data.more_msg}}
+    </div>
+  </div>
+</div>
+<script type="text/ng-template" id="category-template.html">
+	<div ng-click="categorySelected(category)"
+  ng-keydown="handleKeyPressOnCategory($event, category)"
+		sn-focus="category.sys_id == data.categoryId"
+		ng-enabled="category.totalCount > 0"
+    ng-class="{true: 'text-active', false: ''}[category.sys_id == data.categoryId]"
+          tabindex="0" class="group-item group-item-primary" style="padding-left:{{getCategoryPadding(category.level + 1)}}">
+      <i ng-if="::category.subcategories.length > 0 && category.totalCount > category.count" 
+          class="l-h-1_6x pull-left fa collapse-icon" 
+          ng-class="{true: 'fa-minus-square-o', false: 'fa-plus-square-o'}[category.showChildren]" 
+          aria-label="{{category.showChildren? '${collapse category} ' + category.title : '${expand category} ' + category.title}}"
+          ng-click="displayChildren($event, category)"/></i>
+      <span class="badge pull-right pointer" ng-if="options.omit_badges != 'true' && data.largeDataSet != 'true'">{{::category.totalCount}}</span>
+      <span class="block text-overflow-ellipsis category" 
+				  id="{{::category.sys_id}}"
+          uib-tooltip="{{::category.title}} {{::category.catalog_tooltip}}"
+          tooltip-placement="top"
+          tooltip-enable="!isTouchDevice()"
+          tooltip-append-to-body="true">
+          {{::category.title}}
+          <span class="sr-only">${items}</span>
+      </span>
+    </div>
+  	<ul class="list-group sub-category-list list-bg-primary" role="list" aria-label="{{category.title}} ${subcategories}" ng-if="category.showChildren && category.subcategories.length > 0" ng-class="{true: 'no-indent', false: ''}[category.level > 2]">
+      <li role="listitem" 
+      		class="list-group-item text-overflow-ellipsis" 
+          ng-include="'category-template.html'" 
+          ng-repeat="category in category.subcategories track by category.sys_id" 
+          ng-if="category.totalCount > 0">
+      </li>
+  	</ul>
+</script>-->]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_27ccd310dbd450505c116390149619f4</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function($scope, $location, $timeout, $window, $document, $rootScope, spUtil,spAriaUtil) {
+	var c = this;
+	/*$scope.selectedCatalog = c.data.catalogSelectorArr[c.data.selectedCatalogIndex];
+	$scope.changeCatalog = function (selectedCatalog) {
+		$timeout(function() {
+			if (selectedCatalog &amp;&amp; selectedCatalog.hasOwnProperty("value")) {
+				$location.search('catalog_id', selectedCatalog.value ? selectedCatalog.value : -1);
+				$location.search('sys_id', null);
+			}
+		});
+	}
+	$scope.handleKeyPressOnCategory = function($event, category) {
+		$event.stopPropagation();
+		var currentElement = $($event.currentTarget);
+		var allCategories = currentElement.closest('ul.category-list').find('.group-item');
+		var index = -1;
+		if(allCategories.length &gt; 0) {
+			index = allCategories.index(currentElement);
+		}
+		switch($event.which) {
+			case 40: // bottom key
+				if(index+1 &lt; allCategories.length) {
+					allCategories.get(index+1).focus();
+				}
+				break;
+			case 38: // top key
+				if(index &gt; 0) {
+					allCategories.get(index-1).focus();
+				}
+				break;
+			case 37: // Left key
+				if(category.showChildren) {
+					$scope.displayChildren($event, category);
+				}
+				break;
+			case 39: //right key
+				if(!category.showChildren) {
+					$scope.displayChildren($event, category);
+				}
+				break;
+		}
+		
+	}
+	$scope.hideCategoryWidgetInXS = (c.options.hide_xs == 'true');
+	if (c.data.categoryId) {
+		if (!$scope.hideCategoryWidgetInXS)
+			$scope.hideCategoryWidgetInXS = true;
+	} else {
+		if ($scope.hideCategoryWidgetInXS)
+			$scope.hideCategoryWidgetInXS = false;
+	}
+	
+	spUtil.getPreference('glide.ui.accessibility', function(value) {
+		if (value == "true")
+			$scope.tabindex = 0;
+		else
+			$scope.tabindex = -1;
+	});
+	$scope.displayChildren = function($event, category) {
+		$event.stopPropagation();
+		if(!category || !category.subcategories || category.subcategories.length === 0) {
+			return;
+		}
+		category.showChildren = !category.showChildren;
+		if (category.showChildren) {
+			spAriaUtil.sendLiveMessage(category.title + ' '+ c.data.messages.expanded);
+		} 
+		else {
+			spAriaUtil.sendLiveMessage(category.title + ' ' +c.data.messages.collapsed);
+		}
+	};
+	
+	$scope.toggleSubCategories =  function(val) {
+		toggleSubCategories(c.data.categoriesList, val);
+	};
+	
+	function toggleSubCategories(categories, val) {
+		categories.forEach(function(category) {
+			category.showChildren = val;
+			if (category.subcategories &amp;&amp; category.subcategories.length &gt; 0) {
+				toggleSubCategories(category.subcategories, val);
+			}
+		});
+	}
+	
+	$scope.loadMore =  function() {
+		c.data.new_limit = c.data.limit + (c.options.number_of_categories_to_load || 15);
+		c.data.more_msg = c.data.pleaseWait;
+		c.server.update();
+	};
+	
+	$scope.categorySelected = function(category) {
+			$timeout(function() {
+				$location.search('sys_id', category.sys_id);
+				$location.search('catalog_id', c.data.catalog_id);
+				$location.search('id', c.data.page ||'sc_category');
+			});
+	};
+	
+	var listenerForBrowseCategories = $scope.$on("$sp.service_catelog.show.categories_widget", function() {
+		$scope.hideCategoryWidgetInXS = false;
+	});
+	
+	$scope.hideBrowseCategory = function () {
+		$scope.hideCategoryWidgetInXS = true;
+		$rootScope.$broadcast("$sp.service_catelog.show.items_widget");
+	}
+	
+	$scope.$on("$destroy", function() {
+		listenerForBrowseCategories();
+	});
+	
+	$scope.isTouchDevice = function() {
+		return ('ontouchstart' in $window);
+	}
+	
+	$scope.getCategoryPadding = function(categoryLevel) {
+		if (categoryLevel &gt;= 4)
+			categoryLevel = 4;
+		return 15*categoryLevel + "px";
+	}*/
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;/*
+.category-widget {
+	border: 1px solid $panel-inner-border;
+  
+  .category-list {
+    .fa {
+      margin-right: 5px;
+    }
+    .l-h-1_6x {
+      line-height: 1.6em;
+    }
+    a {
+		width: 100%;
+      	vertical-align: middle;
+	    display: inline-block;
+    }
+    .list-group {
+      margin-bottom: 0;
+    }
+    .list-group-item {
+      padding: 0;
+      border: 0;
+    }
+    .group-item {
+      padding: 10px 15px;
+    }
+    .group-item-default {
+      &amp;amp;:hover, &amp;amp;:focus {
+        background-color: darken($panel-default-heading-bg, 2%);
+      }
+    }
+    .group-item-primary {
+      &amp;amp;:hover, &amp;amp;:focus {
+        border-left: 3px solid $primary !important;
+      }
+    }
+    .group-item-success {
+      &amp;amp;:hover {
+        background-color: lighten($panel-success-heading-bg, 3%)
+      }
+    }
+    .group-item-info {
+      &amp;amp;:hover, &amp;amp;:focus {
+        background-color: lighten($panel-info-heading-bg, 3%)
+      }
+    }
+    .group-item-warning {
+      &amp;amp;:hover, &amp;amp;:focus {
+        background-color: $panel-warning-heading-bg
+      }
+    }
+    .group-item-danger {
+      &amp;amp;:hover, &amp;amp;:focus {
+        background-color: lighten($panel-danger-heading-bg, 3%)
+      }
+    }
+    
+    .list-bg-default {
+      background-color: $panel-default-heading-bg;
+    }
+    .list-bg-primary {
+      background-color: lighten($panel-info-heading-bg, 6%);
+    }
+    .list-bg-success {
+      background-color: lighten($panel-success-heading-bg, 6%);
+    }
+    .list-bg-info {
+      background-color: lighten($panel-info-heading-bg, 6%);
+    }
+    .list-bg-warning {
+      background-color: lighten($panel-warning-heading-bg, 3%);
+    }
+    .list-bg-danger {
+      background-color: lighten($panel-danger-heading-bg, 6%);
+    }
+  }
+}
+.panel-primary .badge {
+  background-color: $primary;
+  color: white;
+}
+.panel-default .badge {
+  background-color: $panel-default-text;
+  color: white
+}
+.panel-success .badge {
+  background-color:  $panel-success-text;
+  color: white;
+}
+.panel-info .badge {
+  background-color: $panel-info-text;
+  color: white;
+}
+.panel-warning .badge {
+  background-color: $panel-warning-text;
+  color: white;
+}
+.panel-danger .badge {
+  background-color: $panel-danger-text;
+  color: white;
+}
+.category-list .badge {
+  text-align: right;
+}
+.text-active {
+   color: $link-color;
+   border-left: 3px solid $primary
+}
+.text-default {
+   color: $text-muted;
+}*/&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data&gt;{"options" :&amp;#13;
+   {&amp;#13;
+      "hide_xs" : false&amp;#13;
+   }&amp;#13;
+}&lt;/demo_data&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list&gt;color&lt;/field_list&gt;&lt;has_preview&gt;true&lt;/has_preview&gt;&lt;id&gt;test_service_categories&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;Test Service Categories&lt;/name&gt;&lt;option_schema&gt;[{"name":"hide_xs","default_value":false,"section":"Behavior","label":"Hide at XS","type":"boolean"},{"name":"omit_badges","section":"Behavior","label":"Omit badges (may impact performance for large items in categories)","type":"boolean"},{"name":"check_can_view","default_value":"true","section":"Behavior","label":"Check canView per item","type":"boolean"},{"hint":"Choose between a flattened and a nested category structure (Nested may impact performance for large items in categories)","name":"category_layout","section":"Presentation","label":"Category Layout","type":"choice","choices":[{"label":"Flat","value":"Flat"},{"label":"Nested","value":"Nested"}]},{"displayValue":"Page","name":"page","section":"Data","label":"page","type":"reference","value":"sp_page","ed":{"reference":"sp_page"}},{"hint":"Number of categories to load on page load","name":"number_of_categories_to_load","section":"Data","default_value":"15","label":"Number of categories to load","type":"integer"}]&lt;/option_schema&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+
+	//var catalog_id = $sp.getParameter("catalog_id") ? $sp.getParameter("catalog_id") + "" : "-1";
+	//var catalogSelectorArr = [{value: "-1", displayValue: gs.getMessage("All")}];
+	var grCatalog = new GlideRecord("sc_catalog");
+	grCatalog.addQuery("title", "TI");
+	grCatalog.query();
+	grCatalog.next();
+	var scItCatalog = grCatalog.getUniqueValue()
+
+	console.log(scItCatalog);
+	
+	var grCategory = new GlideRecord("sc_category");
+	grCategory.addActiveQuery();
+	grCategory.addQuery("sc_catalog",scItCatalog);
+	grCategory.addQuery("parent","");
+	grCategory.query();
+
+
+	var itCategories = [];
+	var itCategoriesTitle = [];
+	while (grCategory.next()){
+		itCategories.push(grCategory.getUniqueValue());
+		itCategoriesTitle.push(grCategory.getValue("title"))
+	}
+
+	console.log(itCategoriesTitle);
+	data.itCategories = grCategory;
+	data.itCategory = itCategoriesTitle;
+
+	
+	/*
+	var scCategories = [];
+
+	while (grItCatalog.next()){
+		var scCategory = grItCatalog.getUniqueValue();
+		scCategories.push(scCategory);
+		console.log(scCategory);
+	}
+	*/
+
+
+	//data.selectedCatalogIndex = catalog_id == -1 ? 0 : -1;
+	//console.log(catalogSelectorArr); 
+	/*
+	var catalogIDs = $sp.getCatalogs().value + "";
+	var catalogs = catalogIDs.split(",");
+	var isCatalogAccessibleViaPortal = catalog_id == -1 ? true : false;
+	catalogs.forEach(function(catalogSysId) {
+		if (catalog_id == catalogSysId) {
+			isCatalogAccessibleViaPortal = true;
+		}
+	});
+
+	var counter = 1;
+	catalogs.forEach(function(catalogSysId) {
+		var catalog = new sn_sc.Catalog(catalogSysId);
+		var catalogObj = {value: catalogSysId, displayValue: catalog.getTitle()};
+		if (catalog.canView()) {
+			if (catalog_id === catalogSysId) {
+				data.selectedCatalogIndex = counter;
+			}
+			catalogSelectorArr.push(catalogObj);
+			counter++;
+		}
+	});
+	data.catalogSelectorArr = catalogSelectorArr;
+
+	data.catalog_id = catalog_id ? catalog_id : "-1";
+	data.showMoreMsg = gs.getMessage("Show More");
+	data.pleaseWait = gs.getMessage("Please wait... fetching categories");
+	var categoryId = JSUtil.nil($sp.getParameter('sys_id')) ? "" : $sp.getParameter('sys_id') + "";
+	data.categoryId = categoryId;
+	var catalogIDs = (data.catalog_id &amp;&amp; data.catalog_id !== "-1") ? data.catalog_id : $sp.getCatalogs().value + "";
+	var viewType = '';
+	var checkCanView = false;
+	var nestedLayout = (options.category_layout !== "Flat");
+	var dynamicCategory = false;
+
+	var catalogArr = catalogIDs.split(",");
+	var catalogs = [];
+	catalogArr.forEach(function(catalogSysId) {
+		var catalog = new sn_sc.Catalog(catalogSysId);
+		if (catalog.canView()) {
+			catalogs.push(catalogSysId);
+		}
+	});
+
+	data.categoryId = categoryId;
+	var msg = data.messages = {};
+	msg.expanded = gs.getMessage("Expanded");
+	msg.collapsed = gs.getMessage("Collapsed");
+	msg.catalogTitle = options.catalog_title? gs.getMessage(options.catalog_title) : gs.getMessage('Catalogs');
+
+	data.largeDataSet = gs.getProperty("glide.sc.largeSet.optimization.enable", "false");
+	if (data.largeDataSet == 'true')
+		 nestedLayout = false;
+
+	if (options.page) {
+		var page = new GlideRecord('sp_page');
+		if (page.get(options.page))
+			data.page = page.id + '';
+	}
+	checkCanView = (options.check_can_view == 'true');
+
+	if(!isCatalogAccessibleViaPortal) {
+		return;
+	}
+	data.categoriesList = [];
+	var categoriesInPage = options.number_of_categories_to_load || 15;
+	data.limit = categoriesInPage;
+
+	if (input &amp;&amp; input.new_limit)
+		data.limit = input.new_limit;
+	if (input &amp;&amp; input.categoriesList)
+		data.categoriesList = input.categoriesList.slice(); //Copy the input array
+
+	if (input &amp;&amp; input.startWindow) {
+		data.endWindow = input.endWindow;
+	}
+	else {
+		data.startWindow = 0;
+		data.endWindow = 0;
+	}
+
+	while (data.categoriesList.length &lt; data.limit + 1) {
+			data.startWindow = data.endWindow;
+			data.endWindow = data.endWindow + categoriesInPage;
+			var catGr = queryCategory(catalogs, nestedLayout, dynamicCategory, data.startWindow, data.endWindow);
+			if (!catGr.hasNext())
+				break;
+			fetchCategories(catGr, data.categoriesList);
+	}
+
+	if (data.categoriesList.length &gt; data.limit)
+			data.showMore = true;
+	else
+		data.showMore = false;
+
+	data.more_msg = gs.getMessage("Showing {0} categories", data.limit);
+
+
+	function fetchCategories(categoriesGr, categories) {
+		while (categoriesGr.next()) {
+			var categoryJS = new sn_sc.CatCategory(categoriesGr.getUniqueValue() + '');
+			if (!categoryJS.canView())
+				continue;
+
+			var categoryDetails = getCategoryDetails(categoryJS, 0);
+			categoryDetails.sys_id = categoriesGr.getUniqueValue();
+			categories.push(categoryDetails);
+		}
+	}
+
+	function queryCategory(catalogs, nestedLayout, dynamicCategory, startWindow, endWindow) {
+			var categoriesGr = new GlideRecord('sc_category');
+			categoriesGr.addQuery("sc_catalog", catalogs);
+			if (!dynamicCategory)
+				categoriesGr.addQuery("sys_class_name", "sc_category");
+			categoriesGr.addActiveQuery();
+			categoriesGr.orderBy('order');
+			categoriesGr.orderBy('title');
+			if (nestedLayout)
+				categoriesGr.addNullQuery("parent");
+			categoriesGr.chooseWindow(startWindow, endWindow);
+			categoriesGr.query();
+			return categoriesGr;
+	}
+
+	function getCategoryDetails(categoryJS, level) {
+		var categoryDetails = {};
+		var showChildren = false;
+		if (!categoryJS) {
+			return categoryDetails;
+		}
+		categoryDetails.title = categoryJS.getTitle();
+		categoryDetails.level = level;
+		categoryDetails.description = categoryJS.getDescription();
+		categoryDetails.full_description = categoryJS.getFullDescription();
+		categoryDetails.icon = categoryJS.getIconSRC();
+		categoryDetails.header_icon = categoryJS.getHeaderIconSRC();
+		categoryDetails.homepage_image = categoryJS.getHomepageImageSRC();
+		categoryDetails.sys_id = categoryJS.getID();
+		categoryDetails.showChildren = (categoryDetails.sys_id === categoryId);
+		categoryDetails.catalog = {"sys_id": categoryJS.getCatalog(), "title": new sn_sc.Catalog(categoryJS.getCatalog()).getTitle()}
+		if (catalog_id == -1 &amp;&amp; catalogSelectorArr.length &gt; 2)
+			categoryDetails.catalog_tooltip = gs.getMessage("[{0}]", categoryDetails.catalog.title);
+		else
+			categoryDetails.catalog_tooltip = '';
+
+		if (data.largeDataSet != 'true') {
+			if (checkCanView)
+					categoryDetails.count = categoryDetails.totalCount = categoryJS.getViewableItemsCount(true);
+				else
+					categoryDetails.count = categoryDetails.totalCount = categoryJS.getItemsCount(true);
+		}
+		else {
+			categoryDetails.count = 1;
+		}
+
+		var subCategoryCounts = 0;
+		if (nestedLayout) {
+			var subcategories = categoryJS.getViewableSubCategories();
+
+			if (subcategories.length == 0) {
+				categoryDetails.subcategories = [];
+			} 
+			else {
+					categoryDetails.subcategories = [];
+					subcategories.forEach(function(subCategory) {
+						var subCategoryJS = new sn_sc.CatCategory(subCategory.sys_id + '');
+						var category = getCategoryDetails(subCategoryJS, level + 1);
+						categoryDetails.totalCount = categoryDetails.totalCount + category.totalCount;
+						categoryDetails.subcategories.push(category);
+						categoryDetails.showChildren = categoryDetails.showChildren || category.showChildren;
+					});
+				}
+		}
+		else {
+			categoryDetails.totalCount = categoryDetails.count;
+		}
+		return categoryDetails;
+	}*/
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-17 04:08:30&lt;/sys_created_on&gt;&lt;sys_id&gt;27ccd310dbd450505c116390149619f4&lt;/sys_id&gt;&lt;sys_mod_count&gt;54&lt;/sys_mod_count&gt;&lt;sys_name&gt;Test Service Categories&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_27ccd310dbd450505c116390149619f4&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-17 11:54:25&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;h1&gt;
+  {{c.data.itCategory}}
+&lt;/h1&gt;
+&lt;!--&lt;div ng-if="c.data.catalogSelectorArr.length &gt; 2" ng-class="{'hidden-xs' : hideCategoryWidgetInXS}" class="panel panel-{{::options.color}} category-widget no-border"&gt;
+  &lt;div class="panel-primary panel-heading"&gt;
+    &lt;h2 class="h4 panel-title"&gt;
+      {{::data.messages.catalogTitle}}
+    &lt;/h2&gt;
+  &lt;/div&gt;
+  &lt;ul class="list-group category-list" role="list" aria-label="{{::data.messages.catalogTitle}}"&gt;
+    &lt;li role="listitem" class="list-group-item text-overflow-ellipsis" ng-include="'catalog-template.html'"/&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+&lt;script type="text/ng-template" id="catalog-template.html"&gt;
+  &lt;select class="sc-basic-select" aria-label="{{::data.messages.catalogTitle}}" ng-change="changeCatalog(selectedCatalog)" sn-focus="true" ng-model="selectedCatalog" ng-options="catalog.displayValue for catalog in c.data.catalogSelectorArr track by catalog.value"/&gt;
+&lt;/script&gt;
+
+&lt;div ng-class="{'hidden-xs' : hideCategoryWidgetInXS}" class="panel panel-{{::options.color}} category-widget no-border"&gt;
+  &lt;div class="panel-heading"&gt;
+    &lt;h2 class="h4 panel-title"&gt;
+      &lt;span class="pull-right visible-xs" &gt;
+      	&lt;i class="fa fa-times-circle" ng-click="hideBrowseCategory()" aria-label="${Show Items}" tabindex="0"/&gt;
+      &lt;/span&gt;
+      &lt;span ng-if="::options.glyph"&gt;
+        &lt;fa name="{{::options.glyph}}" /&gt;
+      &lt;/span&gt;{{::options.title}}&lt;/h2&gt;
+  &lt;/div&gt;
+  &lt;ul class="list-group category-list" role="list" aria-label="${Categories}"&gt;
+    &lt;li role="listitem" 
+        class="list-group-item text-overflow-ellipsis" 
+        ng-if="category.totalCount &gt; 0" ng-include="'category-template.html'" 
+        ng-repeat="category in data.categoriesList | limitTo: data.limit track by category.sys_id"&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;div class="panel-footer text-center" ng-if="data.showMore"&gt;
+    &lt;a href="javascript:void(0)" role="button" class="text-center" ng-click="loadMore()" &gt;{{::data.showMoreMsg}}&lt;/a&gt;
+    &lt;div class="text-muted text-center"&gt;
+      {{data.more_msg}}
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script type="text/ng-template" id="category-template.html"&gt;
+	&lt;div ng-click="categorySelected(category)"
+  ng-keydown="handleKeyPressOnCategory($event, category)"
+		sn-focus="category.sys_id == data.categoryId"
+		ng-enabled="category.totalCount &gt; 0"
+    ng-class="{true: 'text-active', false: ''}[category.sys_id == data.categoryId]"
+          tabindex="0" class="group-item group-item-primary" style="padding-left:{{getCategoryPadding(category.level + 1)}}"&gt;
+      &lt;i ng-if="::category.subcategories.length &gt; 0 &amp;&amp; category.totalCount &gt; category.count" 
+          class="l-h-1_6x pull-left fa collapse-icon" 
+          ng-class="{true: 'fa-minus-square-o', false: 'fa-plus-square-o'}[category.showChildren]" 
+          aria-label="{{category.showChildren? '${collapse category} ' + category.title : '${expand category} ' + category.title}}"
+          ng-click="displayChildren($event, category)"/&gt;&lt;/i&gt;
+      &lt;span class="badge pull-right pointer" ng-if="options.omit_badges != 'true' &amp;&amp; data.largeDataSet != 'true'"&gt;{{::category.totalCount}}&lt;/span&gt;
+      &lt;span class="block text-overflow-ellipsis category" 
+				  id="{{::category.sys_id}}"
+          uib-tooltip="{{::category.title}} {{::category.catalog_tooltip}}"
+          tooltip-placement="top"
+          tooltip-enable="!isTouchDevice()"
+          tooltip-append-to-body="true"&gt;
+          {{::category.title}}
+          &lt;span class="sr-only"&gt;${items}&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/div&gt;
+  	&lt;ul class="list-group sub-category-list list-bg-primary" role="list" aria-label="{{category.title}} ${subcategories}" ng-if="category.showChildren &amp;&amp; category.subcategories.length &gt; 0" ng-class="{true: 'no-indent', false: ''}[category.level &gt; 2]"&gt;
+      &lt;li role="listitem" 
+      		class="list-group-item text-overflow-ellipsis" 
+          ng-include="'category-template.html'" 
+          ng-repeat="category in category.subcategories track by category.sys_id" 
+          ng-if="category.totalCount &gt; 0"&gt;
+      &lt;/li&gt;
+  	&lt;/ul&gt;
+&lt;/script&gt;--&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-31151881</payload_hash>
+        <record_name>Test Service Categories</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-17 11:54:25</sys_created_on>
+        <sys_id>a8778d28db5c50505c1163901496191b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17187fd6f2f0000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-17 11:54:25</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>60778d287a5c50501df5423f20bb101b</update_guid>
+        <update_guid_history>60778d287a5c50501df5423f20bb101b:-31151881,84c48d64565c5050c331bdc3187e290c:-268214474,18b4c964645c5050cf38df1badef5c56:2023634964,eb94c964375c50502f99bd0983f2126c:1785905222,32238de0b75c5050594944c899563c89:-1517107185,b7138160895c5050cdde516d9488a0b7:-1000943834,b5e201246e5c50504c3c526dcbab82cc:-111968668,7fb28de0ed5c5050d0a27bb717d33020:-1256015622,6db285608e5c50502fab4b70cfad412a:-2123073634,73dd70ece41c5050af1b43e8966b02f5:-1401919524,dcdd30ec1b1c505011a8b3cce2c543fb:-589795955,95ad3cac251c5050c583c9acd59cfed4:846364827,519db4ac9f1c50505e8bff3136f9d9b6:-317177969,397d34ac901c505089baafb0d75c9e36:-404488391,df6db8ac331c50504ca9a0adad2cd31f:-281414001,265d74acf41c505003530b5ecd0b12dc:-404488391,413df0ac811c5050fbd39c95f6a9faed:-618377807,0e2d34aca51c505073777fa7f79db12a:1268701147,d70df4a8a81c505025c61507e5584e81:909005936,a1fc30ac181c5050980cd193313d802e:1199477646,19dc7c6c6c1c505098d7491c2a82fd66:-1165755698,dbac7c68471c5050c6c1e98c47044b57:-1800262044,ffa970e8611c5050761c4375cca1f353:1909876962,00197c68971c505083a2cec01b0f0826:-784283585,60903754c11850505196ad996c4df4b6:736583730,6570fb54a31850504ca7a2a6ceb9f50b:1910409469,ae30f7540b18505053f855bae249254a:-653611984,774eeb10b51850507b37b7ebb46cdcde:-1653487762,623ea79044185050b1f489c478e22c51:-1566118116,d15da7907f1850507b45aef1e973b349:-655984620,d44d679038185050602bde802f34a111:920859054,f22bafdc6ed450505f0a78a930eb9d35:1833018828,81caaf5c8cd450509bff6c109ea80910:-354640700,695a67dccbd45050584e6eff33037c6e:444360332,294aa7dcaed450504da0a7e0f74ce093:1473789191,f93a67dc88d4505040fd7f01772fa266:1123085210,8a2a27dcdad450507285bfbf1dd07e7b:1707972644,2c0aa71ce1d450506b57eb2eb15ad9ca:1534291289,73582b5c43d45050d194ea9a8226ca02:441299857,c0c763d8ead4505082d9886ed03c028f:1881886174,01a7efd87dd4505087f623ef431dcf6b:269041428,ce246718a5d450504888f006ea19dfef:706018579,7314671803d45050adaed91bd94dc2e8:1949518853,59146718a6d4505040b7fd80e48b9146:731707493,82f3e3187cd450508c2e4b010274a42f:1450272445,d0732394b3d450506228c3baccd5406a:-177684899,7343ef5499d4505016050d7d767d4028:-19465499,e1232b5444d45050c0dd7882913b70ce:193510690,a4b2239437d4505088cc319b4c2051a8:2015360564,e8a26f94efd4505019befe639b7c78e8:-1046987765,160023d005d450502d7d19d67741ee46:434115462,10af53d02bd45050bc0206acd9b9c27a:-2076384385,8c6f9b9070d4505075a09ca4d7cfdc28:-544624702,4e2f53d013d450506d35899ec8d2936b:-1599524463,2fccd310eed45050cbedda826eb50ef5:-543852200</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">0e0b456cdb5c50505c116390149619d8</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-17 12:10:05</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>2f91925af1504295b92ff655ed427129</sys_id>
+        <sys_metadata>27ccd310dbd450505c116390149619f4</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Test Service Categories</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_27ccd310dbd450505c116390149619f4</sys_update_name>
+        <sys_update_version display_value="sp_widget_27ccd310dbd450505c116390149619f4">a8778d28db5c50505c1163901496191b</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-17 12:10:05</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

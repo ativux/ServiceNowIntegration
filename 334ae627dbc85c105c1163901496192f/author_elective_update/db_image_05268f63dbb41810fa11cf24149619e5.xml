@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image">
+    <db_image action="DELETE">
+        <active>true</active>
+        <category>Service Portal</category>
+        <format>png</format>
+        <height>147</height>
+        <image>e3f5c363dbb41810fa11cf2414961944</image>
+        <name>gservice_like_category4.png</name>
+        <size_bytes>3055</size_bytes>
+        <sys_class_name>db_image</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-22 01:21:07</sys_created_on>
+        <sys_id>05268f63dbb41810fa11cf24149619e5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>gservice_like_category4.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>db_image_05268f63dbb41810fa11cf24149619e5</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-22 01:21:07</sys_updated_on>
+        <thumbnail/>
+        <width>147</width>
+    </db_image>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>db_image_05268f63dbb41810fa11cf24149619e5</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="db_image"><db_image action="INSERT_OR_UPDATE"><active>true</active><category>Service Portal</category><format>png</format><height>147</height><image>e3f5c363dbb41810fa11cf2414961944</image><name>gservice_like_category4.png</name><size_bytes>3055</size_bytes><sys_class_name>db_image</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-05-22 01:21:07</sys_created_on><sys_id>05268f63dbb41810fa11cf24149619e5</sys_id><sys_mod_count>0</sys_mod_count><sys_name>gservice_like_category4.png</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>db_image_05268f63dbb41810fa11cf24149619e5</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-05-22 01:21:07</sys_updated_on><thumbnail/><width>147</width></db_image></record_update>]]></payload>
+        <payload_hash>2082989534</payload_hash>
+        <record_name>gservice_like_category4.png</record_name>
+        <reverted_from/>
+        <source>5aa638a6db701410fa11cf2414961932</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-22 01:21:07</sys_created_on>
+        <sys_id>cd268f63dbb41810fa11cf24149619e6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17239f8376d0000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-22 01:21:07</sys_updated_on>
+        <type>Images</type>
+        <update_guid>c5268f63c8b41810de682cb47bc5efe6</update_guid>
+        <update_guid_history>c5268f63c8b41810de682cb47bc5efe6:2082989534</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">efd13f0ddb411c105c1163901496196e</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-26 20:23:03</sys_created_on>
+        <sys_db_object display_value="" name="db_image">db_image</sys_db_object>
+        <sys_id>a0b4f9c06dbe4922a2604c6b99341ff1</sys_id>
+        <sys_metadata>05268f63dbb41810fa11cf24149619e5</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>gservice_like_category4.png</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>db_image_05268f63dbb41810fa11cf24149619e5</sys_update_name>
+        <sys_update_version display_value="db_image_05268f63dbb41810fa11cf24149619e5">cd268f63dbb41810fa11cf24149619e6</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-26 20:23:03</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scope_privilege">
+    <sys_scope_privilege action="INSERT_OR_UPDATE">
+        <operation>write</operation>
+        <source_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</source_scope>
+        <status>allowed</status>
+        <sys_class_name>sys_scope_privilege</sys_class_name>
+        <sys_created_by>tayssas</sys_created_by>
+        <sys_created_on>2021-12-23 12:24:23</sys_created_on>
+        <sys_id>f30810a6db2041906235639014961977</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_gmeps_csc_suprimentos</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_scope_privilege_f30810a6db2041906235639014961977</sys_update_name>
+        <sys_updated_by>tayssas</sys_updated_by>
+        <sys_updated_on>2021-12-23 12:24:23</sys_updated_on>
+        <target_name>x_gmeps_csc_suprimentos</target_name>
+        <target_scope display_value="CSC">8109b6a8dba590105c116390149619d1</target_scope>
+        <target_type>sys_db_object</target_type>
+    </sys_scope_privilege>
+</record_update>

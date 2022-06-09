@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_search_facet">
+    <sp_search_facet action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <field>sys_name</field>
+        <mapped_facet>true</mapped_facet>
+        <name>Henrique Test Facet</name>
+        <order>100</order>
+        <search_source/>
+        <selection_type>single</selection_type>
+        <sort>asc</sort>
+        <sys_class_name>sp_search_facet</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-11 12:15:00</sys_created_on>
+        <sys_id>d732f0d0db7410105c116390149619c7</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Henrique Test Facet</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_search_facet_d732f0d0db7410105c116390149619c7</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-11 12:18:11</sys_updated_on>
+        <table>sc_category</table>
+    </sp_search_facet>
+    <sys_translated_text action="delete_multiple" query="documentkey=d732f0d0db7410105c116390149619c7"/>
+</record_update>

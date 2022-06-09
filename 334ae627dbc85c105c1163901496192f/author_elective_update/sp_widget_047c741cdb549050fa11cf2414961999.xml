@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>standard</category>
+        <client_script><![CDATA[function() {  /* widget controller */  var c = this;}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.iconlink a label,h2 {&#13;
+display: block;&#13;
+font-size: 2.5rem;&#13;
+font-weight: 300;&#13;
+line-height: 1.1;&#13;
+padding: 0;&#13;
+margin: 0 0 10px 0;&#13;
+}&#13;
+&#13;
+/* TOP ICON ---------- */&#13;
+&#13;
+a.top_icon {&#13;
+	display: block;&#13;
+	padding: 20px;&#13;
+	text-align: center;&#13;
+}&#13;
+&#13;
+a.top_icon .image-container {&#13;
+	display: block;&#13;
+	text-align: center;&#13;
+	margin-bottom: 10px;&#13;
+}&#13;
+&#13;
+/* CIRCLE ICON ---------- */&#13;
+&#13;
+a.circle_icon {&#13;
+	display: block;&#13;
+	padding: 20px 0px 20px 70px;&#13;
+	position: relative;&#13;
+}&#13;
+&#13;
+a.circle_icon .image-container {&#13;
+	position:absolute;&#13;
+	left: 0px;&#13;
+	top: 24px;&#13;
+}&#13;
+&#13;
+/* COLOR BOX ---------- */&#13;
+&#13;
+a.color_box {&#13;
+	display: block;&#13;
+	position: relative;&#13;
+	padding: 20px 20px 20px 82px;&#13;
+	border-radius: 4px;&#13;
+	margin-bottom: 20px;&#13;
+}&#13;
+&#13;
+a.color_box .image-container {&#13;
+	position:absolute;&#13;
+	left: 20px;&#13;
+	top: 20px;&#13;
+	width:42px;&#13;
+	text-align: center;&#13;
+}&#13;
+&#13;
+.icon-link-background-primary {&#13;
+	background-color: $brand-primary;&#13;
+}&#13;
+&#13;
+.icon-link-background-info {&#13;
+	background-color: $brand-info;&#13;
+}&#13;
+&#13;
+.icon-link-background-success {&#13;
+	background-color: $brand-success;&#13;
+}&#13;
+&#13;
+.icon-link-background-warning {&#13;
+	background-color: $brand-warning;&#13;
+}&#13;
+&#13;
+.icon-link-background-danger {&#13;
+	background-color: $brand-danger;&#13;
+}&#13;
+&#13;
+.icon-link-background-default {&#13;
+	background-color: $brand-primary;&#13;
+}&#13;
+&#13;
+.text-primary {&#13;
+	color: $brand-primary;&#13;
+&#13;
+	&amp;amp;:hover {&#13;
+		color: darken($brand-primary, 20%);&#13;
+					  }&#13;
+					  }&#13;
+&#13;
+					  .text-info {&#13;
+					  color: $brand-info;&#13;
+&#13;
+					  &amp;amp;:hover {&#13;
+					  color: darken($brand-info, 20%);&#13;
+	}&#13;
+}&#13;
+&#13;
+.text-success {&#13;
+	color: $brand-success;&#13;
+&#13;
+	&amp;amp;:hover {&#13;
+		color: darken($brand-success, 20%);&#13;
+					  }&#13;
+					  }&#13;
+&#13;
+					  .text-warning {&#13;
+					  color: $brand-warning;&#13;
+&#13;
+					  &amp;amp;:hover {&#13;
+					  color: darken($brand-warning, 20%);&#13;
+	}&#13;
+}&#13;
+&#13;
+.text-danger {&#13;
+	color: $brand-danger;&#13;
+&#13;
+	&amp;amp;:hover {&#13;
+		color: darken($brand-danger, 20%);&#13;
+					  }&#13;
+					  }&#13;
+&#13;
+					  .text-default {&#13;
+					  color: $brand-primary;&#13;
+&#13;
+					  &amp;amp;:hover {&#13;
+					  color: darken($brand-primary, 20%);&#13;
+	}&#13;
+}</css>
+        <data_table>sp_instance_link</data_table>
+        <demo_data>function($scope, spAriaUtil) {&#13;
+	$scope.accessibilityModeEnabled = spAriaUtil.isAccessibilityEnabled();&#13;
+}</demo_data>
+        <description/>
+        <docs/>
+        <field_list>type,url,sc_category,sc_cat_item,kb_topic,kb_article,kb_category,sp_page,title,short_description,color,class_name,glyph</field_list>
+        <has_preview>false</has_preview>
+        <id/>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>Copy of Icon Link</name>
+        <option_schema>[{"name":"link_template","section":"Presentation","label":"Template","type":"choice","choices":[{"label":"Top Icon","value":"Top Icon"},{"label":"Circle Icon","value":"Circle Icon"},{"label":"Color Box","value":"Color Box"}]}]</option_schema>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function(){
+	var gr = $sp.getInstanceRecord();
+	data.href = $sp.getMenuHREF(gr);
+	data.target = options.target || "";
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 16:27:51</sys_created_on>
+        <sys_id>047c741cdb549050fa11cf2414961999</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Copy of Icon Link</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_047c741cdb549050fa11cf2414961999</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 16:43:15</sys_updated_on>
+        <template><![CDATA[<div class="iconlink">
+  <!--// Top Icon -->
+  <a ng-if="::(options.link_template == 'Top Icon' || !options.link_template)" ng-href="{{::data.href}}" class="top_icon {{::options.class_name}}" target="{{::data.target}}">
+    <div class="image-container" ng-if="options.u_image">
+      <img src="{{::options.u_image}}" width="60" height="60" alt="${{{options.title}}}">
+    </div>
+    <h2>{{::options.title}}</h2>
+    <span class="text-muted">{{::options.short_description}}</span>
+  </a>
+
+  <!--// Circle Icon -->
+  <a ng-if="::(options.link_template == 'Circle Icon')" ng-href="{{::data.href}}" class="circle_icon {{::options.class_name}} text-{{::options.color}}" target="{{::data.target}}">
+    <span class="image-container" ng-if="options.u_image">
+      <img class="media-object" src="{{::options.u_image}}" width="55" height="55" alt="${{{options.title}}}">
+    </span>
+    <h2>{{::options.title}}</h2>
+    <span class="text-muted">{{::options.short_description}}</span>
+  </a>
+
+  <!--// Color Box -->
+  <a ng-if="::(options.link_template == 'Color Box')" ng-href="{{::data.href}}" class="color_box {{::options.class_name}} icon-link-background-{{::options.color}} text-white" target="{{::data.target}}">
+    <div class="image-container" ng-if="options.u_image">
+      <img class="media-object" src="{{::options.u_image}}" width="45" height="45" alt="${{{options.title}}}">
+    </div>
+    <h2>{{::options.title}}</h2>
+    <span>{{::options.short_description}}</span>
+  </a>
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_047c741cdb549050fa11cf2414961999</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;standard&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function() {  /* widget controller */  var c = this;}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.iconlink a label,h2 {&amp;#13;
+display: block;&amp;#13;
+font-size: 2.5rem;&amp;#13;
+font-weight: 300;&amp;#13;
+line-height: 1.1;&amp;#13;
+padding: 0;&amp;#13;
+margin: 0 0 10px 0;&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* TOP ICON ---------- */&amp;#13;
+&amp;#13;
+a.top_icon {&amp;#13;
+	display: block;&amp;#13;
+	padding: 20px;&amp;#13;
+	text-align: center;&amp;#13;
+}&amp;#13;
+&amp;#13;
+a.top_icon .image-container {&amp;#13;
+	display: block;&amp;#13;
+	text-align: center;&amp;#13;
+	margin-bottom: 10px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* CIRCLE ICON ---------- */&amp;#13;
+&amp;#13;
+a.circle_icon {&amp;#13;
+	display: block;&amp;#13;
+	padding: 20px 0px 20px 70px;&amp;#13;
+	position: relative;&amp;#13;
+}&amp;#13;
+&amp;#13;
+a.circle_icon .image-container {&amp;#13;
+	position:absolute;&amp;#13;
+	left: 0px;&amp;#13;
+	top: 24px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* COLOR BOX ---------- */&amp;#13;
+&amp;#13;
+a.color_box {&amp;#13;
+	display: block;&amp;#13;
+	position: relative;&amp;#13;
+	padding: 20px 20px 20px 82px;&amp;#13;
+	border-radius: 4px;&amp;#13;
+	margin-bottom: 20px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+a.color_box .image-container {&amp;#13;
+	position:absolute;&amp;#13;
+	left: 20px;&amp;#13;
+	top: 20px;&amp;#13;
+	width:42px;&amp;#13;
+	text-align: center;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-link-background-primary {&amp;#13;
+	background-color: $brand-primary;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-link-background-info {&amp;#13;
+	background-color: $brand-info;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-link-background-success {&amp;#13;
+	background-color: $brand-success;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-link-background-warning {&amp;#13;
+	background-color: $brand-warning;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-link-background-danger {&amp;#13;
+	background-color: $brand-danger;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-link-background-default {&amp;#13;
+	background-color: $brand-primary;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.text-primary {&amp;#13;
+	color: $brand-primary;&amp;#13;
+&amp;#13;
+	&amp;amp;amp;:hover {&amp;#13;
+		color: darken($brand-primary, 20%);&amp;#13;
+					  }&amp;#13;
+					  }&amp;#13;
+&amp;#13;
+					  .text-info {&amp;#13;
+					  color: $brand-info;&amp;#13;
+&amp;#13;
+					  &amp;amp;amp;:hover {&amp;#13;
+					  color: darken($brand-info, 20%);&amp;#13;
+	}&amp;#13;
+}&amp;#13;
+&amp;#13;
+.text-success {&amp;#13;
+	color: $brand-success;&amp;#13;
+&amp;#13;
+	&amp;amp;amp;:hover {&amp;#13;
+		color: darken($brand-success, 20%);&amp;#13;
+					  }&amp;#13;
+					  }&amp;#13;
+&amp;#13;
+					  .text-warning {&amp;#13;
+					  color: $brand-warning;&amp;#13;
+&amp;#13;
+					  &amp;amp;amp;:hover {&amp;#13;
+					  color: darken($brand-warning, 20%);&amp;#13;
+	}&amp;#13;
+}&amp;#13;
+&amp;#13;
+.text-danger {&amp;#13;
+	color: $brand-danger;&amp;#13;
+&amp;#13;
+	&amp;amp;amp;:hover {&amp;#13;
+		color: darken($brand-danger, 20%);&amp;#13;
+					  }&amp;#13;
+					  }&amp;#13;
+&amp;#13;
+					  .text-default {&amp;#13;
+					  color: $brand-primary;&amp;#13;
+&amp;#13;
+					  &amp;amp;amp;:hover {&amp;#13;
+					  color: darken($brand-primary, 20%);&amp;#13;
+	}&amp;#13;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance_link&lt;/data_table&gt;&lt;demo_data&gt;function($scope, spAriaUtil) {&amp;#13;
+	$scope.accessibilityModeEnabled = spAriaUtil.isAccessibilityEnabled();&amp;#13;
+}&lt;/demo_data&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list&gt;type,url,sc_category,sc_cat_item,kb_topic,kb_article,kb_category,sp_page,title,short_description,color,class_name,glyph&lt;/field_list&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id/&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;Copy of Icon Link&lt;/name&gt;&lt;option_schema&gt;[{"name":"link_template","section":"Presentation","label":"Template","type":"choice","choices":[{"label":"Top Icon","value":"Top Icon"},{"label":"Circle Icon","value":"Circle Icon"},{"label":"Color Box","value":"Color Box"}]}]&lt;/option_schema&gt;&lt;public&gt;true&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function(){
+	var gr = $sp.getInstanceRecord();
+	data.href = $sp.getMenuHREF(gr);
+	data.target = options.target || "";
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-16 16:27:51&lt;/sys_created_on&gt;&lt;sys_id&gt;047c741cdb549050fa11cf2414961999&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;Copy of Icon Link&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_047c741cdb549050fa11cf2414961999&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-16 16:43:15&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div class="iconlink"&gt;
+  &lt;!--// Top Icon --&gt;
+  &lt;a ng-if="::(options.link_template == 'Top Icon' || !options.link_template)" ng-href="{{::data.href}}" class="top_icon {{::options.class_name}}" target="{{::data.target}}"&gt;
+    &lt;div class="image-container" ng-if="options.u_image"&gt;
+      &lt;img src="{{::options.u_image}}" width="60" height="60" alt="${{{options.title}}}"&gt;
+    &lt;/div&gt;
+    &lt;h2&gt;{{::options.title}}&lt;/h2&gt;
+    &lt;span class="text-muted"&gt;{{::options.short_description}}&lt;/span&gt;
+  &lt;/a&gt;
+
+  &lt;!--// Circle Icon --&gt;
+  &lt;a ng-if="::(options.link_template == 'Circle Icon')" ng-href="{{::data.href}}" class="circle_icon {{::options.class_name}} text-{{::options.color}}" target="{{::data.target}}"&gt;
+    &lt;span class="image-container" ng-if="options.u_image"&gt;
+      &lt;img class="media-object" src="{{::options.u_image}}" width="55" height="55" alt="${{{options.title}}}"&gt;
+    &lt;/span&gt;
+    &lt;h2&gt;{{::options.title}}&lt;/h2&gt;
+    &lt;span class="text-muted"&gt;{{::options.short_description}}&lt;/span&gt;
+  &lt;/a&gt;
+
+  &lt;!--// Color Box --&gt;
+  &lt;a ng-if="::(options.link_template == 'Color Box')" ng-href="{{::data.href}}" class="color_box {{::options.class_name}} icon-link-background-{{::options.color}} text-white" target="{{::data.target}}"&gt;
+    &lt;div class="image-container" ng-if="options.u_image"&gt;
+      &lt;img class="media-object" src="{{::options.u_image}}" width="45" height="45" alt="${{{options.title}}}"&gt;
+    &lt;/div&gt;
+    &lt;h2&gt;{{::options.title}}&lt;/h2&gt;
+    &lt;span&gt;{{::options.short_description}}&lt;/span&gt;
+  &lt;/a&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1125089488</payload_hash>
+        <record_name>Copy of Icon Link</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 16:43:15</sys_created_on>
+        <sys_id>71ffb450db949050fa11cf24149619ad</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17183df83e00000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 16:43:15</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>39ffb450f294905048672f9bb6b60eac</update_guid>
+        <update_guid_history>39ffb450f294905048672f9bb6b60eac:-1125089488,887c741c24549050ea252f82d23f4d9a:-1933760507</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">cd32c554db949050fa11cf241496198b</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 16:53:02</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>4302785b94844a809ad2b09254612400</sys_id>
+        <sys_metadata>047c741cdb549050fa11cf2414961999</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Copy of Icon Link</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_047c741cdb549050fa11cf2414961999</sys_update_name>
+        <sys_update_version display_value="sp_widget_047c741cdb549050fa11cf2414961999">71ffb450db949050fa11cf24149619ad</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 16:53:02</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

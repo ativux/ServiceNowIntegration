@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency">
+    <m2m_sp_widget_dependency action="DELETE">
+        <sp_dependency display_value="dialog-polyfill">2eaf31f30b301200b0b02c6317673a84</sp_dependency>
+        <sp_widget display_value="GService SC Order Guide">bcea650cdb19d450fa11cf24149619c8</sp_widget>
+        <sys_class_name>m2m_sp_widget_dependency</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-06-04 18:15:06</sys_created_on>
+        <sys_id>f4ea650cdb19d450fa11cf24149619cc</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>dialog-polyfill.GService SC Order Guide</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_widget_dependency_f4ea650cdb19d450fa11cf24149619cc</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-06-04 18:15:06</sys_updated_on>
+    </m2m_sp_widget_dependency>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>m2m_sp_widget_dependency_f4ea650cdb19d450fa11cf24149619cc</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency"><m2m_sp_widget_dependency action="INSERT_OR_UPDATE"><sp_dependency display_value="dialog-polyfill">2eaf31f30b301200b0b02c6317673a84</sp_dependency><sp_widget display_value="GService SC Order Guide">bcea650cdb19d450fa11cf24149619c8</sp_widget><sys_class_name>m2m_sp_widget_dependency</sys_class_name><sys_created_by>organize.fernando</sys_created_by><sys_created_on>2020-06-04 18:15:06</sys_created_on><sys_id>f4ea650cdb19d450fa11cf24149619cc</sys_id><sys_mod_count>0</sys_mod_count><sys_name>dialog-polyfill.GService SC Order Guide</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>m2m_sp_widget_dependency_f4ea650cdb19d450fa11cf24149619cc</sys_update_name><sys_updated_by>organize.fernando</sys_updated_by><sys_updated_on>2020-06-04 18:15:06</sys_updated_on></m2m_sp_widget_dependency></record_update>]]></payload>
+        <payload_hash>-1664480117</payload_hash>
+        <record_name>dialog-polyfill.GService SC Order Guide</record_name>
+        <reverted_from/>
+        <source>71dc5d0cdb51dc905c116390149619b7</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-06-04 18:15:06</sys_created_on>
+        <sys_id>01ea650cdb19d450fa11cf24149619cf</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172808b37440000001</sys_recorded_at>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-06-04 18:15:06</sys_updated_on>
+        <type>Widget Dependency</type>
+        <update_guid>09ea650c9419d450bc1d311c4524bcce</update_guid>
+        <update_guid_history>09ea650c9419d450bc1d311c4524bcce:-1664480117</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">c6cb654cdb19d450fa11cf24149619ec</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-06-04 18:19:01</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_widget_dependency">m2m_sp_widget_dependency</sys_db_object>
+        <sys_id>689ad91d169f4f42b9097bcd50482e64</sys_id>
+        <sys_metadata>f4ea650cdb19d450fa11cf24149619cc</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>dialog-polyfill.GService SC Order Guide</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>m2m_sp_widget_dependency_f4ea650cdb19d450fa11cf24149619cc</sys_update_name>
+        <sys_update_version display_value="m2m_sp_widget_dependency_f4ea650cdb19d450fa11cf24149619cc">01ea650cdb19d450fa11cf24149619cf</sys_update_version>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-06-04 18:19:01</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

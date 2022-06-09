@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>standard</category>
+        <client_script><![CDATA[function ($http, $filter, $location,spAriaUtil, $window, $scope, spAriaFocusManager, $rootScope) {
+	var c = this;
+	c.options.glyph = c.options.glyph || 'search';
+	c.options.title = c.options.title || c.data.searchMsg;
+	c.options.color = c.options.color || "default";
+	c.searchTerm = c.data.q;
+	c.pageID = $scope.page.id;
+	c.showSuggestions =  c.data.searchTypeBehavior === "suggestions" && c.data.isSuggestionsEnabled === "true";
+
+	c.onSelect = function($item, $model, $label) {
+		c.searchTerm = ""; // prevents unexpected result if user quickly clicks search button after selecting
+		if (c.showSuggestions)
+			$item.url = "?id=search&q="+encodeURIComponent($item.name);
+
+		if(!$item.url || $item.url === "")
+			return;
+
+		if ($item.target)
+			window.open($item.url, $item.target);
+		else {
+			var newUrl = $location.url($item.url);
+			spAriaFocusManager.navigateToLink(newUrl.url());
+		}
+	};
+	
+	c.getSearchSuggestions = function(query) {	 
+		if ($location.search().q == query)
+				 return;
+		 var payload = {
+			 params: {
+				 "sysparm_term" : query, 
+				 "sysparm_sp_portal_id": c.data.portalID,
+				 "sysparm_suggestions_limit": c.options.limit > 0 ? c.options.limit : "",
+				 "sysparm_search_sources": c.data.searchSourceSysIds || ""
+			 },
+			 headers : {'Accept' : 'application/json'}
+		 };
+
+		 var test = $http.get("/api/now/search/sp_suggestions", payload).then(function(response){ 
+			 var result = response.data.result;
+			 var resultCount = result != null ? result.entries.length : 0;
+			 sendLiveMessage(resultCount);
+		 
+			 return result.entries.map(function(item) {	
+				 item.query = getQueryToHighlight(item, query);
+				 item.glyph = getIcon(item.type);
+				 item.term = item.name;
+				 return item;	 
+			 });
+		 });
+		c.data.test = test;
+		console.log(test, "FERNANDO");
+		return test;
+  	};
+
+	function getSearchSources(result, c) {
+		var sources = {};
+		c.data.searchSources.map(function(key) {
+			sources[key] = 0;
+		});
+		result.map(function(item) {
+			if(sources[item.type])
+				sources[item.type]++;
+			else
+				sources[item.type] = 1;
+		});
+		var searchSources = [];
+		Object.keys(sources).map(function(key) {
+			var source_id = c.data.searchSourceConfiguration[key] ? c.data.searchSourceConfiguration[key].sys_id : key;
+			searchSources.push({
+				source_id: source_id,
+				number_of_results: sources[key]
+			});
+		});
+		return searchSources;
+	}
+
+	c.TextSearchAnalyticsUpdateRank = function(rank) {
+		var query = c.latestQuery;
+		var result = _.get(c.data, 'results', []);
+		var payloadObject = {
+			action: "GlideSPSearchAnalyticsUpdateRank",
+			payload: {
+				query: query,
+				portal_id: this.data.portalID,
+				page_id: this.pageID,
+				results_per_source: getSearchSources(result, this),
+				refinement_occurred: false,
+				click_rank: rank
+			}
+		};
+
+		$window.spSearchAnalytics = {
+			query: query,
+			refinement_occurred: false
+		};
+
+		this.server.get(payloadObject);
+	}
+	
+	// Attach event handler to update click rank
+	// Run only once
+	var attachClickRankHandler = function() {
+		$(".typeahead-popup").on('click', 'li', function(e) {
+			var index = $(this).data('index');
+			c.TextSearchAnalyticsUpdateRank(index+1);
+		});
+		// Remove function definition
+		// As soon as it was called
+		attachClickRankHandler = function() {};
+	}
+	
+	c.submitSearch = function(){
+		c.getResults().then(function(response){
+			$rootScope.$broadcast('getSearchedItems', c.data.results);
+		});
+	};
+	
+	c.getResults = function() {
+		var query = c.searchTerm;
+		var payload = {
+			"query": query,
+			"portal": c.data.portalID,
+			"page": c.pageID,
+			"source": c.data.searchSources,
+			"include_facets": false,
+			"searchType": "typeahead"
+		};
+
+		attachClickRankHandler();
+
+		if (c.options.limit || c.options.limit == 0)
+			payload.count = c.options.limit;
+
+		return $http.post("/api/now/sp/search", payload).then(function(response) {
+			// Prevents typeahead from displaying suggestions if queries from page and input are the same
+			if ($location.search().q == query)
+				return;
+
+			var result = response.data.result;
+			var resultCount = result != null ? result.results.length : 0
+			sendLiveMessage(resultCount);
+
+			c.data.results = result.results;
+			c.latestQuery = query;
+
+			return result.results.map(function(item) {
+				var config = c.data.searchSourceConfiguration[item.__search_source_id__];
+
+				if (!item.url && config.linkToPage) {
+					item.url = "?id=" + config.linkToPage;
+					if (item.sys_id)
+						item.url += "&sys_id=" + item.sys_id;
+					if (item.table)
+						item.url += "&table=" + item.table
+				}
+
+				if (config.type == "ADVANCED") {
+					item.templateID = config.template;
+				} else {
+					item.glyph = config.glyph;
+				}
+				return item;
+			});
+		});
+	}
+
+	c.searchType = c.data.searchType;
+	$scope.$on('$locationChangeSuccess', onLocationChangeSuccess);
+
+	function onLocationChangeSuccess(event, newUrl, oldUrl) {
+		if(searchSourceChanged(newUrl, oldUrl)) {
+			var newUrlParams = newUrl.match(/t=.+/);
+			if(!newUrlParams) {
+				c.searchType = null;
+			} else {
+				c.searchType = newUrlParams[0].split("&")[0].substring(2);
+			}
+		}
+	}
+
+	function searchSourceChanged(newUrl, oldUrl) {
+		var newUrlParams = newUrl.match(/t=.+/),
+		oldUrlParams = oldUrl.match(/t=.+/);
+
+		if(!newUrlParams && !oldUrlParams) {
+			return false;
+		}
+
+		if((!newUrlParams && oldUrlParams) || (newUrlParams && !oldUrlParams)) {
+			return true;
+		}
+
+		return newUrlParams[0].split("&")[0] !== oldUrlParams[0].split("&")[0];
+	}
+
+	function sendLiveMessage(resultCount) {
+		spAriaUtil.sendLiveMessage(resultCount + " " +
+									c.data.resultMsg + " " +
+									(resultCount > 0 ? ' ' + c.data.navigationMsg : ''));
+	}
+
+	function getIcon(itemType) {
+		return itemType === "INSTANCE_HISTORY" ? 'search' : 'clock-o';
+	}
+
+	function getQueryToHighlight(item, query) {
+		return item.type === "INSTANCE_HISTORY" ? item.name.substring(query.length) : query;
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>ul.dropdown-menu {&#13;
+  min-width: 100%;&#13;
+  border-radius: 0px 0px 4px 4px;&#13;
+  margin:0px;&#13;
+}&#13;
+&#13;
+ul.dropdown-menu a.ta-item {&#13;
+  line-height: 20px;&#13;
+}&#13;
+&#13;
+ul.dropdown-menu i.ta-icon, i.ta-img {&#13;
+  width: 20px;&#13;
+  height: 20px;&#13;
+  background-size: contain;&#13;
+  display: inline-block;&#13;
+  background-repeat: no-repeat;&#13;
+  background-position: center center;&#13;
+  text-align: center;&#13;
+  line-height: 20px;&#13;
+  vertical-align: bottom;&#13;
+  margin-right: 8px;&#13;
+}&#13;
+&#13;
+.input-typeahead{&#13;
+  height: 74px;&#13;
+}&#13;
+&#13;
+.icon-img{&#13;
+  height: 60px;&#13;
+  border: 0;&#13;
+}&#13;
+&#13;
+.test{&#13;
+  border-bottom: 2px;&#13;
+  border-color: $dodger-blue;&#13;
+}&#13;
+&#13;
+input[name="q"] {&#13;
+  color: black;&#13;
+}&#13;
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id/>
+        <internal>false</internal>
+        <link><![CDATA[function(scope) {
+	var lazyLoader = $injector.get("lazyLoader");
+	lazyLoader.putTemplates(scope.data.typeaheadTemplates);
+}]]></link>
+        <name>Test Search</name>
+        <option_schema>[{"name":"title","section":"Presentation","label":"Title","type":"string"},{"name":"color","section":"Presentation","label":"Color","type":"string"},{"name":"glyph","section":"Presentation","label":"glyph","type":"string"},{"name":"size","section":"Presentation","label":"Size","type":"string"},{"hint":"Number of typeahead search results returned (default 15)","name":"limit","section":"Behavior","label":"Limit","type":"integer"},{"name":"image","section":"Presentation","label":"Image on the left","type":"string"},{"displayValue":"Search Source","hint":"If provided, limit the scope of the typeahead search to the given search sources","name":"contextual_search_sources","display_value_list":[],"section":"Behavior","label":"Contextual Search Sources","type":"glide_list","value":"sp_search_source","ed":{"reference":"sp_search_source"}}]</option_schema>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	if (input && input.action === "GlideSPSearchAnalyticsUpdateRank") {
+		input.action = "";
+		var textSearchAnalytics = new GlideSPSearchAnalytics().publish(JSON.stringify(input.payload));
+		return ;
+	}
+
+	if (options.title) {
+		options.title = gs.getMessage(options.title);
+	}
+
+	if (options.refresh_page_on_search_submission == undefined)
+		data.refreshPageOnSearch = true;
+	else
+		data.refreshPageOnSearch = options.refresh_page_on_search_submission;
+
+	data.resultMsg = gs.getMessage("Search results.");
+	data.navigationMsg = gs.getMessage("To navigate, use up and down arrow keys.");
+	data.portalID = $sp.getPortalRecord().getUniqueValue();
+	data.searchMsg = gs.getMessage("Se preferir, faça uma busca");
+	data.q = $sp.getParameter('q');
+
+	data.isSuggestionsEnabled = gs.getProperty('glide.search.suggestions.enabled');
+	data.searchTypeBehavior = gs.getProperty('glide.service_portal.search_as_you_type_behavior').toLowerCase();
+
+	var searchSources;
+	data.searchType = null;
+	data.searchSources = [];
+	if ($sp.getParameter("id") == "search" && $sp.getParameter("t")) {
+		data.searchType = $sp.getParameter("t");
+		searchSources = $sp.getSearchSources(data.portalID);
+	} else {
+		var contextualSearchSourceIDs = options.contextual_search_sources || null;
+		searchSources = $sp.getSearchSources(data.portalID, contextualSearchSourceIDs);
+		if (searchSources.length == 1) {
+			data.searchType = searchSources[0].id;
+		}
+	}
+
+	data.searchSourceSysIds = [];
+	data.typeaheadTemplates = {};
+	data.searchSourceConfiguration = {};
+	searchSources.forEach(function(source) {
+		data.searchSourceSysIds.push(source.sys_id);
+		if (source.isTypeaheadEnabled) {
+			data.searchSources.push(source.id);
+		}
+		var sourceTemplateConfiguration = {
+			sys_id: source.sys_id,
+			glyph: source.typeaheadGlyph,
+			linkToPage: source.typeaheadPage
+		};
+
+		if (source.isAdvancedTypeaheadConfig) {
+			sourceTemplateConfiguration.type = "ADVANCED";
+			sourceTemplateConfiguration.template = "sp-typeahead-" + source.id + ".html";
+			data.typeaheadTemplates["sp-typeahead-" + source.id + ".html"] = $sp.translateTemplate(source.typeaheadTemplate);
+		} else {
+			sourceTemplateConfiguration.type = "SIMPLE";
+			if (!sourceTemplateConfiguration.linkToPage)
+			console.log("Warning: No typeahead page or URL provided for search source " + source.name);
+		}
+
+		data.searchSourceConfiguration[source.id] = sourceTemplateConfiguration;
+	});
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 19:00:42</sys_created_on>
+        <sys_id>0b6f5d98db589050fa11cf2414961950</sys_id>
+        <sys_mod_count>23</sys_mod_count>
+        <sys_name>Test Search</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_0b6f5d98db589050fa11cf2414961950</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 19:52:38</sys_updated_on>
+        <template><![CDATA[<form ng-submit="c.submitSearch()">
+  <input type="hidden" name="id" value="search"/>
+  <input type="hidden" name="t" value="{{c.searchType}}"/>
+  <div class="input-group input-group-{{::c.options.size}} test">
+    <!-- uses ui.bootstrap.typeahead -->
+    <span class="input-group-btn">
+      <button ng-if="::c.options.glyph" name="search" type="submit" class="btn btn-{{::c.options.color}}"
+              title="{{::c.data.searchMsg}}" aria-label="{{::c.data.searchMsg}}">
+       <!-- <i ng-if="::c.options.glyph" class="fa fa-{{::c.options.glyph}}"></i>-->
+        <img src="{{c.options.image}}" class="icon-img"/>
+      </button>
+    </span>
+    <input ng-if="c.showSuggestions"
+           name="q" type="text" ng-model="c.searchTerm"
+           autocomplete="off"
+           class="form-control input-typeahead"
+           role="textbox"
+           aria-label="{{::c.options.title}}" tabindex="0" aria-haspopup="true">
+  </div>
+  <div class="text-left">
+    {{data.searchMsg}}
+  </div>
+</form>
+]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_0b6f5d98db589050fa11cf2414961950</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;standard&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function ($http, $filter, $location,spAriaUtil, $window, $scope, spAriaFocusManager, $rootScope) {
+	var c = this;
+	c.options.glyph = c.options.glyph || 'search';
+	c.options.title = c.options.title || c.data.searchMsg;
+	c.options.color = c.options.color || "default";
+	c.searchTerm = c.data.q;
+	c.pageID = $scope.page.id;
+	c.showSuggestions =  c.data.searchTypeBehavior === "suggestions" &amp;&amp; c.data.isSuggestionsEnabled === "true";
+
+	c.onSelect = function($item, $model, $label) {
+		c.searchTerm = ""; // prevents unexpected result if user quickly clicks search button after selecting
+		if (c.showSuggestions)
+			$item.url = "?id=search&amp;q="+encodeURIComponent($item.name);
+
+		if(!$item.url || $item.url === "")
+			return;
+
+		if ($item.target)
+			window.open($item.url, $item.target);
+		else {
+			var newUrl = $location.url($item.url);
+			spAriaFocusManager.navigateToLink(newUrl.url());
+		}
+	};
+	
+	c.getSearchSuggestions = function(query) {	 
+		if ($location.search().q == query)
+				 return;
+		 var payload = {
+			 params: {
+				 "sysparm_term" : query, 
+				 "sysparm_sp_portal_id": c.data.portalID,
+				 "sysparm_suggestions_limit": c.options.limit &gt; 0 ? c.options.limit : "",
+				 "sysparm_search_sources": c.data.searchSourceSysIds || ""
+			 },
+			 headers : {'Accept' : 'application/json'}
+		 };
+
+		 var test = $http.get("/api/now/search/sp_suggestions", payload).then(function(response){ 
+			 var result = response.data.result;
+			 var resultCount = result != null ? result.entries.length : 0;
+			 sendLiveMessage(resultCount);
+		 
+			 return result.entries.map(function(item) {	
+				 item.query = getQueryToHighlight(item, query);
+				 item.glyph = getIcon(item.type);
+				 item.term = item.name;
+				 return item;	 
+			 });
+		 });
+		c.data.test = test;
+		console.log(test, "FERNANDO");
+		return test;
+  	};
+
+	function getSearchSources(result, c) {
+		var sources = {};
+		c.data.searchSources.map(function(key) {
+			sources[key] = 0;
+		});
+		result.map(function(item) {
+			if(sources[item.type])
+				sources[item.type]++;
+			else
+				sources[item.type] = 1;
+		});
+		var searchSources = [];
+		Object.keys(sources).map(function(key) {
+			var source_id = c.data.searchSourceConfiguration[key] ? c.data.searchSourceConfiguration[key].sys_id : key;
+			searchSources.push({
+				source_id: source_id,
+				number_of_results: sources[key]
+			});
+		});
+		return searchSources;
+	}
+
+	c.TextSearchAnalyticsUpdateRank = function(rank) {
+		var query = c.latestQuery;
+		var result = _.get(c.data, 'results', []);
+		var payloadObject = {
+			action: "GlideSPSearchAnalyticsUpdateRank",
+			payload: {
+				query: query,
+				portal_id: this.data.portalID,
+				page_id: this.pageID,
+				results_per_source: getSearchSources(result, this),
+				refinement_occurred: false,
+				click_rank: rank
+			}
+		};
+
+		$window.spSearchAnalytics = {
+			query: query,
+			refinement_occurred: false
+		};
+
+		this.server.get(payloadObject);
+	}
+	
+	// Attach event handler to update click rank
+	// Run only once
+	var attachClickRankHandler = function() {
+		$(".typeahead-popup").on('click', 'li', function(e) {
+			var index = $(this).data('index');
+			c.TextSearchAnalyticsUpdateRank(index+1);
+		});
+		// Remove function definition
+		// As soon as it was called
+		attachClickRankHandler = function() {};
+	}
+	
+	c.submitSearch = function(){
+		c.getResults().then(function(response){
+			$rootScope.$broadcast('getSearchedItems', c.data.results);
+		});
+	};
+	
+	c.getResults = function() {
+		var query = c.searchTerm;
+		var payload = {
+			"query": query,
+			"portal": c.data.portalID,
+			"page": c.pageID,
+			"source": c.data.searchSources,
+			"include_facets": false,
+			"searchType": "typeahead"
+		};
+
+		attachClickRankHandler();
+
+		if (c.options.limit || c.options.limit == 0)
+			payload.count = c.options.limit;
+
+		return $http.post("/api/now/sp/search", payload).then(function(response) {
+			// Prevents typeahead from displaying suggestions if queries from page and input are the same
+			if ($location.search().q == query)
+				return;
+
+			var result = response.data.result;
+			var resultCount = result != null ? result.results.length : 0
+			sendLiveMessage(resultCount);
+
+			c.data.results = result.results;
+			c.latestQuery = query;
+
+			return result.results.map(function(item) {
+				var config = c.data.searchSourceConfiguration[item.__search_source_id__];
+
+				if (!item.url &amp;&amp; config.linkToPage) {
+					item.url = "?id=" + config.linkToPage;
+					if (item.sys_id)
+						item.url += "&amp;sys_id=" + item.sys_id;
+					if (item.table)
+						item.url += "&amp;table=" + item.table
+				}
+
+				if (config.type == "ADVANCED") {
+					item.templateID = config.template;
+				} else {
+					item.glyph = config.glyph;
+				}
+				return item;
+			});
+		});
+	}
+
+	c.searchType = c.data.searchType;
+	$scope.$on('$locationChangeSuccess', onLocationChangeSuccess);
+
+	function onLocationChangeSuccess(event, newUrl, oldUrl) {
+		if(searchSourceChanged(newUrl, oldUrl)) {
+			var newUrlParams = newUrl.match(/t=.+/);
+			if(!newUrlParams) {
+				c.searchType = null;
+			} else {
+				c.searchType = newUrlParams[0].split("&amp;")[0].substring(2);
+			}
+		}
+	}
+
+	function searchSourceChanged(newUrl, oldUrl) {
+		var newUrlParams = newUrl.match(/t=.+/),
+		oldUrlParams = oldUrl.match(/t=.+/);
+
+		if(!newUrlParams &amp;&amp; !oldUrlParams) {
+			return false;
+		}
+
+		if((!newUrlParams &amp;&amp; oldUrlParams) || (newUrlParams &amp;&amp; !oldUrlParams)) {
+			return true;
+		}
+
+		return newUrlParams[0].split("&amp;")[0] !== oldUrlParams[0].split("&amp;")[0];
+	}
+
+	function sendLiveMessage(resultCount) {
+		spAriaUtil.sendLiveMessage(resultCount + " " +
+									c.data.resultMsg + " " +
+									(resultCount &gt; 0 ? ' ' + c.data.navigationMsg : ''));
+	}
+
+	function getIcon(itemType) {
+		return itemType === "INSTANCE_HISTORY" ? 'search' : 'clock-o';
+	}
+
+	function getQueryToHighlight(item, query) {
+		return item.type === "INSTANCE_HISTORY" ? item.name.substring(query.length) : query;
+	}
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;ul.dropdown-menu {&amp;#13;
+  min-width: 100%;&amp;#13;
+  border-radius: 0px 0px 4px 4px;&amp;#13;
+  margin:0px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+ul.dropdown-menu a.ta-item {&amp;#13;
+  line-height: 20px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+ul.dropdown-menu i.ta-icon, i.ta-img {&amp;#13;
+  width: 20px;&amp;#13;
+  height: 20px;&amp;#13;
+  background-size: contain;&amp;#13;
+  display: inline-block;&amp;#13;
+  background-repeat: no-repeat;&amp;#13;
+  background-position: center center;&amp;#13;
+  text-align: center;&amp;#13;
+  line-height: 20px;&amp;#13;
+  vertical-align: bottom;&amp;#13;
+  margin-right: 8px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.input-typeahead{&amp;#13;
+  height: 74px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-img{&amp;#13;
+  height: 60px;&amp;#13;
+  border: 0;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.test{&amp;#13;
+  border-bottom: 2px;&amp;#13;
+  border-color: $dodger-blue;&amp;#13;
+}&amp;#13;
+&amp;#13;
+input[name="q"] {&amp;#13;
+  color: black;&amp;#13;
+}&amp;#13;
+&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id/&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function(scope) {
+	var lazyLoader = $injector.get("lazyLoader");
+	lazyLoader.putTemplates(scope.data.typeaheadTemplates);
+}]]&gt;&lt;/link&gt;&lt;name&gt;Test Search&lt;/name&gt;&lt;option_schema&gt;[{"name":"title","section":"Presentation","label":"Title","type":"string"},{"name":"color","section":"Presentation","label":"Color","type":"string"},{"name":"glyph","section":"Presentation","label":"glyph","type":"string"},{"name":"size","section":"Presentation","label":"Size","type":"string"},{"hint":"Number of typeahead search results returned (default 15)","name":"limit","section":"Behavior","label":"Limit","type":"integer"},{"name":"image","section":"Presentation","label":"Image on the left","type":"string"},{"displayValue":"Search Source","hint":"If provided, limit the scope of the typeahead search to the given search sources","name":"contextual_search_sources","display_value_list":[],"section":"Behavior","label":"Contextual Search Sources","type":"glide_list","value":"sp_search_source","ed":{"reference":"sp_search_source"}}]&lt;/option_schema&gt;&lt;public&gt;true&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+	if (input &amp;&amp; input.action === "GlideSPSearchAnalyticsUpdateRank") {
+		input.action = "";
+		var textSearchAnalytics = new GlideSPSearchAnalytics().publish(JSON.stringify(input.payload));
+		return ;
+	}
+
+	if (options.title) {
+		options.title = gs.getMessage(options.title);
+	}
+
+	if (options.refresh_page_on_search_submission == undefined)
+		data.refreshPageOnSearch = true;
+	else
+		data.refreshPageOnSearch = options.refresh_page_on_search_submission;
+
+	data.resultMsg = gs.getMessage("Search results.");
+	data.navigationMsg = gs.getMessage("To navigate, use up and down arrow keys.");
+	data.portalID = $sp.getPortalRecord().getUniqueValue();
+	data.searchMsg = gs.getMessage("Se preferir, faça uma busca");
+	data.q = $sp.getParameter('q');
+
+	data.isSuggestionsEnabled = gs.getProperty('glide.search.suggestions.enabled');
+	data.searchTypeBehavior = gs.getProperty('glide.service_portal.search_as_you_type_behavior').toLowerCase();
+
+	var searchSources;
+	data.searchType = null;
+	data.searchSources = [];
+	if ($sp.getParameter("id") == "search" &amp;&amp; $sp.getParameter("t")) {
+		data.searchType = $sp.getParameter("t");
+		searchSources = $sp.getSearchSources(data.portalID);
+	} else {
+		var contextualSearchSourceIDs = options.contextual_search_sources || null;
+		searchSources = $sp.getSearchSources(data.portalID, contextualSearchSourceIDs);
+		if (searchSources.length == 1) {
+			data.searchType = searchSources[0].id;
+		}
+	}
+
+	data.searchSourceSysIds = [];
+	data.typeaheadTemplates = {};
+	data.searchSourceConfiguration = {};
+	searchSources.forEach(function(source) {
+		data.searchSourceSysIds.push(source.sys_id);
+		if (source.isTypeaheadEnabled) {
+			data.searchSources.push(source.id);
+		}
+		var sourceTemplateConfiguration = {
+			sys_id: source.sys_id,
+			glyph: source.typeaheadGlyph,
+			linkToPage: source.typeaheadPage
+		};
+
+		if (source.isAdvancedTypeaheadConfig) {
+			sourceTemplateConfiguration.type = "ADVANCED";
+			sourceTemplateConfiguration.template = "sp-typeahead-" + source.id + ".html";
+			data.typeaheadTemplates["sp-typeahead-" + source.id + ".html"] = $sp.translateTemplate(source.typeaheadTemplate);
+		} else {
+			sourceTemplateConfiguration.type = "SIMPLE";
+			if (!sourceTemplateConfiguration.linkToPage)
+			console.log("Warning: No typeahead page or URL provided for search source " + source.name);
+		}
+
+		data.searchSourceConfiguration[source.id] = sourceTemplateConfiguration;
+	});
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-16 19:00:42&lt;/sys_created_on&gt;&lt;sys_id&gt;0b6f5d98db589050fa11cf2414961950&lt;/sys_id&gt;&lt;sys_mod_count&gt;23&lt;/sys_mod_count&gt;&lt;sys_name&gt;Test Search&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_0b6f5d98db589050fa11cf2414961950&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-16 19:52:38&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;form ng-submit="c.submitSearch()"&gt;
+  &lt;input type="hidden" name="id" value="search"/&gt;
+  &lt;input type="hidden" name="t" value="{{c.searchType}}"/&gt;
+  &lt;div class="input-group input-group-{{::c.options.size}} test"&gt;
+    &lt;!-- uses ui.bootstrap.typeahead --&gt;
+    &lt;span class="input-group-btn"&gt;
+      &lt;button ng-if="::c.options.glyph" name="search" type="submit" class="btn btn-{{::c.options.color}}"
+              title="{{::c.data.searchMsg}}" aria-label="{{::c.data.searchMsg}}"&gt;
+       &lt;!-- &lt;i ng-if="::c.options.glyph" class="fa fa-{{::c.options.glyph}}"&gt;&lt;/i&gt;--&gt;
+        &lt;img src="{{c.options.image}}" class="icon-img"/&gt;
+      &lt;/button&gt;
+    &lt;/span&gt;
+    &lt;input ng-if="c.showSuggestions"
+           name="q" type="text" ng-model="c.searchTerm"
+           autocomplete="off"
+           class="form-control input-typeahead"
+           role="textbox"
+           aria-label="{{::c.options.title}}" tabindex="0" aria-haspopup="true"&gt;
+  &lt;/div&gt;
+  &lt;div class="text-left"&gt;
+    {{data.searchMsg}}
+  &lt;/div&gt;
+&lt;/form&gt;
+]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1842836198</payload_hash>
+        <record_name>Test Search</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 19:52:38</sys_created_on>
+        <sys_id>3b4bad50dbd89050fa11cf2414961995</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171848ce3d60000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 19:52:38</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>ff4bad502bd890504280e0efeba25b94</update_guid>
+        <update_guid_history>ff4bad502bd890504280e0efeba25b94:1842836198,da38295c7c9890503e8e2ced7be98a15:-78382705,4c67a118e8989050bca544bc961f7e20:335896182,6747e5d8ad989050b31122a21f408e26:1329242797,1137a118b998905097369de78ec98fa8:335896182,5727611823989050d592687cfa37a319:131299417,6527a1183b989050dabff665b43d53e1:335896182,d317a11876989050ea3f647e1a5a1517:-1954868993,401721184e98905079060fd650a3c453:335896182,02072dd4bc989050ddbccf66922c3202:861498810,6ee6e5d4f298905025c8ff3b551afbe7:335896182,11b629d45b989050c388874fd791fe63:-721894965,3936ad948c9890505ee43e06f381e202:1127978455,5f26ad94ec989050bc28b209f23acfdb:2101545846,cd262d94ee989050a9b32e5ab605438f:1528676187,e2e5659402989050aa0ccd2bae6b5634:1644494236,0ce52d542e989050e37e1049c7434afc:1760312285,53b5219423989050663b94521f2ac17a:1412858138,f665add045989050a9feb54adf074ea7:85549843,7a35ed1421989050e1c957e8b94c5f4d:-1185746261,2dc425145298905060c6af0ba8b2bb3b:941910242,9a44edd06f98905011e6647899aaafc9:-1402097390,127f91d8a7589050a2a9524ba44ecdc8:-227191619,036f5d9861589050e01a043273c29052:-740750081</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">480d5f10dbd450505c116390149619f8</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-17 04:09:21</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>179cf928485a458580514ac10c036201</sys_id>
+        <sys_metadata>0b6f5d98db589050fa11cf2414961950</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Test Search</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_0b6f5d98db589050fa11cf2414961950</sys_update_name>
+        <sys_update_version display_value="sp_widget_0b6f5d98db589050fa11cf2414961950">3b4bad50dbd89050fa11cf2414961995</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-17 04:09:21</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

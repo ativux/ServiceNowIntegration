@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="asmt_metric_category">
+    <asmt_metric_category action="DELETE">
+        <create_stakeholders>false</create_stakeholders>
+        <description/>
+        <details/>
+        <filter table="asmt_metric_type">sys_id=89f952aadbf11410fa11cf2414961979^EQ<item endquery="false" field="sys_id" goto="false" newquery="false" operator="=" or="false" value="89f952aadbf11410fa11cf2414961979"/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </filter>
+        <metric_type display_value="Pesquisa de satisfação a respeito da solução">89f952aadbf11410fa11cf2414961979</metric_type>
+        <name>Page 2</name>
+        <order>200</order>
+        <qb_evaluation_method/>
+        <roles/>
+        <scoring_type>percent</scoring_type>
+        <sys_class_name>asmt_metric_category</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-07 13:12:28</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>0c026a6edbb51410fa11cf24149619c2</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>Page 2</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>asmt_metric_category_0c026a6edbb51410fa11cf24149619c2</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-07 13:20:24</sys_updated_on>
+        <table>asmt_metric_type</table>
+        <total_metrics>3</total_metrics>
+        <weight>10</weight>
+    </asmt_metric_category>
+    <sys_translated_text action="DELETE" query="documentkey=0c026a6edbb51410fa11cf24149619c2"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>asmt_metric_category_0c026a6edbb51410fa11cf24149619c2</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="asmt_metric_category"><asmt_metric_category action="INSERT_OR_UPDATE"><create_stakeholders>false</create_stakeholders><description/><details/><filter table="asmt_metric_type">sys_id=89f952aadbf11410fa11cf2414961979^EQ<item endquery="false" field="sys_id" goto="false" newquery="false" operator="=" or="false" value="89f952aadbf11410fa11cf2414961979"/><item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/></filter><metric_type display_value="Pesquisa de satisfação a respeito da solução">89f952aadbf11410fa11cf2414961979</metric_type><name>Page 2</name><order>200</order><qb_evaluation_method/><roles/><scoring_type>percent</scoring_type><sys_class_name>asmt_metric_category</sys_class_name><sys_created_by>organize.fernando</sys_created_by><sys_created_on>2020-07-07 13:12:28</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>0c026a6edbb51410fa11cf24149619c2</sys_id><sys_mod_count>4</sys_mod_count><sys_name>Page 2</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>asmt_metric_category_0c026a6edbb51410fa11cf24149619c2</sys_update_name><sys_updated_by>organize.fernando</sys_updated_by><sys_updated_on>2020-07-07 13:20:24</sys_updated_on><table>asmt_metric_type</table><total_metrics>3</total_metrics><weight>10</weight></asmt_metric_category><sys_translated_text action="delete_multiple" query="documentkey=0c026a6edbb51410fa11cf24149619c2"/></record_update>]]></payload>
+        <payload_hash>926821847</payload_hash>
+        <record_name>Page 2</record_name>
+        <reverted_from/>
+        <source>7d96c115dbe514105c11639014961916</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-07 13:20:24</sys_created_on>
+        <sys_id>35e32aeedbb51410fa11cf2414961942</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>173296f45010000001</sys_recorded_at>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-07 13:20:24</sys_updated_on>
+        <type>Metric Category</type>
+        <update_guid>f9e32aeed5b514108ff79787be6f1941</update_guid>
+        <update_guid_history>f9e32aeed5b514108ff79787be6f1941:926821847,b9e32aeef0b51410fd4bc98fb7105b3c:59769622,31e32aee95b51410116ee8fd26eadf37:-807282603,b5e32aeee5b51410cf5ce59a55d10633:1906932776,e51266ea6fb514103d44b6d338655e45:-995655415</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">6a57a22adb391410fa11cf241496194d</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-07 13:35:28</sys_created_on>
+        <sys_db_object display_value="" name="asmt_metric_category">asmt_metric_category</sys_db_object>
+        <sys_id>504984614fb54c80a73bde0ff6059000</sys_id>
+        <sys_metadata>0c026a6edbb51410fa11cf24149619c2</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Page 2</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>asmt_metric_category_0c026a6edbb51410fa11cf24149619c2</sys_update_name>
+        <sys_update_version display_value="asmt_metric_category_0c026a6edbb51410fa11cf24149619c2">35e32aeedbb51410fa11cf2414961942</sys_update_version>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-07 13:35:28</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

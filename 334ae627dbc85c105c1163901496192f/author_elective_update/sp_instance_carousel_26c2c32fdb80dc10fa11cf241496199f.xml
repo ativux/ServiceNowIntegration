@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance_carousel">
+    <sp_instance_carousel action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <interval>5000</interval>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column/>
+        <sp_widget display_value="Portal Banner">a282432fdb80dc10fa11cf24149619bf</sp_widget>
+        <sys_class_name>sp_instance_carousel</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-14 18:19:42</sys_created_on>
+        <sys_id>26c2c32fdb80dc10fa11cf241496199f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Banner Carousel</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_instance_carousel_26c2c32fdb80dc10fa11cf241496199f</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-14 18:19:42</sys_updated_on>
+        <title>Banner Carousel</title>
+        <url/>
+        <widget_parameters/>
+    </sp_instance_carousel>
+    <sys_translated_text action="DELETE" query="documentkey=26c2c32fdb80dc10fa11cf241496199f"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_instance_carousel_26c2c32fdb80dc10fa11cf241496199f</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance_carousel"><sp_instance_carousel action="INSERT_OR_UPDATE"><active>true</active><class_name/><color>default</color><css/><glyph/><id/><interval>5000</interval><order>1</order><roles/><short_description/><size>md</size><sp_column/><sp_widget display_value="Portal Banner">a282432fdb80dc10fa11cf24149619bf</sp_widget><sys_class_name>sp_instance_carousel</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-04-14 18:19:42</sys_created_on><sys_id>26c2c32fdb80dc10fa11cf241496199f</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Banner Carousel</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_instance_carousel_26c2c32fdb80dc10fa11cf241496199f</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-04-14 18:19:42</sys_updated_on><title>Banner Carousel</title><url/><widget_parameters/></sp_instance_carousel><sys_translated_text action="delete_multiple" query="documentkey=26c2c32fdb80dc10fa11cf241496199f"/></record_update>]]></payload>
+        <payload_hash>-1189005997</payload_hash>
+        <record_name>Banner Carousel</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-14 18:19:42</sys_created_on>
+        <sys_id>0bd2c72fdb80dc10fa11cf241496194c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17179eb18260000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-14 18:19:42</sys_updated_on>
+        <type>Instance of Carousel</type>
+        <update_guid>03d2c72f0c80dc103b4f9f76d74e774c</update_guid>
+        <update_guid_history>03d2c72f0c80dc103b4f9f76d74e774c:-1189005997</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">e94bc723db04dc10fa11cf241496196d</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-14 18:56:28</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance_carousel">sp_instance_carousel</sys_db_object>
+        <sys_id>c9f96c635439416892478c5c1754fdc4</sys_id>
+        <sys_metadata>26c2c32fdb80dc10fa11cf241496199f</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Banner Carousel</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_instance_carousel_26c2c32fdb80dc10fa11cf241496199f</sys_update_name>
+        <sys_update_version display_value="sp_instance_carousel_26c2c32fdb80dc10fa11cf241496199f">0bd2c72fdb80dc10fa11cf241496194c</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-14 18:56:28</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

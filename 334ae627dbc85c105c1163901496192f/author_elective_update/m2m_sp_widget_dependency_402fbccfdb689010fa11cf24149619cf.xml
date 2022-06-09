@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency">
+    <m2m_sp_widget_dependency action="DELETE">
+        <sp_dependency display_value="GService">a71e748fdb689010fa11cf2414961934</sp_dependency>
+        <sp_widget display_value="GService Icon Link">c64dc558dbd49050fa11cf2414961949</sp_widget>
+        <sys_class_name>m2m_sp_widget_dependency</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-05-07 15:58:35</sys_created_on>
+        <sys_id>402fbccfdb689010fa11cf24149619cf</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService.GService Icon Link</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_widget_dependency_402fbccfdb689010fa11cf24149619cf</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-05-07 15:58:35</sys_updated_on>
+    </m2m_sp_widget_dependency>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>m2m_sp_widget_dependency_402fbccfdb689010fa11cf24149619cf</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency"><m2m_sp_widget_dependency action="INSERT_OR_UPDATE"><sp_dependency display_value="GService">a71e748fdb689010fa11cf2414961934</sp_dependency><sp_widget display_value="GService Icon Link">c64dc558dbd49050fa11cf2414961949</sp_widget><sys_class_name>m2m_sp_widget_dependency</sys_class_name><sys_created_by>organize.fernando</sys_created_by><sys_created_on>2020-05-07 15:58:35</sys_created_on><sys_id>402fbccfdb689010fa11cf24149619cf</sys_id><sys_mod_count>0</sys_mod_count><sys_name>GService.GService Icon Link</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>m2m_sp_widget_dependency_402fbccfdb689010fa11cf24149619cf</sys_update_name><sys_updated_by>organize.fernando</sys_updated_by><sys_updated_on>2020-05-07 15:58:35</sys_updated_on></m2m_sp_widget_dependency></record_update>]]></payload>
+        <payload_hash>-366917507</payload_hash>
+        <record_name>GService.GService Icon Link</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-05-07 15:58:35</sys_created_on>
+        <sys_id>442fb003dba89010fa11cf2414961951</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171efdc2b1f0000001</sys_recorded_at>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-05-07 15:58:35</sys_updated_on>
+        <type>Widget Dependency</type>
+        <update_guid>4c2fb00394a890102710ef9520abc750</update_guid>
+        <update_guid_history>4c2fb00394a890102710ef9520abc750:-366917507</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">1f404143dba89010fa11cf241496192c</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-05-07 16:03:43</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_widget_dependency">m2m_sp_widget_dependency</sys_db_object>
+        <sys_id>0ece5aa616794883a7f7fcd9081ff749</sys_id>
+        <sys_metadata>402fbccfdb689010fa11cf24149619cf</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService.GService Icon Link</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>m2m_sp_widget_dependency_402fbccfdb689010fa11cf24149619cf</sys_update_name>
+        <sys_update_version display_value="m2m_sp_widget_dependency_402fbccfdb689010fa11cf24149619cf">442fb003dba89010fa11cf2414961951</sys_update_version>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-05-07 16:03:43</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

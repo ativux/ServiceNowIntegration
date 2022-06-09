@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_list parent="" relationship="" sys_domain="global" table="cmdb_rel_ci" version="2" view="RPTdf7b845ddb9e1bc4976c09a0ba9619da">
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>parent.name</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>0</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>024f1a50db7d1450fa11cf2414961985</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>parent.comments</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>1</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>064f5a50db7d1450fa11cf241496194c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>parent.sys_class_name</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>2</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>0a4f5a50db7d1450fa11cf241496194c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>parent.install_status</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>3</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>0e4f5a50db7d1450fa11cf241496194c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>parent.managed_by</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>4</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>024f5a50db7d1450fa11cf241496194d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>parent.assignment_group</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>5</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>064f5a50db7d1450fa11cf241496194d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>parent.operational_status</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>6</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>0a4f5a50db7d1450fa11cf241496194d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>parent.last_discovered</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>7</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>0e4f5a50db7d1450fa11cf241496194d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>parent.supported_by</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>8</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>024f5a50db7d1450fa11cf241496194e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>parent.assigned_to</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>9</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>064f5a50db7d1450fa11cf241496194e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>parent.owned_by</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>10</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>0a4f5a50db7d1450fa11cf241496194e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>parent.short_description</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>11</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>0e4f5a50db7d1450fa11cf241496194e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>type</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>12</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>024f5a50db7d1450fa11cf241496194f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>child.name</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>13</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>064f5a50db7d1450fa11cf241496194f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>child.comments</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>14</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>0a4f5a50db7d1450fa11cf241496194f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>child.sys_class_name</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>15</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>0e4f5a50db7d1450fa11cf241496194f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>child.install_status</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>16</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>024f5a50db7d1450fa11cf2414961950</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>child.managed_by</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>17</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>064f5a50db7d1450fa11cf2414961950</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>child.assignment_group</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>18</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>0a4f5a50db7d1450fa11cf2414961950</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>child.operational_status</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>19</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>0e4f5a50db7d1450fa11cf2414961950</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>child.last_discovered</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>20</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>024f5a50db7d1450fa11cf2414961951</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>child.short_description</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>21</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>064f5a50db7d1450fa11cf2414961951</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>child.install_date</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>22</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>0a4f5a50db7d1450fa11cf2414961951</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>child.ip_address</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>23</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>0e4f5a50db7d1450fa11cf2414961951</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>child.serial_number</element>
+            <list_id display_value="cmdb_rel_ci" element="NULL" name="cmdb_rel_ci" parent="NULL" relationship="NULL" sys_domain="global" view="c24f1a50db7d1450fa11cf2414961983">c24f1a50db7d1450fa11cf2414961984</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>24</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_id>024f5a50db7d1450fa11cf2414961952</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element/>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <name>cmdb_rel_ci</name>
+            <parent/>
+            <position/>
+            <relationship/>
+            <sum>false</sum>
+            <sys_class_name>sys_ui_list</sys_class_name>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-30 13:13:53</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>c24f1a50db7d1450fa11cf2414961984</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>cmdb_rel_ci</sys_name>
+            <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+            <sys_update_name>sys_ui_list_cmdb_rel_ci_RPTdf7b845ddb9e1bc4976c09a0ba9619da</sys_update_name>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-30 13:13:53</sys_updated_on>
+            <sys_user/>
+            <view display_value="Rptdf7b845ddb9e1bc4976c09a0ba9619da" name="RPTdf7b845ddb9e1bc4976c09a0ba9619da">c24f1a50db7d1450fa11cf2414961983</view>
+            <view_name/>
+        </sys_ui_list>
+    </sys_ui_list>
+</record_update>

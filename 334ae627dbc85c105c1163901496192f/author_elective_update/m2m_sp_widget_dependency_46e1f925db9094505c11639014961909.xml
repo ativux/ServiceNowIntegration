@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency">
+    <m2m_sp_widget_dependency action="DELETE">
+        <sp_dependency display_value="dialog-polyfill">2eaf31f30b301200b0b02c6317673a84</sp_dependency>
+        <sp_widget display_value="Copy of SC Catalog Item">86e1f925db9094505c11639014961906</sp_widget>
+        <sys_class_name>m2m_sp_widget_dependency</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-20 17:33:51</sys_created_on>
+        <sys_id>46e1f925db9094505c11639014961909</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>dialog-polyfill.Copy of SC Catalog Item</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_widget_dependency_46e1f925db9094505c11639014961909</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-04-20 17:33:51</sys_updated_on>
+    </m2m_sp_widget_dependency>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>m2m_sp_widget_dependency_46e1f925db9094505c11639014961909</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency"><m2m_sp_widget_dependency action="INSERT_OR_UPDATE"><sp_dependency display_value="dialog-polyfill">2eaf31f30b301200b0b02c6317673a84</sp_dependency><sp_widget display_value="Copy of SC Catalog Item">86e1f925db9094505c11639014961906</sp_widget><sys_class_name>m2m_sp_widget_dependency</sys_class_name><sys_created_by>organize.fernando</sys_created_by><sys_created_on>2020-04-20 17:33:51</sys_created_on><sys_id>46e1f925db9094505c11639014961909</sys_id><sys_mod_count>0</sys_mod_count><sys_name>dialog-polyfill.Copy of SC Catalog Item</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>m2m_sp_widget_dependency_46e1f925db9094505c11639014961909</sys_update_name><sys_updated_by>organize.fernando</sys_updated_by><sys_updated_on>2020-04-20 17:33:51</sys_updated_on></m2m_sp_widget_dependency></record_update>]]></payload>
+        <payload_hash>-832669495</payload_hash>
+        <record_name>dialog-polyfill.Copy of SC Catalog Item</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-20 17:33:51</sys_created_on>
+        <sys_id>0ae1f925db9094505c1163901496190b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17198a746950000001</sys_recorded_at>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-04-20 17:33:51</sys_updated_on>
+        <type>Widget Dependency</type>
+        <update_guid>02e1f925d09094502f4d6e4bfeefa30b</update_guid>
+        <update_guid_history>02e1f925d09094502f4d6e4bfeefa30b:-832669495</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">2982bd65db9094505c1163901496197a</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-20 17:36:33</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_widget_dependency">m2m_sp_widget_dependency</sys_db_object>
+        <sys_id>38926f826868492fae73f1c10f18f251</sys_id>
+        <sys_metadata>46e1f925db9094505c11639014961909</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>dialog-polyfill.Copy of SC Catalog Item</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>m2m_sp_widget_dependency_46e1f925db9094505c11639014961909</sys_update_name>
+        <sys_update_version display_value="m2m_sp_widget_dependency_46e1f925db9094505c11639014961909">0ae1f925db9094505c1163901496190b</sys_update_version>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-04-20 17:36:33</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

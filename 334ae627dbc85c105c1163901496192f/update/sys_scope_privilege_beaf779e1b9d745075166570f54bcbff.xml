@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scope_privilege">
+    <sys_scope_privilege action="INSERT_OR_UPDATE">
+        <operation>execute</operation>
+        <source_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</source_scope>
+        <status>allowed</status>
+        <sys_class_name>sys_scope_privilege</sys_class_name>
+        <sys_created_by>nazareth</sys_created_by>
+        <sys_created_on>2021-07-14 21:13:45</sys_created_on>
+        <sys_id>beaf779e1b9d745075166570f54bcbff</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ComplianceUtils</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_scope_privilege_beaf779e1b9d745075166570f54bcbff</sys_update_name>
+        <sys_updated_by>nazareth</sys_updated_by>
+        <sys_updated_on>2021-07-14 21:13:45</sys_updated_on>
+        <target_name>ComplianceUtils</target_name>
+        <target_scope display_value="GRC: Policy and Compliance Management">4a3281d053030200d23c9c25911c086f</target_scope>
+        <target_type>sys_script_include</target_type>
+    </sys_scope_privilege>
+</record_update>

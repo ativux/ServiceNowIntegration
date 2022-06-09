@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_script">
+    <sys_ui_script action="DELETE">
+        <active>true</active>
+        <description/>
+        <global>false</global>
+        <name>x_gmeps_itsm_servi.GServiceScrollWidth</name>
+        <script><![CDATA[var x_gmeps_itsm_servi = x_gmeps_itsm_servi || {};
+
+x_gmeps_itsm_servi.GServiceScrollWidth = (function() {
+	"use strict";
+
+	/* set your private variables and functions here. For example: 
+	var privateVar = 0; 
+	function private_function() {
+		return ++privateVar;
+	}
+*/
+
+	var checkScrollBars = function(){
+		var b = $('body');
+		var normalw = 0;
+		var scrollw = 0;
+		if(b.prop('scrollHeight')>b.height()){
+			normalw = window.innerWidth;
+			scrollw = normalw - b.width();
+			$('.container').css({marginRight:'-'+scrollw+'px'});
+		}
+	};
+
+	/* Share variables between multiple UI scripts by adding them to your scope object. For example: 
+	x_gmeps_itsm_servi.sharedVar = 0; 
+
+ Then access them in your scripts the same way. For example: 
+	function get_shared() {
+		return x_gmeps_itsm_servi.sharedVar;
+	}
+*/
+
+	return {
+
+		/* set your public API here. For example:
+		incrementAndReturnPrivateVar: function() {
+			return private_function();
+		},
+*/
+		type:  "GServiceScrollWidth"
+	};
+})();
+]]></script>
+        <script_name>GServiceScrollWidth</script_name>
+        <sys_class_name>sys_ui_script</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-02 17:10:31</sys_created_on>
+        <sys_id>5bb707dfdbc91c905c11639014961945</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_gmeps_itsm_servi.GServiceScrollWidth</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_ui_script_5bb707dfdbc91c905c11639014961945</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-02 17:10:31</sys_updated_on>
+        <ui_type>10</ui_type>
+        <use_scoped_format>true</use_scoped_format>
+    </sys_ui_script>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sys_ui_script_5bb707dfdbc91c905c11639014961945</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_script"&gt;&lt;sys_ui_script action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;description/&gt;&lt;global&gt;false&lt;/global&gt;&lt;name&gt;x_gmeps_itsm_servi.GServiceScrollWidth&lt;/name&gt;&lt;script&gt;&lt;![CDATA[var x_gmeps_itsm_servi = x_gmeps_itsm_servi || {};
+
+x_gmeps_itsm_servi.GServiceScrollWidth = (function() {
+	"use strict";
+
+	/* set your private variables and functions here. For example: 
+	var privateVar = 0; 
+	function private_function() {
+		return ++privateVar;
+	}
+*/
+
+	var checkScrollBars = function(){
+		var b = $('body');
+		var normalw = 0;
+		var scrollw = 0;
+		if(b.prop('scrollHeight')&gt;b.height()){
+			normalw = window.innerWidth;
+			scrollw = normalw - b.width();
+			$('.container').css({marginRight:'-'+scrollw+'px'});
+		}
+	};
+
+	/* Share variables between multiple UI scripts by adding them to your scope object. For example: 
+	x_gmeps_itsm_servi.sharedVar = 0; 
+
+ Then access them in your scripts the same way. For example: 
+	function get_shared() {
+		return x_gmeps_itsm_servi.sharedVar;
+	}
+*/
+
+	return {
+
+		/* set your public API here. For example:
+		incrementAndReturnPrivateVar: function() {
+			return private_function();
+		},
+*/
+		type:  "GServiceScrollWidth"
+	};
+})();
+]]&gt;&lt;/script&gt;&lt;script_name&gt;GServiceScrollWidth&lt;/script_name&gt;&lt;sys_class_name&gt;sys_ui_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.jorge.garcia&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-06-02 17:10:31&lt;/sys_created_on&gt;&lt;sys_id&gt;5bb707dfdbc91c905c11639014961945&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;x_gmeps_itsm_servi.GServiceScrollWidth&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_script_5bb707dfdbc91c905c11639014961945&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.jorge.garcia&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-06-02 17:10:31&lt;/sys_updated_on&gt;&lt;ui_type&gt;10&lt;/ui_type&gt;&lt;use_scoped_format&gt;true&lt;/use_scoped_format&gt;&lt;/sys_ui_script&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-99406571</payload_hash>
+        <record_name>x_gmeps_itsm_servi.GServiceScrollWidth</record_name>
+        <reverted_from/>
+        <source>38f4098fdb011450fa11cf24149619a8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-02 17:10:31</sys_created_on>
+        <sys_id>2be84353db0d1c905c11639014961965</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17276035de80000001</sys_recorded_at>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-02 17:10:31</sys_updated_on>
+        <type>UI Script</type>
+        <update_guid>23e843537d0d1c90d7f7856412ce3e65</update_guid>
+        <update_guid_history>23e843537d0d1c90d7f7856412ce3e65:-99406571</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-02 17:16:11</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_script">sys_ui_script</sys_db_object>
+        <sys_id>4c24894b01ad47ca8ff818c2c386fea4</sys_id>
+        <sys_metadata>5bb707dfdbc91c905c11639014961945</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_gmeps_itsm_servi.GServiceScrollWidth</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sys_ui_script_5bb707dfdbc91c905c11639014961945</sys_update_name>
+        <sys_update_version display_value="sys_ui_script_5bb707dfdbc91c905c11639014961945">2be84353db0d1c905c11639014961965</sys_update_version>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-02 17:16:11</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

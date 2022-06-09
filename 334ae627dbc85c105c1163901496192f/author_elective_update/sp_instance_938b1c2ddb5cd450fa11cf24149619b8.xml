@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css>.category-title{&#13;
+  color: #68228B;&#13;
+}&#13;
+&#13;
+.description-properties {&#13;
+  color: #68228B;&#13;
+}</css>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="3">3233555ddb9c14505c11639014961971</sp_column>
+        <sp_widget display_value="GService Category Items">6d5bdc2ddb5cd450fa11cf24149619c6</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 11:16:34</sys_created_on>
+        <sys_id>938b1c2ddb5cd450fa11cf24149619b8</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>Produtos TV</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_instance_938b1c2ddb5cd450fa11cf24149619b8</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 12:05:41</sys_updated_on>
+        <title>Produtos TV</title>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"parent_id": {
+		"value": "testError",
+		"displayValue": "testError"
+	},
+	"selected_category": {
+		"value": "6c73087cdba344105c116390149619cc",
+		"displayValue": "Produtos TV"
+	}
+}]]></widget_parameters>
+    </sp_instance>
+    <sys_translated_text action="DELETE" query="documentkey=938b1c2ddb5cd450fa11cf24149619b8"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_instance_938b1c2ddb5cd450fa11cf24149619b8</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_instance"&gt;&lt;sp_instance action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;class_name/&gt;&lt;color&gt;default&lt;/color&gt;&lt;css&gt;.category-title{&amp;#13;
+  color: #68228B;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.description-properties {&amp;#13;
+  color: #68228B;&amp;#13;
+}&lt;/css&gt;&lt;glyph/&gt;&lt;id/&gt;&lt;order&gt;1&lt;/order&gt;&lt;roles/&gt;&lt;short_description/&gt;&lt;size&gt;md&lt;/size&gt;&lt;sp_column display_value="3"&gt;3233555ddb9c14505c11639014961971&lt;/sp_column&gt;&lt;sp_widget display_value="GService Category Items"&gt;6d5bdc2ddb5cd450fa11cf24149619c6&lt;/sp_widget&gt;&lt;sys_class_name&gt;sp_instance&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-20 11:16:34&lt;/sys_created_on&gt;&lt;sys_id&gt;938b1c2ddb5cd450fa11cf24149619b8&lt;/sys_id&gt;&lt;sys_mod_count&gt;4&lt;/sys_mod_count&gt;&lt;sys_name&gt;Produtos TV&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_instance_938b1c2ddb5cd450fa11cf24149619b8&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-20 12:05:41&lt;/sys_updated_on&gt;&lt;title&gt;Produtos TV&lt;/title&gt;&lt;url/&gt;&lt;widget_parameters&gt;&lt;![CDATA[{
+	"parent_id": {
+		"value": "testError",
+		"displayValue": "testError"
+	},
+	"selected_category": {
+		"value": "6c73087cdba344105c116390149619cc",
+		"displayValue": "Produtos TV"
+	}
+}]]&gt;&lt;/widget_parameters&gt;&lt;/sp_instance&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=938b1c2ddb5cd450fa11cf24149619b8"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-292940696</payload_hash>
+        <record_name>Produtos TV</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 12:05:41</sys_created_on>
+        <sys_id>7ec6ac2ddb9cd450fa11cf241496195d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171977ad4820000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 12:05:41</sys_updated_on>
+        <type>Instance</type>
+        <update_guid>b2c6602dbd9cd45053ee49946c0f4c3f</update_guid>
+        <update_guid_history>b2c6602dbd9cd45053ee49946c0f4c3f:-292940696,c0b5a0e9739cd4508bbe549dbd361a73:1302140698,651d58eda05cd450603949e1a44e9b50:-1694218895,cadcdcad925cd450fc8c59cbabfbf341:-1334255375,5b8b1c2d645cd4507b6af5c34fa63bb9:-1485589912</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">3448c16ddb501850fa11cf24149619e0</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 14:31:54</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance">sp_instance</sys_db_object>
+        <sys_id>5ff3deca459c4e00ada78b926d858900</sys_id>
+        <sys_metadata>938b1c2ddb5cd450fa11cf24149619b8</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Produtos TV</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_instance_938b1c2ddb5cd450fa11cf24149619b8</sys_update_name>
+        <sys_update_version display_value="sp_instance_938b1c2ddb5cd450fa11cf24149619b8">7ec6ac2ddb9cd450fa11cf241496195d</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 14:31:54</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,1513 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope, spUtil, $location, $timeout, spModal, spAriaUtil, $http, cabrillo, i18n) {
+	var c = this;
+	c.m = $scope.data.msgs;
+	c.isNative = cabrillo.isNative() && c.data.isMEE;
+	var webAnalyticsMsgSuffix = c.isNative ? " - NOW Mobile" : "";
+	if (c.isNative) {
+		cabrillo.viewLayout.setTitle(i18n.getMessage('Your Cart'));
+		addCheckoutNativeButtons();
+	}
+	
+	function setNativeNavigationBarButton() {
+		if(!c.isNative) return;
+		
+		var button = [{
+					title: i18n.getMessage('Done'),
+					enabled: true
+			}];
+			cabrillo.viewLayout.hideBackButton();
+			cabrillo.viewLayout.setNavigationBarButtons();
+			cabrillo.viewLayout.setNavigationBarButtons(button, function(index) {
+					cabrillo.flowControl.flowEnded();
+			});
+	}
+	
+	function resetCartNativeButtons() {
+		if (!c.data.cartItems.length && c.isNative) {
+			cabrillo.viewLayout.setBottomButtons();
+			cabrillo.viewLayout.setNavigationBarButtons()
+			cabrillo.viewLayout.hideBackButton();
+			var button = [{
+            imageName: 'back',
+            buttonStyle: cabrillo.viewLayout.REPLACE_BACK_BUTTON_STYLE,
+            enabled: true
+        }];
+			cabrillo.viewLayout.setNavigationBarButtons(button, function() {
+            cabrillo.flowControl.flowEnded();
+        });
+		}
+	}
+	
+	function removeCabrilloButtons() {
+			if (c.isNative) {
+				cabrillo.viewLayout.setBottomButtons();
+			}
+	}
+	
+	function addCheckoutNativeButtons() {
+		if (!c.data.cartItems.length || !c.isNative) return;
+		cabrillo.viewLayout.setBottomButtons();
+		setNativeNavigationBarButton();
+		
+		var buttonTitle, buttonEnabled;
+		if (!c.checkoutInProgress) {
+			buttonTitle = c.data.sys_properties.twostep ?
+				i18n.getMessage('Proceed to Checkout'):
+				i18n.getMessage('Checkout');
+			buttonEnabled = true;
+		} else {
+			buttonTitle = i18n.getMessage('Ordering...');
+			buttonEnabled = false;
+		}
+		var buttons = [
+			{
+				title: buttonTitle,
+				enabled: buttonEnabled,
+				backgroundColor: '#1f8476',
+				textColor: '#FFFFFF'
+			}
+		];
+		cabrillo.viewLayout.setBottomButtons(buttons, function(buttonIndex) {
+			c.triggerCheckout();
+		});
+	}
+	
+	var mespClosePopupUnregister = $rootScope.$on("mesp.popup.close", function() {
+		// Timeout is to give a better user experience otherwise when this popup opens,
+		// the cabrillo buttons will be displayed immediately giving a bad user experience.
+		$timeout(function(){
+			setNativeNavigationBarButton();
+			addCheckoutNativeButtons();
+		});
+	});
+	
+	var mespOpenPopupUnregister = $rootScope.$on("mesp.popup.open", function() {
+		// Timeout is to give a better user experience otherwise when this popup opens,
+		// the cabrillo buttons will be displayed immediately giving a bad user experience.
+		$timeout(function(){
+			removeCabrilloButtons();
+		});
+	});
+	
+	$scope.$on("$destroy", function() {
+		mespClosePopupUnregister();
+		mespOpenPopupUnregister();
+	});
+
+	$scope.$on("$sp.service_catalog.cart.update", function() {
+			$scope.server.update().then(function() {
+				$scope.$emit("$sp.service_catalog.cart.count", getItemCount());
+			});
+	});
+
+	c.updateQuantity = function(item) {
+		spAriaUtil.sendLiveMessage(c.data.msgs.updatedMsq + " " + item.name + " " + c.data.msgs.quantityToMsg + " " + item.quantity);
+
+		c.server.get({
+			action: "update_quantity",
+			itemID: item.sys_id,
+			quantity: item.quantity
+		}).then(function(response) {
+			window.GlideWebAnalytics.trackEvent("Service Catalog", "Catalog Cart" + webAnalyticsMsgSuffix, "Quantity Changed", 0, 0);
+			$rootScope.$broadcast("$sp.service_catalog.cart.update");
+		});
+
+		setNativeNavigationBarButton();
+	}
+	
+	c.checkoutTwo = function() {
+		var hasItems = c.data.cartItems.filter(function(item) {
+			return item.sys_class_name != 'sc_cat_item_producer';
+		}).length > 0;
+		if (hasItems) {
+			c.server.get({
+				cart: c.data.cart,
+				auto_redirect: c.options.auto_redirect || 'true',
+				action: "checkout_two"
+			}).then(function(response) {
+				var checkoutCartModalCtrl;
+				var unregisterOnCancel = $scope.$on('$sp.service_catalog.cart.cancel_order', function() {
+					checkoutCartModalCtrl.close();
+					if (c.isNative) {
+						cabrillo.viewLayout.setTitle(i18n.getMessage('Your Cart'));
+						addCheckoutNativeButtons();
+					}
+				});
+				var unregisterOnSubmit = $scope.$on('$sp.service_catalog.cart.submitted', function() {
+					checkoutCartModalCtrl.close();
+				});
+
+				var checkoutCartModal = angular.copy(response.data.checkoutCartModal);
+				checkoutCartModal.options.afterOpen = function(ctrl){
+					checkoutCartModalCtrl = ctrl;
+				};
+				checkoutCartModal.options.afterClose = function() {
+					unregisterOnCancel();
+					unregisterOnSubmit();
+					c.checkoutCartModal = null;
+					checkoutCartModalCtrl = null;
+				};
+				c.checkoutCartModal = checkoutCartModal;
+			});
+		} else {
+			c.server.get({
+				action: "checkout"
+			}).then(function(response) {
+				if (!response.data.result) {
+					return;
+				}
+				var redirectUrl = 'id=sc_home';
+				if (response.data.result.sys_id)
+					redirectUrl = "id=ticket&is_new_order=true&table=" + response.data.result.table + "&sys_id=" + response.data.result.sys_id;
+				$location.search(redirectUrl);
+				$rootScope.$broadcast("$sp.service_catalog.cart.update");
+				$rootScope.$broadcast("$sp.service_catalog.cart.submitted", true);
+			});
+		}
+	}
+
+	c.triggerCheckout = function() {
+		if (c.data.sys_properties.twostep) {
+			c.checkoutTwo();
+			return;
+		}
+		c.checkoutInProgress = true;
+		c.data.action = 'checkout';
+		if(c.isNative) {
+			addCheckoutNativeButtons();
+		}
+		c.server.update().then(function(response) {
+			c.data.action = null;
+			c.checkoutInProgress = false;
+			if (!response.result)
+				return;
+			var result = $scope.data.result;
+			if (c.isNative) {
+				cabrillo.viewLayout.setBottomButtons();
+			}
+			window.GlideWebAnalytics.trackEvent('Service Catalog', 'Catalog Cart' + webAnalyticsMsgSuffix, 'Catalog Request Submitted', c.data.numberOfCartItems, 0);
+			handleRedirect(result.number, result.table, result.sys_id);
+			$rootScope.$broadcast("$sp.service_catalog.cart.update");
+			$rootScope.$broadcast("$sp.service_catalog.cart.submitted", true);
+		});
+	}
+	
+	c.triggerCheckoutSmall = function() {
+		if (c.data.sys_properties.twostep) {
+			c.checkoutTwo();
+			return;
+		}
+		$location.search('id=sc_cart');
+	}
+
+	c.removeItem = function(item) {
+		var urlId = $location.url().split('sys_id=')[1];
+		if(urlId)
+			urlId = urlId.split('&')[0];
+		var dialogMsg = urlId === item.sys_id ? c.data.msgs.removeEditingItemMsg : c.data.msgs.removeItemConfirmationMsg;
+		if (c.isNative) {
+			if (confirm(dialogMsg)) {
+				$scope.server.get({
+					cartName: "DEFAULT",
+					action: "remove_item",
+					removeItemID: item.sys_id
+				}).then(function(response) {
+					c.data.cart = response.data.cart;
+					c.data.cartItems = response.data.cartItems;
+					spAriaUtil.sendLiveMessage(item.name + " " + c.data.msgs.itemRemovedMsg);
+					$rootScope.$broadcast("$sp.service_catalog.cart.update");
+					resetCartNativeButtons();
+					cabrillo.message.showMessage(cabrillo.message.SUCCESS_MESSAGE_STYLE, i18n.getMessage('Cart updated'));
+				});
+			}
+		} else {
+			spModal.confirm(dialogMsg).then(function(confirmed) {
+				if (confirmed) {
+					$scope.server.get({
+						cartName: "DEFAULT",
+						action: "remove_item",
+						removeItemID: item.sys_id
+					}).then(function(response) {
+						c.data.cart = response.data.cart;
+						c.data.cartItems = response.data.cartItems;
+						spAriaUtil.sendLiveMessage(item.name + " " + c.data.msgs.itemRemovedMsg);
+						$rootScope.$broadcast("$sp.service_catalog.cart.update");
+						window.GlideWebAnalytics.trackEvent('Service Catalog', 'Catalog Cart' + webAnalyticsMsgSuffix, 'Item Removed', 0, 0);
+						if (urlId === item.sys_id)
+							$location.search('id=sc_cart');
+					});
+				}
+			});
+		}
+	}
+
+	c.clearCart = function() {
+		if (c.isNative) {
+			if (confirm(c.data.msgs.clearCartConfirmationMsg)) {
+				c.server.get({
+					action: "clear_cart"
+				}).then(function(response) {
+					c.data.cart = response.data.cart;
+					c.data.cartItems = response.data.cartItems
+					resetCartNativeButtons();
+					$rootScope.$broadcast("$sp.service_catalog.cart.update");
+					spUtil.addTrivialMessage(c.data.msgs.cartEmptiedMsg);
+				});
+			}
+		} else {
+			spModal.confirm(c.data.msgs.clearCartConfirmationMsg).then(function(confirmed) {
+				if (confirmed) {
+					c.server.get({
+						action: "clear_cart"
+					}).then(function(response) {
+						c.data.cart = response.data.cart;
+						c.data.cartItems = response.data.cartItems
+						$rootScope.$broadcast("$sp.service_catalog.cart.update");
+						window.GlideWebAnalytics.trackEvent('Service Catalog', 'Catalog Cart' + webAnalyticsMsgSuffix, 'Cart Cleared', 0, 0);
+						spUtil.addTrivialMessage(c.data.msgs.cartEmptiedMsg);
+					});
+				}
+			});
+		}
+	}
+	
+	c.saveBundle = function() {
+		var saveCartModalCtrl;
+		var unregister = $scope.$on('$sp.service_catalog.cart.save_cart', function(){
+			saveCartModalCtrl.close();
+		});
+
+		var saveCartModal = angular.copy(c.data.saveCartModal);
+		saveCartModal.options.afterOpen = function(ctrl){
+			saveCartModalCtrl = ctrl;
+		};
+		saveCartModal.options.afterClose = function() {
+			unregister();
+			c.saveCartModal = null;
+			saveCartModalCtrl = null;
+		};
+		c.saveCartModal = saveCartModal;
+	}
+	
+	c.showPrice = function(item) {
+		return item.show_price && item.sys_class_name != 'sc_cat_item_producer';
+	}
+	
+	c.showQuantity = function(item) {
+		return item.show_quantity && item.sys_class_name != 'sc_cat_item_producer';
+	}
+	
+	c.showRecurringPrice = function(item) {
+		return item.show_recurring_price && item.sys_class_name != 'sc_cat_item_producer';
+	}
+
+	function handleRedirect(n, table, sys_id) {
+		$location.search('id=sc_request&table=sc_request&sys_id=' + sys_id);
+	}
+
+	$scope.$emit("$sp.service_catalog.cart.count", getItemCount());
+
+	function getItemCount() {
+		return c.data.cartItems.length || 0;
+	}
+
+	if(c.options.auto_update_cart === true || c.options.auto_update_cart === "true") {
+		spUtil.recordWatch($scope, 'sc_cart_item', 'cart.name=DEFAULT^cart.user=' + $scope.data.user_id, function(resp) {
+				if (resp && resp.data && resp.data.operation == "insert")
+					$scope.$emit("$sp.service_catalog.cart.add_item");
+				$scope.$emit("$sp.service_catalog.cart.update");
+		});
+		$scope.$watch("c.data.cartItems", function() {
+			$scope.$emit("$sp.service_catalog.cart.count", getItemCount());
+		});
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.cart-mobile {
+  border: 0;
+  box-shadow: none;
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    a {
+    	text-align: right;
+      display: block !important;
+    }
+  }
+  
+  .cart-item-mobile-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px 20px 10px;
+    .item-info {
+      display: flex;
+	  flex-direction: column;
+    }
+    
+    .item-image {
+      margin: 0;
+    }
+    
+    a {
+      float: none;
+      text-align: center;
+    }
+    
+    select {
+    	margin-top: 10px;
+      padding: 0px 5px;
+      text-align-last: center;
+    }
+  }  
+}
+
+td {
+  vertical-align: middle !important;
+}
+
+.a-disabled {
+	cursor: default;
+	color: $btn-link-disabled-color;
+}
+
+.media-body {
+  .btn-link {
+    padding-left: 0;
+    padding-right: 0;
+    color: $primary;
+
+    &amp;:hover {
+      color: darken($primary, 10%);
+    }
+
+    &amp;:focus {
+      color: darken($primary, 10%);
+    }
+  }
+}
+
+.btn-remove {
+  font-size: 18px !important;
+}
+
+.action-btn {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+
+  &amp;.btn-link {
+    color: $primary;
+  }
+}
+
+.list-group {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.list-group-item.ng-enter {
+  transition: all 1s;
+  -webkit-transition: all 1s;
+
+  background-color: #c0dcfa;
+}
+
+.list-group-item.ng-enter-active {
+  background-color: #fff;
+}
+
+.empty-cart {
+  font-style: italic;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 7px;
+}
+
+.view-carts-link {
+  text-align: center;
+  display: block;
+}
+
+.order-details-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 5px 10px 10px 10px;
+
+  .order-details {
+    padding: 5px;
+
+    textarea {
+      resize: none;
+      flex-basis: 100%;
+      flex-shrink: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .requested-for-details {
+    flex: 1 0 auto;
+    max-width: 100%;
+  }
+
+  .special-instructions-details {
+    textarea {
+      height: calc(100% - 25px);
+    }
+  }
+}
+
+.item-image {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.empty-state-content {
+  margin-top: 30px;
+
+  &amp;.small-cart {
+    margin-top: 0px;
+    padding: 10px 20px;
+  }
+
+  .fa-shopping-cart {
+    color: $gray-light;
+    font-size: 80px;
+    display: block;
+    text-align: center;
+
+    &amp;.small-cart {
+      font-size: 40px;
+    }
+  }
+
+  .h3 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .h4 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    max-width: 100%;
+    margin-bottom: 35px;
+  }
+}
+
+.large-checkout {
+  display: inline-block;
+  float: none !important;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.item-row:hover .btn-clear {
+	background-color: #f5f5f5;
+}
+
+.sc-btn {
+	margin-bottom: 10px;
+}
+
+.sc-btn-group {
+  clear: right;
+}
+
+.sc-remove-btn {
+   &amp;:hover {
+     background-color: $danger;
+     color: #fff;
+     border-color: darken($danger, 10%);
+   }
+}
+
+.btn-group-justified &gt; .btn-group {
+  	padding: 0 5px;
+  	.btn {
+  		border-radius: 4px !important;
+      white-space: nowrap;
+	  overflow: hidden;
+      text-overflow: ellipsis;
+    }
+}
+
+.cart-table {
+  	th {
+      position: sticky;
+      -webkit-position: sticky;
+      top: -1px;
+      z-index: 10;
+      background-color: $panel-bg;
+      box-shadow: 0px 1px 0px $panel-inner-border;
+    }
+}
+
+@media only screen and (max-width : 992px) {
+  .sc-btn, .sc-btn-group {
+    width: 100%;
+  }
+  .item-image {
+    max-width: 70px;
+  }
+}
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list>color</field_list>
+        <has_preview>false</has_preview>
+        <id>gservice_sc_shopping_cart</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>GService SC Shopping Cart</name>
+        <option_schema>[{"name":"cartTemplate","section":"Behavior","default_value":"large_shopping_cart_v2.html","label":"Cart Template","type":"string"},{"hint":"This will sync cart across different sessions","name":"auto_update_cart","default_value":"false","section":"Behavior","label":"Auto update cart","type":"boolean"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+	
+	var m = data.msgs = {};
+	m.createdMsg = gs.getMessage("Created");
+	m.trackMsg = gs.getMessage("track using 'Requests' in the header or");
+	m.clickMsg = gs.getMessage("click here to view");
+	m.cartEmptiedMsg = gs.getMessage("Your cart has been cleared");
+	m.itemRemovedMsg = gs.getMessage("has been removed from your cart");
+	m.updatedMsq = gs.getMessage("Updated");
+	m.quantityToMsg = gs.getMessage("quantity to");
+	m.removeItemConfirmationMsg = gs.getMessage("Are you sure you want to remove this item?");
+	m.clearCartConfirmationMsg = gs.getMessage("Are you sure you want to empty your cart?");
+	m.removeEditingItemMsg = gs.getMessage("Are you sure you want to remove the item you are viewing from your Cart?");
+	var userID = gs.getUser().getID();
+	var cartName = localInput && localInput.cartName ? localInput.cartName : '';
+	var cartJS = new sn_sc.CartJS(cartName, '' + userID);
+	data.isMEE = options.native_mobile == 'true';
+	data.numberOfCartItems = cartJS.getCartItems().getRowCount();
+	data.sys_id = $sp.getParameter('sys_id');
+	data.user_id = userID;
+    var conflictingCartDomain = cartJS.findConflictingDomain();
+    var restrictedItems;
+	if (localInput && localInput.action === "checkout_two") {
+        if (conflictingCartDomain) {
+            gs.addErrorMessage(gs.getMessage("Your cart has item(s) belonging to the '{0}' domain. Please change the domain to continue with the checkout.", conflictingCartDomain));
+            return;
+        }
+        restrictedItems = cartJS.findUserCriteriaRestrictedItems();
+        if (restrictedItems.length > 0) {
+            gs.addErrorMessage(gs.getMessage("Your cart has item(s) no longer available. Please remove {0} from cart to continue with the checkout.", restrictedItems.join(", ")));
+            return;
+        }
+		data.checkoutCartModal = $sp.getWidget('widget-modal', {
+			embeddedWidgetId: 'sc-checkout',
+			embeddedWidgetOptions: {
+				cart: localInput.cart,
+				auto_redirect: localInput.auto_redirect,
+				native_mobile: options.native_mobile
+			},
+			backdrop: 'static',
+			keyboard: false,
+			size: 'md'
+		});
+		return;
+	} else if (localInput && localInput.action === 'checkout') {
+        if (conflictingCartDomain) {
+            gs.addErrorMessage(gs.getMessage("Your cart has item(s) belonging to the '{0}' domain. Please change the domain to continue with the checkout.", conflictingCartDomain));
+            return;
+        }
+        restrictedItems = cartJS.findUserCriteriaRestrictedItems();
+        if (restrictedItems.length > 0) {
+            gs.addErrorMessage(gs.getMessage("Your cart has item(s) no longer available. Please remove {0} from cart to continue with the checkout.", restrictedItems.join(", ")));
+            return;
+        }
+		var request = cartJS.checkoutCart(true);
+        data.result = {
+            number: request.request_number,
+            sys_id: request.request_id,
+            table: 'sc_request'
+        };
+		return;
+	}
+
+	var clGenerator = new GlideChoiceList();
+	var choiceListQuantity = clGenerator.getChoiceList("sc_cart_item", "quantity");
+	var choicelistQuantityData = [];
+	for (var i = 0; i < choiceListQuantity.size(); i++) {
+		var choice = choiceListQuantity.get(i);
+		if (!isNaN(choice.getValue()))
+            choicelistQuantityData.push({
+                value: parseInt(choice.getValue()),
+                label: choice.getLabel()
+            });
+	 }
+
+	data.choiceListQuantity = choicelistQuantityData;
+
+	if (localInput && localInput.action === "update_quantity") {
+		var cartItemGR = new GlideRecord("sc_cart_item");
+		if (cartItemGR.get(localInput.itemID) && cartItemGR.canRead()) {
+			cartItemGR.setValue("quantity", localInput.quantity);
+			cartItemGR.update();
+		}
+	}
+
+	if (localInput && localInput.action === "remove_item") {
+		cartJS.remove(localInput.removeItemID);
+	}
+
+	if (localInput && localInput.action === "clear_cart") {
+		cartJS.empty(cartJS.getCartID());
+	}
+
+	if (localInput && localInput.action === "save_cart") {
+		var newCart = new SPCart(localInput.newCartName, userID);
+		newCart.setHidden(false);
+		newCart.loadCart(cart.getCartID());
+	}
+	
+	data.sys_properties = {
+        twostep: gs.getProperty("glide.sc.sp.twostep", "true") == 'true'
+	};
+	data.cart = cartJS.getCartDetails(true);
+	data.cartItems = [];
+	data.cart.recurring_subtotals = {};
+	for(var key in data.cart.cart_items)
+		if(data.cart.cart_items[key] && typeof data.cart.cart_items[key] === 'object') {
+			var itemsByFrequency = data.cart.cart_items[key].items;
+			data.cartItems = data.cartItems.concat(itemsByFrequency);
+			if(key != 'none') {
+				var show_recurring_price = false;
+				for(var i=0; i<itemsByFrequency.length; i++) {
+					if (itemsByFrequency[i].show_recurring_price)
+						show_recurring_price = true;
+				}
+				if (show_recurring_price)
+					data.cart.recurring_subtotals[data.cart.cart_items[key].frequency_label] = data.cart.cart_items[key].subtotal_recurring_price;
+			}
+		}
+	data.cartItems = data.cartItems.map(function (item) {
+        if (item.can_order)
+            item.item_url = "?id=sc_cat_item&sys_id=" + item.sys_id + "&edit=cart";
+
+		return item;
+	})
+	data.disable_req_for = sn_sc.CartJS.canViewRF();
+
+    data.saveCartModal = $sp.getWidget('widget-modal', {
+        embeddedWidgetId: 'sc_save_bundle',
+        embeddedWidgetOptions: {}
+    });
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-27 13:13:17</sys_created_on>
+        <sys_id>65693c3fdbd45010fa11cf24149619e9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService SC Shopping Cart</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_65693c3fdbd45010fa11cf24149619e9</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-27 13:13:17</sys_updated_on>
+        <template><![CDATA[<div ng-if="options.cartTemplate">
+	<div ng-include="options.cartTemplate"></div>
+
+  <sp-widget widget="c.checkoutCartModal" ng-if="c.checkoutCartModal"></sp-widget>
+  <sp-widget widget="c.saveCartModal" ng-if="c.saveCartModal"></sp-widget>
+  
+</div>
+
+<div ng-if="!options.cartTemplate">
+  <div class="alert alert-danger" role="alert">
+    <strong>${Error}: </strong>
+    ${Please provide a cart template to render.}
+  </div>
+</div>
+
+<now-message key="Done" value="${Done}"/>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_65693c3fdbd45010fa11cf24149619e9</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function ($scope, spUtil, $location, $timeout, spModal, spAriaUtil, $http, cabrillo, i18n) {
+	var c = this;
+	c.m = $scope.data.msgs;
+	c.isNative = cabrillo.isNative() &amp;&amp; c.data.isMEE;
+	var webAnalyticsMsgSuffix = c.isNative ? " - NOW Mobile" : "";
+	if (c.isNative) {
+		cabrillo.viewLayout.setTitle(i18n.getMessage('Your Cart'));
+		addCheckoutNativeButtons();
+	}
+	
+	function setNativeNavigationBarButton() {
+		if(!c.isNative) return;
+		
+		var button = [{
+					title: i18n.getMessage('Done'),
+					enabled: true
+			}];
+			cabrillo.viewLayout.hideBackButton();
+			cabrillo.viewLayout.setNavigationBarButtons();
+			cabrillo.viewLayout.setNavigationBarButtons(button, function(index) {
+					cabrillo.flowControl.flowEnded();
+			});
+	}
+	
+	function resetCartNativeButtons() {
+		if (!c.data.cartItems.length &amp;&amp; c.isNative) {
+			cabrillo.viewLayout.setBottomButtons();
+			cabrillo.viewLayout.setNavigationBarButtons()
+			cabrillo.viewLayout.hideBackButton();
+			var button = [{
+            imageName: 'back',
+            buttonStyle: cabrillo.viewLayout.REPLACE_BACK_BUTTON_STYLE,
+            enabled: true
+        }];
+			cabrillo.viewLayout.setNavigationBarButtons(button, function() {
+            cabrillo.flowControl.flowEnded();
+        });
+		}
+	}
+	
+	function removeCabrilloButtons() {
+			if (c.isNative) {
+				cabrillo.viewLayout.setBottomButtons();
+			}
+	}
+	
+	function addCheckoutNativeButtons() {
+		if (!c.data.cartItems.length || !c.isNative) return;
+		cabrillo.viewLayout.setBottomButtons();
+		setNativeNavigationBarButton();
+		
+		var buttonTitle, buttonEnabled;
+		if (!c.checkoutInProgress) {
+			buttonTitle = c.data.sys_properties.twostep ?
+				i18n.getMessage('Proceed to Checkout'):
+				i18n.getMessage('Checkout');
+			buttonEnabled = true;
+		} else {
+			buttonTitle = i18n.getMessage('Ordering...');
+			buttonEnabled = false;
+		}
+		var buttons = [
+			{
+				title: buttonTitle,
+				enabled: buttonEnabled,
+				backgroundColor: '#1f8476',
+				textColor: '#FFFFFF'
+			}
+		];
+		cabrillo.viewLayout.setBottomButtons(buttons, function(buttonIndex) {
+			c.triggerCheckout();
+		});
+	}
+	
+	var mespClosePopupUnregister = $rootScope.$on("mesp.popup.close", function() {
+		// Timeout is to give a better user experience otherwise when this popup opens,
+		// the cabrillo buttons will be displayed immediately giving a bad user experience.
+		$timeout(function(){
+			setNativeNavigationBarButton();
+			addCheckoutNativeButtons();
+		});
+	});
+	
+	var mespOpenPopupUnregister = $rootScope.$on("mesp.popup.open", function() {
+		// Timeout is to give a better user experience otherwise when this popup opens,
+		// the cabrillo buttons will be displayed immediately giving a bad user experience.
+		$timeout(function(){
+			removeCabrilloButtons();
+		});
+	});
+	
+	$scope.$on("$destroy", function() {
+		mespClosePopupUnregister();
+		mespOpenPopupUnregister();
+	});
+
+	$scope.$on("$sp.service_catalog.cart.update", function() {
+			$scope.server.update().then(function() {
+				$scope.$emit("$sp.service_catalog.cart.count", getItemCount());
+			});
+	});
+
+	c.updateQuantity = function(item) {
+		spAriaUtil.sendLiveMessage(c.data.msgs.updatedMsq + " " + item.name + " " + c.data.msgs.quantityToMsg + " " + item.quantity);
+
+		c.server.get({
+			action: "update_quantity",
+			itemID: item.sys_id,
+			quantity: item.quantity
+		}).then(function(response) {
+			window.GlideWebAnalytics.trackEvent("Service Catalog", "Catalog Cart" + webAnalyticsMsgSuffix, "Quantity Changed", 0, 0);
+			$rootScope.$broadcast("$sp.service_catalog.cart.update");
+		});
+
+		setNativeNavigationBarButton();
+	}
+	
+	c.checkoutTwo = function() {
+		var hasItems = c.data.cartItems.filter(function(item) {
+			return item.sys_class_name != 'sc_cat_item_producer';
+		}).length &gt; 0;
+		if (hasItems) {
+			c.server.get({
+				cart: c.data.cart,
+				auto_redirect: c.options.auto_redirect || 'true',
+				action: "checkout_two"
+			}).then(function(response) {
+				var checkoutCartModalCtrl;
+				var unregisterOnCancel = $scope.$on('$sp.service_catalog.cart.cancel_order', function() {
+					checkoutCartModalCtrl.close();
+					if (c.isNative) {
+						cabrillo.viewLayout.setTitle(i18n.getMessage('Your Cart'));
+						addCheckoutNativeButtons();
+					}
+				});
+				var unregisterOnSubmit = $scope.$on('$sp.service_catalog.cart.submitted', function() {
+					checkoutCartModalCtrl.close();
+				});
+
+				var checkoutCartModal = angular.copy(response.data.checkoutCartModal);
+				checkoutCartModal.options.afterOpen = function(ctrl){
+					checkoutCartModalCtrl = ctrl;
+				};
+				checkoutCartModal.options.afterClose = function() {
+					unregisterOnCancel();
+					unregisterOnSubmit();
+					c.checkoutCartModal = null;
+					checkoutCartModalCtrl = null;
+				};
+				c.checkoutCartModal = checkoutCartModal;
+			});
+		} else {
+			c.server.get({
+				action: "checkout"
+			}).then(function(response) {
+				if (!response.data.result) {
+					return;
+				}
+				var redirectUrl = 'id=sc_home';
+				if (response.data.result.sys_id)
+					redirectUrl = "id=ticket&amp;is_new_order=true&amp;table=" + response.data.result.table + "&amp;sys_id=" + response.data.result.sys_id;
+				$location.search(redirectUrl);
+				$rootScope.$broadcast("$sp.service_catalog.cart.update");
+				$rootScope.$broadcast("$sp.service_catalog.cart.submitted", true);
+			});
+		}
+	}
+
+	c.triggerCheckout = function() {
+		if (c.data.sys_properties.twostep) {
+			c.checkoutTwo();
+			return;
+		}
+		c.checkoutInProgress = true;
+		c.data.action = 'checkout';
+		if(c.isNative) {
+			addCheckoutNativeButtons();
+		}
+		c.server.update().then(function(response) {
+			c.data.action = null;
+			c.checkoutInProgress = false;
+			if (!response.result)
+				return;
+			var result = $scope.data.result;
+			if (c.isNative) {
+				cabrillo.viewLayout.setBottomButtons();
+			}
+			window.GlideWebAnalytics.trackEvent('Service Catalog', 'Catalog Cart' + webAnalyticsMsgSuffix, 'Catalog Request Submitted', c.data.numberOfCartItems, 0);
+			handleRedirect(result.number, result.table, result.sys_id);
+			$rootScope.$broadcast("$sp.service_catalog.cart.update");
+			$rootScope.$broadcast("$sp.service_catalog.cart.submitted", true);
+		});
+	}
+	
+	c.triggerCheckoutSmall = function() {
+		if (c.data.sys_properties.twostep) {
+			c.checkoutTwo();
+			return;
+		}
+		$location.search('id=sc_cart');
+	}
+
+	c.removeItem = function(item) {
+		var urlId = $location.url().split('sys_id=')[1];
+		if(urlId)
+			urlId = urlId.split('&amp;')[0];
+		var dialogMsg = urlId === item.sys_id ? c.data.msgs.removeEditingItemMsg : c.data.msgs.removeItemConfirmationMsg;
+		if (c.isNative) {
+			if (confirm(dialogMsg)) {
+				$scope.server.get({
+					cartName: "DEFAULT",
+					action: "remove_item",
+					removeItemID: item.sys_id
+				}).then(function(response) {
+					c.data.cart = response.data.cart;
+					c.data.cartItems = response.data.cartItems;
+					spAriaUtil.sendLiveMessage(item.name + " " + c.data.msgs.itemRemovedMsg);
+					$rootScope.$broadcast("$sp.service_catalog.cart.update");
+					resetCartNativeButtons();
+					cabrillo.message.showMessage(cabrillo.message.SUCCESS_MESSAGE_STYLE, i18n.getMessage('Cart updated'));
+				});
+			}
+		} else {
+			spModal.confirm(dialogMsg).then(function(confirmed) {
+				if (confirmed) {
+					$scope.server.get({
+						cartName: "DEFAULT",
+						action: "remove_item",
+						removeItemID: item.sys_id
+					}).then(function(response) {
+						c.data.cart = response.data.cart;
+						c.data.cartItems = response.data.cartItems;
+						spAriaUtil.sendLiveMessage(item.name + " " + c.data.msgs.itemRemovedMsg);
+						$rootScope.$broadcast("$sp.service_catalog.cart.update");
+						window.GlideWebAnalytics.trackEvent('Service Catalog', 'Catalog Cart' + webAnalyticsMsgSuffix, 'Item Removed', 0, 0);
+						if (urlId === item.sys_id)
+							$location.search('id=sc_cart');
+					});
+				}
+			});
+		}
+	}
+
+	c.clearCart = function() {
+		if (c.isNative) {
+			if (confirm(c.data.msgs.clearCartConfirmationMsg)) {
+				c.server.get({
+					action: "clear_cart"
+				}).then(function(response) {
+					c.data.cart = response.data.cart;
+					c.data.cartItems = response.data.cartItems
+					resetCartNativeButtons();
+					$rootScope.$broadcast("$sp.service_catalog.cart.update");
+					spUtil.addTrivialMessage(c.data.msgs.cartEmptiedMsg);
+				});
+			}
+		} else {
+			spModal.confirm(c.data.msgs.clearCartConfirmationMsg).then(function(confirmed) {
+				if (confirmed) {
+					c.server.get({
+						action: "clear_cart"
+					}).then(function(response) {
+						c.data.cart = response.data.cart;
+						c.data.cartItems = response.data.cartItems
+						$rootScope.$broadcast("$sp.service_catalog.cart.update");
+						window.GlideWebAnalytics.trackEvent('Service Catalog', 'Catalog Cart' + webAnalyticsMsgSuffix, 'Cart Cleared', 0, 0);
+						spUtil.addTrivialMessage(c.data.msgs.cartEmptiedMsg);
+					});
+				}
+			});
+		}
+	}
+	
+	c.saveBundle = function() {
+		var saveCartModalCtrl;
+		var unregister = $scope.$on('$sp.service_catalog.cart.save_cart', function(){
+			saveCartModalCtrl.close();
+		});
+
+		var saveCartModal = angular.copy(c.data.saveCartModal);
+		saveCartModal.options.afterOpen = function(ctrl){
+			saveCartModalCtrl = ctrl;
+		};
+		saveCartModal.options.afterClose = function() {
+			unregister();
+			c.saveCartModal = null;
+			saveCartModalCtrl = null;
+		};
+		c.saveCartModal = saveCartModal;
+	}
+	
+	c.showPrice = function(item) {
+		return item.show_price &amp;&amp; item.sys_class_name != 'sc_cat_item_producer';
+	}
+	
+	c.showQuantity = function(item) {
+		return item.show_quantity &amp;&amp; item.sys_class_name != 'sc_cat_item_producer';
+	}
+	
+	c.showRecurringPrice = function(item) {
+		return item.show_recurring_price &amp;&amp; item.sys_class_name != 'sc_cat_item_producer';
+	}
+
+	function handleRedirect(n, table, sys_id) {
+		$location.search('id=sc_request&amp;table=sc_request&amp;sys_id=' + sys_id);
+	}
+
+	$scope.$emit("$sp.service_catalog.cart.count", getItemCount());
+
+	function getItemCount() {
+		return c.data.cartItems.length || 0;
+	}
+
+	if(c.options.auto_update_cart === true || c.options.auto_update_cart === "true") {
+		spUtil.recordWatch($scope, 'sc_cart_item', 'cart.name=DEFAULT^cart.user=' + $scope.data.user_id, function(resp) {
+				if (resp &amp;&amp; resp.data &amp;&amp; resp.data.operation == "insert")
+					$scope.$emit("$sp.service_catalog.cart.add_item");
+				$scope.$emit("$sp.service_catalog.cart.update");
+		});
+		$scope.$watch("c.data.cartItems", function() {
+			$scope.$emit("$sp.service_catalog.cart.count", getItemCount());
+		});
+	}
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.cart-mobile {
+  border: 0;
+  box-shadow: none;
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    a {
+    	text-align: right;
+      display: block !important;
+    }
+  }
+  
+  .cart-item-mobile-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px 20px 10px;
+    .item-info {
+      display: flex;
+	  flex-direction: column;
+    }
+    
+    .item-image {
+      margin: 0;
+    }
+    
+    a {
+      float: none;
+      text-align: center;
+    }
+    
+    select {
+    	margin-top: 10px;
+      padding: 0px 5px;
+      text-align-last: center;
+    }
+  }  
+}
+
+td {
+  vertical-align: middle !important;
+}
+
+.a-disabled {
+	cursor: default;
+	color: $btn-link-disabled-color;
+}
+
+.media-body {
+  .btn-link {
+    padding-left: 0;
+    padding-right: 0;
+    color: $primary;
+
+    &amp;amp;:hover {
+      color: darken($primary, 10%);
+    }
+
+    &amp;amp;:focus {
+      color: darken($primary, 10%);
+    }
+  }
+}
+
+.btn-remove {
+  font-size: 18px !important;
+}
+
+.action-btn {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+
+  &amp;amp;.btn-link {
+    color: $primary;
+  }
+}
+
+.list-group {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.list-group-item.ng-enter {
+  transition: all 1s;
+  -webkit-transition: all 1s;
+
+  background-color: #c0dcfa;
+}
+
+.list-group-item.ng-enter-active {
+  background-color: #fff;
+}
+
+.empty-cart {
+  font-style: italic;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 7px;
+}
+
+.view-carts-link {
+  text-align: center;
+  display: block;
+}
+
+.order-details-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 5px 10px 10px 10px;
+
+  .order-details {
+    padding: 5px;
+
+    textarea {
+      resize: none;
+      flex-basis: 100%;
+      flex-shrink: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .requested-for-details {
+    flex: 1 0 auto;
+    max-width: 100%;
+  }
+
+  .special-instructions-details {
+    textarea {
+      height: calc(100% - 25px);
+    }
+  }
+}
+
+.item-image {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.empty-state-content {
+  margin-top: 30px;
+
+  &amp;amp;.small-cart {
+    margin-top: 0px;
+    padding: 10px 20px;
+  }
+
+  .fa-shopping-cart {
+    color: $gray-light;
+    font-size: 80px;
+    display: block;
+    text-align: center;
+
+    &amp;amp;.small-cart {
+      font-size: 40px;
+    }
+  }
+
+  .h3 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .h4 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    max-width: 100%;
+    margin-bottom: 35px;
+  }
+}
+
+.large-checkout {
+  display: inline-block;
+  float: none !important;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.item-row:hover .btn-clear {
+	background-color: #f5f5f5;
+}
+
+.sc-btn {
+	margin-bottom: 10px;
+}
+
+.sc-btn-group {
+  clear: right;
+}
+
+.sc-remove-btn {
+   &amp;amp;:hover {
+     background-color: $danger;
+     color: #fff;
+     border-color: darken($danger, 10%);
+   }
+}
+
+.btn-group-justified &amp;gt; .btn-group {
+  	padding: 0 5px;
+  	.btn {
+  		border-radius: 4px !important;
+      white-space: nowrap;
+	  overflow: hidden;
+      text-overflow: ellipsis;
+    }
+}
+
+.cart-table {
+  	th {
+      position: sticky;
+      -webkit-position: sticky;
+      top: -1px;
+      z-index: 10;
+      background-color: $panel-bg;
+      box-shadow: 0px 1px 0px $panel-inner-border;
+    }
+}
+
+@media only screen and (max-width : 992px) {
+  .sc-btn, .sc-btn-group {
+    width: 100%;
+  }
+  .item-image {
+    max-width: 70px;
+  }
+}
+&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list&gt;color&lt;/field_list&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;gservice_sc_shopping_cart&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;GService SC Shopping Cart&lt;/name&gt;&lt;option_schema&gt;[{"name":"cartTemplate","section":"Behavior","default_value":"large_shopping_cart_v2.html","label":"Cart Template","type":"string"},{"hint":"This will sync cart across different sessions","name":"auto_update_cart","default_value":"false","section":"Behavior","label":"Auto update cart","type":"boolean"}]&lt;/option_schema&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+	var localInput = input; //to safeguard pullution of "input" via BR or other scripts
+	
+	var m = data.msgs = {};
+	m.createdMsg = gs.getMessage("Created");
+	m.trackMsg = gs.getMessage("track using 'Requests' in the header or");
+	m.clickMsg = gs.getMessage("click here to view");
+	m.cartEmptiedMsg = gs.getMessage("Your cart has been cleared");
+	m.itemRemovedMsg = gs.getMessage("has been removed from your cart");
+	m.updatedMsq = gs.getMessage("Updated");
+	m.quantityToMsg = gs.getMessage("quantity to");
+	m.removeItemConfirmationMsg = gs.getMessage("Are you sure you want to remove this item?");
+	m.clearCartConfirmationMsg = gs.getMessage("Are you sure you want to empty your cart?");
+	m.removeEditingItemMsg = gs.getMessage("Are you sure you want to remove the item you are viewing from your Cart?");
+	var userID = gs.getUser().getID();
+	var cartName = localInput &amp;&amp; localInput.cartName ? localInput.cartName : '';
+	var cartJS = new sn_sc.CartJS(cartName, '' + userID);
+	data.isMEE = options.native_mobile == 'true';
+	data.numberOfCartItems = cartJS.getCartItems().getRowCount();
+	data.sys_id = $sp.getParameter('sys_id');
+	data.user_id = userID;
+    var conflictingCartDomain = cartJS.findConflictingDomain();
+    var restrictedItems;
+	if (localInput &amp;&amp; localInput.action === "checkout_two") {
+        if (conflictingCartDomain) {
+            gs.addErrorMessage(gs.getMessage("Your cart has item(s) belonging to the '{0}' domain. Please change the domain to continue with the checkout.", conflictingCartDomain));
+            return;
+        }
+        restrictedItems = cartJS.findUserCriteriaRestrictedItems();
+        if (restrictedItems.length &gt; 0) {
+            gs.addErrorMessage(gs.getMessage("Your cart has item(s) no longer available. Please remove {0} from cart to continue with the checkout.", restrictedItems.join(", ")));
+            return;
+        }
+		data.checkoutCartModal = $sp.getWidget('widget-modal', {
+			embeddedWidgetId: 'sc-checkout',
+			embeddedWidgetOptions: {
+				cart: localInput.cart,
+				auto_redirect: localInput.auto_redirect,
+				native_mobile: options.native_mobile
+			},
+			backdrop: 'static',
+			keyboard: false,
+			size: 'md'
+		});
+		return;
+	} else if (localInput &amp;&amp; localInput.action === 'checkout') {
+        if (conflictingCartDomain) {
+            gs.addErrorMessage(gs.getMessage("Your cart has item(s) belonging to the '{0}' domain. Please change the domain to continue with the checkout.", conflictingCartDomain));
+            return;
+        }
+        restrictedItems = cartJS.findUserCriteriaRestrictedItems();
+        if (restrictedItems.length &gt; 0) {
+            gs.addErrorMessage(gs.getMessage("Your cart has item(s) no longer available. Please remove {0} from cart to continue with the checkout.", restrictedItems.join(", ")));
+            return;
+        }
+		var request = cartJS.checkoutCart(true);
+        data.result = {
+            number: request.request_number,
+            sys_id: request.request_id,
+            table: 'sc_request'
+        };
+		return;
+	}
+
+	var clGenerator = new GlideChoiceList();
+	var choiceListQuantity = clGenerator.getChoiceList("sc_cart_item", "quantity");
+	var choicelistQuantityData = [];
+	for (var i = 0; i &lt; choiceListQuantity.size(); i++) {
+		var choice = choiceListQuantity.get(i);
+		if (!isNaN(choice.getValue()))
+            choicelistQuantityData.push({
+                value: parseInt(choice.getValue()),
+                label: choice.getLabel()
+            });
+	 }
+
+	data.choiceListQuantity = choicelistQuantityData;
+
+	if (localInput &amp;&amp; localInput.action === "update_quantity") {
+		var cartItemGR = new GlideRecord("sc_cart_item");
+		if (cartItemGR.get(localInput.itemID) &amp;&amp; cartItemGR.canRead()) {
+			cartItemGR.setValue("quantity", localInput.quantity);
+			cartItemGR.update();
+		}
+	}
+
+	if (localInput &amp;&amp; localInput.action === "remove_item") {
+		cartJS.remove(localInput.removeItemID);
+	}
+
+	if (localInput &amp;&amp; localInput.action === "clear_cart") {
+		cartJS.empty(cartJS.getCartID());
+	}
+
+	if (localInput &amp;&amp; localInput.action === "save_cart") {
+		var newCart = new SPCart(localInput.newCartName, userID);
+		newCart.setHidden(false);
+		newCart.loadCart(cart.getCartID());
+	}
+	
+	data.sys_properties = {
+        twostep: gs.getProperty("glide.sc.sp.twostep", "true") == 'true'
+	};
+	data.cart = cartJS.getCartDetails(true);
+	data.cartItems = [];
+	data.cart.recurring_subtotals = {};
+	for(var key in data.cart.cart_items)
+		if(data.cart.cart_items[key] &amp;&amp; typeof data.cart.cart_items[key] === 'object') {
+			var itemsByFrequency = data.cart.cart_items[key].items;
+			data.cartItems = data.cartItems.concat(itemsByFrequency);
+			if(key != 'none') {
+				var show_recurring_price = false;
+				for(var i=0; i&lt;itemsByFrequency.length; i++) {
+					if (itemsByFrequency[i].show_recurring_price)
+						show_recurring_price = true;
+				}
+				if (show_recurring_price)
+					data.cart.recurring_subtotals[data.cart.cart_items[key].frequency_label] = data.cart.cart_items[key].subtotal_recurring_price;
+			}
+		}
+	data.cartItems = data.cartItems.map(function (item) {
+        if (item.can_order)
+            item.item_url = "?id=sc_cat_item&amp;sys_id=" + item.sys_id + "&amp;edit=cart";
+
+		return item;
+	})
+	data.disable_req_for = sn_sc.CartJS.canViewRF();
+
+    data.saveCartModal = $sp.getWidget('widget-modal', {
+        embeddedWidgetId: 'sc_save_bundle',
+        embeddedWidgetOptions: {}
+    });
+
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-27 13:13:17&lt;/sys_created_on&gt;&lt;sys_id&gt;65693c3fdbd45010fa11cf24149619e9&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;GService SC Shopping Cart&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_65693c3fdbd45010fa11cf24149619e9&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-27 13:13:17&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div ng-if="options.cartTemplate"&gt;
+	&lt;div ng-include="options.cartTemplate"&gt;&lt;/div&gt;
+
+  &lt;sp-widget widget="c.checkoutCartModal" ng-if="c.checkoutCartModal"&gt;&lt;/sp-widget&gt;
+  &lt;sp-widget widget="c.saveCartModal" ng-if="c.saveCartModal"&gt;&lt;/sp-widget&gt;
+  
+&lt;/div&gt;
+
+&lt;div ng-if="!options.cartTemplate"&gt;
+  &lt;div class="alert alert-danger" role="alert"&gt;
+    &lt;strong&gt;${Error}: &lt;/strong&gt;
+    ${Please provide a cart template to render.}
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;now-message key="Done" value="${Done}"/&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>215822492</payload_hash>
+        <record_name>GService SC Shopping Cart</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-27 13:13:18</sys_created_on>
+        <sys_id>a969347fdbd45010fa11cf2414961966</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171bbc53dc30000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-27 13:13:18</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>2d693c3f07d45010c2c0204e8bd849ea</update_guid>
+        <update_guid_history>2d693c3f07d45010c2c0204e8bd849ea:215822492</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">ffc5e548dba090105c11639014961936</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-28 11:05:49</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>2138d77c04c040e099bf05f993370400</sys_id>
+        <sys_metadata>65693c3fdbd45010fa11cf24149619e9</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService SC Shopping Cart</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_65693c3fdbd45010fa11cf24149619e9</sys_update_name>
+        <sys_update_version display_value="sp_widget_65693c3fdbd45010fa11cf24149619e9">a969347fdbd45010fa11cf2414961966</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-28 11:05:49</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

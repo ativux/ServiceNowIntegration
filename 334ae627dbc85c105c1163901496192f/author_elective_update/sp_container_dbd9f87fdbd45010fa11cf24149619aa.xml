@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
+    <sp_container action="DELETE">
+        <background_color/>
+        <background_image/>
+        <background_style>default</background_style>
+        <bootstrap_alt>false</bootstrap_alt>
+        <class_name/>
+        <container_class_name/>
+        <name>GService SC Cart - Container 1</name>
+        <order>1</order>
+        <sp_page display_value="gservice_sc_cart">9959b07fdbd45010fa11cf24149619f4</sp_page>
+        <subheader>false</subheader>
+        <sys_class_name>sp_container</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-27 13:15:19</sys_created_on>
+        <sys_id>dbd9f87fdbd45010fa11cf24149619aa</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>GService SC Cart - Container 1</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_container_dbd9f87fdbd45010fa11cf24149619aa</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-27 13:18:22</sys_updated_on>
+        <title/>
+        <width>container</width>
+    </sp_container>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_container_dbd9f87fdbd45010fa11cf24149619aa</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name/><container_class_name/><name>GService SC Cart - Container 1</name><order>1</order><sp_page display_value="gservice_sc_cart">9959b07fdbd45010fa11cf24149619f4</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-04-27 13:15:19</sys_created_on><sys_id>dbd9f87fdbd45010fa11cf24149619aa</sys_id><sys_mod_count>1</sys_mod_count><sys_name>GService SC Cart - Container 1</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_container_dbd9f87fdbd45010fa11cf24149619aa</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-04-27 13:18:22</sys_updated_on><title/><width>container</width></sp_container></record_update>]]></payload>
+        <payload_hash>498855427</payload_hash>
+        <record_name>GService SC Cart - Container 1</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-27 13:18:22</sys_created_on>
+        <sys_id>f78ab4bfdbd45010fa11cf24149619a8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171bbc9e1f80000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-27 13:18:22</sys_updated_on>
+        <type>Container</type>
+        <update_guid>bf8ab4bf5ad45010e0be88d928d1e1a7</update_guid>
+        <update_guid_history>bf8ab4bf5ad45010e0be88d928d1e1a7:498855427,9fd9f87fe9d45010a967ca7ffc2656ab:-1481711132</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">309ab4bfdbd45010fa11cf24149619e0</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-27 13:18:26</sys_created_on>
+        <sys_db_object display_value="" name="sp_container">sp_container</sys_db_object>
+        <sys_id>04279b235b2c431c8178afc5dcf6b090</sys_id>
+        <sys_metadata>dbd9f87fdbd45010fa11cf24149619aa</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService SC Cart - Container 1</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_container_dbd9f87fdbd45010fa11cf24149619aa</sys_update_name>
+        <sys_update_version display_value="sp_container_dbd9f87fdbd45010fa11cf24149619aa">f78ab4bfdbd45010fa11cf24149619a8</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-27 13:18:26</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

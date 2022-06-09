@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>standard</category>
+        <client_script><![CDATA[function($scope, spAriaUtil) {
+	$scope.accessibilityModeEnabled = spAriaUtil.isAccessibilityEnabled();
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance_link</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list>type,url,sc_category,sc_cat_item,kb_topic,kb_article,kb_category,sp_page,title,short_description,color,class_name,glyph</field_list>
+        <has_preview>false</has_preview>
+        <id/>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>GService Icon Link (Test)</name>
+        <option_schema>[{"name":"link_template","section":"Presentation","label":"Icon","type":"choice","choices":[{"label":"Glyph Icon","value":"Glyph Icon"},{"label":"Image Icon","value":"Image Icon"}]},{"displayValue":"Images","name":"image","section":"other","label":"Image","type":"reference","value":"db_image","ed":{"reference":"db_image"}},{"name":"target","section":"other","label":"target","type":"choice","choices":[{"label":"_new","value":"_new"}]}]</option_schema>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function(){
+var gr = $sp.getInstanceRecord();
+data.href = $sp.getMenuHREF(gr);
+data.target = options.target || "";
+data.image = "/" + options.image;
+var img = new GlideRecord('db_image');
+img.addQuery('sys_id', options.image);
+img.query();
+if (img.next()){
+  data.image = img.getValue('name');
+}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 15:42:47</sys_created_on>
+        <sys_id>8c22309cdb149050fa11cf241496190e</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>GService Icon Link (Test)</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_8c22309cdb149050fa11cf241496190e</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 16:02:13</sys_updated_on>
+        <template><![CDATA[<div class="iconlink" ng-class="{'high-contrast': accessibilityModeEnabled}">
+  <div>
+    <!--// Top Icon -->
+    <a ng-if="::(options.link_template == 'Glyph Icon' || !options.link_template)" ng-href="" class="glyph_icon " target="">
+      <div class="m-b fa fa- fa-4x text-" align="center" style="margin-right: auto; margin-left: auto; display: block;"></div>
+      <h4 style="text-align: center;"></h4>
+      <span class="text-muted"></span>
+      <p> </p>
+    </a>
+
+
+    <!--// Image Icon -->
+    <a ng-if="::(options.link_template == 'Image Icon')" ng-href="" class="image_icon text-" target="">
+      <div><img src="" alt="" align="center" style="margin-right: auto; margin-left: auto; display: block;"/>
+        <h4 style="text-align: center;"></h4>
+        <span class="text-muted"></span></div>
+      <p> </p>
+    </a>
+  </div>
+
+  <!--// Circle Icon -->
+  <a ng-if="::(options.link_template == 'Circle Icon')" ng-href="{{::data.href}}" class="circle_icon {{::options.class_name}} text-{{::options.color}}" target="{{::data.target}}">
+    <span class="fa fa-stack fa-2x">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-{{::options.glyph}} fa-stack-1x fa-inverse"></i>
+    </span>
+    <h2>{{::options.title}}</h2>
+    <span class="text-muted">{{::options.short_description}}</span>
+  </a>
+
+  <!--// Color Box -->
+  <a ng-if="::(options.link_template == 'Color Box')" ng-href="{{::data.href}}" class="color_box {{::options.class_name}} icon-link-background-{{::options.color}} text-white" target="{{::data.target}}">
+    <div class="fa fa-{{::options.glyph}} fa-3x {{::options.class_name}}"></div>
+    <h2>{{::options.title}}</h2>
+    <span>{{::options.short_description}}</span>
+  </a>
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_8c22309cdb149050fa11cf241496190e</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;standard&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function($scope, spAriaUtil) {
+	$scope.accessibilityModeEnabled = spAriaUtil.isAccessibilityEnabled();
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css/&gt;&lt;data_table&gt;sp_instance_link&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list&gt;type,url,sc_category,sc_cat_item,kb_topic,kb_article,kb_category,sp_page,title,short_description,color,class_name,glyph&lt;/field_list&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id/&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;GService Icon Link (Test)&lt;/name&gt;&lt;option_schema&gt;[{"name":"link_template","section":"Presentation","label":"Icon","type":"choice","choices":[{"label":"Glyph Icon","value":"Glyph Icon"},{"label":"Image Icon","value":"Image Icon"}]},{"displayValue":"Images","name":"image","section":"other","label":"Image","type":"reference","value":"db_image","ed":{"reference":"db_image"}},{"name":"target","section":"other","label":"target","type":"choice","choices":[{"label":"_new","value":"_new"}]}]&lt;/option_schema&gt;&lt;public&gt;true&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function(){
+var gr = $sp.getInstanceRecord();
+data.href = $sp.getMenuHREF(gr);
+data.target = options.target || "";
+data.image = "/" + options.image;
+var img = new GlideRecord('db_image');
+img.addQuery('sys_id', options.image);
+img.query();
+if (img.next()){
+  data.image = img.getValue('name');
+}
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-16 15:42:47&lt;/sys_created_on&gt;&lt;sys_id&gt;8c22309cdb149050fa11cf241496190e&lt;/sys_id&gt;&lt;sys_mod_count&gt;9&lt;/sys_mod_count&gt;&lt;sys_name&gt;GService Icon Link (Test)&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_8c22309cdb149050fa11cf241496190e&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-16 16:02:13&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div class="iconlink" ng-class="{'high-contrast': accessibilityModeEnabled}"&gt;
+  &lt;div&gt;
+    &lt;!--// Top Icon --&gt;
+    &lt;a ng-if="::(options.link_template == 'Glyph Icon' || !options.link_template)" ng-href="" class="glyph_icon " target=""&gt;
+      &lt;div class="m-b fa fa- fa-4x text-" align="center" style="margin-right: auto; margin-left: auto; display: block;"&gt;&lt;/div&gt;
+      &lt;h4 style="text-align: center;"&gt;&lt;/h4&gt;
+      &lt;span class="text-muted"&gt;&lt;/span&gt;
+      &lt;p&gt; &lt;/p&gt;
+    &lt;/a&gt;
+
+
+    &lt;!--// Image Icon --&gt;
+    &lt;a ng-if="::(options.link_template == 'Image Icon')" ng-href="" class="image_icon text-" target=""&gt;
+      &lt;div&gt;&lt;img src="" alt="" align="center" style="margin-right: auto; margin-left: auto; display: block;"/&gt;
+        &lt;h4 style="text-align: center;"&gt;&lt;/h4&gt;
+        &lt;span class="text-muted"&gt;&lt;/span&gt;&lt;/div&gt;
+      &lt;p&gt; &lt;/p&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!--// Circle Icon --&gt;
+  &lt;a ng-if="::(options.link_template == 'Circle Icon')" ng-href="{{::data.href}}" class="circle_icon {{::options.class_name}} text-{{::options.color}}" target="{{::data.target}}"&gt;
+    &lt;span class="fa fa-stack fa-2x"&gt;
+      &lt;i class="fa fa-circle fa-stack-2x"&gt;&lt;/i&gt;
+      &lt;i class="fa fa-{{::options.glyph}} fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+    &lt;/span&gt;
+    &lt;h2&gt;{{::options.title}}&lt;/h2&gt;
+    &lt;span class="text-muted"&gt;{{::options.short_description}}&lt;/span&gt;
+  &lt;/a&gt;
+
+  &lt;!--// Color Box --&gt;
+  &lt;a ng-if="::(options.link_template == 'Color Box')" ng-href="{{::data.href}}" class="color_box {{::options.class_name}} icon-link-background-{{::options.color}} text-white" target="{{::data.target}}"&gt;
+    &lt;div class="fa fa-{{::options.glyph}} fa-3x {{::options.class_name}}"&gt;&lt;/div&gt;
+    &lt;h2&gt;{{::options.title}}&lt;/h2&gt;
+    &lt;span&gt;{{::options.short_description}}&lt;/span&gt;
+  &lt;/a&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1025806550</payload_hash>
+        <record_name>GService Icon Link (Test)</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 16:02:13</sys_created_on>
+        <sys_id>e096f090db549050fa11cf241496195a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17183b9f1230000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 16:02:13</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>a896f0904f5490501185b193b871f059</update_guid>
+        <update_guid_history>a896f0904f5490501185b193b871f059:-1025806550,c905f0507c549050fffd6d88135e0f99:-310501409,1e84b0506b54905027f333221e3fdb35:199817515,a8843810af549050d03679e77f2fcdc1:-1291068902,a91438dca9149050edfbccff394cbd10:-1877391763,20d374dc2f149050a20980f85d1a763c:1801585342,4cd338dc68149050bd2d463504605fb7:2130694846,0892b89c56149050116f036ac221f6d5:199817515,6832709c54149050a038682070a39ac9:1819800933,8422309c16149050020127432fca2a10:-1933760507</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">4ae6bcd0db549050fa11cf2414961986</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 16:03:40</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>ddccca6dd7c545a8b764edb26ccd78b1</sys_id>
+        <sys_metadata>8c22309cdb149050fa11cf241496190e</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService Icon Link (Test)</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_8c22309cdb149050fa11cf241496190e</sys_update_name>
+        <sys_update_version display_value="sp_widget_8c22309cdb149050fa11cf241496190e">e096f090db549050fa11cf241496195a</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 16:03:40</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_ng_template">
+    <sp_ng_template action="DELETE">
+        <id>gservice_sc_incident</id>
+        <sp_widget display_value="GService SC Catalog Item">5942f565db9094505c116390149619dd</sp_widget>
+        <sys_class_name>sp_ng_template</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-20 12:18:00</sys_created_on>
+        <sys_id>23498f4fdbb09410fa11cf24149619de</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>gservice_sc_incident</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_ng_template_23498f4fdbb09410fa11cf24149619de</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-20 12:18:00</sys_updated_on>
+        <template><![CDATA[<div class="content page_cat_item" id="show-item">
+
+  <div class="header-loader" ng-show="c.isLoading">
+    <div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+
+  <div ng-show="!c.isLoading" class="sc_catalog_item">
+    <div id="sc_cat_item" sn-atf-blacklist="IS_SERVICE_CATALOG">
+      <div class="row" ng-if="data.sc_cat_item">
+        <div class="col-sm-12" id="catItemTop">
+          <!-- Info Message Box -->
+          <div ng-if="data.show_wishlist_msg" class="alert alert-info">
+            {{m.itemWishlistMsg}}
+          </div>
+          <br>
+
+          <div>
+            <div ng-class="{true: '', false: 'sc-sticky-item-header'}[!c.data.sc_cat_item.short_description]" style="top: {{stickyHeaderTop}}"> <!-- wrapper-md b-b break-word item-header -->
+              <h1 class="h2 m-t-none m-b-sm font-thin title {{data.categoryColor}}" ng-if="data.sc_cat_item.name && options.native_mobile != 'true'">{{data.sc_cat_item.name}}</h1>
+            </div>
+
+            <div class="row b-b no-margin" ng-if="c.data.sc_cat_item.picture || c.data.sc_cat_item.description" ng-class="{'wrapper-md': options.native_mobile != 'true', 'wrapper-sm': options.native_mobile == 'true'}">
+              <div class="col-sm-4 col-xs-12 no-padder" ng-if="c.data.sc_cat_item.picture">
+                <div class="wrapper-md text-center">
+                  <i class="fa fa-chevron-left pointer" style="position:absolute; top:50%; left:4%; color:#CECECE" ng-if="options.image_gallery"></i>
+                  <img class="img-responsive catalog-item-image" alt="{{data.sc_cat_item.name}}" style="display: inline" ng-src="{{data.sc_cat_item.picture}}?t=medium" />
+                  <i class="fa fa-chevron-right pointer" style="position:absolute; top:50%; right:4%; color:#CECECE" ng-if="options.image_gallery"></i>
+                  <div class="image-gallery padding-top" ng-if="options.image_gallery">
+                    <i class="fa fa-circle active"></i>
+                    <i class="fa fa-circle"></i>
+                    <i class="fa fa-circle"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12 break-word"
+                   ng-class="{true: 'col-sm-12 no-padder', false: 'col-sm-8'}[!c.data.sc_cat_item.picture]">
+
+                <div class="col-xs-12 col-sm-12 visible-xs visible-sm" ng-if="c.options.show_less_description === 'true'">
+                  <sc-toggle-data sn-data="data.sc_cat_item.description"></sc-toggle-data>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4" ng-class="{'b-b wrapper-md': !data.no_fields}">
+              <sp-cat-item item="data.sc_cat_item" ></sp-cat-item>
+              <div class="{{data.categoryColor}} form-control-default">
+                <form>
+                  <!-- display view and model -->
+                  <sp-model form-model="data.sc_cat_item" mandatory="c.mandatory"></sp-model>
+                </form>
+              </div>
+
+            </div>
+            <div class="col-md-8 m-t-lg">
+              <div class="visible-md visible-lg" ng-class="{false : 'visible-xs visible-sm', true : 'hidden-xs hidden-sm'}[c.options.show_less_description === 'true']">
+                <div ng-bind-html="data.sc_cat_item.description" class="sc-item-description"></div>
+              </div>
+
+              <div class="content_short_description">
+                <div class="shortdescription_title">${Informações Complementares}:</div>
+                <div class="text-muted sc-cat-item-short-description" ng-if="data.sc_cat_item.short_description">{{data.sc_cat_item.short_description}}</div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+
+              <div class="col-md-7">
+                <div>
+                  <button tabindex="0" ng-if="data.table == 'sc_cat_item'" name="add_to_cart" ng-click="triggerAddToCart()" class="btn btn-primary btn-request-service {{data.categoryColor}}">
+                    <img src="{{data.categorySubmitImg}}"/>
+                    ${Request Service}
+                  </button>
+                  <button tabindex="0" ng-if="data.table == 'incident'" name="submit" ng-disabled="submitting || submitted" ng-click="triggerOnSubmit()" class="btn btn-primary btn-submit-incident">
+                    <img src="GService_Reportar_Erro.png"/>
+                    ${Submit}
+                  </button>
+                  <button tabindex="0" ng-if="data.is_cart_item" name="update" ng-disabled="submitting || submitted" ng-click="triggerUpdateCart()" class="btn btn-default">
+                    <i class="fa fa fa-shopping-cart m-r-xs"></i>
+                    ${Update Cart}
+                  </button>
+
+                  <button ng-if="c.showOrderNowButton()" tabindex="0" name="cancel" ng-disabled="submitting || submitted" ng-click="cancelItem()" class="btn btn-primary btn-cancel">
+                    <img src="trash.png"/>
+                    ${cancel}
+                  </button>
+                </div>
+
+                <div ng-show="hasMandatory(c.mandatory)" class="alert alert-info" style="margin-top: .5em" ng-if="c.options.show_field_validation_messages === 'true'">
+                  <div ng-if="hasMandatory(mandatory)">${Required information} </div>
+                  <label ng-repeat="f in c.mandatory" class="label sc-field-error-label" style="margin-right: .5em; display: inline-block;" ng-click="getFocus(f)">{{::f.label}}</label>
+                </div>
+              </div>
+
+              <!-- Attachments -->
+              <div ng-if="c.showAttachments()" class="cold-md-5 wrapper-md row content-attachments">
+                <div ng-class="{'flex-center attachment-height': options.native_mobile == 'true', 'flex-end': options.native_mobile != 'true'}"> <!-- -->
+                  <label ng-if="!submitting" style="font-weight:normal;cursor:pointer;">
+                    <sp-attachment-button></sp-attachment-button>
+                    <span class="fa fa-asterisk mandatory" 
+                          ng-if="data.sc_cat_item.mandatory_attachment" 
+                          ng-class="{'mandatory-filled': data.sc_cat_item.mandatory_attachment && (data.sc_cat_item.attachment_submitted || attachments.length > 0)}"
+                          style="vertical-align:super"></span>
+                    <span class="attach_text {{data.categoryColor}}">${Add attachments}</span>
+                  </label>
+                </div>
+                <now-attachments-list class="attachment-list" template="sp_attachment_single_line" ></now-attachments-list>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>
+
+<!-- Checkout Modal -->
+<div class="anim_bg_checkout_modal">
+  <div class="bg_checkout_modal" ng-click="c.closeCheckoutModal()" ng-if="data.ordered_item"></div>
+</div>
+
+<div class="checkout_modal_request" ng-if="data.ordered_item">
+  <div class="modal_header">
+    <div class="modal_title">${CHECKOUT}</div>
+    <div class="close_modal globo_buttons" ng-click="c.closeCheckoutModal()">x</div>
+  </div>
+  <div class="modal_line"></div>
+  <div class="modal_body">
+    <div class="modal_body_fields">
+      <div class="modal_breadcrumb">{{data.breadcrumb}}</div>
+      <div class="modal_name_item">{{data.sc_cat_item.name}}</div>
+      <div>${Requested for:} {{c.data.user.name}}</div>
+      <div>${Email}: {{data.user.email}}</div>
+      <div>${Location Portal}: {{data.user.location}}</div>
+      <div>${Phone}: {{data.user.phone}}</div>
+    </div>
+    <div class="modal_body_buttons">
+      <div class="globo_buttons" ng-click="c.closeCheckoutModal()"><img src="duplicate.png" /></div>
+      <div class="globo_buttons" ng-click="c.removeItem()"><img src="trash.png" /></div>
+    </div>
+  </div>
+  <div class="modal_line"></div>
+  <div class="modal_footer">
+    <div class="checkout_button globo_buttons" ng-click="">
+      <div><img src="submit.png" /></div>
+      <div class="text_submit" ng-click="triggerOnSubmit()">${Finalizar pedido}</div><!-- ng-click="c.goToCart()" -->
+    </div>
+    <div class="continue_shopping globo_buttons" ng-click="c.continueShopping()">${Continuar comprando}</div>
+  </div>
+</div>
+
+<div class="checkout_modal_incident" ng-if="data.ordered_incident">
+  <div class="close_modal" ng-click="c.closeIncidentCheckout()">x</div>
+  <div class="modal_title">{{c.data.username}},<br>Sua solicitação foi enviada com sucesso!</div>
+  <div class="modal_category">Você reportou um erro na categoria<br>{{c.data.incidentCat}}.</div>
+  <div class="modal_summary">${Resumo da solicitação:} {{c.data.summary}}</div>
+  <div>${Tipo de erro:} {{c.data.error}}</div>
+  <div ng-if="c.data.affectedUsers">${Afetados:} {{c.data.affectedUsers}}</div>
+  <div ng-if="c.data.impact">${Impacto:} {{c.data.impact}}</div>
+  <div class="modal_deadline">Prazo de atendimento previsto: XX horas</div>
+</div>
+
+<now-message key="Added item to shopping cart" value="${Added item to shopping cart}"/>
+<now-message key="Attachment(s) are not added" value="${Attachment(s) are not added}"/>
+<now-message key="Leave page?" value="${Leave page?}"/>
+<now-message key="Changes you made will be lost." value="${Changes you made will be lost.}"/>
+<now-message key="Cancel" value="${Cancel}"/>
+<now-message key="Leave" value="${Leave}"/>]]></template>
+    </sp_ng_template>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_ng_template_23498f4fdbb09410fa11cf24149619de</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_ng_template"&gt;&lt;sp_ng_template action="INSERT_OR_UPDATE"&gt;&lt;id&gt;gservice_sc_incident&lt;/id&gt;&lt;sp_widget display_value="GService SC Catalog Item"&gt;5942f565db9094505c116390149619dd&lt;/sp_widget&gt;&lt;sys_class_name&gt;sp_ng_template&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-05-20 12:18:00&lt;/sys_created_on&gt;&lt;sys_id&gt;23498f4fdbb09410fa11cf24149619de&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;gservice_sc_incident&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_ng_template_23498f4fdbb09410fa11cf24149619de&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-05-20 12:18:00&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div class="content page_cat_item" id="show-item"&gt;
+
+  &lt;div class="header-loader" ng-show="c.isLoading"&gt;
+    &lt;div class="hidden-xs sp-loading-indicator" ng-if="loadingIndicator"&gt;
+      &lt;div&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div ng-show="!c.isLoading" class="sc_catalog_item"&gt;
+    &lt;div id="sc_cat_item" sn-atf-blacklist="IS_SERVICE_CATALOG"&gt;
+      &lt;div class="row" ng-if="data.sc_cat_item"&gt;
+        &lt;div class="col-sm-12" id="catItemTop"&gt;
+          &lt;!-- Info Message Box --&gt;
+          &lt;div ng-if="data.show_wishlist_msg" class="alert alert-info"&gt;
+            {{m.itemWishlistMsg}}
+          &lt;/div&gt;
+          &lt;br&gt;
+
+          &lt;div&gt;
+            &lt;div ng-class="{true: '', false: 'sc-sticky-item-header'}[!c.data.sc_cat_item.short_description]" style="top: {{stickyHeaderTop}}"&gt; &lt;!-- wrapper-md b-b break-word item-header --&gt;
+              &lt;h1 class="h2 m-t-none m-b-sm font-thin title {{data.categoryColor}}" ng-if="data.sc_cat_item.name &amp;&amp; options.native_mobile != 'true'"&gt;{{data.sc_cat_item.name}}&lt;/h1&gt;
+            &lt;/div&gt;
+
+            &lt;div class="row b-b no-margin" ng-if="c.data.sc_cat_item.picture || c.data.sc_cat_item.description" ng-class="{'wrapper-md': options.native_mobile != 'true', 'wrapper-sm': options.native_mobile == 'true'}"&gt;
+              &lt;div class="col-sm-4 col-xs-12 no-padder" ng-if="c.data.sc_cat_item.picture"&gt;
+                &lt;div class="wrapper-md text-center"&gt;
+                  &lt;i class="fa fa-chevron-left pointer" style="position:absolute; top:50%; left:4%; color:#CECECE" ng-if="options.image_gallery"&gt;&lt;/i&gt;
+                  &lt;img class="img-responsive catalog-item-image" alt="{{data.sc_cat_item.name}}" style="display: inline" ng-src="{{data.sc_cat_item.picture}}?t=medium" /&gt;
+                  &lt;i class="fa fa-chevron-right pointer" style="position:absolute; top:50%; right:4%; color:#CECECE" ng-if="options.image_gallery"&gt;&lt;/i&gt;
+                  &lt;div class="image-gallery padding-top" ng-if="options.image_gallery"&gt;
+                    &lt;i class="fa fa-circle active"&gt;&lt;/i&gt;
+                    &lt;i class="fa fa-circle"&gt;&lt;/i&gt;
+                    &lt;i class="fa fa-circle"&gt;&lt;/i&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class="col-xs-12 break-word"
+                   ng-class="{true: 'col-sm-12 no-padder', false: 'col-sm-8'}[!c.data.sc_cat_item.picture]"&gt;
+
+                &lt;div class="col-xs-12 col-sm-12 visible-xs visible-sm" ng-if="c.options.show_less_description === 'true'"&gt;
+                  &lt;sc-toggle-data sn-data="data.sc_cat_item.description"&gt;&lt;/sc-toggle-data&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="col-md-4" ng-class="{'b-b wrapper-md': !data.no_fields}"&gt;
+              &lt;sp-cat-item item="data.sc_cat_item" &gt;&lt;/sp-cat-item&gt;
+              &lt;div class="{{data.categoryColor}} form-control-default"&gt;
+                &lt;form&gt;
+                  &lt;!-- display view and model --&gt;
+                  &lt;sp-model form-model="data.sc_cat_item" mandatory="c.mandatory"&gt;&lt;/sp-model&gt;
+                &lt;/form&gt;
+              &lt;/div&gt;
+
+            &lt;/div&gt;
+            &lt;div class="col-md-8 m-t-lg"&gt;
+              &lt;div class="visible-md visible-lg" ng-class="{false : 'visible-xs visible-sm', true : 'hidden-xs hidden-sm'}[c.options.show_less_description === 'true']"&gt;
+                &lt;div ng-bind-html="data.sc_cat_item.description" class="sc-item-description"&gt;&lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;div class="content_short_description"&gt;
+                &lt;div class="shortdescription_title"&gt;${Informações Complementares}:&lt;/div&gt;
+                &lt;div class="text-muted sc-cat-item-short-description" ng-if="data.sc_cat_item.short_description"&gt;{{data.sc_cat_item.short_description}}&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="col-md-12"&gt;
+
+              &lt;div class="col-md-7"&gt;
+                &lt;div&gt;
+                  &lt;button tabindex="0" ng-if="data.table == 'sc_cat_item'" name="add_to_cart" ng-click="triggerAddToCart()" class="btn btn-primary btn-request-service {{data.categoryColor}}"&gt;
+                    &lt;img src="{{data.categorySubmitImg}}"/&gt;
+                    ${Request Service}
+                  &lt;/button&gt;
+                  &lt;button tabindex="0" ng-if="data.table == 'incident'" name="submit" ng-disabled="submitting || submitted" ng-click="triggerOnSubmit()" class="btn btn-primary btn-submit-incident"&gt;
+                    &lt;img src="GService_Reportar_Erro.png"/&gt;
+                    ${Submit}
+                  &lt;/button&gt;
+                  &lt;button tabindex="0" ng-if="data.is_cart_item" name="update" ng-disabled="submitting || submitted" ng-click="triggerUpdateCart()" class="btn btn-default"&gt;
+                    &lt;i class="fa fa fa-shopping-cart m-r-xs"&gt;&lt;/i&gt;
+                    ${Update Cart}
+                  &lt;/button&gt;
+
+                  &lt;button ng-if="c.showOrderNowButton()" tabindex="0" name="cancel" ng-disabled="submitting || submitted" ng-click="cancelItem()" class="btn btn-primary btn-cancel"&gt;
+                    &lt;img src="trash.png"/&gt;
+                    ${cancel}
+                  &lt;/button&gt;
+                &lt;/div&gt;
+
+                &lt;div ng-show="hasMandatory(c.mandatory)" class="alert alert-info" style="margin-top: .5em" ng-if="c.options.show_field_validation_messages === 'true'"&gt;
+                  &lt;div ng-if="hasMandatory(mandatory)"&gt;${Required information} &lt;/div&gt;
+                  &lt;label ng-repeat="f in c.mandatory" class="label sc-field-error-label" style="margin-right: .5em; display: inline-block;" ng-click="getFocus(f)"&gt;{{::f.label}}&lt;/label&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;!-- Attachments --&gt;
+              &lt;div ng-if="c.showAttachments()" class="cold-md-5 wrapper-md row content-attachments"&gt;
+                &lt;div ng-class="{'flex-center attachment-height': options.native_mobile == 'true', 'flex-end': options.native_mobile != 'true'}"&gt; &lt;!-- --&gt;
+                  &lt;label ng-if="!submitting" style="font-weight:normal;cursor:pointer;"&gt;
+                    &lt;sp-attachment-button&gt;&lt;/sp-attachment-button&gt;
+                    &lt;span class="fa fa-asterisk mandatory" 
+                          ng-if="data.sc_cat_item.mandatory_attachment" 
+                          ng-class="{'mandatory-filled': data.sc_cat_item.mandatory_attachment &amp;&amp; (data.sc_cat_item.attachment_submitted || attachments.length &gt; 0)}"
+                          style="vertical-align:super"&gt;&lt;/span&gt;
+                    &lt;span class="attach_text {{data.categoryColor}}"&gt;${Add attachments}&lt;/span&gt;
+                  &lt;/label&gt;
+                &lt;/div&gt;
+                &lt;now-attachments-list class="attachment-list" template="sp_attachment_single_line" &gt;&lt;/now-attachments-list&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;!-- Checkout Modal --&gt;
+&lt;div class="anim_bg_checkout_modal"&gt;
+  &lt;div class="bg_checkout_modal" ng-click="c.closeCheckoutModal()" ng-if="data.ordered_item"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="checkout_modal_request" ng-if="data.ordered_item"&gt;
+  &lt;div class="modal_header"&gt;
+    &lt;div class="modal_title"&gt;${CHECKOUT}&lt;/div&gt;
+    &lt;div class="close_modal globo_buttons" ng-click="c.closeCheckoutModal()"&gt;x&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="modal_line"&gt;&lt;/div&gt;
+  &lt;div class="modal_body"&gt;
+    &lt;div class="modal_body_fields"&gt;
+      &lt;div class="modal_breadcrumb"&gt;{{data.breadcrumb}}&lt;/div&gt;
+      &lt;div class="modal_name_item"&gt;{{data.sc_cat_item.name}}&lt;/div&gt;
+      &lt;div&gt;${Requested for:} {{c.data.user.name}}&lt;/div&gt;
+      &lt;div&gt;${Email}: {{data.user.email}}&lt;/div&gt;
+      &lt;div&gt;${Location Portal}: {{data.user.location}}&lt;/div&gt;
+      &lt;div&gt;${Phone}: {{data.user.phone}}&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="modal_body_buttons"&gt;
+      &lt;div class="globo_buttons" ng-click="c.closeCheckoutModal()"&gt;&lt;img src="duplicate.png" /&gt;&lt;/div&gt;
+      &lt;div class="globo_buttons" ng-click="c.removeItem()"&gt;&lt;img src="trash.png" /&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="modal_line"&gt;&lt;/div&gt;
+  &lt;div class="modal_footer"&gt;
+    &lt;div class="checkout_button globo_buttons" ng-click=""&gt;
+      &lt;div&gt;&lt;img src="submit.png" /&gt;&lt;/div&gt;
+      &lt;div class="text_submit" ng-click="triggerOnSubmit()"&gt;${Finalizar pedido}&lt;/div&gt;&lt;!-- ng-click="c.goToCart()" --&gt;
+    &lt;/div&gt;
+    &lt;div class="continue_shopping globo_buttons" ng-click="c.continueShopping()"&gt;${Continuar comprando}&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="checkout_modal_incident" ng-if="data.ordered_incident"&gt;
+  &lt;div class="close_modal" ng-click="c.closeIncidentCheckout()"&gt;x&lt;/div&gt;
+  &lt;div class="modal_title"&gt;{{c.data.username}},&lt;br&gt;Sua solicitação foi enviada com sucesso!&lt;/div&gt;
+  &lt;div class="modal_category"&gt;Você reportou um erro na categoria&lt;br&gt;{{c.data.incidentCat}}.&lt;/div&gt;
+  &lt;div class="modal_summary"&gt;${Resumo da solicitação:} {{c.data.summary}}&lt;/div&gt;
+  &lt;div&gt;${Tipo de erro:} {{c.data.error}}&lt;/div&gt;
+  &lt;div ng-if="c.data.affectedUsers"&gt;${Afetados:} {{c.data.affectedUsers}}&lt;/div&gt;
+  &lt;div ng-if="c.data.impact"&gt;${Impacto:} {{c.data.impact}}&lt;/div&gt;
+  &lt;div class="modal_deadline"&gt;Prazo de atendimento previsto: XX horas&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;now-message key="Added item to shopping cart" value="${Added item to shopping cart}"/&gt;
+&lt;now-message key="Attachment(s) are not added" value="${Attachment(s) are not added}"/&gt;
+&lt;now-message key="Leave page?" value="${Leave page?}"/&gt;
+&lt;now-message key="Changes you made will be lost." value="${Changes you made will be lost.}"/&gt;
+&lt;now-message key="Cancel" value="${Cancel}"/&gt;
+&lt;now-message key="Leave" value="${Leave}"/&gt;]]&gt;&lt;/template&gt;&lt;/sp_ng_template&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-773234884</payload_hash>
+        <record_name>gservice_sc_incident</record_name>
+        <reverted_from/>
+        <source>5aa638a6db701410fa11cf2414961932</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-20 12:18:00</sys_created_on>
+        <sys_id>eb498f4fdbb09410fa11cf24149619df</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1723204e2d30000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-20 12:18:00</sys_updated_on>
+        <type>Angular ng-template</type>
+        <update_guid>e3498f4f64b094104788af01d2c5d3df</update_guid>
+        <update_guid_history>e3498f4f64b094104788af01d2c5d3df:-773234884</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">080b87cfdbb09410fa11cf241496198b</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-20 12:25:24</sys_created_on>
+        <sys_db_object display_value="" name="sp_ng_template">sp_ng_template</sys_db_object>
+        <sys_id>58a216905f654d14b795beed4a3b8e19</sys_id>
+        <sys_metadata>23498f4fdbb09410fa11cf24149619de</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>gservice_sc_incident</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_ng_template_23498f4fdbb09410fa11cf24149619de</sys_update_name>
+        <sys_update_version display_value="sp_ng_template_23498f4fdbb09410fa11cf24149619de">eb498f4fdbb09410fa11cf24149619df</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-20 12:25:24</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

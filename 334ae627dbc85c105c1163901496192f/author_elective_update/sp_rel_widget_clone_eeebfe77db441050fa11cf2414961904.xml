@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_rel_widget_clone">
+    <sp_rel_widget_clone action="DELETE">
+        <child display_value="Main Search">e6ebfe77db441050fa11cf2414961902</child>
+        <cloned>2020-04-15 12:27:51</cloned>
+        <last_validated>2020-04-15 12:27:51</last_validated>
+        <parent display_value="Homepage Search">200fbd96cb20020000f8d856634c9ca1</parent>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;sp_widget&gt;&lt;category&gt;other&lt;/category&gt;&lt;client_script/&gt;&lt;controller_as/&gt;&lt;css&gt;.sp-tagline-color {
+	color: $sp-tagline-color;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list&gt;title,short_description&lt;/field_list&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id/&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link/&gt;&lt;name&gt;Homepage Search&lt;/name&gt;&lt;option_schema&gt;[{"name":"typeahead_search","default_value":"{title: 'How can we help?', size: 'lg', color: 'default'}","section":"Presentation","label":"Typeahead Search","type":"string"}]&lt;/option_schema&gt;&lt;public&gt;true&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[data.typeAheadSearch = $sp.getWidget('typeahead-search', options.typeahead_search);]]&gt;&lt;/script&gt;&lt;servicenow&gt;true&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2015-06-11 23:02:03&lt;/sys_created_on&gt;&lt;sys_id&gt;200fbd96cb20020000f8d856634c9ca1&lt;/sys_id&gt;&lt;sys_mod_count&gt;71&lt;/sys_mod_count&gt;&lt;sys_name&gt;Homepage Search&lt;/sys_name&gt;&lt;sys_package display_value="Service Portal - Core" source="com.glide.service-portal"&gt;44efe504db350010fa11cf2414961981&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_200fbd96cb20020000f8d856634c9ca1&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-02-22 19:04:17&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div id="homepage-search" class="hidden-xs wrapper-xl"&gt;
+  &lt;div class="wrapper-xl"&gt;
+  	&lt;h2 class="text-center text-4x m-b-lg sp-tagline-color" ng-bind="options.title"&gt;&lt;/h2&gt;
+  	&lt;div ng-if="options.short_description" class="text-center h4 m-b-lg sp-tagline-color" ng-bind="options.short_description"&gt;&lt;/div&gt;
+  	&lt;sp-widget widget="data.typeAheadSearch" /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;</payload>
+        <sys_class_name>sp_rel_widget_clone</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 12:27:51</sys_created_on>
+        <sys_id>eeebfe77db441050fa11cf2414961904</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>e6ebfe77db441050fa11cf2414961902</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_rel_widget_clone_eeebfe77db441050fa11cf2414961904</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-15 12:27:51</sys_updated_on>
+    </sp_rel_widget_clone>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_rel_widget_clone_eeebfe77db441050fa11cf2414961904</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_rel_widget_clone"><sp_rel_widget_clone action="INSERT_OR_UPDATE"><child display_value="Main Search">e6ebfe77db441050fa11cf2414961902</child><cloned>2020-04-15 12:27:51</cloned><last_validated>2020-04-15 12:27:51</last_validated><parent display_value="Homepage Search">200fbd96cb20020000f8d856634c9ca1</parent><payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;sp_widget&gt;&lt;category&gt;other&lt;/category&gt;&lt;client_script/&gt;&lt;controller_as/&gt;&lt;css&gt;.sp-tagline-color {
+	color: $sp-tagline-color;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list&gt;title,short_description&lt;/field_list&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id/&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link/&gt;&lt;name&gt;Homepage Search&lt;/name&gt;&lt;option_schema&gt;[{"name":"typeahead_search","default_value":"{title: 'How can we help?', size: 'lg', color: 'default'}","section":"Presentation","label":"Typeahead Search","type":"string"}]&lt;/option_schema&gt;&lt;public&gt;true&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[data.typeAheadSearch = $sp.getWidget('typeahead-search', options.typeahead_search);]]&gt;&lt;/script&gt;&lt;servicenow&gt;true&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2015-06-11 23:02:03&lt;/sys_created_on&gt;&lt;sys_id&gt;200fbd96cb20020000f8d856634c9ca1&lt;/sys_id&gt;&lt;sys_mod_count&gt;71&lt;/sys_mod_count&gt;&lt;sys_name&gt;Homepage Search&lt;/sys_name&gt;&lt;sys_package display_value="Service Portal - Core" source="com.glide.service-portal"&gt;44efe504db350010fa11cf2414961981&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_200fbd96cb20020000f8d856634c9ca1&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-02-22 19:04:17&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div id="homepage-search" class="hidden-xs wrapper-xl"&gt;
+  &lt;div class="wrapper-xl"&gt;
+  	&lt;h2 class="text-center text-4x m-b-lg sp-tagline-color" ng-bind="options.title"&gt;&lt;/h2&gt;
+  	&lt;div ng-if="options.short_description" class="text-center h4 m-b-lg sp-tagline-color" ng-bind="options.short_description"&gt;&lt;/div&gt;
+  	&lt;sp-widget widget="data.typeAheadSearch" /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;</payload><sys_class_name>sp_rel_widget_clone</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-04-15 12:27:51</sys_created_on><sys_id>eeebfe77db441050fa11cf2414961904</sys_id><sys_mod_count>0</sys_mod_count><sys_name>e6ebfe77db441050fa11cf2414961902</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_rel_widget_clone_eeebfe77db441050fa11cf2414961904</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-04-15 12:27:51</sys_updated_on></sp_rel_widget_clone></record_update>]]></payload>
+        <payload_hash>925120013</payload_hash>
+        <record_name>e6ebfe77db441050fa11cf2414961902</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 12:27:51</sys_created_on>
+        <sys_id>2eebfe77db441050fa11cf2414961906</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1717dcf519a0000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-15 12:27:51</sys_updated_on>
+        <type>Widget Clone</type>
+        <update_guid>26ebfe774144105033a1184825f9f006</update_guid>
+        <update_guid_history>26ebfe774144105033a1184825f9f006:925120013</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">2ee97bf3db4c1050fa11cf2414961992</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 16:58:43</sys_created_on>
+        <sys_db_object display_value="" name="sp_rel_widget_clone">sp_rel_widget_clone</sys_db_object>
+        <sys_id>0d48cd591b5744be81362c0cba4d5b79</sys_id>
+        <sys_metadata>eeebfe77db441050fa11cf2414961904</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>e6ebfe77db441050fa11cf2414961902</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_rel_widget_clone_eeebfe77db441050fa11cf2414961904</sys_update_name>
+        <sys_update_version display_value="sp_rel_widget_clone_eeebfe77db441050fa11cf2414961904">2eebfe77db441050fa11cf2414961906</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-15 16:58:43</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

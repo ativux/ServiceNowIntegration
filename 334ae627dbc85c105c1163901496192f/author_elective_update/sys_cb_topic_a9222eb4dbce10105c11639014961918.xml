@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_cb_topic">
+    <sys_cb_topic action="DELETE">
+        <applicability/>
+        <category display_value="ITSM Self Service">3efd22da0b203300a1b16c2367673a10</category>
+        <connect_queue/>
+        <description/>
+        <flexible_conversation_switching>false</flexible_conversation_switching>
+        <graph>{
+  "graph_api_version": "1.0.16",
+  "goals": {
+    "351794e477094bb3b60892e493eab196": {
+      "id": "351794e477094bb3b60892e493eab196",
+      "trigger": {
+        "type": "primary"
+      },
+      "name": "primary",
+      "applicability": "",
+      "description": "",
+      "nodes": {
+        "e4f86427a7734bb3a83a8393f169b9ef": {
+          "id": "e4f86427a7734bb3a83a8393f169b9ef",
+          "stepType": "Start",
+          "name": "Start",
+          "greetingResponse": {
+            "mode": "simple",
+            "value": ""
+          }
+        },
+        "dd0d2e995ed844ab8bfc8e8bb887a5c3": {
+          "id": "dd0d2e995ed844ab8bfc8e8bb887a5c3",
+          "stepType": "TerminateGoal",
+          "name": "End",
+          "confirmationMessage": {
+            "mode": "simple",
+            "value": ""
+          }
+        }
+      },
+      "edges": [
+        {
+          "id": "01790834dae1474d9b56048ca4108744",
+          "edgeType": "Edge",
+          "source": "e4f86427a7734bb3a83a8393f169b9ef",
+          "target": "dd0d2e995ed844ab8bfc8e8bb887a5c3",
+          "sourcePort": "",
+          "targetPort": ""
+        }
+      ]
+    }
+  },
+  "variables": {}
+}</graph>
+        <key_phrases>Teste Fernando</key_phrases>
+        <library>false</library>
+        <live_agent>false</live_agent>
+        <name>Teste Fernando</name>
+        <nlu_intent/>
+        <nlu_intent_label/>
+        <nlu_model/>
+        <nlu_model_label/>
+        <nlu_provider/>
+        <roles/>
+        <sys_class_name>sys_cb_topic</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-14 12:59:04</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_id>a9222eb4dbce10105c11639014961918</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Teste Fernando</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_cb_topic_a9222eb4dbce10105c11639014961918</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-14 12:59:04</sys_updated_on>
+        <variables/>
+    </sys_cb_topic>
+    <sys_variable_value action="DELETE" query="document_key=a9222eb4dbce10105c11639014961918"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sys_cb_topic_a9222eb4dbce10105c11639014961918</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_cb_topic"><sys_cb_topic action="INSERT_OR_UPDATE"><applicability/><category display_value="ITSM Self Service">3efd22da0b203300a1b16c2367673a10</category><connect_queue/><description/><flexible_conversation_switching>false</flexible_conversation_switching><graph>{
+  "graph_api_version": "1.0.16",
+  "goals": {
+    "351794e477094bb3b60892e493eab196": {
+      "id": "351794e477094bb3b60892e493eab196",
+      "trigger": {
+        "type": "primary"
+      },
+      "name": "primary",
+      "applicability": "",
+      "description": "",
+      "nodes": {
+        "e4f86427a7734bb3a83a8393f169b9ef": {
+          "id": "e4f86427a7734bb3a83a8393f169b9ef",
+          "stepType": "Start",
+          "name": "Start",
+          "greetingResponse": {
+            "mode": "simple",
+            "value": ""
+          }
+        },
+        "dd0d2e995ed844ab8bfc8e8bb887a5c3": {
+          "id": "dd0d2e995ed844ab8bfc8e8bb887a5c3",
+          "stepType": "TerminateGoal",
+          "name": "End",
+          "confirmationMessage": {
+            "mode": "simple",
+            "value": ""
+          }
+        }
+      },
+      "edges": [
+        {
+          "id": "01790834dae1474d9b56048ca4108744",
+          "edgeType": "Edge",
+          "source": "e4f86427a7734bb3a83a8393f169b9ef",
+          "target": "dd0d2e995ed844ab8bfc8e8bb887a5c3",
+          "sourcePort": "",
+          "targetPort": ""
+        }
+      ]
+    }
+  },
+  "variables": {}
+}</graph><key_phrases>Teste Fernando</key_phrases><library>false</library><live_agent>false</live_agent><name>Teste Fernando</name><nlu_intent/><nlu_intent_label/><nlu_model/><nlu_model_label/><nlu_provider/><roles/><sys_class_name>sys_cb_topic</sys_class_name><sys_created_by>organize.fernando</sys_created_by><sys_created_on>2020-07-14 12:59:04</sys_created_on><sys_domain>global</sys_domain><sys_id>a9222eb4dbce10105c11639014961918</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Teste Fernando</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sys_cb_topic_a9222eb4dbce10105c11639014961918</sys_update_name><sys_updated_by>organize.fernando</sys_updated_by><sys_updated_on>2020-07-14 12:59:04</sys_updated_on><variables/></sys_cb_topic><sys_variable_value action="delete_multiple" query="document_key=a9222eb4dbce10105c11639014961918"/></record_update>]]></payload>
+        <payload_hash>-942136599</payload_hash>
+        <record_name>Teste Fernando</record_name>
+        <reverted_from/>
+        <source>7d96c115dbe514105c11639014961916</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-14 12:59:04</sys_created_on>
+        <sys_id>6522a2f4dbce10105c11639014961988</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1734d68415f0000001</sys_recorded_at>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-14 12:59:04</sys_updated_on>
+        <type>Topic</type>
+        <update_guid>6d22a2f468ce10106a6f639ea8958887</update_guid>
+        <update_guid_history>6d22a2f468ce10106a6f639ea8958887:-942136599</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-07-16 20:01:28</sys_created_on>
+        <sys_db_object display_value="" name="sys_cb_topic">sys_cb_topic</sys_db_object>
+        <sys_id>1302c2aa264a421b832d44ec37f31901</sys_id>
+        <sys_metadata>a9222eb4dbce10105c11639014961918</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Teste Fernando</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sys_cb_topic_a9222eb4dbce10105c11639014961918</sys_update_name>
+        <sys_update_version display_value="sys_cb_topic_a9222eb4dbce10105c11639014961918">6522a2f4dbce10105c11639014961988</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-16 20:01:28</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

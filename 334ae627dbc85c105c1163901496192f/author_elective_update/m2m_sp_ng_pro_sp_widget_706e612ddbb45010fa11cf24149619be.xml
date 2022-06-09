@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_ng_pro_sp_widget">
+    <m2m_sp_ng_pro_sp_widget action="DELETE">
+        <sp_angular_provider display_value="categorySubscribe">ad38b0f0db645410fa11cf2414961984</sp_angular_provider>
+        <sp_widget display_value="GService My Dashboard">f46e612ddbb45010fa11cf24149619bb</sp_widget>
+        <sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-05-15 13:49:52</sys_created_on>
+        <sys_id>706e612ddbb45010fa11cf24149619be</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>categorySubscribe.GService My Dashboard</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_706e612ddbb45010fa11cf24149619be</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-05-15 13:49:52</sys_updated_on>
+    </m2m_sp_ng_pro_sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>m2m_sp_ng_pro_sp_widget_706e612ddbb45010fa11cf24149619be</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_ng_pro_sp_widget"><m2m_sp_ng_pro_sp_widget action="INSERT_OR_UPDATE"><sp_angular_provider display_value="categorySubscribe">ad38b0f0db645410fa11cf2414961984</sp_angular_provider><sp_widget display_value="GService My Dashboard">f46e612ddbb45010fa11cf24149619bb</sp_widget><sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name><sys_created_by>organize.fernando</sys_created_by><sys_created_on>2020-05-15 13:49:52</sys_created_on><sys_id>706e612ddbb45010fa11cf24149619be</sys_id><sys_mod_count>0</sys_mod_count><sys_name>categorySubscribe.GService My Dashboard</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>m2m_sp_ng_pro_sp_widget_706e612ddbb45010fa11cf24149619be</sys_update_name><sys_updated_by>organize.fernando</sys_updated_by><sys_updated_on>2020-05-15 13:49:52</sys_updated_on></m2m_sp_ng_pro_sp_widget></record_update>]]></payload>
+        <payload_hash>-374424382</payload_hash>
+        <record_name>categorySubscribe.GService My Dashboard</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-05-15 13:49:53</sys_created_on>
+        <sys_id>746e612ddbb45010fa11cf24149619c0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172189934020000001</sys_recorded_at>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-05-15 13:49:53</sys_updated_on>
+        <type>Angular Providers</type>
+        <update_guid>7c6e612d84b45010d03c29ca4075cabf</update_guid>
+        <update_guid_history>7c6e612d84b45010d03c29ca4075cabf:-374424382</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">eb40e36e1bda141094962170f54bcb66</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-08-01 14:15:42</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_ng_pro_sp_widget">m2m_sp_ng_pro_sp_widget</sys_db_object>
+        <sys_id>47f89710bf11482cad50bec10a2b19e4</sys_id>
+        <sys_metadata>706e612ddbb45010fa11cf24149619be</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>categorySubscribe.GService My Dashboard</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_706e612ddbb45010fa11cf24149619be</sys_update_name>
+        <sys_update_version display_value="m2m_sp_ng_pro_sp_widget_706e612ddbb45010fa11cf24149619be">746e612ddbb45010fa11cf24149619c0</sys_update_version>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-01 14:15:42</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

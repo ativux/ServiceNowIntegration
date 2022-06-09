@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope, $timeout, categorySubscribe, $element, spUtil) {
+
+	var c = this;
+	c.isLoading = true;
+	
+	$scope.loadingIndicator = $rootScope.loadingIndicator;
+	//Show widget after loaded
+	$scope.$on('sp_loading_indicator', function(e, value) {
+		if($scope.loadingIndicator && !value){
+			c.isLoading = false;
+		}
+		$scope.loadingIndicator = value;
+	});
+
+	c.data.newNotificationAvailable = false;
+
+	spUtil.recordWatch($scope, "sc_task", c.data.taskQuery, function(event) {
+		c.refreshNotificationsCount(event.data);
+	});
+
+	spUtil.recordWatch($scope, "incident", c.data.incidentQuery, function(event) {
+		c.refreshNotificationsCount(event.data);
+	});
+
+	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
+		c.refreshApprovalsCount();
+	});
+
+	c.refreshNotificationsCount = function(item){
+		c.server.get({
+			action: "notificationsCount",
+			taskQuery: c.data.taskQuery,
+			incidentQuery : c.data.incidentQuery
+		}).then(function(response) {
+			c.data.notificationsCount = response.data.notificationsCount;
+			c.refreshNotifications(item);
+		});
+	}
+	
+	c.refreshNotifications = function(item){
+		if(c.data.selectedTab.name == "notificationsTab"){
+			if(item.record.state.value == "3" || item.record.state.value == "-5"){
+				for(i in item.changes){
+					if(item.changes[i] == "state"){
+						c.data.newNotificationAvailable = true;
+					}
+				}
+			}
+		}
+	}
+
+	c.refreshApprovalsCount = function(){
+		c.server.get({
+			action: "approvalsCount",
+			approverQuery : c.data.approverQuery
+		}).then(function(response) {
+			c.data.approvalsCount = response.data.approvalsCount;
+		});
+	}
+
+	$scope.userID = $scope.user.sys_id;
+	//Get user picture
+	$rootScope.$on('sp.avatar_changed', function() {
+		$scope.userID = "";
+		$timeout(function(){
+			$scope.userID = $scope.user.sys_id;
+		});
+	});
+	
+	c.selectTab = function(tab){
+		c.isLoading = true;
+		//Var used to show notification modal
+		c.data.newNotificationAvailable = false;
+
+		for(i in c.data.tabs){
+			if(c.data.tabs[i].name == tab.name){
+				c.data.tabs[i].selected = true;
+			}
+			else{
+				c.data.tabs[i].selected = false;
+			}
+		}
+
+		c.server.get({
+			action: "selectedTab",
+			tab: tab 
+		}).then(function(response) {
+			c.data.gservice_dashboard_list = response.data.gservice_dashboard_list;
+			//$rootScope.$broadcast('updateRequestList');
+		});
+	}
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.content {&#13;
+  background-color: white;&#13;
+  padding: 0 90px;&#13;
+  padding-top: 30px;&#13;
+&#13;
+  .header-loader{&#13;
+    padding: 50px;&#13;
+    padding-bottom: 100px;&#13;
+    .sp-loading-indicator{&#13;
+      color: $deep-sky-blue !important;&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .content_avatar {&#13;
+    display: flex;&#13;
+&#13;
+    a {&#13;
+      .avatar-custom-size {&#13;
+        margin-top: 15px;&#13;
+        margin-bottom: 30px;&#13;
+        height: 90px;&#13;
+        width: 90px;&#13;
+        box-shadow: 0 0 0 4px $deep-sky-blue;&#13;
+        font-size: 20px !important;&#13;
+      }&#13;
+      .avatar-container .avatar.soloAvatar .sub-avatar {&#13;
+        border-radius: 0;&#13;
+        font-size: 50px;&#13;
+        line-height: 95px;&#13;
+        font-family: $text-bold;&#13;
+        background-color: white;&#13;
+        color: $deep-sky-blue;&#13;
+      }&#13;
+    }&#13;
+&#13;
+    .user-info-properties {&#13;
+      margin-left: 100px;&#13;
+      color: $slate-gray;&#13;
+&#13;
+      .name-properties {&#13;
+        font-size: 30px;&#13;
+        font-family: $text-bold;&#13;
+        color: $deep-sky-blue;&#13;
+        letter-spacing: -1px;&#13;
+      }&#13;
+      .job-properties {&#13;
+        color: $dodger-blue;&#13;
+        font-size: 14px;&#13;
+      }&#13;
+      .location-properties {&#13;
+        text-transform: uppercase;&#13;
+      }&#13;
+    }&#13;
+  }&#13;
+&#13;
+  .tabs-align {&#13;
+    display: flex;&#13;
+    justify-content: center;&#13;
+&#13;
+    .categories {&#13;
+      display: inline-block;&#13;
+      width: 20%;&#13;
+      position: relative;&#13;
+&#13;
+      .tab_items {&#13;
+        transition: .4s ease-in-out;&#13;
+        //padding: 0 20px;&#13;
+        margin: 0 auto;&#13;
+&#13;
+        .tab_images {&#13;
+          transition: .4s ease-in-out;&#13;
+          height: 80px;&#13;
+          display: flex;&#13;
+          justify-content: center;&#13;
+&#13;
+          .icon-img {&#13;
+            width: 80px;&#13;
+            height: 80px;&#13;
+            position: absolute;&#13;
+            text-align: center;&#13;
+          }&#13;
+        }&#13;
+        .tab_title {&#13;
+          transition: .4s ease-in-out;&#13;
+          font-size: 14px;&#13;
+          font-family: $text-bolder;&#13;
+          text-align: center;&#13;
+          text-transform: uppercase;&#13;
+          line-height: 1;&#13;
+          width: 150px;&#13;
+          margin: inherit;&#13;
+          margin-top: 10px;&#13;
+        }&#13;
+        &amp;:hover {&#13;
+&#13;
+          .icon-img {&#13;
+            transition: .2s ease-in-out;&#13;
+            transform: scale(1.1);&#13;
+            -webkit-transform: scale(1.1);&#13;
+            -ms-transform: scale(1.1);&#13;
+            -moz-transform: scale(1.1);&#13;
+            -o-transform: scale(1.1);&#13;
+          }&#13;
+          .tab_title {&#13;
+            transition: .2s ease-in-out;&#13;
+            transform: translateY(-10px);&#13;
+            -webkit-transform: translateY(-10px);&#13;
+            -ms-transform: translateY(-10px);&#13;
+            -moz-transform: translateY(-10px);&#13;
+            -o-transform: translateY(-10px);&#13;
+            color: $deep-sky-blue;&#13;
+          }&#13;
+        }&#13;
+      }&#13;
+      .tab_current {&#13;
+        color: $deep-sky-blue;&#13;
+      }&#13;
+&#13;
+    }&#13;
+    .categories:nth-child(1) {&#13;
+      .tab_items {&#13;
+        .tab_title { width: 90px; }&#13;
+      }&#13;
+    }&#13;
+    .categories:nth-child(4) {&#13;
+      .tab_items {&#13;
+        .tab_title { width: 155px; }&#13;
+      }&#13;
+    }&#13;
+&#13;
+  }&#13;
+&#13;
+}&#13;
+&#13;
+.text-align {&#13;
+  text-align: center;&#13;
+  padding-bottom: 30px;&#13;
+}&#13;
+&#13;
+.margin-align {&#13;
+  margin: 0 auto;&#13;
+  text-align: center;&#13;
+}&#13;
+&#13;
+.count-align {&#13;
+  text-align: center;&#13;
+  background: $coral;&#13;
+  height: 20px;&#13;
+  width: 20px;&#13;
+  border-radius: 50%;&#13;
+  color: white;&#13;
+  font-family: $text-bold;&#13;
+  position: absolute;&#13;
+  bottom: 95px;&#13;
+  right: 20px;&#13;
+}&#13;
+&#13;
+.notification-align {&#13;
+  font-size: 12px;&#13;
+  font-family: $text-bold;&#13;
+  line-height: 1;&#13;
+}&#13;
+&#13;
+.line {&#13;
+  width: 100%;&#13;
+  height: 2px;&#13;
+  background-color: $deep-sky-blue;&#13;
+  margin-top: 30px;&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>legacy_gservice_my_dashboard_tabs</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>GService My Dashboard Tabs</name>
+        <option_schema>[{"displayValue":"Category","hint":"Selecione a categoria que deseja exibir","name":"selected_category","display_value_list":[],"section":"Data","label":"Category","type":"glide_list","value":"sc_category","ed":{"reference":"sc_category"}}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+
+	var localInput = input;
+	var portalUtils = new global.OCLPortalUtils();
+
+	//Used to get the current user sys_id
+	var userID = gs.getUser().getID();
+	data.user_id = userID;
+
+	//Get the current user information
+	var grUserInfo = new GlideRecord ("sys_user");
+	grUserInfo.get(data.user_id);
+	data.name = grUserInfo.getValue("first_name");
+	data.email = grUserInfo.getValue("email");
+	data.phone = grUserInfo.getValue("mobile_phone");
+	data.location = grUserInfo.getDisplayValue("location");
+
+	data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
+	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
+	data.approverQuery = "state=requested^source_table=sc_req_item^approver=" + gs.getUserID();
+
+	data.notificationsCount = portalUtils.setNotificationsCount(data.taskQuery, data.incidentQuery);
+	data.approvalsCount = portalUtils.setApprovalsCount(data.approverQuery);
+
+	var tabs = gs.getProperty("gservice_dashboard_tabs").split("|");
+	data.tabs = [];
+	for(i in tabs){
+		var tab = JSON.parse(tabs[i]);
+		if(tab.show == false){
+			tab.show = (gs.getUser().hasRole("approver_user") || gs.getUser().hasRole("itil"));
+		}
+		data.tabs.push(tab);
+		data.tabs[i].label = gs.getMessage(tab.label);
+	}
+	
+	var gservice_dashboard_list_options = {"table": data.tabs[0].name,
+										   "table_template": data.tabs[0].template};
+	data.gservice_dashboard_list = $sp.getWidget('gservice_my_dashboard_content', gservice_dashboard_list_options);
+
+	if(localInput){
+		if(localInput.action == "selectedTab"){
+			var gservice_dashboard_list_options = {"table": localInput.tab.name,
+												   "table_template": localInput.tab.template};
+			data.gservice_dashboard_list = $sp.getWidget('gservice_my_dashboard_content', gservice_dashboard_list_options);
+		}
+		if(localInput.action == "notificationsCount"){
+		}
+		if(localInput.action == "approvalsCount"){
+			data.approvalsCount = portalUtils.setApprovalsCount(localInput.approverQuery);
+		}
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-05-15 13:49:52</sys_created_on>
+        <sys_id>f46e612ddbb45010fa11cf24149619bb</sys_id>
+        <sys_mod_count>382</sys_mod_count>
+        <sys_name>GService My Dashboard Tabs</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_f46e612ddbb45010fa11cf24149619bb</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-07-30 15:19:51</sys_updated_on>
+        <template/>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_f46e612ddbb45010fa11cf24149619bb</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function($scope, $rootScope, $timeout, categorySubscribe, $element, spUtil) {
+
+	var c = this;
+	c.isLoading = true;
+	
+	$scope.loadingIndicator = $rootScope.loadingIndicator;
+	//Show widget after loaded
+	$scope.$on('sp_loading_indicator', function(e, value) {
+		if($scope.loadingIndicator &amp;&amp; !value){
+			c.isLoading = false;
+		}
+		$scope.loadingIndicator = value;
+	});
+
+	c.data.newNotificationAvailable = false;
+
+	spUtil.recordWatch($scope, "sc_task", c.data.taskQuery, function(event) {
+		c.refreshNotificationsCount(event.data);
+	});
+
+	spUtil.recordWatch($scope, "incident", c.data.incidentQuery, function(event) {
+		c.refreshNotificationsCount(event.data);
+	});
+
+	spUtil.recordWatch($scope, "sysapproval_approver", c.data.approverQuery, function(event) {
+		c.refreshApprovalsCount();
+	});
+
+	c.refreshNotificationsCount = function(item){
+		c.server.get({
+			action: "notificationsCount",
+			taskQuery: c.data.taskQuery,
+			incidentQuery : c.data.incidentQuery
+		}).then(function(response) {
+			c.data.notificationsCount = response.data.notificationsCount;
+			c.refreshNotifications(item);
+		});
+	}
+	
+	c.refreshNotifications = function(item){
+		if(c.data.selectedTab.name == "notificationsTab"){
+			if(item.record.state.value == "3" || item.record.state.value == "-5"){
+				for(i in item.changes){
+					if(item.changes[i] == "state"){
+						c.data.newNotificationAvailable = true;
+					}
+				}
+			}
+		}
+	}
+
+	c.refreshApprovalsCount = function(){
+		c.server.get({
+			action: "approvalsCount",
+			approverQuery : c.data.approverQuery
+		}).then(function(response) {
+			c.data.approvalsCount = response.data.approvalsCount;
+		});
+	}
+
+	$scope.userID = $scope.user.sys_id;
+	//Get user picture
+	$rootScope.$on('sp.avatar_changed', function() {
+		$scope.userID = "";
+		$timeout(function(){
+			$scope.userID = $scope.user.sys_id;
+		});
+	});
+	
+	c.selectTab = function(tab){
+		c.isLoading = true;
+		//Var used to show notification modal
+		c.data.newNotificationAvailable = false;
+
+		for(i in c.data.tabs){
+			if(c.data.tabs[i].name == tab.name){
+				c.data.tabs[i].selected = true;
+			}
+			else{
+				c.data.tabs[i].selected = false;
+			}
+		}
+
+		c.server.get({
+			action: "selectedTab",
+			tab: tab 
+		}).then(function(response) {
+			c.data.gservice_dashboard_list = response.data.gservice_dashboard_list;
+			//$rootScope.$broadcast('updateRequestList');
+		});
+	}
+
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.content {&amp;#13;
+  background-color: white;&amp;#13;
+  padding: 0 90px;&amp;#13;
+  padding-top: 30px;&amp;#13;
+&amp;#13;
+  .header-loader{&amp;#13;
+    padding: 50px;&amp;#13;
+    padding-bottom: 100px;&amp;#13;
+    .sp-loading-indicator{&amp;#13;
+      color: $deep-sky-blue !important;&amp;#13;
+    }&amp;#13;
+  }&amp;#13;
+&amp;#13;
+  .content_avatar {&amp;#13;
+    display: flex;&amp;#13;
+&amp;#13;
+    a {&amp;#13;
+      .avatar-custom-size {&amp;#13;
+        margin-top: 15px;&amp;#13;
+        margin-bottom: 30px;&amp;#13;
+        height: 90px;&amp;#13;
+        width: 90px;&amp;#13;
+        box-shadow: 0 0 0 4px $deep-sky-blue;&amp;#13;
+        font-size: 20px !important;&amp;#13;
+      }&amp;#13;
+      .avatar-container .avatar.soloAvatar .sub-avatar {&amp;#13;
+        border-radius: 0;&amp;#13;
+        font-size: 50px;&amp;#13;
+        line-height: 95px;&amp;#13;
+        font-family: $text-bold;&amp;#13;
+        background-color: white;&amp;#13;
+        color: $deep-sky-blue;&amp;#13;
+      }&amp;#13;
+    }&amp;#13;
+&amp;#13;
+    .user-info-properties {&amp;#13;
+      margin-left: 100px;&amp;#13;
+      color: $slate-gray;&amp;#13;
+&amp;#13;
+      .name-properties {&amp;#13;
+        font-size: 30px;&amp;#13;
+        font-family: $text-bold;&amp;#13;
+        color: $deep-sky-blue;&amp;#13;
+        letter-spacing: -1px;&amp;#13;
+      }&amp;#13;
+      .job-properties {&amp;#13;
+        color: $dodger-blue;&amp;#13;
+        font-size: 14px;&amp;#13;
+      }&amp;#13;
+      .location-properties {&amp;#13;
+        text-transform: uppercase;&amp;#13;
+      }&amp;#13;
+    }&amp;#13;
+  }&amp;#13;
+&amp;#13;
+  .tabs-align {&amp;#13;
+    display: flex;&amp;#13;
+    justify-content: center;&amp;#13;
+&amp;#13;
+    .categories {&amp;#13;
+      display: inline-block;&amp;#13;
+      width: 20%;&amp;#13;
+      position: relative;&amp;#13;
+&amp;#13;
+      .tab_items {&amp;#13;
+        transition: .4s ease-in-out;&amp;#13;
+        //padding: 0 20px;&amp;#13;
+        margin: 0 auto;&amp;#13;
+&amp;#13;
+        .tab_images {&amp;#13;
+          transition: .4s ease-in-out;&amp;#13;
+          height: 80px;&amp;#13;
+          display: flex;&amp;#13;
+          justify-content: center;&amp;#13;
+&amp;#13;
+          .icon-img {&amp;#13;
+            width: 80px;&amp;#13;
+            height: 80px;&amp;#13;
+            position: absolute;&amp;#13;
+            text-align: center;&amp;#13;
+          }&amp;#13;
+        }&amp;#13;
+        .tab_title {&amp;#13;
+          transition: .4s ease-in-out;&amp;#13;
+          font-size: 14px;&amp;#13;
+          font-family: $text-bolder;&amp;#13;
+          text-align: center;&amp;#13;
+          text-transform: uppercase;&amp;#13;
+          line-height: 1;&amp;#13;
+          width: 150px;&amp;#13;
+          margin: inherit;&amp;#13;
+          margin-top: 10px;&amp;#13;
+        }&amp;#13;
+        &amp;amp;:hover {&amp;#13;
+&amp;#13;
+          .icon-img {&amp;#13;
+            transition: .2s ease-in-out;&amp;#13;
+            transform: scale(1.1);&amp;#13;
+            -webkit-transform: scale(1.1);&amp;#13;
+            -ms-transform: scale(1.1);&amp;#13;
+            -moz-transform: scale(1.1);&amp;#13;
+            -o-transform: scale(1.1);&amp;#13;
+          }&amp;#13;
+          .tab_title {&amp;#13;
+            transition: .2s ease-in-out;&amp;#13;
+            transform: translateY(-10px);&amp;#13;
+            -webkit-transform: translateY(-10px);&amp;#13;
+            -ms-transform: translateY(-10px);&amp;#13;
+            -moz-transform: translateY(-10px);&amp;#13;
+            -o-transform: translateY(-10px);&amp;#13;
+            color: $deep-sky-blue;&amp;#13;
+          }&amp;#13;
+        }&amp;#13;
+      }&amp;#13;
+      .tab_current {&amp;#13;
+        color: $deep-sky-blue;&amp;#13;
+      }&amp;#13;
+&amp;#13;
+    }&amp;#13;
+    .categories:nth-child(1) {&amp;#13;
+      .tab_items {&amp;#13;
+        .tab_title { width: 90px; }&amp;#13;
+      }&amp;#13;
+    }&amp;#13;
+    .categories:nth-child(4) {&amp;#13;
+      .tab_items {&amp;#13;
+        .tab_title { width: 155px; }&amp;#13;
+      }&amp;#13;
+    }&amp;#13;
+&amp;#13;
+  }&amp;#13;
+&amp;#13;
+}&amp;#13;
+&amp;#13;
+.text-align {&amp;#13;
+  text-align: center;&amp;#13;
+  padding-bottom: 30px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.margin-align {&amp;#13;
+  margin: 0 auto;&amp;#13;
+  text-align: center;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.count-align {&amp;#13;
+  text-align: center;&amp;#13;
+  background: $coral;&amp;#13;
+  height: 20px;&amp;#13;
+  width: 20px;&amp;#13;
+  border-radius: 50%;&amp;#13;
+  color: white;&amp;#13;
+  font-family: $text-bold;&amp;#13;
+  position: absolute;&amp;#13;
+  bottom: 95px;&amp;#13;
+  right: 20px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.notification-align {&amp;#13;
+  font-size: 12px;&amp;#13;
+  font-family: $text-bold;&amp;#13;
+  line-height: 1;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.line {&amp;#13;
+  width: 100%;&amp;#13;
+  height: 2px;&amp;#13;
+  background-color: $deep-sky-blue;&amp;#13;
+  margin-top: 30px;&amp;#13;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;legacy_gservice_my_dashboard_tabs&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;GService My Dashboard Tabs&lt;/name&gt;&lt;option_schema&gt;[{"displayValue":"Category","hint":"Selecione a categoria que deseja exibir","name":"selected_category","display_value_list":[],"section":"Data","label":"Category","type":"glide_list","value":"sc_category","ed":{"reference":"sc_category"}}]&lt;/option_schema&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+
+	var localInput = input;
+	var portalUtils = new global.OCLPortalUtils();
+
+	//Used to get the current user sys_id
+	var userID = gs.getUser().getID();
+	data.user_id = userID;
+
+	//Get the current user information
+	var grUserInfo = new GlideRecord ("sys_user");
+	grUserInfo.get(data.user_id);
+	data.name = grUserInfo.getValue("first_name");
+	data.email = grUserInfo.getValue("email");
+	data.phone = grUserInfo.getValue("mobile_phone");
+	data.location = grUserInfo.getDisplayValue("location");
+
+	data.taskQuery = "state=-5^u_pending_reason=1^request_item.opened_by=" + gs.getUserID();
+	data.incidentQuery = "state=3^hold_reason=1^opened_by=" + gs.getUserID();
+	data.approverQuery = "state=requested^source_table=sc_req_item^approver=" + gs.getUserID();
+
+	data.notificationsCount = portalUtils.setNotificationsCount(data.taskQuery, data.incidentQuery);
+	data.approvalsCount = portalUtils.setApprovalsCount(data.approverQuery);
+
+	var tabs = gs.getProperty("gservice_dashboard_tabs").split("|");
+	data.tabs = [];
+	for(i in tabs){
+		var tab = JSON.parse(tabs[i]);
+		if(tab.show == false){
+			tab.show = (gs.getUser().hasRole("approver_user") || gs.getUser().hasRole("itil"));
+		}
+		data.tabs.push(tab);
+		data.tabs[i].label = gs.getMessage(tab.label);
+	}
+	
+	var gservice_dashboard_list_options = {"table": data.tabs[0].name,
+										   "table_template": data.tabs[0].template};
+	data.gservice_dashboard_list = $sp.getWidget('gservice_my_dashboard_content', gservice_dashboard_list_options);
+
+	if(localInput){
+		if(localInput.action == "selectedTab"){
+			var gservice_dashboard_list_options = {"table": localInput.tab.name,
+												   "table_template": localInput.tab.template};
+			data.gservice_dashboard_list = $sp.getWidget('gservice_my_dashboard_content', gservice_dashboard_list_options);
+		}
+		if(localInput.action == "notificationsCount"){
+		}
+		if(localInput.action == "approvalsCount"){
+			data.approvalsCount = portalUtils.setApprovalsCount(localInput.approverQuery);
+		}
+	}
+
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.fernando&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-05-15 13:49:52&lt;/sys_created_on&gt;&lt;sys_id&gt;f46e612ddbb45010fa11cf24149619bb&lt;/sys_id&gt;&lt;sys_mod_count&gt;382&lt;/sys_mod_count&gt;&lt;sys_name&gt;GService My Dashboard Tabs&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_f46e612ddbb45010fa11cf24149619bb&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.jorge.garcia&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-07-30 15:19:51&lt;/sys_updated_on&gt;&lt;template/&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1792029618</payload_hash>
+        <record_name>GService My Dashboard Tabs</record_name>
+        <reverted_from/>
+        <source>ce09f6151bd6541094962170f54bcb83</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-07-30 15:19:51</sys_created_on>
+        <sys_id>bbcbd90a1b129c1094962170f54bcb17</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>173a04ee5b50000001</sys_recorded_at>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-07-30 15:19:51</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>b3cbd90a27129c102e0975b71a673317</update_guid>
+        <update_guid_history>b3cbd90a27129c102e0975b71a673317:1792029618,87f9c439fe1e94100b7214cafd16cbff:2129759090,5cf9c039561e941078111af510368e5d:-1221043594,b5d324ab57ce14100aedcff2b994e2d4:-203570664,6277f03f6d819c90115040bd2645d1d6:1403106365,d5073473f38994506c710013cb7af2a8:74934695,88e67833a389945013d47b40335c7e6c:-186794681,a6b6b83360899450ea47b5d695043e14:74934695,53a63833d78994503a2f22b52383e738:-1323868920,7e467cbf28499450adad9afdc5c74ae8:-1818082085,9716b8bfb349945055c2ec8426238df7:-460749061,4d0638ffb8499450eb463a463734e7d6:-1818082085,ad35fcbfbf4994509432c529bca0c09a:1016411460,53a4787f13499450555d71d784a3d023:-994542558,da84f47f5b499450e99d2e0082e31211:-143679813,a764fc3f60499450be9d285cfdd0a2cc:-1640975873,c244383fec49945087cb6155add66ed0:1228625606,ca34383f2f499450eaf08601afa020ef:13535891,a824f43ff4499450df080f446b18f2e4:452886097,5be3303fd84994506fb4227839ef2975:203713604,84c3b0fb2849945008f94f6ec8612bbc:-1106860136,334370fb17499450ff565d3a35b09c6e:1804953977,a152fc7b7a499450813381ce1b3942f5:2076395801,f832f47ba1499450624c78388b722f19:1399163865,8412387bb1499450d4365fc2b45f070d:378408264,2d61743bd44994503e875c401d2ca8f7:-1466330512,1221b03bc74994501b7e2076a22a362c:488420368,6a01fcf7b0499450d3a58f3f78cd732a:1321528399,22e0b8f7ef4994504e668fd9a5f5abc1:-942334501,42c03cb7964994501b0ade47fe268505:-1646239074,b7b07cb744499450d97be97677aed921:-1755575984,89b030f741499450086faf433a97fbb0:1035361809,7990bcb706499450f13ae9d799500144:-1755575984,a87070b73c4994500831a187b8fa4e21:861299558,6b8f247771499450f13c117b264313b0:1092857855,6eeee037bb499450274585e288059cad:1269421397,106c607374499450894c37e9f0239cba:-53556462,5a42854f4e05d89002c30cb71eac8db7:1403106365,a832c54f9205d890a8bc950e102ca983:-1709800377,2502054f3605d890295cc8eb5c89068e:-1081341755,ebe1cd0fbf05d890161220b8aebb6f37:1022895297,7241490fc705d890f8d7829af74af208:-616799139,a321450f4b05d890e3e42b4e510d3d65:-1496623043,1521850f0005d890027a20c64aa4e7d5:-1776128494,d7e0050f5205d8901e3cec85de392304:1052611121,3ed0c10f6505d890431339e6ede73b19:-1128938362,eab0010f8605d890493d81538c2f0f1a:2021961094,9190cdcbda05d89093f5f0ee9222d790:-1808093047,85704dcb4c05d8907713d18254b656fd:-1148201174,23ef74cb4405d8906c3594b2a0d3d2e7:1867647890,ffdf74cbf205d8905bd3617a16322c70:-1551597166,0e5f3c8bd805d89057e6a62f6742d933:-378436697,21deb08ba705d8909edd5497ac8845ad:-771351741,b048be8ec305505027e84545618eeb0e:-1602991271,8618368e15055050f652f6c3da0a675b:-1123443288,0fc7fa4e300550501e5b41441b3ad135:78961988,5ea73e0ef8055050a17b69d48f3386c1:433245374,f3677e0ec3055050de6cb29d913b682b:1581892040,6b373a0e3b055050d6c6e446822c84e2:904362398,f3d6bacae8055050058c9c3340500e23:-188932889,9a5b2ecaf3815050166becf5b7509d36:378690334,7e2b6aca3e8150500ac0df56b577ce65:774659339,ad3b9a0682015050445a08d6cd16cfeb:1386456033,c7e7aeb1304ddc1058b3604a55f57401:-53855027,16b76ab1374ddc104c445c32c00a49ba:-538587470,36066a31804ddc10ff669df8f2b0aad5:2075964360,9434e6bd740ddc10ad9b8ffa99287eed:-1210667314,04d362bd480ddc1004f294e3a7ca5638:1527506847,c58f5679290ddc107fc78f9ae75a1839:1795908515,a11f12792f0ddc107e10113cfdd75003:1324353773,273c9a35790ddc108ac97dcaec3bba8d:1921261729,8a9d507578019c10cc482599d979ca9a:-641467958,818d1c3563019c103dbc3b9b3f2ff062:-36237608,926d583538019c10019ae840ae37a4dd:660278806,0d3d54355d019c10a055cbd698e00d56:-890516241,bc1d9035ff019c10b13ee7250d59a418:-1703476407,f2ec5cf1de019c10651d28646fe7b01c:593838412,4bcc18f12c019c10d68fcfad1f91fb5d:565866781,f85c50f1bb019c10d46e03853f67b140:-2036513487,2216d8b143499c101bbe417ea04f7e90:-1514985409,c5051c31d2499c108c4642d9544a8ec4:-254159333,37d494313a499c10525140564ddb6a28:1515194814,117f10a517c15c10a5bdc61f9c28566c:-485773605,aede9465c1c15c1087adfc4454b83af0:122688884,321e1825fac15c106d9bcfd1a0104517:-480565042,55ad5ce1bdc15c101caa7150bb70a973:1837614381,e25d10e19cc15c103caeeea7b045e333:-1168351531,801c986165c15c10ef972077a8610da9:1739883925,bcda5ceda0815c100305f23d7b7e0805:1315818618,2a7a58ed3d815c101a81ca60036fae7b:-1910999316,5f2adcad37815c1035bf8aab91794bf6:49983191,71d9dcad50815c106d3857d5354730ec:-67222760,0d79d8ad8c815c106d8056ecc4f2387c:-1296361780,eb69dcad6c815c10e5beac00609fed74:-1452625358,26191c6dbb815c10b995e2254a0a6934:-1409740617,09f814ad81815c1049466f1bd1463728:-901713578,dde8d0adea815c1048feccf363990ad1:22085476,d164c0eddacd1c1040b7a7b82fdc3945:1489478000,3334ccad8ecd1c104968167b1e532d4e:1680982220,8d83c0ad07cd1c10b6a1da5884fed994:-1921598866,0c53086db7cd1c10303a7870ec57e2c7:-2000904498,e276b39dcc8d1c101bed328afdfc5ab6:-1813687242,e3f5379d088d1c10665b14f6485525ad:-1769791056,3c4fafc5380d1c1039747d2b26a78083:525492567,9dababc1300d1c104fec9222063a1745:-86462225,c87b23c1740d1c1008ab4819aa5ec612:591512723,d80a6f41750d1c109288f877b3ea2996:42234060,e699a7419b0d1c10cdbeeb9c1de3fd72:1913292458,1dc56bcdf2011c10924bfa986ecd9f30:-2039779210,a91f1b05a9011c102ad80bfd0622af48:343709766,845d9f41ed011c10c24f688ca24b7f5f:-1960881759,caaa9f4de7891c10057ceb2d3f3817a3:343709766,8f2a534d16891c103ef27765c8b1a41b:-2136849189,37447a01734dd810f71f9fdd308c7a2b:343709766,24433acd080dd8101e0e6cf7f829128f:-1360229039,aad17a8d2c0dd810f3c2aac27818ce73:-976065738,3d91be8d6c0dd810db64bc89bedb3ad3:-963237311,85d0328de30dd81088573ce672853cd0:1583692293,ddad2ec9350dd8103a5b913e226a302f:-312935983,374d6ec9270dd8106b0cb8fcbc7931b2:1081289271,593d2ec9480dd8107369bdadd94ae925:-280504663,d2070e8d7449d8109209e374ba459369:-967725555,83c6c68df449d810fa9bfafb4fb23d5c:532163956,5e26c64d5249d810b0a438f6b7e354ce:54570775,97c40ec97f49d8100eda788ea5715d22:-1357299064,b4c48ac97449d81065ddfe1327055465:1344675026,6b8402c95749d81007a1ee136cd96aef:-1357299064,9392c2099d49d81065cb663b0f85f691:1760038434,a3328ec54e49d810bf00abdab0a55e00:-836765086,88ac354525c11c104fa4e7fdd1075c02:-124396434,b77cbd0549c11c103a4f2e06675e8870:-565781088,f06c3d0568c11c1069a8fd98fafacf43:-57246596,e05c3d0541c11c1057dfa83c1b1f7246:-371964486,dc2c3dc137c11c10ffd8c449cf946c3a:1463736872,101c766be77418103cbaf9eaadd3903b:-124396434,f5fb326be17418106802320e2d9521b6:1152511270,4abb3a2be17418103045f072080aa6f0:57334480,5428f667da741810963757e90a34c1f3:-1999079125,e3f7b667c07418104c7ebd4f583a0264:-930146620,e5e77667a27418104ac1aa201ca4555c:1180852659,df16fee331741810ae00e9468be007fe:-1436586097,eb06bee3e9741810b1bc1e11dfdfcfeb:-1000671113,99f5bae3607418109bdd20adbea15894:1283460507,f6c57ae3b774181013f2ce35ef29be1e:1734144805,ee8576e35974181072a917bbe43acb5e:93961517,f62572e39f741810299c8f4a1d8008fe:69509357,ea84baa38b74181078e4c11bc6c7cd39:291805575,be747aa3c57418101aed70f2fdbfed63:-751616500,8b4432a3aa741810430be8c207ea3672:-1004486911,c234b6a3007418102d9a151049c662a1:1548257258,171476a3f47418109fb3927cdea50352:1277344750,d9c3f2632a74181014d1b93c3bb573a6:1308773277,9a29a22bac341810971065adc4aaa836:1535538196,0a09aee7a83418107614e8c3d2c1c7a9:-622812027,0df391e3e37cd410547c798091d566fd:-339555632,38a311e3517cd4102befbefd32478d80:-158115123,7a5399a3837cd410464933f1fc2cb0ad:-1737568574,ef4ffc231a3cd41074b71e69e845b7ed:-339555632,ed3ffc23953cd41065ab7c79fcba2f3d:710559333,c01f3c23303cd41090d6e2c16166f406:434351839,91aef823da3cd410099251eecae4c6a8:614816482,dd9ebc23863cd41092d4d76b4ae8f8c4:-1052700303,ce5ef023f93cd4108de5d0cd7afe5133:388176741,1cfdb423f53cd41025598d20ac62561e:1922052745,1eed7423233cd410317013176ad28aa4:-226750902,1fbdf023433cd410abb0eb1d488088f2:-254353843,b68d3cef21f8d410e52b5aa284b0dba2:1139223495,6c1df4efe5f8d4102d428a574e6dffbe:362821832,c7ec70ef7bf8d4108bdd2088d5989acf:776963677,7eacfcaf8bf8d4102c3c7b71ddce5111:320692263,8a4c78af1af8d4103d3c8d94ac671d9f:-2014550049,5a3cb4afcbf8d410713ea9f90b65863d:364612039,bddbf0afeff8d410dd4085d765e793fe:811233723,ffbbf0af68f8d4105af44b832144f119:-669352932,299b7c6fc4f8d410ad9fc08bc5f1647a:695727374,334bbc2f46f8d410456d7fcfaba246fa:-1516174919,0b7a382fe6f8d4107a25dde33ab49b3a:-1744756559,2e4ab02f12f8d410598ccee32a4c1c58:405927981,88c9f0ebecf8d410c3a57bf8b98dbbb9:1794810567,d3b970eb74f8d410e38bf3ff203c8106:320063249,0ea9fcabf8f8d41054019ccfe10fb8c3:143987839,6d69f8ab46f8d410d8c3908300fc1c5f:1918231430,2a4938ab85f8d410d5032298e09474f3:-616027786,a54938ab4ff8d4107e9ae3348e829c9a:-1958812650,7a09f0abb8f8d410f3071300954e32f2:591842657,46b8bc6b9ef8d41067f93e65962688c8:603092155,5d88786b06f8d41021c73ee59dbca831:-1703304728,ec68746bc8f8d41087cd5f402a970c1b:1449219414,b458346bdef8d410389646363e71ff49:-1056175332,c238346b4df8d4109199fe84c398343f:1601766350,5447b42b63f8d410573cb8f24d08922d:1215672431,42f6b8e706f8d4102bf003e5ad360b21:-961715750,e09674e77df8d4105cb962d2b1a70e21:719063385,313630e72af8d4107682707e3c1b2d72:-961715750,3413f4e359f8d4105baa75fb62f9fe9a:1562799491,2bb2b0e3c3f8d4103581514682180077:991560447,718230e3c9f8d410ea34dea161e8c499:1547339738,29cc6c2f1ab8d41037194c762f5cf208:465558329,5b5ce02fe4b8d410b2d97cc0c75d9f92:751967808,432cecebe5b8d4109fdb863dbf9a327e:-67773560,e02caceb76b8d41019f1be9a96f8faf9:601031985,2806a4a7a2b8d410ae6689709eb06325:-1100370261,43f564a718b8d410ad31f5296bd2ebce:-195684564,bce5ac676eb8d410e6ca23eedfa96804:-357406486,d055e467a5b8d4103d11f5ffb318fc14:-1057979636,da05246752b8d41014230094600c03a7:842485368,c7b4206728b8d4106de8fd54ed8407bb:959755485,23a4ec27d9b8d4108eddc8f2205d4663:702939976,7a94e8277ab8d4101de471da505f41ee:1080276961,18942c2722b8d41023c84c4beab22669:1718932853,f164a8278fb8d410afe19bb50b93a92c:-728547219,d1e3ece38ab8d41065f034becddfff50:-943499720,6dff98efa478d410c9804bd334e2bfbb:-2142314948,b2df94ef8a78d41070cade0dc9ad5208:-1702745878,d0fd5c6f9078d4104a53707e028c3191:-1880329209,361d146ffb78d410aef0f9c0a313c1fc:1999446203,28bcd82f2078d410fff6d10b49b272f5:-1512425192,e0bc102f1078d410bd45930313e05e53:1369983955,7e3c102fe078d4107e031d8191cec8fc:1748201839,e0db54eb0578d410d5587fd154c3b554:-1067889762,7b4b9cab4a78d410fe12176afcd109d6:-1625167082,90c8d4a37df894102dafcfcfb050a9fb:130756522,6d07dc2302f89410546b0ecd1b09d044:1452752375,38079c2303f894106bc092a33c954f4b:-2014782137,93d698ef05b89410a4e8a268c1a79d1a:1989410751,35d6d42335f894103def722d335878f5:-450835358,9066d423eef894103fc3c997373c72eb:-1565449478,a795dcefcbb8941099bf65448732cc77:2130947415,b4959cef50b89410a1642b7afef7e1ee:-1093192305,e9651cefcfb8941012b6735ae3cc5880:-907597987,614598ef20b894103faf14691a2ee69b:861532166,d2359caf5bb894105ff66b40cad4a1bb:1460238371,c2741423c078d4101863604dc7990e30:676437474,f550186b3638d41098e116b8ee38d83d:-1030148778,a40d44674238d41008021bc174b7fd9c:-1799534024,8fdc0067a938d4107ef8c39df7834c79:1126479551,149c88277538d4101872a71f1be365c4:-1428899658,f36cc0272038d410196fc64d35d64fda:-2007747662,5d5c4ce34838d41076d1055f7bb3b059:-1457987077,184b80e3de38d410e62b6a80e91fd73f:1921667884,8c0bc8a3e338d4101a5915e36d912c94:-2139877575,7ccacc631638d410b69c3f34c551a052:791541849,f27ac863d138d410f20d68841a93d3da:2059696922,f668c0af78f4d410a1e47b4eb1f53984:544007864,71b7806f79f4d410c52b93922d9af79d:1995476840,c0b7806fc0f4d41021a921c25793d28e:-714087322,fd27042feff4d410c050e76fdf9bd44c:344523177,cf2644abbbf4d410fcd39936997ef473:-136402930,031644ab45f4d410cac0c4b050c4e57d:-966165415,ac45cce7b9f4d410d3dd7551b0b53d0c:-993966895,1f04c0e7a2f4d41013bceaf623541d48:1512211787,75e384e735f4d4108978c87133012381:-2056386869,b72ec21f5cb0d4105f2b2f09a3e491c3:-38598774,771dc2dbf7b0d41092104cc113d8b654:-1716204838,581c0a9b60b0d410a6b93d63387f4b07:-305516787,6c7bce5b1ab0d41037f28a596d91aea9:939720522,9ea9021bb4b0d410b2ed5970cabd8a83:-583025977,fd79061b91b0d4109d4c7efc8901b3e8:475952231,4eb7ce9738b0d410d363d3b6441f7e5d:832167649,e5578697e4b0d410ffd0c73f333d9ee3:-941516063,2fb64e573ab0d41057a18300b2a40b49:335757779,43a6ca574cb0d4105355a6deb36ae894:-877220787,27568a5759b0d4104ac1ace1d8387210:-1543567884,7ff5c65700b0d410c6b886095688a5f5:34094396,64b502577ab0d4103528dabf45da6a42:1037198212,7075ce17aab0d41027b13274e15e2cb1:1019078189,e93c759f4370d4105027b72a79bcd7d1:-562440738,9f0cb19f1970d4104913877a5ef6174c:519133454,38bbfd5f2370d410e4269061ed1a0dac:-554936629,fd6bf95fcf70d410ca0461d7d42203f7:1506127747,893b395fb170d4106ea426e74ed6a4c1:-1647675555,f7fab15fc870d4101da630fd8590a893:1726289788,8dfab15f1470d410a86dcb1a790ed183:-1120699774,e126b95b1470d410fc23632008512827:740615155,87153d1bad70d410f9c6b775d6d44a17:1433058552,8ff4b91b8270d410985bb3f5146ac201:528764318,80d4351bab70d4108d27733d28e9cfef:1433058552,aba4f11b1670d4100d42228e9ef94d73:1720578941,f5543dd7d370d4105d0f531bb6e70787:-682104482,642479d7fa70d4102d5abf326d7f5266:522547358,4173fd970d70d410aaf3db03a6ab8c31:-563895918,c9f2b5971a70d4103480e7c421b43704:-1897906050,76927d57a770d4101f6d3a96017424a0:-1608672352,a08075170c70d41096a5140c849191a6:-2031265288,ec1ea1935770d4107835a027f21ab249:-1610331533,dbed6d536670d4108086728d1715bb95:-239212600,6d32641b063c9410552eccda1108822f:-1492167405,ef9d5053933c94109533cba6342d2e51:-41376246,47d390133ef89410c1889ed8696d49dd:320019535,b883d8df67b89410d1a2351af32ff413:1293971763,36d29c9f8fb8941073cf9735ebb6e896:-1992657357,8cc0d41f0eb89410f27747b4c9e1b36d:1269919646,542010db76b894107b9eb1b3b2159b74:-1577742050,fb9e085ba4b894107c6826c5d04d08e5:1269919646,359e441bbdb89410ce348c2a806753af:-1212367038,967d04d385b894108b8b5b3d0a8ba6e8:-515949532,925c885357b89410197c6cd1280adf0b:-1594722303,d3bb481335b89410b7980794e6751dcc:-1437615625,894b0813f1b89410dd3d69101528e70b:1853193998,4edac01389b89410e4b0dce36e766e1d:383488692,fcba88df78789410aa8e1480686e3ecb:4180216,9f1a48dfa878941080a21f96e97dc5b0:1129559782,62c0885fc0f4941025983090fe82affa:-1997513771,103e2f03c6b4941022ec507e7767c109:779088566,7a0ee70375b494108c54f3da3b8c5dc6:-1041000714,0c7d67cfe27494108292eac9904b6837:-869263996,3760db87b1f09410b446a629dc5b6375:2070159690,0ef79003a6f8541036557c43e79edcb8:13663853,1ce418cf05b85410f1291839dfbe07b7:-455890430,7bb454cfa0b854105389fa588505f0a7:-1791198561,dfc2148f87b85410f35714e1696d6f00:587134038,33b25c4f1bb854106d3bf1b042e1ab82:-1688652254,ecb25c4f8fb854109fac2a03490f881c:587134038,68625c4fd2b85410a13d210aedbf5f8c:-1400657880,4a32d84feeb85410152f9405145cecd0:1559292976,e522d84f4fb854100ee91bd989f712bc:666258703,ff515c0f09b85410a5a22bfd7a415a16:100394969,9c11104fe7b85410317fa643ff615bb7:-720570084,5ad0d8cb3ab8541061322c5b71013f9a:2119993690,11c01c0f79b854108a8e8bbf3b4d13c6:2117697134,0c90980f78b85410954cfbfff906eee0:-1787866584,3400540fb2b8541093ddc7ecc8a53f26:-1132377391,328fcccb4db85410dee59000d453cd9d:2083006344,9d1f0c8b02b85410c98924e13115f526:-632798479,6c0f48cba4b85410ae581b3a08524716:1951032809,248ec0cb5eb85410174e8d663ec7685e:502105272,0a7ec88b92b8541068b7b336528c9fad:-181152540,b3edc88bb1b85410cbb492748b4117cf:-240634341,8d0cc44baab85410faa8444998fd4552:-1742035678,0efb804b0ab8541036c9bd4ab739cad2:368811210,b85bc80be5b8541026fb04d92decdfe2:-1471596759,87fac80b81b854108e148fe7cc4f8c9f:1800277982,0f6a440bd9b85410fe2e6cef51ac3650:-2106053077,c46a040bfdb854108e8a500e92859ea2:2088994309,28f94cc7bbb854103e4fd681c4b7a5fd:-565145201,e0e98cc725b85410212ccaeca1f118f1:1316716900,bdc90cc78db85410cf97bfe09d3ba993:-2038662128,adb90cc7f3b854108510b60a8354de1e:-656788764,547d6b32cf7854108c93d991e718aeaa:-1237676860,b14daffed3385410a39a18b7b63f4812:1677894403,8e1aaf3e7f385410cb3a131cc8e7a582:-1061051802,441aeb3e3b385410b6f584193ac47806:-795645421,d1c9e33ee73854100f303f26a97aadad:2087409871,d2496ffa90385410c10dbdfb7aa99cb8:-1015712791,6dd827faa93854108732dad8ffe5a8e3:603760449,1d28a7ba773854102ecb0d9f502cc4c4:-1348673592,a7f723bae2385410b62492da9d5626f4:132703635,011f2eb2353454105e9cc490b6d7d80f:748739294,a1fe2eb2dd34541072ff932f60cac5f0:-1578810075,1657d63accb0541071f0543fd4b821ab:-1814421064,2647963a1fb054101378885328f217c1:-2028008126,69a5dab6a6b05410424057e47f4e46d5:-1814421064,2d245276f8b054107039d3ddd7f5912e:-2019224609,85621eb206b05410cdffe31a3d25677a:992504824,b73d8a7e817054109b0bac4443501a94:-1437170065,9edc827eda705410ae0565d7cd5a11ab:1009839621,b6bc427e1a705410edbdac9fc141407c:-606254600,ed7cca3e23705410a06db4fae7b8346d:-1681283976,213c4a3ea8705410dbcf9f595a27cf61:-1235097970,f1e9c2bab67054108d06103fd56cbce4:1721467095,0999827a337054103d3154b9cc70834e:-617305346,ab274e76497054100ca5963e05ce5fa4:731439258,1385c2f284705410dbf7ee21c2da1e2d:-1783001574,3c544a722c705410edb7c3359e182aaa:96139483,390a5eeedab414109c4891ac2b9487fb:-1806731267,5d0a1eee78b414103ce3a048d4618e46:648912717,faf99eee8eb41410216e38f5530ae699:-1323056389,96a9d2eef6b414104ef0bf57566251fe:2070186001,c39916eec2b41410d5f0763016942f1f:1397715438,777916ee57b41410046f8fb901f92c52:2070186001,764956eefab4141067ede6fd93b86e76:-1856083183,f5a7da6e5db414101521594268ab562c:2070186001,1397166eaab41410cc4475cc762f4f97:1513516032,ce67d66e81b414107f5de5c5c3b01030:1667963770,d9571e2edfb41410d584d6fff6aa38ba:-2070333557,a8279e2ea9b41410fda1c025b642e2f5:573936105,7886596631f01410da0a20b3493c5db4:137215803,f7761d662cf014106e5eeb8237f9ea05:1786217792,9926556616f01410d67d88c7a14850ce:-1758024366,8837ac6a7a301410bcf3afd5dbc19815:-1196389102,34272c6a90301410266506c31ba502d4:1550705108,e4024e21c93850106d0f7ec16cddd27f:-449921738,5151c221b53850103a07ef23bab652c7:-1767366235,bbf04aedadf450100784390bf9552881:457578285,5f800aed89f450101028238290175ef1:-1409757385,772042ed3cf45010cb8e3ec431c0fb10:-631880565,b54eb56d8af450105d23b80d0460a9bb:1507616913,813e756de4f450100b7e8e5a22ef849e:-965554993,ea1ef16d55f45010da591afdb39e7bd4:-619589388,44bdf92d39f450108c5de7d58f054fed:972513213,516df92debf45010ba5cbd6527771c90:-2108457356,d32db52da2f450108d33acde37c999d7:1927961799,58ac79e96ff4501033d4a72eb37f952e:1290942668,6b5a71297cf450100c2de6c0ec930052:1913823208,70f979e5f8f45010f4a1caf7ba3d0c0f:107487659,fde9f5e5a3f45010ef144683af7bb23e:-1050007559,63a971e5fdf45010eef437348f0d2100:1527614205,4598b965a6f45010e87cdc03bb8760a3:-337104157,b938f96563f4501071e2361103911b45:1324775662,9618f1651df45010730665a6aba37366:-1601134602,ac273d2511f45010aee643f57374761e:-321767969,6af679252df4501023fea6063881751f:1564762965,3b4575a101f45010d8adfa7cc0393bc8:-327992888,5d4575a1f7f450105e011f9f625f920c:1989374862,9e35b9a18df4501086ab60d35e1495c8:240560526,c283f161d4f4501045be82e38ff3980b:-1383912510,5553316196f4501030b635ac4f8c8ec4:-1888313179,e443fd217cf45010e04e4dea0bb80080:-561931298,1833f5214df45010a76e41998f87eb77:-604124530,f0b2f52126f450105c7200db90d17d6e:-194672832,8242b9ed4ab4501007e514731eb480af:244086108,6b02b5ede5b4501090b2003454cfbd98:-216692440,869131ed84b45010403996d2e95fe4ac:-163313732,c311bdad27b45010f5a903df3fe87c8e:753957306,d5bee12d87b45010edc652dd9c0b7e4a:-1111873152,306e612d73b45010b05f4bf4d715fcbd:-1698743161</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">2f40e36e1bda141094962170f54bcb6a</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-08-01 14:15:42</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>46980d4664704586b7e99771e4636889</sys_id>
+        <sys_metadata>f46e612ddbb45010fa11cf24149619bb</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService My Dashboard Tabs</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_f46e612ddbb45010fa11cf24149619bb</sys_update_name>
+        <sys_update_version display_value="sp_widget_f46e612ddbb45010fa11cf24149619bb">bbcbd90a1b129c1094962170f54bcb17</sys_update_version>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-01 14:15:42</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

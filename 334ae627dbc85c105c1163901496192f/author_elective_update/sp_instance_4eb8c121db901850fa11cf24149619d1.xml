@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css>.category-title{&#13;
+  color: $dodger-blue;&#13;
+}&#13;
+&#13;
+.description-properties {&#13;
+  color: $dodger-blue;&#13;
+}</css>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="2">818b1252db281010fa11cf2414961983</sp_column>
+        <sp_widget display_value="GService Category Items">6d5bdc2ddb5cd450fa11cf24149619c6</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 14:33:55</sys_created_on>
+        <sys_id>4eb8c121db901850fa11cf24149619d1</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Produtos Digitais</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_instance_4eb8c121db901850fa11cf24149619d1</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-05-05 14:48:20</sys_updated_on>
+        <title>Produtos Digitais</title>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"parent_id": {
+		"value": "service",
+		"displayValue": "service"
+	},
+	"selected_category": {
+		"value": "ac13c87cdba344105c116390149619ba",
+		"displayValue": "Produtos Digitais"
+	},
+	"image": {
+		"value": "produtosDigitais.png",
+		"displayValue": "produtosDigitais.png"
+	}
+}]]></widget_parameters>
+    </sp_instance>
+    <sys_translated_text action="DELETE" query="documentkey=4eb8c121db901850fa11cf24149619d1"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_instance_4eb8c121db901850fa11cf24149619d1</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_instance"&gt;&lt;sp_instance action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;class_name/&gt;&lt;color&gt;default&lt;/color&gt;&lt;css&gt;.category-title{&amp;#13;
+  color: $dodger-blue;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.description-properties {&amp;#13;
+  color: $dodger-blue;&amp;#13;
+}&lt;/css&gt;&lt;glyph/&gt;&lt;id/&gt;&lt;order&gt;1&lt;/order&gt;&lt;roles/&gt;&lt;short_description/&gt;&lt;size&gt;md&lt;/size&gt;&lt;sp_column display_value="2"&gt;818b1252db281010fa11cf2414961983&lt;/sp_column&gt;&lt;sp_widget display_value="GService Category Items"&gt;6d5bdc2ddb5cd450fa11cf24149619c6&lt;/sp_widget&gt;&lt;sys_class_name&gt;sp_instance&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-20 14:33:55&lt;/sys_created_on&gt;&lt;sys_id&gt;4eb8c121db901850fa11cf24149619d1&lt;/sys_id&gt;&lt;sys_mod_count&gt;5&lt;/sys_mod_count&gt;&lt;sys_name&gt;Produtos Digitais&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_instance_4eb8c121db901850fa11cf24149619d1&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.jorge.garcia&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-05-05 14:48:20&lt;/sys_updated_on&gt;&lt;title&gt;Produtos Digitais&lt;/title&gt;&lt;url/&gt;&lt;widget_parameters&gt;&lt;![CDATA[{
+	"parent_id": {
+		"value": "service",
+		"displayValue": "service"
+	},
+	"selected_category": {
+		"value": "ac13c87cdba344105c116390149619ba",
+		"displayValue": "Produtos Digitais"
+	},
+	"image": {
+		"value": "produtosDigitais.png",
+		"displayValue": "produtosDigitais.png"
+	}
+}]]&gt;&lt;/widget_parameters&gt;&lt;/sp_instance&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=4eb8c121db901850fa11cf24149619d1"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-68099799</payload_hash>
+        <record_name>Produtos Digitais</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-05-05 14:48:20</sys_created_on>
+        <sys_id>a7db9652db281010fa11cf24149619cd</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171e54f1fc20000001</sys_recorded_at>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-05-05 14:48:20</sys_updated_on>
+        <type>Instance</type>
+        <update_guid>6fdb9652992810103253edbfe3ef6dcc</update_guid>
+        <update_guid_history>6fdb9652992810103253edbfe3ef6dcc:-68099799,117c3f82381c1850ec37e2a4d2857e18:1939124163,bb6a0da118901850a92b968fbe118802:-517830004,520ac96154901850ba424dfc46726590:1209153312,76190d211c901850fb3fc0ecf9789d92:1873093138,0ab84521a6901850314e043ec12ac92f:839826203</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">72b0ab1edbe81010fa11cf24149619f5</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-05 19:49:12</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance">sp_instance</sys_db_object>
+        <sys_id>06a24b434c1f4b88b21d18b51fc25840</sys_id>
+        <sys_metadata>4eb8c121db901850fa11cf24149619d1</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Produtos Digitais</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_instance_4eb8c121db901850fa11cf24149619d1</sys_update_name>
+        <sys_update_version display_value="sp_instance_4eb8c121db901850fa11cf24149619d1">a7db9652db281010fa11cf24149619cd</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-05 19:49:12</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope) {
+  /* widget controller */
+  var c = this;
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.color1 {
+  background-color: red;
+}
+
+.color2 {
+  background-color: #ccc;
+}
+
+.color3 {
+  background-color: lightgreen;
+}
+
+.color4 {
+  background-color: darkblue;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>user_test</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>User Test</name>
+        <option_schema/>
+        <public>true</public>
+        <roles/>
+        <script/>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 19:39:30</sys_created_on>
+        <sys_id>39bed000db505050fa11cf24149619b7</sys_id>
+        <sys_mod_count>61</sys_mod_count>
+        <sys_name>User Test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_39bed000db505050fa11cf24149619b7</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 11:13:35</sys_updated_on>
+        <template><![CDATA[<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm color1">
+      One of four columns
+    </div>
+    <div class="col-sm color2">
+      One of four columns
+    </div>
+    <div class="col-sm color3">
+      One of four columns
+    </div>
+    <div class="col-sm color4">
+      One of four columns
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_39bed000db505050fa11cf24149619b7</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function($scope, $rootScope) {
+  /* widget controller */
+  var c = this;
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.color1 {
+  background-color: red;
+}
+
+.color2 {
+  background-color: #ccc;
+}
+
+.color3 {
+  background-color: lightgreen;
+}
+
+.color4 {
+  background-color: darkblue;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;user_test&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;User Test&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;true&lt;/public&gt;&lt;roles/&gt;&lt;script/&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-15 19:39:30&lt;/sys_created_on&gt;&lt;sys_id&gt;39bed000db505050fa11cf24149619b7&lt;/sys_id&gt;&lt;sys_mod_count&gt;61&lt;/sys_mod_count&gt;&lt;sys_name&gt;User Test&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_39bed000db505050fa11cf24149619b7&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-16 11:13:35&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div class="container-fluid"&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-sm color1"&gt;
+      One of four columns
+    &lt;/div&gt;
+    &lt;div class="col-sm color2"&gt;
+      One of four columns
+    &lt;/div&gt;
+    &lt;div class="col-sm color3"&gt;
+      One of four columns
+    &lt;/div&gt;
+    &lt;div class="col-sm color4"&gt;
+      One of four columns
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1760653671</payload_hash>
+        <record_name>User Test</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 11:13:35</sys_created_on>
+        <sys_id>f084fbc4dbdc5050fa11cf2414961957</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17182b1b2630000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 11:13:35</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>b884fbc4cedc50506c74172b0fa6a156</update_guid>
+        <update_guid_history>b884fbc4cedc50506c74172b0fa6a156:-1760653671,0964ff089cdc5050341ea749e50aa349:371584860,dd14bb08d6dc5050314c8f28b38ddb15:405538013,80737fc4abdc50500ed194f392e46c03:-1895077466,6b07e04c73505050d3c8f6615a29d54f:842975385,b7f66c0cb050505004e6b259e72204ef:87960481,8af6604c4d505050c030ac32e2cc859e:-663845151,c9e6ec0c3a5050502cce0930ca92f2ac:798955327,67d6e80c605050506cc7c625aaf393a9:1430400762,49c62c0cf9505050969336df4a5ef324:-1176870986,84b6200c5d5050504fe068703456ff0d:-1456504738,fd96a00c1050505073c79762b0895b61:1439420430,ee862cc84c5050500e012dfd72e8b9ef:-1017577051,dd76a40cde50505075e4be3bbbf0dcae:1757455388,0b466cc861505050f4fcec86593131e9:1742084515,7936e4c84150505022a58998a0beb5e5:161347465,53e5e0c87f5050503e4e99f3c060b915:-401223592,a5a568881f505050de8b76f46c84d6c3:-348302145,bd156888f65050503ffbc3f3999a7175:-1096456657,02f46888c85050504d682fc4f35b5e3f:-171254897,9de4e088ce505050e2888d6533741848:1322267421,8bd424886150505080eb61ae831443ff:1944484184,c9c46088d050505034f8937f99c1793f:1068114615,9ba42048a2505050b4a65a570ef05c33:1944484184,5294ec089c505050d28e8199eac62f6e:768425769,5b446448f0505050d4d74d98035e2461:1905058822,27f36c0848505050a1de52bba2284fe5:-1753803888,e3d3a8085550505031cd63aa146f28a7:1905058822,fcd328082b505050e73b5777247e6e47:323893041,31c36c087c505050de1be131afa8fd80:1357207835,bfa3a80879505050994b9c305c91bc99:1536057595,1793e00828505050ee2b76511ddbdef7:420384886,368368089e505050c24e373e4b15b72b:233233821,7f732008335050507548f655330d816a:1727222369,2d73200891505050acaa735921b171b0:511334305,1e6364081750505067110ed0527d25dd:1729260230,e643e0081350505045337dea6d8ef04b:-344186637,4223a0c4ff505050bdc2a1b807bc2999:999431598,4003ac8428505050c07ec07d53079a97:-1780048495,cfe22c848d50505019485c5301f022b4:-1100381679,7bb22084605050502059a60202a754f8:-409729821,83b268848d5050507bb139988ea66bd6:-584577112,62a228845a50505063d6b2b87c4ca116:-2139163527,5c026844575050506e18ca545f3ddf3d:-162078731,c8f12444fd50505035fc90d4d28d134c:-382580139,c9b1e004e5505050dcb4c027fb562e26:446723707,40d0e8c0f150505040a4ee78d17f5179:-717224786,9dc0e8c029505050e03ad4783ac15537:-358076854,2db068c08e50505036ca756cd39fcdc2:1277289221,789068c00e505050a3bba73bce65d629:-1262194755,c75024c0325050500e1008ac23bb670f:-1687514993,0740ac803450505026ed9099a5953433:1068595061,1730ac806f5050501e86ccc9f90c3ea3:1584276486,e830e4805b505050334afd09abdaaf1b:1425708446,ee106c80d0505050ffb7cc4f4a4c9d0f:579968633,eeefd480bb505050faabe2f1650a4cea:-1111343376,56df1480c45050503e6ba6adf6a74287:-1911058586,f5cf1480fb505050627863b3cb962ab3:278341847,11af1040df5050509f21d93a53e6a46e:1730542824,809fd4407b50505093edc59be96f1f39:-2025947821,b80f50406950505077aefce821f26d21:-805927324,fdbed000a1505050673718781e20bbb8:2125660987</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">cbd4bb48dbdc5050fa11cf2414961950</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 11:15:07</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>2006908564354e3487ddc5ef071e6c10</sys_id>
+        <sys_metadata>39bed000db505050fa11cf24149619b7</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>User Test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_39bed000db505050fa11cf24149619b7</sys_update_name>
+        <sys_update_version display_value="sp_widget_39bed000db505050fa11cf24149619b7">f084fbc4dbdc5050fa11cf2414961957</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 11:15:07</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

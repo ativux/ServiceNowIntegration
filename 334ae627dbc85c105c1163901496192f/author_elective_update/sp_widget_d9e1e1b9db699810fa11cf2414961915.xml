@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope,$rootScope) {
+	var c = this;
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.content {
+	background-color: white;
+  padding: 0 90px;
+  padding-bottom: 30px;
+  margin-bottom: 50px;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>gservice_list_manager</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>GService List Manager</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var localInput = input;
+	var portalUtils = new global.OCLPortalUtils_GServiceManager();
+
+	data.listFilter_widget = $sp.getWidget('gservice_list_filter_manager');
+
+	var firstQuery = 'sys_class_name=incident^assignment_groupDYNAMICd6435e965f510100a9ad2572f2b47744^ref_incident.stateIN1,2,3,6,9,11';
+	
+	options = {'table' : 'task',
+						 'view' : 'gservice_manager',
+						 'o' : 'number',
+						 'd' : 'asc',
+						 'filter' : firstQuery};
+
+	data.dataTableWidget = $sp.getWidget('gservice_requests_data_table', options);
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-22 14:20:52</sys_created_on>
+        <sys_id>d9e1e1b9db699810fa11cf2414961915</sys_id>
+        <sys_mod_count>116</sys_mod_count>
+        <sys_name>GService List Manager</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_d9e1e1b9db699810fa11cf2414961915</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-26 15:56:45</sys_updated_on>
+        <template><![CDATA[<!--<div class="content">
+  <div><sp-widget widget="data.listFilter_widget"/></div>
+  <div><sp-widget widget="data.dataTableWidget"/></div>
+</div>=-->]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_d9e1e1b9db699810fa11cf2414961915</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function($scope,$rootScope) {
+	var c = this;
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.content {
+	background-color: white;
+  padding: 0 90px;
+  padding-bottom: 30px;
+  margin-bottom: 50px;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;gservice_list_manager&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;GService List Manager&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+	var localInput = input;
+	var portalUtils = new global.OCLPortalUtils_GServiceManager();
+
+	data.listFilter_widget = $sp.getWidget('gservice_list_filter_manager');
+
+	var firstQuery = 'sys_class_name=incident^assignment_groupDYNAMICd6435e965f510100a9ad2572f2b47744^ref_incident.stateIN1,2,3,6,9,11';
+	
+	options = {'table' : 'task',
+						 'view' : 'gservice_manager',
+						 'o' : 'number',
+						 'd' : 'asc',
+						 'filter' : firstQuery};
+
+	data.dataTableWidget = $sp.getWidget('gservice_requests_data_table', options);
+
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-06-22 14:20:52&lt;/sys_created_on&gt;&lt;sys_id&gt;d9e1e1b9db699810fa11cf2414961915&lt;/sys_id&gt;&lt;sys_mod_count&gt;116&lt;/sys_mod_count&gt;&lt;sys_name&gt;GService List Manager&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_d9e1e1b9db699810fa11cf2414961915&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-06-26 15:56:45&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;!--&lt;div class="content"&gt;
+  &lt;div&gt;&lt;sp-widget widget="data.listFilter_widget"/&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;sp-widget widget="data.dataTableWidget"/&gt;&lt;/div&gt;
+&lt;/div&gt;=--&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1142436678</payload_hash>
+        <record_name>GService List Manager</record_name>
+        <reverted_from/>
+        <source>7d96c115dbe514105c11639014961916</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-26 15:56:45</sys_created_on>
+        <sys_id>f03eda83db6d1050fa11cf2414961955</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172f15876020000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-26 15:56:45</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>b83eda83176d10507ad3c7fd35279254</update_guid>
+        <update_guid_history>b83eda83176d10507ad3c7fd35279254:-1142436678,8c1ff14bee6910504afb8448e8f0d994:-1678038156,93fefd0b3869105002312c4af6efd72e:1053684294,0b9e790bd569105052756cfe61b6eee0:585156072,608eb10bf96910505e0e550e84487371:-1806835076,7a7efdc73f69105093912041f930e7c4:-454565654,3153718b40291050d9349f434b94d3e8:-1897716295,9443fd4b222910507a4d2a09201db5db:400592698,1f23354b292910505e77fa208b9f89f7:1703268848,657fd1cfefa510502211964620a2dfdf:1481876760,fb4602fa09e9dc10441b124ec73b94ed:1714380997,e2cca9727269dc108dbd16459b0477f7:571341505,5dcca9726a69dc108c03382cd1cf83b6:-1533211459,ed1ae97eaf29dc103ddba415734eff4c:-244445205,ea08e5bab229dc10e30ea73f942521cb:-1712042092,63b765ba2a29dc100fc78835741d8019:444065375,a07705b684a5dc10876361a0802c12b0:783688087,a967cd76a9a5dc101caad82e9594f83d:1621638095,285701b66fa5dc109777e3c6df27dd34:927662851,dc4701b625a5dc106849a3419a988562:51534032,ea278d767ba5dc104e8dbaa25a4e882e:927662851,d71789765fa5dc10010693831ad2be7e:51534032,9a46453658a5dc101a852b931320e6d3:662444324,409505f2afa5dc10e98b6cb325e29e0b:640271281,964549b2b2a5dc102d81ce1f7347b36d:-1842750427,451549b223a5dc10665d418af07eca88:1782574195,ebd445b227a5dc10bbdcba14448f8650:-57724161,9eb445b236a5dc10a5f4b1285c00cb48:692030505,80d34d322fa5dc10681e1afbe181e537:-2019048590,c76301725ba5dc10a77aab47be0c895b:-64327710,06f285327da5dc10bf91566c1c2e688a:739515746,2db181feb865dc10435af66d71577252:1246900473,713149becd65dc10bf6066014e540693:-1639665590,8cf081be6865dc109ce2e175f6a9142a:-610195185,c4c08d7e9665dc10f2eed536c443b35e:-2050702837,084db07ad565dc10f904632c9b474860:1703398294,651dfc3ac565dc10f4e56b5adf578646:1835811032,4bccf03a5165dc1042493c04b72aa3e2:985064263,09ccb03a4d65dc10b92f197fa5aa955c:1243107106,2a8cfcf6e265dc100a7bc2df5a912f04:78487932,4a6c703a5865dc10448641a4355d0047:-1225016621,611cb8f6ec65dc10b77b8bb26b4004da:-2117503810,29fbfcb61765dc1095d88d409a435e43:1693388733,54cbf0f6cc65dc108344907391038b10:-275602742,7f9b3cb6b365dc10a44352c8afe214f2:-49449910,c43a38760d65dc10b080544b86992f76:1973571909,7d88f8b21f65dc10c0ebee91bf73f949:1255928461,1178b8b29f65dc10ec62ab8568e0951b:1238235608,03c7f8723465dc10592f03856ecdb7c1:400561827,b106b4fe5d25dc10aa129ee707b0a172:1963509147,6480b4fa6e25dc10d44a9ccdf6cb9b19:1090466657,a16030fad225dc10dad1cb7e36fdc88a:-1669350289,2d20bcba8425dc1067af5581c98cd831:1090466657,e1df287ac125dc100a58ffe467d310a3:-890765317,7fad203ad025dc10cbeb26cc7cb43e2d:-224016270,674b24766525dc10f06cdcd39e9428e8:-997528412,cefa28367e25dc10e964ca643909923a:-1117539544,c3ea20763025dc10a7eebd7330bba6b6:762526603,ccf968f25c25dc108b7235bd373beaac:1998406652,a619e4b21b25dc1058840b1057d4ba46:1619588615,fda820b23325dc10eb0d702ccfd278f2:709733756,2f9820b20325dc10fc1fbcdd40b4dd8e:136066940,2998e8726625dc108a0b626ff026ca9e:1672149902,9ad3e0ba0ce1dc10484e730ca7dc871a:576439806,9812a8f69fe1dc10504b052c70699f68:-2144723976,5ce120f620e1dc109ac30f6ff57dcf07:389130795,36e0ac76e8e1dc100e453534250d9c6d:-1597500313,ef49756e85e99c101256fac58d6335c6:389130795,a729b12eb3e99c10486cfd72d4f1b105:1695505664,7409316e8ce99c104a6ac198320ce285:389130795,8278792eb3e99c10d0a4f65ca3ca83a2:-1376841436,82877dea10e99c10b74cc448ba7dedeb:-1599234393,fbe6b5ead8e99c10de8a346c84e5f4b9:2118979802,618631eabee99c10ac34e846553aa59b:970810230,d875bd6abae99c109788d0eed9dbf087:309010718,d705756a2ae99c10b6c2324dc4bfab21:1125765116,e564b52a24e99c107e5eefb9ebcc4675:1820510461,5104752aeee99c10d341f69638deb96d:-1729398212,d4733da65ce99c10574aab36990cfa2c:456384447,075335e61de99c10c7ffb5d0dc4f78a1:-1833874379,1d53bde624e99c10d868cf570a9758ea:-1624504215,90da59a2faa99c108a0f2da3255f2887:-885677421,310ad1e2a5a99c10c794b67f6f42fafb:-1592187067,aad991a29ca99c10107149639fd0864b:-186645215,fea5282a59a19c10b1bc972733ab78bd:-1574349589,70ae1c2a87619c1052342ccdbe0f4ebd:-272243847,81a8331a476d5c106e2a04abd00c38b0:-2036811269,085de79a2de95c1044697bbf73d62ce1:1645275557,617b6b96e5e95c10de7a609720ed9bee:-1904150581,f54ae35632e95c106851a66fdfe225c9:818811124,e2c92f1661e95c1048b106122cbb788c:-216559488,72a9e316c5e95c1070b90a11bff6f9f7:1707063277,4ce86b925be95c101c1db24593e5a136:1072831117,df67275294e95c1017ebe8d54b800b0b:-1633221076,2fb9630a30a91c10b874967ef2406606:-1863440783,2c892fc6e3a91c104910712524f7f88a:-210395386,5209638690a91c1061e63787641d0115:-1425053024,84f8e386f1a91c1037f807a5fd41c118:-1392119055,dd882746b3a91c104adc09288141c7aa:-1848948985,eeffd7827e691c1075f75d83a7e41883:-219559866,26df9b4257691c1038feea36a71be104:1717426886,cebf9b4273691c1065c1584b0f2da81d:-2139283625,e74f9702bd691c107d625be74b81272c:681580109,680f9bce82291c10c8657ef42eff32c9:-1154125336,01be5b8ec7291c10d9788a9536c67ced:1058848298,a34e9f4e13291c10a083fbde1faa2a77:1500120427,c52e174e1e291c104d182a7d4ff11ea2:-52708122,34ecdb8a89291c100564767f37bf2d3d:174207558,fbccdb8ac5291c107898a82ec7916a33:1643269724,ab3c1b4a86291c102114ca8b5f53b32f:-876809822,851c534aa4291c102b2afb38864c05cc:-501818216,68ab5bc678291c10fdfce5fc173906c1:2000887139,078b57c66c291c10c588e7075e2fe047:1177740731,c92b5786ce291c108ea0609d656d150e:2002300251,26c2e57d4269981070f857332d3890e8:1174352915,fb72e9f941699810da54faa101aeae7c:1278591013,55e12db997699810e15a42dfe5896153:-1478221615</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">fc4fdac3db6d1050fa11cf24149619ab</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-26 16:01:23</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>2a01c6fc4c6f458c8baef11198656f99</sys_id>
+        <sys_metadata>d9e1e1b9db699810fa11cf2414961915</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService List Manager</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_d9e1e1b9db699810fa11cf2414961915</sys_update_name>
+        <sys_update_version display_value="sp_widget_d9e1e1b9db699810fa11cf2414961915">f03eda83db6d1050fa11cf2414961955</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-26 16:01:23</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

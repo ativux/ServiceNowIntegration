@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="2">38777e27db40dc10fa11cf24149619ba</sp_column>
+        <sp_widget display_value="Subscribed Questions">2685ab42d730120023c84f80de6103a0</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-14 17:29:51</sys_created_on>
+        <sys_id>b4777e27db40dc10fa11cf24149619bc</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Subscribed Questions</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_instance_b4777e27db40dc10fa11cf24149619bc</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-14 17:29:51</sys_updated_on>
+        <title>Subscribed Questions</title>
+        <url/>
+        <widget_parameters/>
+    </sp_instance>
+    <sys_translated_text action="DELETE" query="documentkey=b4777e27db40dc10fa11cf24149619bc"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_instance_b4777e27db40dc10fa11cf24149619bc</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance"><sp_instance action="INSERT_OR_UPDATE"><active>true</active><class_name/><color>default</color><css/><glyph/><id/><order>1</order><roles/><short_description/><size>md</size><sp_column display_value="2">38777e27db40dc10fa11cf24149619ba</sp_column><sp_widget display_value="Subscribed Questions">2685ab42d730120023c84f80de6103a0</sp_widget><sys_class_name>sp_instance</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-04-14 17:29:51</sys_created_on><sys_id>b4777e27db40dc10fa11cf24149619bc</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Subscribed Questions</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_instance_b4777e27db40dc10fa11cf24149619bc</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-04-14 17:29:51</sys_updated_on><title>Subscribed Questions</title><url/><widget_parameters/></sp_instance><sys_translated_text action="delete_multiple" query="documentkey=b4777e27db40dc10fa11cf24149619bc"/></record_update>]]></payload>
+        <payload_hash>907271985</payload_hash>
+        <record_name>Subscribed Questions</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-14 17:29:51</sys_created_on>
+        <sys_id>f0777e27db40dc10fa11cf24149619be</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17179bd750e0000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-14 17:29:51</sys_updated_on>
+        <type>Instance</type>
+        <update_guid>f8777e274c40dc10a3d1d2dd52fb28bd</update_guid>
+        <update_guid_history>f8777e274c40dc10a3d1d2dd52fb28bd:907271985</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">c8797adcdb315450fa11cf241496198b</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-30 15:08:10</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance">sp_instance</sys_db_object>
+        <sys_id>7b665483cd0443a3990f36913c6ef469</sys_id>
+        <sys_metadata>b4777e27db40dc10fa11cf24149619bc</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Subscribed Questions</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_instance_b4777e27db40dc10fa11cf24149619bc</sys_update_name>
+        <sys_update_version display_value="sp_instance_b4777e27db40dc10fa11cf24149619bc">f0777e27db40dc10fa11cf24149619be</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-30 15:08:10</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

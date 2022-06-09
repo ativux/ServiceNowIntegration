@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_ng_pro_sp_widget">
+    <m2m_sp_ng_pro_sp_widget action="DELETE">
+        <sp_angular_provider display_value="kbCategory">ba1cfd88dbd1dc905c11639014961971</sp_angular_provider>
+        <sp_widget display_value="GService Ask Questions">1470e900db91dc905c1163901496191d</sp_widget>
+        <sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-04 19:30:42</sys_created_on>
+        <sys_id>e43c71c8dbd1dc905c116390149619de</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>kbCategory.GService Ask Questions</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_e43c71c8dbd1dc905c116390149619de</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-04 19:30:42</sys_updated_on>
+    </m2m_sp_ng_pro_sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>m2m_sp_ng_pro_sp_widget_e43c71c8dbd1dc905c116390149619de</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_ng_pro_sp_widget"><m2m_sp_ng_pro_sp_widget action="INSERT_OR_UPDATE"><sp_angular_provider display_value="kbCategory">ba1cfd88dbd1dc905c11639014961971</sp_angular_provider><sp_widget display_value="GService Ask Questions">1470e900db91dc905c1163901496191d</sp_widget><sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-06-04 19:30:42</sys_created_on><sys_id>e43c71c8dbd1dc905c116390149619de</sys_id><sys_mod_count>0</sys_mod_count><sys_name>kbCategory.GService Ask Questions</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>m2m_sp_ng_pro_sp_widget_e43c71c8dbd1dc905c116390149619de</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-06-04 19:30:42</sys_updated_on></m2m_sp_ng_pro_sp_widget></record_update>]]></payload>
+        <payload_hash>-749064745</payload_hash>
+        <record_name>kbCategory.GService Ask Questions</record_name>
+        <reverted_from/>
+        <source>0ffdd18cdb51dc905c116390149619c3</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-04 19:30:42</sys_created_on>
+        <sys_id>e43c71c8dbd1dc905c116390149619e0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17280d06cfe0000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-04 19:30:42</sys_updated_on>
+        <type>Angular Providers</type>
+        <update_guid>ec3c71c838d1dc9007e24419713100df</update_guid>
+        <update_guid_history>ec3c71c838d1dc9007e24419713100df:-749064745</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">d0ca000adb1154d05c116390149619e1</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-10 16:22:56</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_ng_pro_sp_widget">m2m_sp_ng_pro_sp_widget</sys_db_object>
+        <sys_id>2463ff73126c498a8fb4109a63c87ce9</sys_id>
+        <sys_metadata>e43c71c8dbd1dc905c116390149619de</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>kbCategory.GService Ask Questions</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_e43c71c8dbd1dc905c116390149619de</sys_update_name>
+        <sys_update_version display_value="m2m_sp_ng_pro_sp_widget_e43c71c8dbd1dc905c116390149619de">e43c71c8dbd1dc905c116390149619e0</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-10 16:22:56</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

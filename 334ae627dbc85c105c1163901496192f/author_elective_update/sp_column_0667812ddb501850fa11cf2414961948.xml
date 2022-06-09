@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column">
+    <sp_column action="DELETE">
+        <class_name/>
+        <order>6</order>
+        <size>2</size>
+        <size_lg/>
+        <size_sm/>
+        <size_xs/>
+        <sp_row display_value="1">f567812ddb501850fa11cf241496193d</sp_row>
+        <sys_class_name>sp_column</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 14:28:10</sys_created_on>
+        <sys_id>0667812ddb501850fa11cf2414961948</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>6</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_column_0667812ddb501850fa11cf2414961948</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 14:28:10</sys_updated_on>
+    </sp_column>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_column_0667812ddb501850fa11cf2414961948</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column"><sp_column action="INSERT_OR_UPDATE"><class_name/><order>6</order><size>2</size><size_lg/><size_sm/><size_xs/><sp_row display_value="1">f567812ddb501850fa11cf241496193d</sp_row><sys_class_name>sp_column</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-04-20 14:28:10</sys_created_on><sys_id>0667812ddb501850fa11cf2414961948</sys_id><sys_mod_count>0</sys_mod_count><sys_name>6</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_column_0667812ddb501850fa11cf2414961948</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-04-20 14:28:10</sys_updated_on></sp_column></record_update>]]></payload>
+        <payload_hash>518706246</payload_hash>
+        <record_name>6</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 14:28:10</sys_created_on>
+        <sys_id>8a67812ddb501850fa11cf2414961949</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17197fd468c0000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 14:28:10</sys_updated_on>
+        <type>Column</type>
+        <update_guid>8267812d5d50185044d0209b047fc349</update_guid>
+        <update_guid_history>8267812d5d50185044d0209b047fc349:518706246</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">2338416ddb501850fa11cf24149619a3</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 14:31:50</sys_created_on>
+        <sys_db_object display_value="" name="sp_column">sp_column</sys_db_object>
+        <sys_id>860c63ba5a724dda9d62de9ff6425704</sys_id>
+        <sys_metadata>0667812ddb501850fa11cf2414961948</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>6</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_column_0667812ddb501850fa11cf2414961948</sys_update_name>
+        <sys_update_version display_value="sp_column_0667812ddb501850fa11cf2414961948">8a67812ddb501850fa11cf2414961949</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 14:31:50</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

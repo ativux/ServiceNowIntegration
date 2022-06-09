@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties_category_m2m">
+    <sys_properties_category_m2m action="INSERT_OR_UPDATE">
+        <category display_value="Portal Category Properties">ed9cfcc8dbdd9c905c1163901496191d</category>
+        <order>2300</order>
+        <property display_value="gservice_planned_status_columns" name="gservice_planned_status_columns">02545210db3d1450fa11cf24149619e9</property>
+        <sys_class_name>sys_properties_category_m2m</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-07-01 17:13:35</sys_created_on>
+        <sys_id>32bf1038dbf9d0505c1163901496199f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>gservice_planned_status_columns.Portal Category Properties</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_properties_category_m2m_32bf1038dbf9d0505c1163901496199f</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-01 17:13:35</sys_updated_on>
+    </sys_properties_category_m2m>
+</record_update>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function($rootScope,$scope,$timeout) {
+
+	/* widget controller */
+
+	var c = this;
+
+	c.selectedPill = 'test'; // When page loads, default pill selected
+
+	/*broadcast to other widgets after waiting for 500 milliseconds,
+
+      just to make sure other widgets are loaded and ready to listen when we broadcast.          
+
+  */
+
+	$timeout(function(){
+
+		$rootScope.$broadcast('showHideWidget', 'test');
+
+	},500);
+
+	//broadcast the selection when ever cliked on each pill
+
+	$scope.selectPill = function(selection){
+
+		c.selectedPill = selection;
+
+		$rootScope.$broadcast('showHideWidget', selection);
+
+	};
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.text-align {&#13;
+  text-align:center;&#13;
+}&#13;
+&#13;
+.text-format-custom{&#13;
+	&#13;
+}&#13;
+&#13;
+.icon-img{&#13;
+  display: block;&#13;
+  margin: 0 auto;&#13;
+  height: 125px;&#13;
+  margin-top: 30px;&#13;
+  margin-bottom: 30px;&#13;
+}&#13;
+&#13;
+.block {&#13;
+  width: 100%;&#13;
+  display: inline-block;&#13;
+}&#13;
+&#13;
+.image-link-header{&#13;
+  font-family: $text-bold;&#13;
+  font-size: $font-size-h1;&#13;
+  padding-bottom: 25px;&#13;
+}&#13;
+&#13;
+.description {&#13;
+  font-family: $text-bold;&#13;
+  font-size: $font-size-h4;&#13;
+}&#13;
+&#13;
+.imagelink {&#13;
+}&#13;
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list>ref_sp_instance_link.type,url,ref_sp_instance_link.sc_category,ref_sp_instance_link.sc_cat_item,ref_sp_instance_link.kb_topic,ref_sp_instance_link.kb_article,ref_sp_instance_link.kb_category,ref_sp_instance_link.sp_page,title,color,class_name</field_list>
+        <has_preview>false</has_preview>
+        <id>icon_test_menu</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>Icon Test Menu</name>
+        <option_schema>[{"name":"image","section":"Presentation","label":"Image","type":"string"},{"name":"description","section":"Presentation","label":"Description","type":"string"},{"name":"link","section":"Presentation","label":"Link","type":"string"},{"name":"link_title","section":"Presentation","label":"Link Title","type":"string"},{"name":"id_name","section":"other","label":"ID Name","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function(){
+
+data.idname = options.id_name;	
+	
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-19 22:47:24</sys_created_on>
+        <sys_id>9110f595db90d450fa11cf24149619cb</sys_id>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>Icon Test Menu</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_9110f595db90d450fa11cf24149619cb</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 00:14:03</sys_updated_on>
+        <template><![CDATA[<div ng-click="selectPill(c.data.idname)">
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-20 imagelink block">
+    
+    <h1>
+      ID: {{c.data.idname}}
+    </h1>
+    
+    <!-- Widget nativo para imagens com customizações-->
+    <a href="" target="" aria-label="{{c.options.description}}" class="text-align"> <!--Link para criar modal ou page-->
+      ${{{c.options.link_title}}}
+
+      <img src="{{c.options.image}}" class="icon-img"/>
+      <div class="image-link-header text-truncate">
+        {{c.options.title}}
+      </div>
+      <div class="description"><p class="text-format-custom">
+        ${{{c.options.description}}}
+        </p>
+      </div>
+    </a>
+  </div>
+
+
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_9110f595db90d450fa11cf24149619cb</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function($rootScope,$scope,$timeout) {
+
+	/* widget controller */
+
+	var c = this;
+
+	c.selectedPill = 'test'; // When page loads, default pill selected
+
+	/*broadcast to other widgets after waiting for 500 milliseconds,
+
+      just to make sure other widgets are loaded and ready to listen when we broadcast.          
+
+  */
+
+	$timeout(function(){
+
+		$rootScope.$broadcast('showHideWidget', 'test');
+
+	},500);
+
+	//broadcast the selection when ever cliked on each pill
+
+	$scope.selectPill = function(selection){
+
+		c.selectedPill = selection;
+
+		$rootScope.$broadcast('showHideWidget', selection);
+
+	};
+
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.text-align {&amp;#13;
+  text-align:center;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.text-format-custom{&amp;#13;
+	&amp;#13;
+}&amp;#13;
+&amp;#13;
+.icon-img{&amp;#13;
+  display: block;&amp;#13;
+  margin: 0 auto;&amp;#13;
+  height: 125px;&amp;#13;
+  margin-top: 30px;&amp;#13;
+  margin-bottom: 30px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.block {&amp;#13;
+  width: 100%;&amp;#13;
+  display: inline-block;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.image-link-header{&amp;#13;
+  font-family: $text-bold;&amp;#13;
+  font-size: $font-size-h1;&amp;#13;
+  padding-bottom: 25px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.description {&amp;#13;
+  font-family: $text-bold;&amp;#13;
+  font-size: $font-size-h4;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.imagelink {&amp;#13;
+}&amp;#13;
+&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list&gt;ref_sp_instance_link.type,url,ref_sp_instance_link.sc_category,ref_sp_instance_link.sc_cat_item,ref_sp_instance_link.kb_topic,ref_sp_instance_link.kb_article,ref_sp_instance_link.kb_category,ref_sp_instance_link.sp_page,title,color,class_name&lt;/field_list&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;icon_test_menu&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;Icon Test Menu&lt;/name&gt;&lt;option_schema&gt;[{"name":"image","section":"Presentation","label":"Image","type":"string"},{"name":"description","section":"Presentation","label":"Description","type":"string"},{"name":"link","section":"Presentation","label":"Link","type":"string"},{"name":"link_title","section":"Presentation","label":"Link Title","type":"string"},{"name":"id_name","section":"other","label":"ID Name","type":"string"}]&lt;/option_schema&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function(){
+
+data.idname = options.id_name;	
+	
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-19 22:47:24&lt;/sys_created_on&gt;&lt;sys_id&gt;9110f595db90d450fa11cf24149619cb&lt;/sys_id&gt;&lt;sys_mod_count&gt;10&lt;/sys_mod_count&gt;&lt;sys_name&gt;Icon Test Menu&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_9110f595db90d450fa11cf24149619cb&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-20 00:14:03&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div ng-click="selectPill(c.data.idname)"&gt;
+
+  &lt;div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-20 imagelink block"&gt;
+    
+    &lt;h1&gt;
+      ID: {{c.data.idname}}
+    &lt;/h1&gt;
+    
+    &lt;!-- Widget nativo para imagens com customizações--&gt;
+    &lt;a href="" target="" aria-label="{{c.options.description}}" class="text-align"&gt; &lt;!--Link para criar modal ou page--&gt;
+      ${{{c.options.link_title}}}
+
+      &lt;img src="{{c.options.image}}" class="icon-img"/&gt;
+      &lt;div class="image-link-header text-truncate"&gt;
+        {{c.options.title}}
+      &lt;/div&gt;
+      &lt;div class="description"&gt;&lt;p class="text-format-custom"&gt;
+        ${{{c.options.description}}}
+        &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>617786365</payload_hash>
+        <record_name>Icon Test Menu</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 00:14:03</sys_created_on>
+        <sys_id>eae3ced9dbd0d450fa11cf24149619a3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17194ef4e360000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 00:14:03</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>a2e3ced9ced0d450ce851afbb38acca3</update_guid>
+        <update_guid_history>a2e3ced9ced0d450ce851afbb38acca3:617786365,a08382d934d0d450424069a9c4da33ee:232374290,3dc4f9d9a890d450018482ea2e8df75f:613672482,d3b4b9d92190d450720676d6899b0a7d:-436821872,66a371597390d450852f2896014b2791:1760606146,4003f5591590d4509148bb80b628a39e:-2023442000,3fe2f919dd90d450fdc61e42d8be093a:-1859403328,19d2b5191390d45081fd833e17847c02:-1065254096,e3b27d195b90d45018f9402388a3959a:-572596165,83a2f5193590d450dff5ebcf808cb274:1584619977,9510f5959490d45099d98fe5c01551cd:329656101</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">30198a51db14d450fa11cf241496192f</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 00:36:36</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>270f7415bab143028d194effa257fde4</sys_id>
+        <sys_metadata>9110f595db90d450fa11cf24149619cb</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Icon Test Menu</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_9110f595db90d450fa11cf24149619cb</sys_update_name>
+        <sys_update_version display_value="sp_widget_9110f595db90d450fa11cf24149619cb">eae3ced9dbd0d450fa11cf24149619a3</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 00:36:36</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

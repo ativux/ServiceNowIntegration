@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color/>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>3</order>
+        <roles/>
+        <short_description/>
+        <size/>
+        <sp_column display_value="1">2c93adb2db29dc10fa11cf241496191f</sp_column>
+        <sp_widget display_value="GService Typeahead Search">d1156733dbc81050fa11cf2414961952</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-07-02 12:52:44</sys_created_on>
+        <sys_id>f79d2405dbbd14505c1163901496194f</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_instance_f79d2405dbbd14505c1163901496194f</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-02 12:58:15</sys_updated_on>
+        <title/>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"title": {
+		"value": "",
+		"displayValue": ""
+	},
+	"color": {
+		"value": "",
+		"displayValue": ""
+	},
+	"glyph": {
+		"value": "",
+		"displayValue": ""
+	},
+	"size": {
+		"value": "",
+		"displayValue": ""
+	},
+	"limit": {
+		"value": null,
+		"displayValue": ""
+	},
+	"contextual_search_sources": {
+		"value": "e1806577db985010fa11cf2414961920",
+		"displayValue": "Solicite Serviços Categorias"
+	},
+	"broadcast_name": {
+		"value": "getSearchedItemsCategory",
+		"displayValue": "getSearchedItemsCategory"
+	},
+	"category_color": {
+		"value": "",
+		"displayValue": ""
+	},
+	"category_bg_color": {
+		"value": "",
+		"displayValue": ""
+	},
+	"category_bd_color": {
+		"value": "",
+		"displayValue": ""
+	},
+	"category_search_img": {
+		"value": "searchGlass.png",
+		"displayValue": "searchGlass.png"
+	},
+	"filter_search_source": {
+		"value": "",
+		"displayValue": ""
+	},
+	"category_id": {
+		"value": "",
+		"displayValue": ""
+	},
+	"kb_category_id": {
+		"value": "",
+		"displayValue": ""
+	}
+}]]></widget_parameters>
+    </sp_instance>
+    <sys_translated_text action="DELETE" query="documentkey=f79d2405dbbd14505c1163901496194f"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_instance_f79d2405dbbd14505c1163901496194f</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_instance"&gt;&lt;sp_instance action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;class_name/&gt;&lt;color/&gt;&lt;css/&gt;&lt;glyph/&gt;&lt;id/&gt;&lt;order&gt;3&lt;/order&gt;&lt;roles/&gt;&lt;short_description/&gt;&lt;size/&gt;&lt;sp_column display_value="1"&gt;2c93adb2db29dc10fa11cf241496191f&lt;/sp_column&gt;&lt;sp_widget display_value="GService Typeahead Search"&gt;d1156733dbc81050fa11cf2414961952&lt;/sp_widget&gt;&lt;sys_class_name&gt;sp_instance&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-07-02 12:52:44&lt;/sys_created_on&gt;&lt;sys_id&gt;f79d2405dbbd14505c1163901496194f&lt;/sys_id&gt;&lt;sys_mod_count&gt;6&lt;/sys_mod_count&gt;&lt;sys_name/&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_instance_f79d2405dbbd14505c1163901496194f&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-07-02 12:58:15&lt;/sys_updated_on&gt;&lt;title/&gt;&lt;url/&gt;&lt;widget_parameters&gt;&lt;![CDATA[{
+	"title": {
+		"value": "",
+		"displayValue": ""
+	},
+	"color": {
+		"value": "",
+		"displayValue": ""
+	},
+	"glyph": {
+		"value": "",
+		"displayValue": ""
+	},
+	"size": {
+		"value": "",
+		"displayValue": ""
+	},
+	"limit": {
+		"value": null,
+		"displayValue": ""
+	},
+	"contextual_search_sources": {
+		"value": "e1806577db985010fa11cf2414961920",
+		"displayValue": "Solicite Serviços Categorias"
+	},
+	"broadcast_name": {
+		"value": "getSearchedItemsCategory",
+		"displayValue": "getSearchedItemsCategory"
+	},
+	"category_color": {
+		"value": "",
+		"displayValue": ""
+	},
+	"category_bg_color": {
+		"value": "",
+		"displayValue": ""
+	},
+	"category_bd_color": {
+		"value": "",
+		"displayValue": ""
+	},
+	"category_search_img": {
+		"value": "searchGlass.png",
+		"displayValue": "searchGlass.png"
+	},
+	"filter_search_source": {
+		"value": "",
+		"displayValue": ""
+	},
+	"category_id": {
+		"value": "",
+		"displayValue": ""
+	},
+	"kb_category_id": {
+		"value": "",
+		"displayValue": ""
+	}
+}]]&gt;&lt;/widget_parameters&gt;&lt;/sp_instance&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=f79d2405dbbd14505c1163901496194f"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>747680653</payload_hash>
+        <record_name/>
+        <reverted_from/>
+        <source>7d96c115dbe514105c11639014961916</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-07-02 12:58:15</sys_created_on>
+        <sys_id>18eeacc5dbbd14505c11639014961930</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1730f9b2f3d0000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-02 12:58:15</sys_updated_on>
+        <type>Instance</type>
+        <update_guid>dceeacc551bd1450dbe59f010f166d2f</update_guid>
+        <update_guid_history>dceeacc551bd1450dbe59f010f166d2f:747680653,04ceacc598bd1450b45aac3793a2c227:2012083917,dd9ee4c5babd1450b4319c56b259554d:1106325884,296eec85a3bd14500dcb4400e4cc6027:29782209,781eac4506bd1450cc309316a300a5e1:1893277064,99ddac05b8bd1450fe266f91ece77674:-1125973840,b39d24058ebd145088cf1dd46b886a51:-1988198299</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">7cbfec49dbbd14505c1163901496193c</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-07-02 13:01:50</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance">sp_instance</sys_db_object>
+        <sys_id>3b8fb8e4332f4098b0514757d4ccf440</sys_id>
+        <sys_metadata>f79d2405dbbd14505c1163901496194f</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_instance_f79d2405dbbd14505c1163901496194f</sys_update_name>
+        <sys_update_version display_value="sp_instance_f79d2405dbbd14505c1163901496194f">18eeacc5dbbd14505c11639014961930</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-02 13:01:50</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

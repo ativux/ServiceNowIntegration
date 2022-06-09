@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope, $timeout) {
+	/* widget controller */
+	var c = this;
+	c.title = "";
+	c.categoryColor = "";
+	c.bdColor = "";
+
+	$scope.$on(c.data.broadcast_name, function (event, data, searchSourceID, categorySearch) {
+		if(categorySearch){
+			c.data.searchSources = data.results[0].items;
+			c.showArticles = true;
+			for(var i in c.data.searchSources){
+				c.data.searchSources[i].resultLimit = 2;
+				if(c.data.searchSources[i].results.length > c.data.searchSources[i].resultLimit){
+					c.data.searchSources[i].seeAllMsg = c.data.msgs.seeAll;
+				}else{
+					c.data.searchSources[i].seeAllMsg = c.data.msgs.seeLess;
+				}
+			}
+		}
+		else{
+			c.data.action = "searchedItem";
+			c.data.searchSourceID = searchSourceID;
+			c.server.update().then(function() {
+				if(data.length > 0){
+					for(var i in data){
+						var jsonArticle = {"title": replaceHtml(data[i].primary), 
+															 "id": data[i].sys_id,
+															 "description" : data[i].fields[0].display_value,
+															 "table" : data[i].table};
+						if(jsonArticle.description == '(empty)'){
+							jsonArticle.description = '';
+						}
+						var sourceTable = data[i].table;
+						if(sourceTable == "sc_category"){
+							sourceTable = "sc_cat_item";
+						}
+						for (var i in c.data.searchSources){
+							if(c.data.searchSources[i].table == sourceTable){
+								c.data.searchSources[i].results.push(jsonArticle);
+							}
+						}
+					}
+					c.showArticles = true;
+				}
+				else{
+					c.showArticles = false;
+				}
+			});
+		}
+	});
+
+	$scope.$on((c.data.broadcast_name + "Title"), function (event, categoryTitle, categoryColor) {
+		c.title = categoryTitle;
+		c.categoryColor = categoryColor;
+		c.bdColor = "bd" + categoryColor;
+
+	});
+
+	$scope.$on(c.data.broadcast_name + "Clear", function (event) {
+		c.data.searchSources = [];
+	});
+
+	//When an article searched by the "GService Typeahead Search" widget is clicked, we send the data to the widget embedded
+	//in this widget and show this widget in a modal.
+	c.showResult = function(resultID, table){
+		if(table == "kb_knowledge"){
+			var jsonArticle = {articleID : resultID, categoryTitle : c.title, categoryColor: c.categoryColor};
+			var showCategory = false;
+			if(c.data.broadcast_name == "getSearchedItemsCategory"){
+				showCategory = true;
+			}
+			$rootScope.$broadcast((c.data.broadcast_name + "openArticle"), jsonArticle, showCategory);
+			c.isLoading = true;
+			var modalID = "#" + c.data.articleModalID;
+			$(modalID).modal("show");
+		}
+		else if(table == "sc_cat_item"){
+			$rootScope.$broadcast('openSelectedCategoryItem', false, resultID);
+		}
+		else if(table == "sc_req_item"){
+
+		}
+		else if(table == "sc_category"){
+			$rootScope.$broadcast('openSelectedCategoryItem', resultID, false);
+		}
+
+	}
+
+	c.seeAll = function(searchSource){
+		if(searchSource.resultLimit != null){
+			searchSource.resultLimit = null;
+			searchSource.seeAllMsg = c.data.msgs.seeLess;
+		}
+		else{
+			searchSource.resultLimit = 2;
+			searchSource.seeAllMsg = c.data.msgs.seeAll;
+		}
+
+
+	}
+
+	function replaceHtml(string) {
+		return string.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&quot;/g,'"');
+	}
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.articles {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  .article {
+    color: $slate-gray;
+
+    .article_title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      span { font-weight: normal; }
+    }
+    .article_list {
+      font-size: 14px;
+      margin-top: 5px;
+      text-decoration: underline;
+
+      &amp;:hover {
+        font-weight: bold;
+      }
+    }
+    .article_all {
+      transition: .4s ease-in-out;
+      font-weight: bold;
+      text-decoration: underline;
+      margin-top: 10px;
+
+      &amp;:hover {
+        opacity: .7;
+        transition: .2s ease-in-out;
+      }
+    }
+    .article_line {
+      height: 1px;
+      margin: 20px 0;
+      background-color: $slate-gray;;
+    }
+  }
+
+}
+
+.modal_article {
+  color: $slate-gray;
+
+  .modal-body {
+    .article_widget {
+      padding: 0 50px;
+    }
+  }
+  .modal-footer {
+    margin: 0 50px;
+    border-top: 2px solid $dodger-blue;
+
+    .help_like, .help_dislike {
+      transition: .4s ease-in-out;
+      &amp;:hover {
+        transition: .2s ease-in-out;
+        transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        -o-transform: scale(1.1);
+      }
+    }
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>teste_henrique_result</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Teste Henrique Result</name>
+        <option_schema>[{"name":"broadcast_name","section":"Behavior","label":"Broadcast Name","type":"string"}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	var localInput = input;
+	var portalUtils = new global.OCLPortalUtils();
+	data.broadcast_name = options.broadcast_name;
+	data.articleModalID = data.broadcast_name + "ArticleModal";
+	data.msgs = {};
+	data.msgs.seeAll = gs.getMessage("See all").toLowerCase();
+	data.msgs.seeLess = gs.getMessage("See less").toLowerCase();
+	data.article_widget_options = {"broadcast_name": (data.broadcast_name + "openArticle")};
+	data.articleWidget = $sp.getWidget("gservice_knowledge_article_content", data.article_widget_options);
+	data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful_v2");
+
+	if(localInput){
+		if(localInput.action == "searchedItem"){
+			data.broadcast_name = localInput.broadcast_name;
+			data.searchSources = portalUtils.setSearchSources(localInput.searchSourceID, data.msgs.seeAll);
+		}
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-07-02 12:50:10</sys_created_on>
+        <sys_id>8e0de481dbbd14505c11639014961931</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Teste Henrique Result</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_8e0de481dbbd14505c11639014961931</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-02 12:51:57</sys_updated_on>
+        <template><![CDATA[<pre>{{data.searchSources | json}}</pre>
+<div class="col-lg-12 col-md-12 col-sm-12">
+  <div class="articles">
+    <div class="article" ng-if="c.showArticles" ng-repeat="searchSource in data.searchSources">
+      <div ng-if="searchSource.results.length > 0">
+        <div class="article_title">{{searchSource.name}} <span>({{searchSource.results.length}})</span></div>
+        <div  ng-repeat="results in searchSource.results | limitTo: searchSource.resultLimit">
+          <div class="article_list" ng-click="c.showResult(results.id, results.table)">{{results.title}}</div>
+          <div>{{results.description}}</div>
+        </div>
+        <div class="article_all" ng-if="searchSource.results.length > 2" ng-click="c.seeAll(searchSource)">{{searchSource.seeAllMsg}}</div>
+        <div class="article_line"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade modal_article" id="{{data.articleModalID}}" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="article_widget">
+          <sp-widget widget="data.articleWidget"></sp-widget>
+        </div>
+      </div>
+      <div class="modal-footer {{c.bdColor}}">
+        <sp-widget widget="data.helpfulWidget"></sp-widget>
+      </div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_8e0de481dbbd14505c11639014961931</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function($scope, $rootScope, $timeout) {
+	/* widget controller */
+	var c = this;
+	c.title = "";
+	c.categoryColor = "";
+	c.bdColor = "";
+
+	$scope.$on(c.data.broadcast_name, function (event, data, searchSourceID, categorySearch) {
+		if(categorySearch){
+			c.data.searchSources = data.results[0].items;
+			c.showArticles = true;
+			for(var i in c.data.searchSources){
+				c.data.searchSources[i].resultLimit = 2;
+				if(c.data.searchSources[i].results.length &gt; c.data.searchSources[i].resultLimit){
+					c.data.searchSources[i].seeAllMsg = c.data.msgs.seeAll;
+				}else{
+					c.data.searchSources[i].seeAllMsg = c.data.msgs.seeLess;
+				}
+			}
+		}
+		else{
+			c.data.action = "searchedItem";
+			c.data.searchSourceID = searchSourceID;
+			c.server.update().then(function() {
+				if(data.length &gt; 0){
+					for(var i in data){
+						var jsonArticle = {"title": replaceHtml(data[i].primary), 
+															 "id": data[i].sys_id,
+															 "description" : data[i].fields[0].display_value,
+															 "table" : data[i].table};
+						if(jsonArticle.description == '(empty)'){
+							jsonArticle.description = '';
+						}
+						var sourceTable = data[i].table;
+						if(sourceTable == "sc_category"){
+							sourceTable = "sc_cat_item";
+						}
+						for (var i in c.data.searchSources){
+							if(c.data.searchSources[i].table == sourceTable){
+								c.data.searchSources[i].results.push(jsonArticle);
+							}
+						}
+					}
+					c.showArticles = true;
+				}
+				else{
+					c.showArticles = false;
+				}
+			});
+		}
+	});
+
+	$scope.$on((c.data.broadcast_name + "Title"), function (event, categoryTitle, categoryColor) {
+		c.title = categoryTitle;
+		c.categoryColor = categoryColor;
+		c.bdColor = "bd" + categoryColor;
+
+	});
+
+	$scope.$on(c.data.broadcast_name + "Clear", function (event) {
+		c.data.searchSources = [];
+	});
+
+	//When an article searched by the "GService Typeahead Search" widget is clicked, we send the data to the widget embedded
+	//in this widget and show this widget in a modal.
+	c.showResult = function(resultID, table){
+		if(table == "kb_knowledge"){
+			var jsonArticle = {articleID : resultID, categoryTitle : c.title, categoryColor: c.categoryColor};
+			var showCategory = false;
+			if(c.data.broadcast_name == "getSearchedItemsCategory"){
+				showCategory = true;
+			}
+			$rootScope.$broadcast((c.data.broadcast_name + "openArticle"), jsonArticle, showCategory);
+			c.isLoading = true;
+			var modalID = "#" + c.data.articleModalID;
+			$(modalID).modal("show");
+		}
+		else if(table == "sc_cat_item"){
+			$rootScope.$broadcast('openSelectedCategoryItem', false, resultID);
+		}
+		else if(table == "sc_req_item"){
+
+		}
+		else if(table == "sc_category"){
+			$rootScope.$broadcast('openSelectedCategoryItem', resultID, false);
+		}
+
+	}
+
+	c.seeAll = function(searchSource){
+		if(searchSource.resultLimit != null){
+			searchSource.resultLimit = null;
+			searchSource.seeAllMsg = c.data.msgs.seeLess;
+		}
+		else{
+			searchSource.resultLimit = 2;
+			searchSource.seeAllMsg = c.data.msgs.seeAll;
+		}
+
+
+	}
+
+	function replaceHtml(string) {
+		return string.replace(/&amp;lt;/g,'&lt;').replace(/&amp;gt;/g,'&gt;').replace(/&amp;amp;/g,'&amp;').replace(/&amp;quot;/g,'"');
+	}
+
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.articles {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  .article {
+    color: $slate-gray;
+
+    .article_title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      span { font-weight: normal; }
+    }
+    .article_list {
+      font-size: 14px;
+      margin-top: 5px;
+      text-decoration: underline;
+
+      &amp;amp;:hover {
+        font-weight: bold;
+      }
+    }
+    .article_all {
+      transition: .4s ease-in-out;
+      font-weight: bold;
+      text-decoration: underline;
+      margin-top: 10px;
+
+      &amp;amp;:hover {
+        opacity: .7;
+        transition: .2s ease-in-out;
+      }
+    }
+    .article_line {
+      height: 1px;
+      margin: 20px 0;
+      background-color: $slate-gray;;
+    }
+  }
+
+}
+
+.modal_article {
+  color: $slate-gray;
+
+  .modal-body {
+    .article_widget {
+      padding: 0 50px;
+    }
+  }
+  .modal-footer {
+    margin: 0 50px;
+    border-top: 2px solid $dodger-blue;
+
+    .help_like, .help_dislike {
+      transition: .4s ease-in-out;
+      &amp;amp;:hover {
+        transition: .2s ease-in-out;
+        transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        -o-transform: scale(1.1);
+      }
+    }
+  }
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;teste_henrique_result&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]&gt;&lt;/link&gt;&lt;name&gt;Teste Henrique Result&lt;/name&gt;&lt;option_schema&gt;[{"name":"broadcast_name","section":"Behavior","label":"Broadcast Name","type":"string"}]&lt;/option_schema&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+	var localInput = input;
+	var portalUtils = new global.OCLPortalUtils();
+	data.broadcast_name = options.broadcast_name;
+	data.articleModalID = data.broadcast_name + "ArticleModal";
+	data.msgs = {};
+	data.msgs.seeAll = gs.getMessage("See all").toLowerCase();
+	data.msgs.seeLess = gs.getMessage("See less").toLowerCase();
+	data.article_widget_options = {"broadcast_name": (data.broadcast_name + "openArticle")};
+	data.articleWidget = $sp.getWidget("gservice_knowledge_article_content", data.article_widget_options);
+	data.helpfulWidget = $sp.getWidget("gservice_knowledge_article_helpful_v2");
+
+	if(localInput){
+		if(localInput.action == "searchedItem"){
+			data.broadcast_name = localInput.broadcast_name;
+			data.searchSources = portalUtils.setSearchSources(localInput.searchSourceID, data.msgs.seeAll);
+		}
+	}
+
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-07-02 12:50:10&lt;/sys_created_on&gt;&lt;sys_id&gt;8e0de481dbbd14505c11639014961931&lt;/sys_id&gt;&lt;sys_mod_count&gt;2&lt;/sys_mod_count&gt;&lt;sys_name&gt;Teste Henrique Result&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_8e0de481dbbd14505c11639014961931&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-07-02 12:51:57&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;pre&gt;{{data.searchSources | json}}&lt;/pre&gt;
+&lt;div class="col-lg-12 col-md-12 col-sm-12"&gt;
+  &lt;div class="articles"&gt;
+    &lt;div class="article" ng-if="c.showArticles" ng-repeat="searchSource in data.searchSources"&gt;
+      &lt;div ng-if="searchSource.results.length &gt; 0"&gt;
+        &lt;div class="article_title"&gt;{{searchSource.name}} &lt;span&gt;({{searchSource.results.length}})&lt;/span&gt;&lt;/div&gt;
+        &lt;div  ng-repeat="results in searchSource.results | limitTo: searchSource.resultLimit"&gt;
+          &lt;div class="article_list" ng-click="c.showResult(results.id, results.table)"&gt;{{results.title}}&lt;/div&gt;
+          &lt;div&gt;{{results.description}}&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="article_all" ng-if="searchSource.results.length &gt; 2" ng-click="c.seeAll(searchSource)"&gt;{{searchSource.seeAllMsg}}&lt;/div&gt;
+        &lt;div class="article_line"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Modal --&gt;
+&lt;div class="modal fade modal_article" id="{{data.articleModalID}}" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true"&gt;
+  &lt;div class="modal-dialog modal-lg" role="document"&gt;
+    &lt;div class="modal-content"&gt;
+      &lt;div class="modal-body"&gt;
+        &lt;button type="button" class="close" data-dismiss="modal" aria-label="Close"&gt;
+          &lt;span aria-hidden="true"&gt;&amp;times;&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;div class="article_widget"&gt;
+          &lt;sp-widget widget="data.articleWidget"&gt;&lt;/sp-widget&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="modal-footer {{c.bdColor}}"&gt;
+        &lt;sp-widget widget="data.helpfulWidget"&gt;&lt;/sp-widget&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1147862930</payload_hash>
+        <record_name>Teste Henrique Result</record_name>
+        <reverted_from/>
+        <source>7d96c115dbe514105c11639014961916</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-07-02 12:51:57</sys_created_on>
+        <sys_id>d47d6cc1dbbd14505c11639014961939</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1730f956d0d0000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-02 12:51:57</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>9c7d6cc1b3bd145006cddf8caeb44238</update_guid>
+        <update_guid_history>9c7d6cc1b3bd145006cddf8caeb44238:1147862930,1d4d24c179bd1450c1609d799f02e999:-1937820939,c60de48167bd145082316f47565e4133:-1203382529</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">cb9f6849dbbd14505c116390149619fd</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-07-02 13:01:26</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>0fbde79055c4437081654cf3b131f379</sys_id>
+        <sys_metadata>8e0de481dbbd14505c11639014961931</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Teste Henrique Result</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_8e0de481dbbd14505c11639014961931</sys_update_name>
+        <sys_update_version display_value="sp_widget_8e0de481dbbd14505c11639014961931">d47d6cc1dbbd14505c11639014961939</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-02 13:01:26</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

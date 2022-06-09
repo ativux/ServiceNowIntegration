@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_page">
+    <sp_page action="DELETE">
+        <category>custom</category>
+        <css/>
+        <draft>false</draft>
+        <dynamic_title_structure/>
+        <id>teste_giovanni</id>
+        <internal>false</internal>
+        <public>false</public>
+        <roles/>
+        <short_description/>
+        <sys_class_name>sp_page</sys_class_name>
+        <sys_created_by>organize.giovanni</sys_created_by>
+        <sys_created_on>2020-05-06 15:58:02</sys_created_on>
+        <sys_id>526537eadb285010fa11cf24149619f6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>teste_giovanni</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_page_526537eadb285010fa11cf24149619f6</sys_update_name>
+        <sys_updated_by>organize.giovanni</sys_updated_by>
+        <sys_updated_on>2020-05-06 15:58:02</sys_updated_on>
+        <title>Teste_Giovanni</title>
+    </sp_page>
+    <sys_translated_text action="DELETE" query="documentkey=526537eadb285010fa11cf24149619f6"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_page_526537eadb285010fa11cf24149619f6</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_page"><sp_page action="INSERT_OR_UPDATE"><category>custom</category><css/><draft>false</draft><dynamic_title_structure/><id>teste_giovanni</id><internal>false</internal><public>false</public><roles/><short_description/><sys_class_name>sp_page</sys_class_name><sys_created_by>organize.giovanni</sys_created_by><sys_created_on>2020-05-06 15:58:02</sys_created_on><sys_id>526537eadb285010fa11cf24149619f6</sys_id><sys_mod_count>0</sys_mod_count><sys_name>teste_giovanni</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_page_526537eadb285010fa11cf24149619f6</sys_update_name><sys_updated_by>organize.giovanni</sys_updated_by><sys_updated_on>2020-05-06 15:58:02</sys_updated_on><title>Teste_Giovanni</title></sp_page><sys_translated_text action="delete_multiple" query="documentkey=526537eadb285010fa11cf24149619f6"/></record_update>]]></payload>
+        <payload_hash>-884081060</payload_hash>
+        <record_name>teste_giovanni</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.giovanni</sys_created_by>
+        <sys_created_on>2020-05-06 15:58:02</sys_created_on>
+        <sys_id>526537eadb285010fa11cf24149619f9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171eab54d3b0000001</sys_recorded_at>
+        <sys_updated_by>organize.giovanni</sys_updated_by>
+        <sys_updated_on>2020-05-06 15:58:02</sys_updated_on>
+        <type>Page</type>
+        <update_guid>5a6537ea13285010182c67462c0273f8</update_guid>
+        <update_guid_history>5a6537ea13285010182c67462c0273f8:-884081060</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">8358b32e1b9e901097c0dca0f54bcba5</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-08-01 16:00:47</sys_created_on>
+        <sys_db_object display_value="" name="sp_page">sp_page</sys_db_object>
+        <sys_id>193020df77da46fc82d445b2d04a7ae1</sys_id>
+        <sys_metadata>526537eadb285010fa11cf24149619f6</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>teste_giovanni</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_page_526537eadb285010fa11cf24149619f6</sys_update_name>
+        <sys_update_version display_value="sp_page_526537eadb285010fa11cf24149619f6">526537eadb285010fa11cf24149619f9</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-08-01 16:00:47</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
+    <sp_container action="DELETE">
+        <background_color/>
+        <background_image/>
+        <background_style>default</background_style>
+        <bootstrap_alt>false</bootstrap_alt>
+        <class_name/>
+        <container_class_name/>
+        <name>Henrique Test - Container 1</name>
+        <order>1</order>
+        <sp_page display_value="henrique_test">290a8d6adbb01410fa11cf241496193e</sp_page>
+        <subheader>false</subheader>
+        <sys_class_name>sp_container</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-18 13:44:56</sys_created_on>
+        <sys_id>690a8d6adbb01410fa11cf2414961941</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Henrique Test - Container 1</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_container_690a8d6adbb01410fa11cf2414961941</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-24 17:52:43</sys_updated_on>
+        <title/>
+        <width>container</width>
+    </sp_container>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_container_690a8d6adbb01410fa11cf2414961941</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name/><container_class_name/><name>Henrique Test - Container 1</name><order>1</order><sp_page display_value="henrique_test">290a8d6adbb01410fa11cf241496193e</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-05-18 13:44:56</sys_created_on><sys_id>690a8d6adbb01410fa11cf2414961941</sys_id><sys_mod_count>5</sys_mod_count><sys_name>Henrique Test - Container 1</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_container_690a8d6adbb01410fa11cf2414961941</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-06-24 17:52:43</sys_updated_on><title/><width>container</width></sp_container></record_update>]]></payload>
+        <payload_hash>-1155304969</payload_hash>
+        <record_name>Henrique Test - Container 1</record_name>
+        <reverted_from/>
+        <source>7d96c115dbe514105c11639014961916</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-24 17:52:43</sys_created_on>
+        <sys_id>0495282adba19c10fa11cf2414961945</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172e775e8a90000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-24 17:52:43</sys_updated_on>
+        <type>Container</type>
+        <update_guid>c895282affa19c10c09d1b32f45f6844</update_guid>
+        <update_guid_history>c895282affa19c10c09d1b32f45f6844:-1155304969,8fce546af6619c10d2171292c093c9a5:-70943272,16c2b1fe89fc1410bf8c4415c3c2bfe5:-1803246479,89a2f1fe0ffc14105e3566600f53d7e1:789137197,cbf1fd7e9ffc141073da1fba9789d03d:944565073,a50a8d6aedb014105025108cb366af43:-1774717307</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">d083e9b2db29dc10fa11cf24149619dc</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-25 17:01:49</sys_created_on>
+        <sys_db_object display_value="" name="sp_container">sp_container</sys_db_object>
+        <sys_id>04143cdb6f62400c80d7f5c9c8ee5d84</sys_id>
+        <sys_metadata>690a8d6adbb01410fa11cf2414961941</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Henrique Test - Container 1</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_container_690a8d6adbb01410fa11cf2414961941</sys_update_name>
+        <sys_update_version display_value="sp_container_690a8d6adbb01410fa11cf2414961941">0495282adba19c10fa11cf2414961945</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-25 17:01:49</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

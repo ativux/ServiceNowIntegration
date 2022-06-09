@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function ($scope, $element, $rootScope, $timeout, snAttachmentHandler, $http, spUtil, i18n) {
+
+	$scope.userID = $scope.user.sys_id;
+	$rootScope.$on('sp.avatar_changed', function() {
+		$scope.userID = "";
+		$timeout(function(){
+			$scope.userID = $scope.user.sys_id;
+		});
+	});
+
+	var fieldExcludes = {
+		sys_user: ['name', 'introduction', 'title', 'department', 'location', 'photo',
+							 'manager', 'company'],
+		live_profile: ['short_description', 'photo']
+	}
+
+	$scope.uploadNewProfilePicture = function($event) {
+		$event.stopPropagation();
+		if($event.keyCode === 9) {
+			return;
+		}
+		var $el = $element.find('input[type=file]');
+		$el.click();
+	}
+
+	$scope.attachFiles = function(files) {
+		var file = files.files[0];
+
+		var validImage = false;
+
+		switch(file.type) {
+			case 'image/jpeg':
+			case 'image/png':
+			case 'image/bmp':
+			case 'image/x-windows-bmp':
+			case 'image/gif':
+			case 'image/x-icon':
+			case 'image/svg+xml':
+				validImage = true;
+				break;
+			default:
+				break;
+		}
+
+		if(!validImage) {
+			alert(file.name + " " + i18n.getMessage("isn't a recognized image file format"));
+			return;
+		}
+
+		snAttachmentHandler.create("live_profile", $scope.data.liveProfileID).uploadAttachment(file, {
+			sysparm_fieldname: "photo"
+		}).then(function(response) {
+			var obj = {};
+			obj.newAvatarId = response.sys_id;
+			$scope.avatarPicture = {
+				'background-image': "url('" + response.sys_id + ".iix')",
+				'color': 'transparent'
+			};
+			$rootScope.$broadcast("sp.avatar_changed", obj);
+		});
+	}
+
+	$scope.avatarPicture = "";
+
+	$http.get('/api/now/live/profiles/sys_user.' + $scope.data.sysUserID).then(function (response) {
+		if (response.data.result && response.data.result.avatar){
+			var avatarPicture = response.data.result.avatar.replace("?t=small", "");
+			$scope.avatarPicture = {
+				'background-image': "url('" + avatarPicture + "')",
+				'color': 'transparent'
+			};
+		}
+	});
+
+	spUtil.recordWatch($scope, "sys_user", "sys_id=" + $scope.data.sysUserID);
+	spUtil.recordWatch($scope, "live_profile", "sys_id=" + $scope.data.liveProfileID);
+	
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.avatar-custom-size{
+  margin-top: 42px;
+  margin-bottom: 20px;
+  height: 100px;
+  width: 100px;
+  box-shadow: 0 0 0 4px $deep-sky-blue;
+  font-size: 20px !important;
+}
+
+.em-tight { 
+  letter-spacing: -0.05em;
+}
+
+.align-all{
+  text-align: left;
+}
+
+.img-border{
+  padding-bottom: 30px;
+}
+
+.hello-stranger {
+  font-family: $text-bold;
+  color: $deep-sky-blue;
+  font-size: 32px;
+  letter-spacing: 0;
+}
+
+.stranger-help {
+  font-family: $text-rough;
+  color: $deep-sky-blue;
+  font-size: 26px;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.avatar-container .avatar.soloAvatar .sub-avatar{
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  font-size: 50px;
+  line-height: 110px;
+  font-family: $text-bold;
+  background-color: white;
+  color: $deep-sky-blue;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>user_upload_test</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>User upload test</name>
+        <option_schema/>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	data.sysUserID = $sp.getParameter("sys_id");
+	if (!data.sysUserID)
+		data.sysUserID = gs.getUser().getID();
+	var sysUserGR = new GlideRecord("sys_user");
+	data.userExists = sysUserGR.get(data.sysUserID) && sysUserGR.canRead();
+
+	if (data.userExists) {
+		data.name = sysUserGR.getValue("name");
+		var loggedInSysUserID = gs.getUser().getID();
+		data.liveProfileID = "";
+
+		if (GlidePluginManager().isActive('com.glideapp.live_common')) {
+			var liveProfileGR = new GlideRecord("live_profile");
+			liveProfileGR.addQuery("document", data.sysUserID);
+			liveProfileGR.query();
+			if (liveProfileGR.next()) {
+				data.liveProfileID = liveProfileGR.getValue("sys_id");
+				data.liveProfileModel = $sp.getForm("live_profile", data.liveProfileID)._fields;
+			}
+		}
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-24 11:50:27</sys_created_on>
+        <sys_id>91a293dedb295c10fa11cf2414961943</sys_id>
+        <sys_mod_count>38</sys_mod_count>
+        <sys_name>User upload test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_91a293dedb295c10fa11cf2414961943</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-26 16:27:48</sys_updated_on>
+        <template><![CDATA[<div ng-if="user.logged_in" class="align-all">
+
+  <div>
+    <input ng-show="false" type="file" ng-file-select="attachFiles({files: $files})" 
+           accept="image/jpeg,image/png,image/bmp,image/x-windows-bmp,image/gif,image/x-icon,image/svg+xml"/>
+    <a title="Avatar Pic" ng-click="uploadNewProfilePicture($event)"
+       ng-keypress="uploadNewProfilePicture($event)" class="btn btn-default send-message">
+      <sn-avatar class="avatar-custom-size" primary="userID" />
+    </a>
+  </div>
+
+  <div class="hello-stranger em-tight">${Hello} {{data.name}}!</div>
+
+  <div class="stranger-help em-tight" style="line-height:0.95">
+    <div>${Em que conseguimos <br> te ajudar hoje?}</div>
+  </div>
+
+</div>
+]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_91a293dedb295c10fa11cf2414961943</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function ($scope, $element, $rootScope, $timeout, snAttachmentHandler, $http, spUtil, i18n) {
+
+	$scope.userID = $scope.user.sys_id;
+	$rootScope.$on('sp.avatar_changed', function() {
+		$scope.userID = "";
+		$timeout(function(){
+			$scope.userID = $scope.user.sys_id;
+		});
+	});
+
+	var fieldExcludes = {
+		sys_user: ['name', 'introduction', 'title', 'department', 'location', 'photo',
+							 'manager', 'company'],
+		live_profile: ['short_description', 'photo']
+	}
+
+	$scope.uploadNewProfilePicture = function($event) {
+		$event.stopPropagation();
+		if($event.keyCode === 9) {
+			return;
+		}
+		var $el = $element.find('input[type=file]');
+		$el.click();
+	}
+
+	$scope.attachFiles = function(files) {
+		var file = files.files[0];
+
+		var validImage = false;
+
+		switch(file.type) {
+			case 'image/jpeg':
+			case 'image/png':
+			case 'image/bmp':
+			case 'image/x-windows-bmp':
+			case 'image/gif':
+			case 'image/x-icon':
+			case 'image/svg+xml':
+				validImage = true;
+				break;
+			default:
+				break;
+		}
+
+		if(!validImage) {
+			alert(file.name + " " + i18n.getMessage("isn't a recognized image file format"));
+			return;
+		}
+
+		snAttachmentHandler.create("live_profile", $scope.data.liveProfileID).uploadAttachment(file, {
+			sysparm_fieldname: "photo"
+		}).then(function(response) {
+			var obj = {};
+			obj.newAvatarId = response.sys_id;
+			$scope.avatarPicture = {
+				'background-image': "url('" + response.sys_id + ".iix')",
+				'color': 'transparent'
+			};
+			$rootScope.$broadcast("sp.avatar_changed", obj);
+		});
+	}
+
+	$scope.avatarPicture = "";
+
+	$http.get('/api/now/live/profiles/sys_user.' + $scope.data.sysUserID).then(function (response) {
+		if (response.data.result &amp;&amp; response.data.result.avatar){
+			var avatarPicture = response.data.result.avatar.replace("?t=small", "");
+			$scope.avatarPicture = {
+				'background-image': "url('" + avatarPicture + "')",
+				'color': 'transparent'
+			};
+		}
+	});
+
+	spUtil.recordWatch($scope, "sys_user", "sys_id=" + $scope.data.sysUserID);
+	spUtil.recordWatch($scope, "live_profile", "sys_id=" + $scope.data.liveProfileID);
+	
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.avatar-custom-size{
+  margin-top: 42px;
+  margin-bottom: 20px;
+  height: 100px;
+  width: 100px;
+  box-shadow: 0 0 0 4px $deep-sky-blue;
+  font-size: 20px !important;
+}
+
+.em-tight { 
+  letter-spacing: -0.05em;
+}
+
+.align-all{
+  text-align: left;
+}
+
+.img-border{
+  padding-bottom: 30px;
+}
+
+.hello-stranger {
+  font-family: $text-bold;
+  color: $deep-sky-blue;
+  font-size: 32px;
+  letter-spacing: 0;
+}
+
+.stranger-help {
+  font-family: $text-rough;
+  color: $deep-sky-blue;
+  font-size: 26px;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.avatar-container .avatar.soloAvatar .sub-avatar{
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  font-size: 50px;
+  line-height: 110px;
+  font-family: $text-bold;
+  background-color: white;
+  color: $deep-sky-blue;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;user_upload_test&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;User upload test&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;true&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+	data.sysUserID = $sp.getParameter("sys_id");
+	if (!data.sysUserID)
+		data.sysUserID = gs.getUser().getID();
+	var sysUserGR = new GlideRecord("sys_user");
+	data.userExists = sysUserGR.get(data.sysUserID) &amp;&amp; sysUserGR.canRead();
+
+	if (data.userExists) {
+		data.name = sysUserGR.getValue("name");
+		var loggedInSysUserID = gs.getUser().getID();
+		data.liveProfileID = "";
+
+		if (GlidePluginManager().isActive('com.glideapp.live_common')) {
+			var liveProfileGR = new GlideRecord("live_profile");
+			liveProfileGR.addQuery("document", data.sysUserID);
+			liveProfileGR.query();
+			if (liveProfileGR.next()) {
+				data.liveProfileID = liveProfileGR.getValue("sys_id");
+				data.liveProfileModel = $sp.getForm("live_profile", data.liveProfileID)._fields;
+			}
+		}
+	}
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-06-24 11:50:27&lt;/sys_created_on&gt;&lt;sys_id&gt;91a293dedb295c10fa11cf2414961943&lt;/sys_id&gt;&lt;sys_mod_count&gt;38&lt;/sys_mod_count&gt;&lt;sys_name&gt;User upload test&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_91a293dedb295c10fa11cf2414961943&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-06-26 16:27:48&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div ng-if="user.logged_in" class="align-all"&gt;
+
+  &lt;div&gt;
+    &lt;input ng-show="false" type="file" ng-file-select="attachFiles({files: $files})" 
+           accept="image/jpeg,image/png,image/bmp,image/x-windows-bmp,image/gif,image/x-icon,image/svg+xml"/&gt;
+    &lt;a title="Avatar Pic" ng-click="uploadNewProfilePicture($event)"
+       ng-keypress="uploadNewProfilePicture($event)" class="btn btn-default send-message"&gt;
+      &lt;sn-avatar class="avatar-custom-size" primary="userID" /&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;div class="hello-stranger em-tight"&gt;${Hello} {{data.name}}!&lt;/div&gt;
+
+  &lt;div class="stranger-help em-tight" style="line-height:0.95"&gt;
+    &lt;div&gt;${Em que conseguimos &lt;br&gt; te ajudar hoje?}&lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>952632587</payload_hash>
+        <record_name>User upload test</record_name>
+        <reverted_from/>
+        <source>7d96c115dbe514105c11639014961916</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-26 16:27:48</sys_created_on>
+        <sys_id>ef45eacbdb6d1050fa11cf2414961918</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172f174e06a0000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-26 16:27:48</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>a745eacb2b6d10501815b78d26cc8e18</update_guid>
+        <update_guid_history>a745eacb2b6d10501815b78d26cc8e18:952632587,afe4e2cb366d105081908ebbc8f75161:-1228626438,5184a68b406d10502ca5d5eaf6e6441c:-814692871,9724668bd86d1050991a2dad561d84ef:-351062426,c614e28be16d1050722eab61698a850f:1013069152,08f3ee4be76d10509a483066fab4e284:-355891863,6663624bcc6d10500f86f48983c2f412:-562498041,0c43224b8d6d1050f3b64bfb4b9fcffc:210916228,1d03ea0b976d1050efaaaba1bf195e21:1204004292,51d26a0b7b6d105037717bd7921e3751:-428331071,e2c2e20b526d1050b75a3f9f919f0079:-493102239,4cc2660b106d1050097e6903fab4217f:-1425998015,b1a2e20bb76d1050344ea7266670e41f:-1999743103,6c92620b316d1050953f300d876525e3:-1567285535,0982220b126d10500eaf767dcc692203:-864418975,0672eec7836d1050aea258366b6cce02:-1884523839,7532e6c7566d105014eb2fc6e75ed1d7:-1179714153,981226c7266d1050565d2337fe5f7493:865325300,2ee122c7d26d10501b81b3dd8a2feaef:-837077471,2bc12e87fe6d10503e177e77f83d07ef:1740596254,c0a1a687ef6d10503f02156f24b163d8:1008577992,6c41a287bc6d10506a55f1ebaa55414b:1266114169,8131ea47296d1050aa10bbd74c6c0ded:438972633,20f02e47fa6d1050b224a89c5bfa643d:163755523,72c0e247db6d1050f7cca69a0cbe2ecf:263119661,f69026475d6d1050b5cd2993ec5a86f6:616042499,cb60a247b76d105078a64afaf0dceb45:96179922,87502247ca6d10502bfbe4c65a02ed6e:-855545358,85df1207f96d1050cda32af8e62192c2:-2129525740,401c618faae51050d55d87a00fcc9dd6:1841258642,3548a54be9e51050a5176f574d5c80a4:-46915270,857225327d29dc10dfb70e95b19e89bf:1841258642,5c5557d2d3695c10d3dcff1a93cab5a6:1708754882,5a25df9232695c1068c2aa072ce9f9ff:538486730,14c3d35273695c109c44a4251f96fa94:-364927749,e8931f1299695c1081639bcde89a7cb8:-692386028,52335712a8695c10b9e7b112e3a190e8:503342408,ed03dfde0d295c10dc8d104685483bd7:-1835824559,59a293dec7295c10caa316cad53d0d44:-1981339438</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">f5e56a0fdb6d1050fa11cf24149619af</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-26 16:30:25</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>489fee35ae4a4e40afb0f7fd1bf84040</sys_id>
+        <sys_metadata>91a293dedb295c10fa11cf2414961943</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>User upload test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_91a293dedb295c10fa11cf2414961943</sys_update_name>
+        <sys_update_version display_value="sp_widget_91a293dedb295c10fa11cf2414961943">ef45eacbdb6d1050fa11cf2414961918</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-26 16:30:25</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

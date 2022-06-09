@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope,$rootScope,$timeout) {
+
+	/* widget controller */
+
+	var c = this;
+
+	$scope.showWidget = "";
+
+	//Listening for "showHideWidget" event
+
+	$rootScope.$on('showHideWidget', function(event,data) {
+
+		$timeout(function(){
+
+			$scope.showWidget = data;
+
+		});
+
+	});
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.text-align {
+  text-align:center;
+}
+
+.icon-img{
+  display: block;
+  margin: 0 auto;
+  height: 125px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.margin-align{
+  width: 100%;
+  display: inline-block;
+}
+
+.title-properties{
+  font-family: $text-bold;
+  font-size: $font-size-h1;
+  color: $dodger-blue;
+}
+
+.category-title{
+  font-family: $text-bold;
+  font-size: 22px;
+  padding-bottom: 25px;
+}
+
+.description-properties {
+  font-family: $text-rough;
+  font-size: $font-size-h4;
+}
+
+h3{
+  color:red;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>GService_Catalog_Items</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>GService Catalog Items</name>
+        <option_schema>[{"hint":"Selecione o ID do widget antecessor para que ele defina quando deve ser exibido","name":"parent_id","section":"Data","label":"Parent ID","type":"string"},{"displayValue":"Catalog","hint":"Selecione o catálogo que deseja exibir","name":"selected_catalog","section":"Data","label":"Catalog","type":"reference","value":"sc_catalog","ed":{"reference":"sc_catalog"}},{"displayValue":"Category","hint":"Deseja retirar alguma categoria da seleção?","name":"remove_category","section":"Data","label":"Remove Category","type":"reference","value":"sc_category","ed":{"reference":"sc_category"}}]</option_schema>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	/* populate the 'data' object */
+	/* e.g., data.table = $sp.getValue('table'); */
+
+	data.parentid = options.parent_id;
+
+	var arr = [];
+
+	var gr = new GlideRecord('sc_category');
+	gr.addActiveQuery();
+	gr.addQuery("sc_catalog", options.selected_catalog);
+	gr.addQuery("parent", "");
+	gr.addQuery("sys_id", "!=", options.remove_category);
+	gr.query();
+	while(gr.next()){
+
+		var obj = {};
+		obj.title = gr.getValue("title");
+		obj.sysid = options.selected_category;
+		obj.icon = gr.getValue("icon");
+		obj.description = gr.getValue("description");
+
+		arr.push(obj);
+	}
+
+
+	data.categories = arr;
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-19 23:21:36</sys_created_on>
+        <sys_id>0ee73d9ddb90d450fa11cf241496199b</sys_id>
+        <sys_mod_count>54</sys_mod_count>
+        <sys_name>GService Catalog Items</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_0ee73d9ddb90d450fa11cf241496199b</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 11:21:15</sys_updated_on>
+        <template><![CDATA[<div ng-if="showWidget == c.data.parentid">
+  <!-- your widget template -->
+
+  <p class="title-properties text-align">
+    SOLICITE UM SERVIÇO
+  </p>
+
+  <div class="text-align margin-align">
+
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-2" ng-repeat="var in data.categories">
+
+        <div class="icon-img">
+          Icon: {{var.icon}}
+        </div>
+        <div class="category-title">
+          {{var.title}}  
+        </div>
+        <div class="description-properties">
+          Description: {{var.description}}
+        </div>
+
+      </div>
+
+    </div>  
+
+  </div>
+
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_0ee73d9ddb90d450fa11cf241496199b</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function($scope,$rootScope,$timeout) {
+
+	/* widget controller */
+
+	var c = this;
+
+	$scope.showWidget = "";
+
+	//Listening for "showHideWidget" event
+
+	$rootScope.$on('showHideWidget', function(event,data) {
+
+		$timeout(function(){
+
+			$scope.showWidget = data;
+
+		});
+
+	});
+
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.text-align {
+  text-align:center;
+}
+
+.icon-img{
+  display: block;
+  margin: 0 auto;
+  height: 125px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.margin-align{
+  width: 100%;
+  display: inline-block;
+}
+
+.title-properties{
+  font-family: $text-bold;
+  font-size: $font-size-h1;
+  color: $dodger-blue;
+}
+
+.category-title{
+  font-family: $text-bold;
+  font-size: 22px;
+  padding-bottom: 25px;
+}
+
+.description-properties {
+  font-family: $text-rough;
+  font-size: $font-size-h4;
+}
+
+h3{
+  color:red;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;GService_Catalog_Items&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;GService Catalog Items&lt;/name&gt;&lt;option_schema&gt;[{"hint":"Selecione o ID do widget antecessor para que ele defina quando deve ser exibido","name":"parent_id","section":"Data","label":"Parent ID","type":"string"},{"displayValue":"Catalog","hint":"Selecione o catálogo que deseja exibir","name":"selected_catalog","section":"Data","label":"Catalog","type":"reference","value":"sc_catalog","ed":{"reference":"sc_catalog"}},{"displayValue":"Category","hint":"Deseja retirar alguma categoria da seleção?","name":"remove_category","section":"Data","label":"Remove Category","type":"reference","value":"sc_category","ed":{"reference":"sc_category"}}]&lt;/option_schema&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+	/* populate the 'data' object */
+	/* e.g., data.table = $sp.getValue('table'); */
+
+	data.parentid = options.parent_id;
+
+	var arr = [];
+
+	var gr = new GlideRecord('sc_category');
+	gr.addActiveQuery();
+	gr.addQuery("sc_catalog", options.selected_catalog);
+	gr.addQuery("parent", "");
+	gr.addQuery("sys_id", "!=", options.remove_category);
+	gr.query();
+	while(gr.next()){
+
+		var obj = {};
+		obj.title = gr.getValue("title");
+		obj.sysid = options.selected_category;
+		obj.icon = gr.getValue("icon");
+		obj.description = gr.getValue("description");
+
+		arr.push(obj);
+	}
+
+
+	data.categories = arr;
+
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-19 23:21:36&lt;/sys_created_on&gt;&lt;sys_id&gt;0ee73d9ddb90d450fa11cf241496199b&lt;/sys_id&gt;&lt;sys_mod_count&gt;54&lt;/sys_mod_count&gt;&lt;sys_name&gt;GService Catalog Items&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_0ee73d9ddb90d450fa11cf241496199b&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-20 11:21:15&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div ng-if="showWidget == c.data.parentid"&gt;
+  &lt;!-- your widget template --&gt;
+
+  &lt;p class="title-properties text-align"&gt;
+    SOLICITE UM SERVIÇO
+  &lt;/p&gt;
+
+  &lt;div class="text-align margin-align"&gt;
+
+    &lt;div class="row"&gt;
+      &lt;div class="col-lg-1"&gt;&lt;/div&gt;
+      &lt;div class="col-lg-2" ng-repeat="var in data.categories"&gt;
+
+        &lt;div class="icon-img"&gt;
+          Icon: {{var.icon}}
+        &lt;/div&gt;
+        &lt;div class="category-title"&gt;
+          {{var.title}}  
+        &lt;/div&gt;
+        &lt;div class="description-properties"&gt;
+          Description: {{var.description}}
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+    &lt;/div&gt;  
+
+  &lt;/div&gt;
+
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1868765870</payload_hash>
+        <record_name>GService Catalog Items</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 11:21:15</sys_created_on>
+        <sys_id>88ac54addb5cd450fa11cf2414961903</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171975226260000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 11:21:15</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>40ac54ad695cd450cb681327ec795503</update_guid>
+        <update_guid_history>40ac54ad695cd450cb681327ec795503:-1868765870,eb4b106dfa5cd450decd68ff648df07e:2056317866,3b3b18e95e5cd45093287df365e73580:659997419,753b18e9ba5cd450426a0fa45359147c:-295198535,2d815ad97714d450975f5211c52853f3:1529042315,ee711ed9db14d450aa1324c3f90b2604:1490690032,96511ad94814d45097a945d7277c3dc1:-1090430486,3a4116d9ad14d450f174a5a2efb72e49:-355178902,1e4156d91e14d4502156d6f2e146433d:-249417422,71411ad9a214d45014412048e0e7b530:508266483,a8e09e99af14d450da5bddcbbd20e17f:1977309829,c8d01e990014d450d4072136c25fdd32:-1130917066,96b01659c414d4507a69052937f1cf8f:-407487367,e83092993814d450aad5e0b0ff011ef5:-520742002,4bff8e597914d45073a8eef56968ea87:1801763350,c5cf06592d14d45050e6938abdf000af:-517860240,10af0659c414d450d9c412c7c36433a2:158332866,882f8a951014d450fd3328db7f4e7761:-25910829,6ace4a193714d450473c6e786ff0adb1:198545655,c43e8e95a114d4507d8cca95e8c82ca7:-24590496,440e42d50e14d4500156e6444f63e213:-666140870,f89dc2d50814d450a266c63f6cb6a3ef:-1142421686,327dc2d51314d450f2ec728ebce41f97:566100618,d76d02d54414d450a0b6729e11c619bf:1476619051,fd5d02d5a914d4500dcfbd65d597e9b7:1890228112,163d8e950f14d4501a7e9df63a78f087:1626246352,f52d0295f414d4505f6b933efa4699e3:2128166219,63fcce55e214d45025a7ed20a85a3ca5:-1412776788,2bac02959b14d450834fc7b0c71561cb:1941262313,799cca558b14d4504467db1967f766e3:749059156,cd7c02958e14d4502c27f79ae6b93094:-1359312493,846c4e15f114d450705dccce34b21a05:1866286052,183cca555114d450dbaac233065eb47a:1812821757,34fbc6554c14d450aca9728b91b34c36:1339112734,bbbb0e912714d450ed3678c33a6f6d9f:-921263098,5b1a0e910e14d4504d03bf4f083e728d:2139827730,1fe90a916614d450f71adf862f2a8e19:-2008523753,0ed9c6914814d4508c2b884f4612c5b1:-316070107,d4d9c691be14d450a60193113a27ca43:728853365,82594651d714d450b67db65690b2e280:-828452724,ea888a117d14d4502fba55b622a125ea:1180353916,c31806114114d450d4e6d3faa342a4a2:160942337,ebd3cad985d0d450603f267a5949a609:1413016904,44c38ad96bd0d4505466b2fe2ecac7a3:935034899,f9a3ce99e8d0d450d6582670f334f1d2:1960798118,df93c2d964d0d45003f72ba966ed6afb:-1010389216,100b3591bad0d450c64a4e5acc7ae5a9:1960798118,68eab5912cd0d4502b4d781db93ada40:-235402269,20ba7191e1d0d4506f79ac84119e95ab:834074013,3b9a7191c0d0d45098f42891c22bb5a3:1632565323,009abdddf490d45061da9069ea68b13d:-416116280,9d29f9ddaa90d45014e0611b245273a0:2141608805,e76839dd4090d450c9eebed489ed65bc:-441470113,a908719d1c90d4509c936ebe7996c4ce:-1881603413,0ee73d9ddb90d45010d20ba7f172e69c:234424276</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">fe788deddb501850fa11cf241496192a</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 14:32:52</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>a96d688df9d94940856d8b85c2414900</sys_id>
+        <sys_metadata>0ee73d9ddb90d450fa11cf241496199b</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService Catalog Items</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_0ee73d9ddb90d450fa11cf241496199b</sys_update_name>
+        <sys_update_version display_value="sp_widget_0ee73d9ddb90d450fa11cf241496199b">88ac54addb5cd450fa11cf2414961903</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 14:32:52</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

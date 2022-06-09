@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_message">
+    <sys_ui_message action="INSERT_OR_UPDATE">
+        <application/>
+        <code/>
+        <commented_message/>
+        <key>See All</key>
+        <language>pb</language>
+        <message>Ver Tudo</message>
+        <sys_class_name>sys_ui_message</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-05-06 12:55:05</sys_created_on>
+        <sys_id>a68b8beedb645010fa11cf2414961953</sys_id>
+        <sys_mod_count>11</sys_mod_count>
+        <sys_name>See All</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_ui_message_a68b8beedb645010fa11cf2414961953</sys_update_name>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2022-06-04 06:09:07</sys_updated_on>
+    </sys_ui_message>
+</record_update>

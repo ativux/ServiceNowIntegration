@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="DELETE">
+        <choices/>
+        <description>Used only for "Tire suas dúvidas" widgets, because they have 1 more category</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_gmeps_itsm_servi.categories_color_doubts</name>
+        <read_roles/>
+        <suffix>categories_color_doubts</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-08 12:00:01</sys_created_on>
+        <sys_id>663bfc15db5990d05c116390149619e3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_gmeps_itsm_servi.categories_color_doubts</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_properties_663bfc15db5990d05c116390149619e3</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-08 12:00:01</sys_updated_on>
+        <type>string</type>
+        <value>{"57122580db91dc905c116390149619f5" : {"color" : "color_category6", "bgcolor" : "bgcolor_category6", "bdcolor" : "bdcolor_category6",&#13;
+"imgleft" : "GService_Portal GService_01.png", "imgright" : "GService_Portal GService_02.png", "imgcategory" : "",&#13;
+"searchImg" : "GService_StyleGuide_V2_BUSCA HOME PD.png", "submitImg" : "gservice_dashboard_submit.png", "order" : 1},&#13;
+"ac13c87cdba344105c116390149619ba" : {"color" : "color_category1", "bgcolor" : "bgcolor_category1", "bdcolor" : "bdcolor_category1",&#13;
+"imgleft" : "GService_Header_ESQ_PD.png", "imgright" : "GService_Header_DIR_PD.png", "imgcategory" : "produtosDigitais.png",&#13;
+"searchImg" : "GService_StyleGuide_V2_BUSCA HOME PD.png", "submitImg" : "GService_SS_Digital.png", "order" : 1},&#13;
+"6c73087cdba344105c116390149619cc" : {"color" : "color_category2", "bgcolor" : "bgcolor_category2", "bdcolor" : "bdcolor_category2",&#13;
+"imgleft" : "GService_Header_ESQ_PTV.png", "imgright" : "GService_Header_DIR_PTV.png", "imgcategory" : "produtosTv.png",&#13;
+"searchImg" : "GService_StyleGuide_V2_BUSCA HOME PTV.png", "submitImg" : "GService_SS_TV.png", "order" : 2},&#13;
+"548380bcdba344105c11639014961903" : {"color" : "color_category3", "bgcolor" : "bgcolor_category3", "bdcolor" : "bdcolor_category3",&#13;
+"imgleft" : "GService_Header_ESQ_EC.png", "imgright" : "GService_Header_DIR_EC.png",  "imgcategory" : "equipamentos.png",&#13;
+"searchImg" : "GService_StyleGuide_V2_BUSCA HOME EQUIP.png", "submitImg" : "GService_SS_EC.png", "order" : 3},&#13;
+"2a73087cdba344105c1163901496198e" : {"color" : "color_category4", "bgcolor" : "bgcolor_category4", "bdcolor" : "bdcolor_category4",&#13;
+"imgleft" : "GService_Header_ESQ_AC.png", "imgright" : "GService_Header_DIR_AC.png",  "imgcategory" : "ferramentas.png",&#13;
+"searchImg" : "GService_StyleGuide_V2_BUSCA HOME FERR.png", "submitImg" : "GService_SS_AC.png", "order" : 4},&#13;
+"1e83047cdba344105c11639014961990" : {"color" : "color_category5", "bgcolor" : "bgcolor_category5", "bdcolor" : "bdcolor_category5",&#13;
+"imgleft" : "GService_Header_ESQ_IS.png", "imgright" : "GService_Header_DIR_IS.png", "imgcategory" : "infraestrutura.png",&#13;
+"searchImg" : "GService_StyleGuide_V2_BUSCA HOME INFRA.png", "submitImg" : "GService_SS_IS.png", "order" : 5}&#13;
+}</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="DELETE" query="documentkey=663bfc15db5990d05c116390149619e3"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sys_properties_663bfc15db5990d05c116390149619e3</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties"><sys_properties action="INSERT_OR_UPDATE"><choices/><description>Used only for "Tire suas dúvidas" widgets, because they have 1 more category</description><ignore_cache>false</ignore_cache><is_private>false</is_private><name>x_gmeps_itsm_servi.categories_color_doubts</name><read_roles/><suffix>categories_color_doubts</suffix><sys_class_name>sys_properties</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-06-08 12:00:01</sys_created_on><sys_id>663bfc15db5990d05c116390149619e3</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_gmeps_itsm_servi.categories_color_doubts</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sys_properties_663bfc15db5990d05c116390149619e3</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-06-08 12:00:01</sys_updated_on><type>string</type><value>{"57122580db91dc905c116390149619f5" : {"color" : "color_category6", "bgcolor" : "bgcolor_category6", "bdcolor" : "bdcolor_category6",&#13;
+"imgleft" : "GService_Portal GService_01.png", "imgright" : "GService_Portal GService_02.png", "imgcategory" : "",&#13;
+"searchImg" : "GService_StyleGuide_V2_BUSCA HOME PD.png", "submitImg" : "gservice_dashboard_submit.png", "order" : 1},&#13;
+"ac13c87cdba344105c116390149619ba" : {"color" : "color_category1", "bgcolor" : "bgcolor_category1", "bdcolor" : "bdcolor_category1",&#13;
+"imgleft" : "GService_Header_ESQ_PD.png", "imgright" : "GService_Header_DIR_PD.png", "imgcategory" : "produtosDigitais.png",&#13;
+"searchImg" : "GService_StyleGuide_V2_BUSCA HOME PD.png", "submitImg" : "GService_SS_Digital.png", "order" : 1},&#13;
+"6c73087cdba344105c116390149619cc" : {"color" : "color_category2", "bgcolor" : "bgcolor_category2", "bdcolor" : "bdcolor_category2",&#13;
+"imgleft" : "GService_Header_ESQ_PTV.png", "imgright" : "GService_Header_DIR_PTV.png", "imgcategory" : "produtosTv.png",&#13;
+"searchImg" : "GService_StyleGuide_V2_BUSCA HOME PTV.png", "submitImg" : "GService_SS_TV.png", "order" : 2},&#13;
+"548380bcdba344105c11639014961903" : {"color" : "color_category3", "bgcolor" : "bgcolor_category3", "bdcolor" : "bdcolor_category3",&#13;
+"imgleft" : "GService_Header_ESQ_EC.png", "imgright" : "GService_Header_DIR_EC.png",  "imgcategory" : "equipamentos.png",&#13;
+"searchImg" : "GService_StyleGuide_V2_BUSCA HOME EQUIP.png", "submitImg" : "GService_SS_EC.png", "order" : 3},&#13;
+"2a73087cdba344105c1163901496198e" : {"color" : "color_category4", "bgcolor" : "bgcolor_category4", "bdcolor" : "bdcolor_category4",&#13;
+"imgleft" : "GService_Header_ESQ_AC.png", "imgright" : "GService_Header_DIR_AC.png",  "imgcategory" : "ferramentas.png",&#13;
+"searchImg" : "GService_StyleGuide_V2_BUSCA HOME FERR.png", "submitImg" : "GService_SS_AC.png", "order" : 4},&#13;
+"1e83047cdba344105c11639014961990" : {"color" : "color_category5", "bgcolor" : "bgcolor_category5", "bdcolor" : "bdcolor_category5",&#13;
+"imgleft" : "GService_Header_ESQ_IS.png", "imgright" : "GService_Header_DIR_IS.png", "imgcategory" : "infraestrutura.png",&#13;
+"searchImg" : "GService_StyleGuide_V2_BUSCA HOME INFRA.png", "submitImg" : "GService_SS_IS.png", "order" : 5}&#13;
+}</value><write_roles/></sys_properties><sys_translated_text action="delete_multiple" query="documentkey=663bfc15db5990d05c116390149619e3"/></record_update>]]></payload>
+        <payload_hash>-331503145</payload_hash>
+        <record_name>x_gmeps_itsm_servi.categories_color_doubts</record_name>
+        <reverted_from/>
+        <source>0ffdd18cdb51dc905c116390149619c3</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-08 12:00:03</sys_created_on>
+        <sys_id>ca6bb055db5990d05c11639014961984</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17293cd45cd0000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-08 12:00:03</sys_updated_on>
+        <type>System Property</type>
+        <update_guid>8e6bb0555d5990d023d3480d9338d583</update_guid>
+        <update_guid_history>8e6bb0555d5990d023d3480d9338d583:-331503145</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-08 12:00:59</sys_created_on>
+        <sys_db_object display_value="" name="sys_properties">sys_properties</sys_db_object>
+        <sys_id>053f1659ff4d454b8669760e149e6881</sys_id>
+        <sys_metadata>663bfc15db5990d05c116390149619e3</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_gmeps_itsm_servi.categories_color_doubts</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sys_properties_663bfc15db5990d05c116390149619e3</sys_update_name>
+        <sys_update_version display_value="sys_properties_663bfc15db5990d05c116390149619e3">ca6bb055db5990d05c11639014961984</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-08 12:00:59</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

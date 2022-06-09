@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_ng_pro_sp_widget">
+    <m2m_sp_ng_pro_sp_widget action="DELETE">
+        <sp_angular_provider display_value="scToggleData">c045f99a0b67320014ea425663673a25</sp_angular_provider>
+        <sp_widget display_value="GService Catalog Item">44f0b1e1db9094505c11639014961948</sp_widget>
+        <sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-20 17:29:38</sys_created_on>
+        <sys_id>d0f0b1e1db9094505c11639014961952</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>scToggleData.GService Catalog Item</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_d0f0b1e1db9094505c11639014961952</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-04-20 17:29:38</sys_updated_on>
+    </m2m_sp_ng_pro_sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>m2m_sp_ng_pro_sp_widget_d0f0b1e1db9094505c11639014961952</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_ng_pro_sp_widget"><m2m_sp_ng_pro_sp_widget action="INSERT_OR_UPDATE"><sp_angular_provider display_value="scToggleData">c045f99a0b67320014ea425663673a25</sp_angular_provider><sp_widget display_value="GService Catalog Item">44f0b1e1db9094505c11639014961948</sp_widget><sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name><sys_created_by>organize.fernando</sys_created_by><sys_created_on>2020-04-20 17:29:38</sys_created_on><sys_id>d0f0b1e1db9094505c11639014961952</sys_id><sys_mod_count>0</sys_mod_count><sys_name>scToggleData.GService Catalog Item</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>m2m_sp_ng_pro_sp_widget_d0f0b1e1db9094505c11639014961952</sys_update_name><sys_updated_by>organize.fernando</sys_updated_by><sys_updated_on>2020-04-20 17:29:38</sys_updated_on></m2m_sp_ng_pro_sp_widget></record_update>]]></payload>
+        <payload_hash>-235431810</payload_hash>
+        <record_name>scToggleData.GService Catalog Item</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-20 17:29:38</sys_created_on>
+        <sys_id>94f0b1e1db9094505c11639014961954</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17198a36a440000001</sys_recorded_at>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-04-20 17:29:38</sys_updated_on>
+        <type>Angular Providers</type>
+        <update_guid>9cf0b1e1359094501e8e49924da98553</update_guid>
+        <update_guid_history>9cf0b1e1359094501e8e49924da98553:-235431810</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">88e1fd25db9094505c1163901496197b</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-20 17:33:43</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_ng_pro_sp_widget">m2m_sp_ng_pro_sp_widget</sys_db_object>
+        <sys_id>43b61f3e8024483987ede26e4478ee39</sys_id>
+        <sys_metadata>d0f0b1e1db9094505c11639014961952</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>scToggleData.GService Catalog Item</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_d0f0b1e1db9094505c11639014961952</sys_update_name>
+        <sys_update_version display_value="m2m_sp_ng_pro_sp_widget_d0f0b1e1db9094505c11639014961952">94f0b1e1db9094505c11639014961954</sys_update_version>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-04-20 17:33:43</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency">
+    <m2m_sp_widget_dependency action="DELETE">
+        <sp_dependency display_value="RetinaIcons">a4fb2d566703220051a062c15685ef67</sp_dependency>
+        <sp_widget display_value="GService Take Survey">07ffe626dbb91410fa11cf241496198a</sp_widget>
+        <sys_class_name>m2m_sp_widget_dependency</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-07 14:13:12</sys_created_on>
+        <sys_id>0fffe626dbb91410fa11cf241496198c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>RetinaIcons.GService Take Survey</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_widget_dependency_0fffe626dbb91410fa11cf241496198c</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-07 14:13:12</sys_updated_on>
+    </m2m_sp_widget_dependency>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>m2m_sp_widget_dependency_0fffe626dbb91410fa11cf241496198c</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency"><m2m_sp_widget_dependency action="INSERT_OR_UPDATE"><sp_dependency display_value="RetinaIcons">a4fb2d566703220051a062c15685ef67</sp_dependency><sp_widget display_value="GService Take Survey">07ffe626dbb91410fa11cf241496198a</sp_widget><sys_class_name>m2m_sp_widget_dependency</sys_class_name><sys_created_by>organize.fernando</sys_created_by><sys_created_on>2020-07-07 14:13:12</sys_created_on><sys_id>0fffe626dbb91410fa11cf241496198c</sys_id><sys_mod_count>0</sys_mod_count><sys_name>RetinaIcons.GService Take Survey</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>m2m_sp_widget_dependency_0fffe626dbb91410fa11cf241496198c</sys_update_name><sys_updated_by>organize.fernando</sys_updated_by><sys_updated_on>2020-07-07 14:13:12</sys_updated_on></m2m_sp_widget_dependency></record_update>]]></payload>
+        <payload_hash>320469371</payload_hash>
+        <record_name>RetinaIcons.GService Take Survey</record_name>
+        <reverted_from/>
+        <source>7d96c115dbe514105c11639014961916</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-07 14:13:12</sys_created_on>
+        <sys_id>87ffe626dbb91410fa11cf241496198f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>173299f99d60000001</sys_recorded_at>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-07 14:13:12</sys_updated_on>
+        <type>Widget Dependency</type>
+        <update_guid>8fffe626c4b91410c4a69faa932e1c8e</update_guid>
+        <update_guid_history>8fffe626c4b91410c4a69faa932e1c8e:320469371</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">4e40a36e1bda141094962170f54bcb6e</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-08-01 14:15:36</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_widget_dependency">m2m_sp_widget_dependency</sys_db_object>
+        <sys_id>22e75753d6a148009b7e0887001ee900</sys_id>
+        <sys_metadata>0fffe626dbb91410fa11cf241496198c</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>RetinaIcons.GService Take Survey</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>m2m_sp_widget_dependency_0fffe626dbb91410fa11cf241496198c</sys_update_name>
+        <sys_update_version display_value="m2m_sp_widget_dependency_0fffe626dbb91410fa11cf241496198c">87ffe626dbb91410fa11cf241496198f</sys_update_version>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-08-01 14:15:36</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

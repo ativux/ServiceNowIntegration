@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_carousel_slide">
+    <sp_carousel_slide action="DELETE">
+        <background/>
+        <carousel display_value="">a7a8d7abdb44dc10fa11cf24149619d0</carousel>
+        <name>GService Standard Banner</name>
+        <order>100</order>
+        <sys_class_name>sp_carousel_slide</sys_class_name>
+        <sys_created_by>organize.vinicius.oliveira</sys_created_by>
+        <sys_created_on>2020-04-14 19:56:12</sys_created_on>
+        <sys_id>06d8d3ebdb44dc10fa11cf2414961933</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService Standard Banner</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_carousel_slide_06d8d3ebdb44dc10fa11cf2414961933</sys_update_name>
+        <sys_updated_by>organize.vinicius.oliveira</sys_updated_by>
+        <sys_updated_on>2020-04-14 19:56:12</sys_updated_on>
+        <u_make_it_current>true</u_make_it_current>
+        <url/>
+        <x_gmeps_itsm_servi_make_it_current>false</x_gmeps_itsm_servi_make_it_current>
+    </sp_carousel_slide>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_carousel_slide_06d8d3ebdb44dc10fa11cf2414961933</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_carousel_slide"><sp_carousel_slide action="INSERT_OR_UPDATE"><background/><carousel display_value="">a7a8d7abdb44dc10fa11cf24149619d0</carousel><name>GService Standard Banner</name><order>100</order><sys_class_name>sp_carousel_slide</sys_class_name><sys_created_by>organize.vinicius.oliveira</sys_created_by><sys_created_on>2020-04-14 19:56:12</sys_created_on><sys_id>06d8d3ebdb44dc10fa11cf2414961933</sys_id><sys_mod_count>0</sys_mod_count><sys_name>GService Standard Banner</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_carousel_slide_06d8d3ebdb44dc10fa11cf2414961933</sys_update_name><sys_updated_by>organize.vinicius.oliveira</sys_updated_by><sys_updated_on>2020-04-14 19:56:12</sys_updated_on><u_make_it_current>true</u_make_it_current><url/><x_gmeps_itsm_servi_make_it_current>false</x_gmeps_itsm_servi_make_it_current></sp_carousel_slide></record_update>]]></payload>
+        <payload_hash>790450054</payload_hash>
+        <record_name>GService Standard Banner</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.vinicius.oliveira</sys_created_by>
+        <sys_created_on>2020-04-14 19:56:12</sys_created_on>
+        <sys_id>a8f893ebdb44dc10fa11cf24149619bf</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1717a4371da0000001</sys_recorded_at>
+        <sys_updated_by>organize.vinicius.oliveira</sys_updated_by>
+        <sys_updated_on>2020-04-14 19:56:12</sys_updated_on>
+        <type>Carousel Slide</type>
+        <update_guid>a0f893eb1144dc10eb8ee50a55976fbf</update_guid>
+        <update_guid_history>a0f893eb1144dc10eb8ee50a55976fbf:790450054</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">d9691bebdb44dc10fa11cf2414961971</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.vinicius.oliveira</sys_created_by>
+        <sys_created_on>2020-04-14 19:58:09</sys_created_on>
+        <sys_db_object display_value="" name="sp_carousel_slide">sp_carousel_slide</sys_db_object>
+        <sys_id>133e00ab61264e4c9280a56a774a3821</sys_id>
+        <sys_metadata>06d8d3ebdb44dc10fa11cf2414961933</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService Standard Banner</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_carousel_slide_06d8d3ebdb44dc10fa11cf2414961933</sys_update_name>
+        <sys_update_version display_value="sp_carousel_slide_06d8d3ebdb44dc10fa11cf2414961933">a8f893ebdb44dc10fa11cf24149619bf</sys_update_version>
+        <sys_updated_by>organize.vinicius.oliveira</sys_updated_by>
+        <sys_updated_on>2020-04-14 19:58:09</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_cs_consumer_channel">
+    <sys_cs_consumer_channel action="DELETE">
+        <channel_group>a7cdc447-3b29-4b41-b73e-8a2cb54b06c6</channel_group>
+        <channel_info>{"userId":"1LduAX6rzs1RTiYTV2igPFNHyog2w9fPyPI23vaqyPxTVJZCsYMW4TVuCnNu7hbD5H3bUzCM1rfz61OkpnzDlDg","serviceUrl":"https://teamsproxy.service-now.com//teams/va/outbound/","originServiceUrl":"https://smba.trafficmanager.net/amer/"}</channel_info>
+        <channel_type>teams</channel_type>
+        <channel_user>a:1DKuFb_MGeLM8bt6lk5XWkzWvExf6Fy6VKqiY2HmGsn1gIJ6Jxooh0DyzV2O-jFsbpm10sRcQKmosKz40-y6JeJH-hoq4N-l1bniaE5iDbBNqB7ZDIYueBEVJ2Ko_23eR</channel_user>
+        <consumer/>
+        <consumer_account/>
+        <control/>
+        <field_name/>
+        <profile/>
+        <provider_user_id>1LduAX6rzs1RTiYTV2igPFNHyog2w9fPyPI23vaqyPxTVJZCsYMW4TVuCnNu7hbD5H3bUzCM1rfz61OkpnzDlDg</provider_user_id>
+        <session/>
+        <sys_class_name>sys_cs_consumer_channel</sys_class_name>
+        <sys_created_by>thiago.silva</sys_created_by>
+        <sys_created_on>2020-06-16 20:28:51</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_id>499cbfbbdb951410fa11cf24149619b3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_cs_consumer_channel_499cbfbbdb951410fa11cf24149619b3</sys_update_name>
+        <sys_updated_by>thiago.silva</sys_updated_by>
+        <sys_updated_on>2020-06-16 20:28:51</sys_updated_on>
+        <task/>
+        <timezone>GMT-03:00</timezone>
+        <user_id>1LduAX6rzs1RTiYTV2igPFNHyog2w9fPyPI23vaqyPxTVJZCsYMW4TVuCnNu7hbD5H3bUzCM1rfz61OkpnzDlDg</user_id>
+        <user_name>Thiago Ferreira Silva_O2B</user_name>
+        <vendor display_value="ServiceNow">c2f0b8f187033200246ddd4c97cb0bb9</vendor>
+        <version>1</version>
+    </sys_cs_consumer_channel>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sys_cs_consumer_channel_499cbfbbdb951410fa11cf24149619b3</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_cs_consumer_channel"><sys_cs_consumer_channel action="INSERT_OR_UPDATE"><channel_group>a7cdc447-3b29-4b41-b73e-8a2cb54b06c6</channel_group><channel_info>{"userId":"1LduAX6rzs1RTiYTV2igPFNHyog2w9fPyPI23vaqyPxTVJZCsYMW4TVuCnNu7hbD5H3bUzCM1rfz61OkpnzDlDg","serviceUrl":"https://teamsproxy.service-now.com//teams/va/outbound/","originServiceUrl":"https://smba.trafficmanager.net/amer/"}</channel_info><channel_type>teams</channel_type><channel_user>a:1DKuFb_MGeLM8bt6lk5XWkzWvExf6Fy6VKqiY2HmGsn1gIJ6Jxooh0DyzV2O-jFsbpm10sRcQKmosKz40-y6JeJH-hoq4N-l1bniaE5iDbBNqB7ZDIYueBEVJ2Ko_23eR</channel_user><consumer/><consumer_account/><control/><field_name/><profile/><provider_user_id>1LduAX6rzs1RTiYTV2igPFNHyog2w9fPyPI23vaqyPxTVJZCsYMW4TVuCnNu7hbD5H3bUzCM1rfz61OkpnzDlDg</provider_user_id><session/><sys_class_name>sys_cs_consumer_channel</sys_class_name><sys_created_by>thiago.silva</sys_created_by><sys_created_on>2020-06-16 20:28:51</sys_created_on><sys_domain>global</sys_domain><sys_id>499cbfbbdb951410fa11cf24149619b3</sys_id><sys_mod_count>0</sys_mod_count><sys_name/><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sys_cs_consumer_channel_499cbfbbdb951410fa11cf24149619b3</sys_update_name><sys_updated_by>thiago.silva</sys_updated_by><sys_updated_on>2020-06-16 20:28:51</sys_updated_on><task/><timezone>GMT-03:00</timezone><user_id>1LduAX6rzs1RTiYTV2igPFNHyog2w9fPyPI23vaqyPxTVJZCsYMW4TVuCnNu7hbD5H3bUzCM1rfz61OkpnzDlDg</user_id><user_name>Thiago Ferreira Silva_O2B</user_name><vendor display_value="ServiceNow">c2f0b8f187033200246ddd4c97cb0bb9</vendor><version>1</version></sys_cs_consumer_channel></record_update>]]></payload>
+        <payload_hash>-517358508</payload_hash>
+        <record_name/>
+        <reverted_from/>
+        <source>5aac6604db95dc905c1163901496190e</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>thiago.silva</sys_created_by>
+        <sys_created_on>2020-06-16 20:28:51</sys_created_on>
+        <sys_id>859cbfbbdb951410fa11cf24149619b5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172bed1f7e30000001</sys_recorded_at>
+        <sys_updated_by>thiago.silva</sys_updated_by>
+        <sys_updated_on>2020-06-16 20:28:51</sys_updated_on>
+        <type>Consumer Channel</type>
+        <update_guid>8d9cbfbbb9951410b68e933b19abc1b4</update_guid>
+        <update_guid_history>8d9cbfbbb9951410b68e933b19abc1b4:-517358508</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-17 18:30:02</sys_created_on>
+        <sys_db_object display_value="" name="sys_cs_consumer_channel">sys_cs_consumer_channel</sys_db_object>
+        <sys_id>03e0a703917b4b6ebc1690c527c0f3e4</sys_id>
+        <sys_metadata>499cbfbbdb951410fa11cf24149619b3</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sys_cs_consumer_channel_499cbfbbdb951410fa11cf24149619b3</sys_update_name>
+        <sys_update_version display_value="sys_cs_consumer_channel_499cbfbbdb951410fa11cf24149619b3">859cbfbbdb951410fa11cf24149619b5</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-17 18:30:02</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

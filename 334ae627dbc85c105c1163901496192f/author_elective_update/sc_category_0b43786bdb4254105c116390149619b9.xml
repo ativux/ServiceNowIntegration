@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_category">
+    <sc_category action="DELETE">
+        <active>true</active>
+        <description/>
+        <entitlement_script/>
+        <header_icon/>
+        <homepage_image/>
+        <homepage_renderer display_value="Category Items">47ebe8aa3742300054b6a3549dbe5dfa</homepage_renderer>
+        <icon/>
+        <image/>
+        <location/>
+        <mobile_hide_description>false</mobile_hide_description>
+        <mobile_picture/>
+        <mobile_subcategory_render_type>list</mobile_subcategory_render_type>
+        <module/>
+        <order>0</order>
+        <parent display_value="Infraestrutura e Segurança">1e83047cdba344105c11639014961990</parent>
+        <roles/>
+        <sc_catalog display_value="TI">6ee2487cdba344105c1163901496194f</sc_catalog>
+        <sys_class_name>sc_category</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-22 17:58:23</sys_created_on>
+        <sys_id>0b43786bdb4254105c116390149619b9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Diversos Infra</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sc_category_0b43786bdb4254105c116390149619b9</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-22 17:58:23</sys_updated_on>
+        <title>Diversos Infra</title>
+        <u_related_faq_kb_category/>
+        <u_short_description/>
+    </sc_category>
+    <sys_translated_text action="DELETE" query="documentkey=0b43786bdb4254105c116390149619b9"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sc_category_0b43786bdb4254105c116390149619b9</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_category"><sc_category action="INSERT_OR_UPDATE"><active>true</active><description/><entitlement_script/><header_icon/><homepage_image/><homepage_renderer display_value="Category Items">47ebe8aa3742300054b6a3549dbe5dfa</homepage_renderer><icon/><image/><location/><mobile_hide_description>false</mobile_hide_description><mobile_picture/><mobile_subcategory_render_type>list</mobile_subcategory_render_type><module/><order>0</order><parent display_value="Infraestrutura e Segurança">1e83047cdba344105c11639014961990</parent><roles/><sc_catalog display_value="TI">6ee2487cdba344105c1163901496194f</sc_catalog><sys_class_name>sc_category</sys_class_name><sys_created_by>organize.fernando</sys_created_by><sys_created_on>2020-07-22 17:58:23</sys_created_on><sys_id>0b43786bdb4254105c116390149619b9</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Diversos Infra</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sc_category_0b43786bdb4254105c116390149619b9</sys_update_name><sys_updated_by>organize.fernando</sys_updated_by><sys_updated_on>2020-07-22 17:58:23</sys_updated_on><title>Diversos Infra</title><u_related_faq_kb_category/><u_short_description/></sc_category><sys_translated_text action="delete_multiple" query="documentkey=0b43786bdb4254105c116390149619b9"/></record_update>]]></payload>
+        <payload_hash>-266423791</payload_hash>
+        <record_name>Diversos Infra</record_name>
+        <reverted_from/>
+        <source>25597dbedbca1010fa11cf24149619b2</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-22 17:58:23</sys_created_on>
+        <sys_id>4863f86bdb4254105c116390149619b1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17377ad27450000001</sys_recorded_at>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-22 17:58:23</sys_updated_on>
+        <type>Category</type>
+        <update_guid>4063f86b414254102f2902e39463e6b1</update_guid>
+        <update_guid_history>4063f86b414254102f2902e39463e6b1:-266423791</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">290474ebdb4254105c11639014961922</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-07-22 18:01:13</sys_created_on>
+        <sys_db_object display_value="" name="sc_category">sc_category</sys_db_object>
+        <sys_id>15b0f51b7960445ba6858963a455fca1</sys_id>
+        <sys_metadata>0b43786bdb4254105c116390149619b9</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Diversos Infra</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sc_category_0b43786bdb4254105c116390149619b9</sys_update_name>
+        <sys_update_version display_value="sc_category_0b43786bdb4254105c116390149619b9">4863f86bdb4254105c116390149619b1</sys_update_version>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-07-22 18:01:13</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

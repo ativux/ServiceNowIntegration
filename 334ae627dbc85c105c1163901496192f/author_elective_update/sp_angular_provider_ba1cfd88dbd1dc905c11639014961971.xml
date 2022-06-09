@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_angular_provider">
+    <sp_angular_provider action="DELETE">
+        <name>kbCategory</name>
+        <script><![CDATA[function($rootScope) {
+	var categoryID = false;
+	var secondCategory = false;
+	var thirdCategory = false;
+
+	function setCategoryID(catID) {
+		categoryID = catID;
+	}
+
+	function setSecondCat(catID, secondCat){
+		categoryID = catID;
+		secondCategory = secondCat;
+		$rootScope.$broadcast("openKBCategory");
+	}
+
+	function setThirdCat(secondCat, thirdCat){
+		secondCategory = secondCat;
+		thirdCategory = thirdCat;
+		$rootScope.$broadcast("openThirdCategory");
+	}
+	
+	function getCategoryID(){
+		return categoryID;
+	}
+
+	function getSecondCat(){
+		return secondCategory;
+	}
+
+	function getThirdCat(){
+		return thirdCategory;
+	}
+
+	return {
+		setCategoryID: setCategoryID,
+		setSecondCat: setSecondCat,
+		setThirdCat: setThirdCat,
+		getCategoryID : getCategoryID,
+		getSecondCat: getSecondCat,
+		getThirdCat: getThirdCat
+	};
+}]]></script>
+        <sys_class_name>sp_angular_provider</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-04 19:30:42</sys_created_on>
+        <sys_id>ba1cfd88dbd1dc905c11639014961971</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>kbCategory</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_angular_provider_ba1cfd88dbd1dc905c11639014961971</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-05 16:20:06</sys_updated_on>
+        <type>service</type>
+    </sp_angular_provider>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_angular_provider_ba1cfd88dbd1dc905c11639014961971</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_angular_provider"&gt;&lt;sp_angular_provider action="INSERT_OR_UPDATE"&gt;&lt;name&gt;kbCategory&lt;/name&gt;&lt;script&gt;&lt;![CDATA[function($rootScope) {
+	var categoryID = false;
+	var secondCategory = false;
+	var thirdCategory = false;
+
+	function setCategoryID(catID) {
+		categoryID = catID;
+	}
+
+	function setSecondCat(catID, secondCat){
+		categoryID = catID;
+		secondCategory = secondCat;
+		$rootScope.$broadcast("openKBCategory");
+	}
+
+	function setThirdCat(secondCat, thirdCat){
+		secondCategory = secondCat;
+		thirdCategory = thirdCat;
+		$rootScope.$broadcast("openThirdCategory");
+	}
+	
+	function getCategoryID(){
+		return categoryID;
+	}
+
+	function getSecondCat(){
+		return secondCategory;
+	}
+
+	function getThirdCat(){
+		return thirdCategory;
+	}
+
+	return {
+		setCategoryID: setCategoryID,
+		setSecondCat: setSecondCat,
+		setThirdCat: setThirdCat,
+		getCategoryID : getCategoryID,
+		getSecondCat: getSecondCat,
+		getThirdCat: getThirdCat
+	};
+}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sp_angular_provider&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-06-04 19:30:42&lt;/sys_created_on&gt;&lt;sys_id&gt;ba1cfd88dbd1dc905c11639014961971&lt;/sys_id&gt;&lt;sys_mod_count&gt;6&lt;/sys_mod_count&gt;&lt;sys_name&gt;kbCategory&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_angular_provider_ba1cfd88dbd1dc905c11639014961971&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-06-05 16:20:06&lt;/sys_updated_on&gt;&lt;type&gt;service&lt;/type&gt;&lt;/sp_angular_provider&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-252958496</payload_hash>
+        <record_name>kbCategory</record_name>
+        <reverted_from/>
+        <source>0ffdd18cdb51dc905c116390149619c3</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-05 16:20:07</sys_created_on>
+        <sys_id>922a5618db5110d05c1163901496194d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17285484adb0000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-05 16:20:07</sys_updated_on>
+        <type>Widget Angular Provider</type>
+        <update_guid>5a2a5618455110d0aa9cc2dcd39b9c4c</update_guid>
+        <update_guid_history>5a2a5618455110d0aa9cc2dcd39b9c4c:-252958496,a1e9b518a9dddc90ca17de72a91ab01e:656462247,c5a2fddc2c9ddc90d586129237a3987a:1102161159,f4aa61d49c9ddc907ceb04bcf68c6164:656462247,22cd314c55d1dc90989da165aa2da409:1355788991,cc6c79c800d1dc90dfda2f204d3e2ab0:-1768876865,283c71c8c9d1dc905f995064321316dd:-2099389595</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">fbda040adb1154d05c1163901496198f</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-10 16:23:26</sys_created_on>
+        <sys_db_object display_value="" name="sp_angular_provider">sp_angular_provider</sys_db_object>
+        <sys_id>30be1faee51e4800be4573b023621000</sys_id>
+        <sys_metadata>ba1cfd88dbd1dc905c11639014961971</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>kbCategory</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_angular_provider_ba1cfd88dbd1dc905c11639014961971</sys_update_name>
+        <sys_update_version display_value="sp_angular_provider_ba1cfd88dbd1dc905c11639014961971">922a5618db5110d05c1163901496194d</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-10 16:23:26</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

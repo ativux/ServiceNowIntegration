@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_search_source">
+    <sp_search_source action="DELETE">
+        <advanced_typeahead_config>false</advanced_typeahead_config>
+        <condition/>
+        <data_fetch_script><![CDATA[(function(query) {
+	var results = [];
+	gs.info(results);
+	return query;
+})(query);]]></data_fetch_script>
+        <display_fields/>
+        <enable_typeahead>true</enable_typeahead>
+        <facet_generation_script><![CDATA[(function(query, facetService, searchResults) {
+	/* Calculate your facets here using facetService */
+	/* var stateFacet = facetService.createFacet('State', 'state'); */
+	/* stateFacet.addFacetItem('Facet Item Label', '123'); */
+
+})(query, facetService, searchResults);]]></facet_generation_script>
+        <id>gservice_henrique_test</id>
+        <is_scripted_source>true</is_scripted_source>
+        <name>GService Henrique Test</name>
+        <page display_value="search">87466b63c3223100c8b837659bba8feb</page>
+        <pagination_supported>false</pagination_supported>
+        <primary_display_field>active</primary_display_field>
+        <roles/>
+        <search_page_template><![CDATA[<div>
+  <a href="?id=form&sys_id={{item.sys_id}}&table={{item.table}}" class="h4 text-primary m-b-sm block">
+    <span ng-bind-html="highlight(item.primary, data.q)"></span>
+  </a>
+  <span class="text-muted" ng-repeat="f in item.fields">
+    <span class="m-l-xs m-r-xs" ng-if="!$first"> &middot; </span>
+    {{f.label}}: <span ng-bind-html="highlight(f.display_value, data.q)"></span>
+  </span>
+</div>]]></search_page_template>
+        <source_table>kb_knowledge</source_table>
+        <sys_class_name>sp_search_source</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-17 15:59:36</sys_created_on>
+        <sys_id>30684094db2150105c1163901496194e</sys_id>
+        <sys_mod_count>13</sys_mod_count>
+        <sys_name>GService Henrique Test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_search_source_30684094db2150105c1163901496194e</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-19 12:36:25</sys_updated_on>
+        <typeahead_glyph/>
+        <typeahead_template/>
+    </sp_search_source>
+    <sys_translated_text action="DELETE" query="documentkey=30684094db2150105c1163901496194e"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_search_source_30684094db2150105c1163901496194e</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_search_source"&gt;&lt;sp_search_source action="INSERT_OR_UPDATE"&gt;&lt;advanced_typeahead_config&gt;false&lt;/advanced_typeahead_config&gt;&lt;condition/&gt;&lt;data_fetch_script&gt;&lt;![CDATA[(function(query) {
+	var results = [];
+	gs.info(results);
+	return query;
+})(query);]]&gt;&lt;/data_fetch_script&gt;&lt;display_fields/&gt;&lt;enable_typeahead&gt;true&lt;/enable_typeahead&gt;&lt;facet_generation_script&gt;&lt;![CDATA[(function(query, facetService, searchResults) {
+	/* Calculate your facets here using facetService */
+	/* var stateFacet = facetService.createFacet('State', 'state'); */
+	/* stateFacet.addFacetItem('Facet Item Label', '123'); */
+
+})(query, facetService, searchResults);]]&gt;&lt;/facet_generation_script&gt;&lt;id&gt;gservice_henrique_test&lt;/id&gt;&lt;is_scripted_source&gt;true&lt;/is_scripted_source&gt;&lt;name&gt;GService Henrique Test&lt;/name&gt;&lt;page display_value="search"&gt;87466b63c3223100c8b837659bba8feb&lt;/page&gt;&lt;pagination_supported&gt;false&lt;/pagination_supported&gt;&lt;primary_display_field&gt;active&lt;/primary_display_field&gt;&lt;roles/&gt;&lt;search_page_template&gt;&lt;![CDATA[&lt;div&gt;
+  &lt;a href="?id=form&amp;sys_id={{item.sys_id}}&amp;table={{item.table}}" class="h4 text-primary m-b-sm block"&gt;
+    &lt;span ng-bind-html="highlight(item.primary, data.q)"&gt;&lt;/span&gt;
+  &lt;/a&gt;
+  &lt;span class="text-muted" ng-repeat="f in item.fields"&gt;
+    &lt;span class="m-l-xs m-r-xs" ng-if="!$first"&gt; &amp;middot; &lt;/span&gt;
+    {{f.label}}: &lt;span ng-bind-html="highlight(f.display_value, data.q)"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/div&gt;]]&gt;&lt;/search_page_template&gt;&lt;source_table&gt;kb_knowledge&lt;/source_table&gt;&lt;sys_class_name&gt;sp_search_source&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-06-17 15:59:36&lt;/sys_created_on&gt;&lt;sys_id&gt;30684094db2150105c1163901496194e&lt;/sys_id&gt;&lt;sys_mod_count&gt;13&lt;/sys_mod_count&gt;&lt;sys_name&gt;GService Henrique Test&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_search_source_30684094db2150105c1163901496194e&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-06-19 12:36:25&lt;/sys_updated_on&gt;&lt;typeahead_glyph/&gt;&lt;typeahead_template/&gt;&lt;/sp_search_source&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=30684094db2150105c1163901496194e"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>138996031</payload_hash>
+        <record_name>GService Henrique Test</record_name>
+        <reverted_from/>
+        <source>0ffdd18cdb51dc905c116390149619c3</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-19 12:36:25</sys_created_on>
+        <sys_id>f53de5b0db21d0105c116390149619d6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172cc9487140000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-19 12:36:25</sys_updated_on>
+        <type>Search Source</type>
+        <update_guid>bd3de5b02121d01075f16236730fced5</update_guid>
+        <update_guid_history>bd3de5b02121d01075f16236730fced5:138996031,c7bc2530a221d0100cfb9293dd9cda45:920219769,832861342aed9010036418ffd5b6ab9a:924080894,c09558d88a255410db4489d3d612a1e6:2038290147,4ef25858ad255410736b6a2e5a0e4eb8:-1368324175,f3c198d494255410f37794aedc2899b3:483129613,0d40d41494255410e904ccac8d6e1500:-1226470644,7ecfc014382554105d0523259ffc028b:-570541002,b72fc4d0b9255410878bc9595d5ef61e:-1336252205,c5a90cd870e15410cdb6815a6eb0ec2c:-946612253,bb8948d8b9e15410534fc8943672d14c:2030409099,2939cc9455215010abb47ee002041291:-1407588906,3ed8c4949c215010a9ed20ef870d7ece:823096577,7288cc5478215010c149edd0e2295db8:-984398828</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">eecd61f0db21d0105c116390149619bd</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-19 12:38:55</sys_created_on>
+        <sys_db_object display_value="" name="sp_search_source">sp_search_source</sys_db_object>
+        <sys_id>d6216ab147b04a1ca58b459b947fbc04</sys_id>
+        <sys_metadata>30684094db2150105c1163901496194e</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService Henrique Test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_search_source_30684094db2150105c1163901496194e</sys_update_name>
+        <sys_update_version display_value="sp_search_source_30684094db2150105c1163901496194e">f53de5b0db21d0105c116390149619d6</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-19 12:38:55</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

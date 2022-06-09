@@ -135,7 +135,16 @@
 	});
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.content_list {&#13;
+        <css>.bgcolor_category2 {&#13;
+  background-color: transparent; !important&#13;
+}&#13;
+&#13;
+.input-group-dashboard {&#13;
+  border-bottom: 2px solid #8028FF !important;&#13;
+}&#13;
+&#13;
+&#13;
+.content_list {&#13;
   margin-top: 20px;&#13;
   margin-bottom: 20px;&#13;
   padding-left: 0 !important;&#13;
@@ -157,9 +166,21 @@
 &#13;
     .break-line-other {&#13;
       transition: .4s ease-in-out;&#13;
-      width: 60px;&#13;
+      width: 84px;&#13;
     }&#13;
   }&#13;
+&#13;
+  .element-apply-filter {&#13;
+    position: absolute;&#13;
+    right: 150px;&#13;
+    bottom: 10px;&#13;
+    width: fit-content;&#13;
+    color: #7537F5;&#13;
+    font-size: 15px;&#13;
+    font-family: "globorounded_bd";&#13;
+    letter-spacing: -2% !important;&#13;
+  }&#13;
+&#13;
   .date-field{&#13;
     border: none;&#13;
     border-bottom: 2px solid #8028FF;&#13;
@@ -174,11 +195,12 @@
     border-bottom: 3px solid #c8c9c7;&#13;
     width: 90px;&#13;
     padding: 10px 0px;&#13;
+&#13;
     .title-transaction{&#13;
       transition: .4s ease-in-out;&#13;
     }&#13;
   }&#13;
-  &#13;
+&#13;
   .border-selected {&#13;
     border-bottom: 3px solid #8028FF !important;&#13;
   }&#13;
@@ -288,7 +310,7 @@
     margin-right: 60px;&#13;
   }&#13;
 &#13;
-  .filter-click-size, .break-line-other, .title-transaction {&#13;
+  .filter-click-size, .break-line-other, .title-transaction, .element-apply-filter #btn-applyFilter {&#13;
     &amp;:hover {&#13;
       transition: .2s ease-in-out;&#13;
       transform: scale(1.1);&#13;
@@ -400,14 +422,14 @@
         <sys_created_by>organize.fernando</sys_created_by>
         <sys_created_on>2020-08-17 18:23:24</sys_created_on>
         <sys_id>40723a331b26d05097c0dca0f54bcbb8</sys_id>
-        <sys_mod_count>196</sys_mod_count>
+        <sys_mod_count>202</sys_mod_count>
         <sys_name>GService List Filter CSC</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_widget_40723a331b26d05097c0dca0f54bcbb8</sys_update_name>
-        <sys_updated_by>accenture.emily</sys_updated_by>
-        <sys_updated_on>2022-01-28 18:27:40</sys_updated_on>
+        <sys_updated_by>ricsan</sys_updated_by>
+        <sys_updated_on>2022-06-07 16:41:56</sys_updated_on>
         <template><![CDATA[<div class="content_list col-md-12">
   <div class="col-md-2 filter-padding filter_type">
     <div ng-click="c.typeFilterState()" class="filter-click-size">
@@ -423,8 +445,7 @@
                      id="{{typeFilter.name}}CSC"
                      name="selectedItem"
                      value="{{typeFilter.name}}"
-                     ng-model="typeFilter.selected"
-                     ng-click="c.applyFilterCSC(typeFilter)">
+                     ng-model="typeFilter.selected">
               <div class="new-radio">
                 <span ng-class="typeFilter.selected ? 'radio-after' : ''"></span>
               </div>
@@ -452,8 +473,7 @@
                      id="{{statusFilter.name}}CSC"
                      name="selectedItem"
                      value="{{statusFilter.name}}"
-                     ng-model="statusFilter.selected"
-                     ng-click="c.applyFilterCSC()">
+                     ng-model="statusFilter.selected">
               <div class="new-radio">
                 <span ng-class="statusFilter.selected ? 'radio-after' : ''"></span>
               </div>
@@ -526,7 +546,9 @@
     <div ng-click="c.clearAllFilters()" class="break-line-other">{{data.clearFilter}}</div>
   </div>
 
-
+  <div class="col-md-1 title filter-padding element-apply-filter">
+    <div ng-click="c.applyFilterCSC()" id="btn-applyFilter"><img src="gs_csc_dark_purple_filter_icon.png" width="40" height="40"/> Aplicar Filtros</div>
+  </div>
 </div>]]></template>
     </sp_widget>
 </record_update>

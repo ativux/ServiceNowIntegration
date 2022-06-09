@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>3</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">323d6193dba8d010fa11cf24149619d9</sp_column>
+        <sp_widget display_value="GService Report List">2c9c1961dbe95810fa11cf241496192d</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-06-21 19:19:27</sys_created_on>
+        <sys_id>59acd561dbe95810fa11cf2414961924</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_instance_59acd561dbe95810fa11cf2414961924</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-06-22 13:27:10</sys_updated_on>
+        <title/>
+        <url/>
+        <widget_parameters/>
+    </sp_instance>
+    <sys_translated_text action="DELETE" query="documentkey=59acd561dbe95810fa11cf2414961924"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_instance_59acd561dbe95810fa11cf2414961924</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance"><sp_instance action="INSERT_OR_UPDATE"><active>true</active><class_name/><color>default</color><css/><glyph/><id/><order>3</order><roles/><short_description/><size>md</size><sp_column display_value="1">323d6193dba8d010fa11cf24149619d9</sp_column><sp_widget display_value="GService Report List">2c9c1961dbe95810fa11cf241496192d</sp_widget><sys_class_name>sp_instance</sys_class_name><sys_created_by>organize.fernando</sys_created_by><sys_created_on>2020-06-21 19:19:27</sys_created_on><sys_id>59acd561dbe95810fa11cf2414961924</sys_id><sys_mod_count>7</sys_mod_count><sys_name/><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_instance_59acd561dbe95810fa11cf2414961924</sys_update_name><sys_updated_by>organize.fernando</sys_updated_by><sys_updated_on>2020-06-22 13:27:10</sys_updated_on><title/><url/><widget_parameters/></sp_instance><sys_translated_text action="delete_multiple" query="documentkey=59acd561dbe95810fa11cf2414961924"/></record_update>]]></payload>
+        <payload_hash>1827492628</payload_hash>
+        <record_name/>
+        <reverted_from/>
+        <source>7d96c115dbe514105c11639014961916</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-06-22 13:27:10</sys_created_on>
+        <sys_id>a695517ddbed54105c11639014961916</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172dc3612e50000001</sys_recorded_at>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-06-22 13:27:10</sys_updated_on>
+        <type>Instance</type>
+        <update_guid>6e95517d75ed5410e727c17af4e82915</update_guid>
+        <update_guid_history>6e95517d75ed5410e727c17af4e82915:1827492628,56b259796ded5410e3c05e453c707ec0:-1440886731,ec0091f510ed541004038a685e40c241:1827492628,d3fc85355ded5410128695f0a61b27cd:-1440886731,752b09b114ed5410da22a71529c2bd74:1827492628,1ca46d6963e9581031fc69521ccd1379:-1440886731,5184e96968e95810a859323a7bc14864:1827492628,21acd561a9e95810defdd17c77ee7c26:-1440886731</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">3196d1bddbed54105c1163901496198d</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-06-22 13:31:29</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance">sp_instance</sys_db_object>
+        <sys_id>10ba8d78e8dd4dde8dfd74d136a078a4</sys_id>
+        <sys_metadata>59acd561dbe95810fa11cf2414961924</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_instance_59acd561dbe95810fa11cf2414961924</sys_update_name>
+        <sys_update_version display_value="sp_instance_59acd561dbe95810fa11cf2414961924">a695517ddbed54105c11639014961916</sys_update_version>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-06-22 13:31:29</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function() {  /* widget controller */  var c = this;}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.align-all{
+  text-align:center;
+}
+
+.img-border{
+	padding-bottom: 30px;
+}
+
+.request-color{
+	color: $dodger-blue;
+}
+
+.request-size{
+	font-size: $font-size-h1;
+}
+
+.request-description-size{
+	font-size: $font-size-h4;
+}
+
+.bottom-border {
+	padding-bottom: 50px
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>request_a_service</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>GService Request a Service</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {  /* populate the 'data' object */  /* e.g., data.table = $sp.getValue('table'); */})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 14:54:16</sys_created_on>
+        <sys_id>6f6d9bf3db881050fa11cf241496198c</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>GService Request a Service</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_6f6d9bf3db881050fa11cf241496198c</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-15 16:58:56</sys_updated_on>
+        <template><![CDATA[<div class="align-all">
+  <div class="img-border">
+  	<a title="Submit a new request" href=""><img src="service.png" height="125px" alt="" /></a>  
+  </div>
+	<div class="request-color request-size">
+    	SOLICITE UM SERVIÇO
+  </div>
+	<div class="request-description-size request-color bottom-border">
+    Faltando recursos de tecnologia? Navegue por nosso catálogo e solicite o que você necessita.
+  </div>
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_6f6d9bf3db881050fa11cf241496198c</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function() {  /* widget controller */  var c = this;}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.align-all{
+  text-align:center;
+}
+
+.img-border{
+	padding-bottom: 30px;
+}
+
+.request-color{
+	color: $dodger-blue;
+}
+
+.request-size{
+	font-size: $font-size-h1;
+}
+
+.request-description-size{
+	font-size: $font-size-h4;
+}
+
+.bottom-border {
+	padding-bottom: 50px
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;request_a_service&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;GService Request a Service&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {  /* populate the 'data' object */  /* e.g., data.table = $sp.getValue('table'); */})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-15 14:54:16&lt;/sys_created_on&gt;&lt;sys_id&gt;6f6d9bf3db881050fa11cf241496198c&lt;/sys_id&gt;&lt;sys_mod_count&gt;5&lt;/sys_mod_count&gt;&lt;sys_name&gt;GService Request a Service&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_6f6d9bf3db881050fa11cf241496198c&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-15 16:58:56&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div class="align-all"&gt;
+  &lt;div class="img-border"&gt;
+  	&lt;a title="Submit a new request" href=""&gt;&lt;img src="service.png" height="125px" alt="" /&gt;&lt;/a&gt;  
+  &lt;/div&gt;
+	&lt;div class="request-color request-size"&gt;
+    	SOLICITE UM SERVIÇO
+  &lt;/div&gt;
+	&lt;div class="request-description-size request-color bottom-border"&gt;
+    Faltando recursos de tecnologia? Navegue por nosso catálogo e solicite o que você necessita.
+  &lt;/div&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1734890576</payload_hash>
+        <record_name>GService Request a Service</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 16:58:56</sys_created_on>
+        <sys_id>a5f9fbf3db4c1050fa11cf2414961959</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1717ec781860000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-15 16:58:56</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>6df9fbf3864c1050514919005e5fbe58</update_guid>
+        <update_guid_history>6df9fbf3864c1050514919005e5fbe58:1734890576,87c2e33fd9881050b339457b12e7315e:-1686972486,047fd7f75b881050b905c5f7deb43ca4:-414146933,cf6e577799881050d12692072c280e66:1724888100,395e9777d488105056b18b90bc12dad0:-1639496813,276d9bf32e881050d8da1a2c7658738e:-2100242741</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">27be9d58db589050fa11cf2414961913</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 18:57:44</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>c5515408ba224550999adc1cff750900</sys_id>
+        <sys_metadata>6f6d9bf3db881050fa11cf241496198c</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService Request a Service</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_6f6d9bf3db881050fa11cf241496198c</sys_update_name>
+        <sys_update_version display_value="sp_widget_6f6d9bf3db881050fa11cf241496198c">a5f9fbf3db4c1050fa11cf2414961959</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 18:57:44</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

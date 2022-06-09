@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
+    <sp_container action="DELETE">
+        <background_color/>
+        <background_image/>
+        <background_style>default</background_style>
+        <bootstrap_alt>false</bootstrap_alt>
+        <class_name/>
+        <container_class_name/>
+        <name>Banner Page - Container 1</name>
+        <order>1</order>
+        <sp_page display_value="banner_page">fc977a27db40dc10fa11cf24149619e7</sp_page>
+        <subheader>false</subheader>
+        <sys_class_name>sp_container</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-14 17:35:38</sys_created_on>
+        <sys_id>6dc8b2e7db40dc10fa11cf24149619af</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Banner Page - Container 1</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_container_6dc8b2e7db40dc10fa11cf24149619af</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-14 17:35:38</sys_updated_on>
+        <title/>
+        <width>container</width>
+    </sp_container>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_container_6dc8b2e7db40dc10fa11cf24149619af</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name/><container_class_name/><name>Banner Page - Container 1</name><order>1</order><sp_page display_value="banner_page">fc977a27db40dc10fa11cf24149619e7</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-04-14 17:35:38</sys_created_on><sys_id>6dc8b2e7db40dc10fa11cf24149619af</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Banner Page - Container 1</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_container_6dc8b2e7db40dc10fa11cf24149619af</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-04-14 17:35:38</sys_updated_on><title/><width>container</width></sp_container></record_update>]]></payload>
+        <payload_hash>900200442</payload_hash>
+        <record_name>Banner Page - Container 1</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-14 17:35:38</sys_created_on>
+        <sys_id>29c8b2e7db40dc10fa11cf24149619b1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17179c2c0c90000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-14 17:35:38</sys_updated_on>
+        <type>Container</type>
+        <update_guid>21c8b2e7f840dc109863535ca4264cb1</update_guid>
+        <update_guid_history>21c8b2e7f840dc109863535ca4264cb1:900200442</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">4fd876e7db40dc10fa11cf241496194d</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-14 17:36:00</sys_created_on>
+        <sys_db_object display_value="" name="sp_container">sp_container</sys_db_object>
+        <sys_id>0d28ae831e484a809aa23beeac3db709</sys_id>
+        <sys_metadata>6dc8b2e7db40dc10fa11cf24149619af</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Banner Page - Container 1</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_container_6dc8b2e7db40dc10fa11cf24149619af</sys_update_name>
+        <sys_update_version display_value="sp_container_6dc8b2e7db40dc10fa11cf24149619af">29c8b2e7db40dc10fa11cf24149619b1</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-14 17:36:00</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

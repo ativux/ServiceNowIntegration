@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
+    <sp_container action="DELETE">
+        <background_color/>
+        <background_image/>
+        <background_style>default</background_style>
+        <bootstrap_alt>false</bootstrap_alt>
+        <class_name/>
+        <container_class_name>content-category-items</container_class_name>
+        <name>GService Homepage - Container 3</name>
+        <order>3</order>
+        <sp_page display_value="gservice_index">1b567a63db40dc10fa11cf241496196e</sp_page>
+        <subheader>false</subheader>
+        <sys_class_name>sp_container</sys_class_name>
+        <sys_created_by>organize.vinicius.oliveira</sys_created_by>
+        <sys_created_on>2020-04-14 17:31:31</sys_created_on>
+        <sys_id>d5d73e27db40dc10fa11cf24149619c9</sys_id>
+        <sys_mod_count>16</sys_mod_count>
+        <sys_name>GService Homepage - Container 3</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_container_d5d73e27db40dc10fa11cf24149619c9</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-05-05 14:43:44</sys_updated_on>
+        <title/>
+        <width>container</width>
+    </sp_container>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_container_d5d73e27db40dc10fa11cf24149619c9</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name/><container_class_name>content-category-items</container_class_name><name>GService Homepage - Container 3</name><order>3</order><sp_page display_value="gservice_index">1b567a63db40dc10fa11cf241496196e</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>organize.vinicius.oliveira</sys_created_by><sys_created_on>2020-04-14 17:31:31</sys_created_on><sys_id>d5d73e27db40dc10fa11cf24149619c9</sys_id><sys_mod_count>16</sys_mod_count><sys_name>GService Homepage - Container 3</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_container_d5d73e27db40dc10fa11cf24149619c9</sys_update_name><sys_updated_by>organize.jorge.garcia</sys_updated_by><sys_updated_on>2020-05-05 14:43:44</sys_updated_on><title/><width>container</width></sp_container></record_update>]]></payload>
+        <payload_hash>-1638073420</payload_hash>
+        <record_name>GService Homepage - Container 3</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-05-05 14:43:44</sys_created_on>
+        <sys_id>50da1ededbe41010fa11cf24149619a8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171e54aebd10000001</sys_recorded_at>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-05-05 14:43:44</sys_updated_on>
+        <type>Container</type>
+        <update_guid>18da1edef0e410103e35798c770bdaa7</update_guid>
+        <update_guid_history>18da1edef0e410103e35798c770bdaa7:-1638073420,bb7adade8ae41010743e5e5d3793a103:-658479525,d82ba106166058101bf51286d152e01a:-1638073420,050bedc238605810ba5d9823b5d8d4cc:138847493,fd0c53ce1bdc98507f8c03912f01e54f:-1638073420,efca5b4ee2dc985096c000928fad5c0e:28820411,2221156942dc545028ab307785d6da8c:1226532503,36e0156991dc545018f0aa62ac52f186:-1854078609,b0a8c121ba9018506522579fc334bc5f:-1769931829,9b2c97ef4944dc103065b8656086fe93:1789189996,9df7d36b7644dc10bbd068642f0f8fa5:1053344525,dde7936bc644dc107ae4eafb8a8dab78:1789189996,ddc7df2b3a44dc109ed9076d81553f67:1053344525,b1b75f2bad44dc10ca6643e57a29a4ac:1789189996,5ad7b6673440dc1085c536b232c9b781:1053344525,a1d736675440dc10e8c0af3318f25cfa:1789189996,15d776671c40dc10ce62ed49153076f9:-1769931829</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">e31c1e52db281010fa11cf2414961969</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-05-05 14:49:26</sys_created_on>
+        <sys_db_object display_value="" name="sp_container">sp_container</sys_db_object>
+        <sys_id>35b5e10c99f846e78ee48c6bf0eafb49</sys_id>
+        <sys_metadata>d5d73e27db40dc10fa11cf24149619c9</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService Homepage - Container 3</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_container_d5d73e27db40dc10fa11cf24149619c9</sys_update_name>
+        <sys_update_version display_value="sp_container_d5d73e27db40dc10fa11cf24149619c9">50da1ededbe41010fa11cf24149619a8</sys_update_version>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-05-05 14:49:26</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

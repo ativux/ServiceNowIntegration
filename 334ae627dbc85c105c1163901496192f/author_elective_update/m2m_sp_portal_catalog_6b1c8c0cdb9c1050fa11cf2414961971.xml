@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_portal_catalog">
+    <m2m_sp_portal_catalog action="DELETE">
+        <active>true</active>
+        <order>100</order>
+        <sc_catalog display_value="TI">6ee2487cdba344105c1163901496194f</sc_catalog>
+        <sp_portal display_value="GService">a084feafdb00dc10fa11cf24149619e0</sp_portal>
+        <sys_class_name>m2m_sp_portal_catalog</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-15 18:18:15</sys_created_on>
+        <sys_id>6b1c8c0cdb9c1050fa11cf2414961971</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>TI.GService</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_portal_catalog_6b1c8c0cdb9c1050fa11cf2414961971</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-04-15 18:18:15</sys_updated_on>
+    </m2m_sp_portal_catalog>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>m2m_sp_portal_catalog_6b1c8c0cdb9c1050fa11cf2414961971</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_portal_catalog"><m2m_sp_portal_catalog action="INSERT_OR_UPDATE"><active>true</active><order>100</order><sc_catalog display_value="TI">6ee2487cdba344105c1163901496194f</sc_catalog><sp_portal display_value="GService">a084feafdb00dc10fa11cf24149619e0</sp_portal><sys_class_name>m2m_sp_portal_catalog</sys_class_name><sys_created_by>organize.fernando</sys_created_by><sys_created_on>2020-04-15 18:18:15</sys_created_on><sys_id>6b1c8c0cdb9c1050fa11cf2414961971</sys_id><sys_mod_count>0</sys_mod_count><sys_name>TI.GService</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>m2m_sp_portal_catalog_6b1c8c0cdb9c1050fa11cf2414961971</sys_update_name><sys_updated_by>organize.fernando</sys_updated_by><sys_updated_on>2020-04-15 18:18:15</sys_updated_on></m2m_sp_portal_catalog></record_update>]]></payload>
+        <payload_hash>-1109376684</payload_hash>
+        <record_name>TI.GService</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-15 18:18:15</sys_created_on>
+        <sys_id>631c8c0cdb9c1050fa11cf2414961973</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1717f10205b0000001</sys_recorded_at>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-04-15 18:18:15</sys_updated_on>
+        <type>Portal Catalog</type>
+        <update_guid>6b1c8c0cc49c1050bebd49d6c6187a72</update_guid>
+        <update_guid_history>6b1c8c0cc49c1050bebd49d6c6187a72:-1109376684</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">343c0c0cdb9c1050fa11cf24149619c6</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-15 18:18:37</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_portal_catalog">m2m_sp_portal_catalog</sys_db_object>
+        <sys_id>4b3a44a90fc34158b18638b4c891ab10</sys_id>
+        <sys_metadata>6b1c8c0cdb9c1050fa11cf2414961971</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>TI.GService</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>m2m_sp_portal_catalog_6b1c8c0cdb9c1050fa11cf2414961971</sys_update_name>
+        <sys_update_version display_value="m2m_sp_portal_catalog_6b1c8c0cdb9c1050fa11cf2414961971">631c8c0cdb9c1050fa11cf2414961973</sys_update_version>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-04-15 18:18:37</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

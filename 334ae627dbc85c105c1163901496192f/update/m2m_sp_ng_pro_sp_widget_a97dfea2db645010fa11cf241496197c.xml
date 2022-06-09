@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_ng_pro_sp_widget">
+    <m2m_sp_ng_pro_sp_widget action="INSERT_OR_UPDATE">
+        <sp_angular_provider display_value="categorySubscribe">ad38b0f0db645410fa11cf2414961984</sp_angular_provider>
+        <sp_widget display_value="GService Icon Link">c64dc558dbd49050fa11cf2414961949</sp_widget>
+        <sys_class_name>m2m_sp_ng_pro_sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-06 11:53:35</sys_created_on>
+        <sys_id>a97dfea2db645010fa11cf241496197c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>categorySubscribe.GService Icon Link</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_ng_pro_sp_widget_a97dfea2db645010fa11cf241496197c</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-06 11:53:35</sys_updated_on>
+    </m2m_sp_ng_pro_sp_widget>
+</record_update>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_message">
+    <sys_ui_message action="INSERT_OR_UPDATE">
+        <application/>
+        <code/>
+        <commented_message/>
+        <key>Lorem Ipsum</key>
+        <language>en</language>
+        <message>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ante mauris, tempor eu venenatis in, consectetur quis urna. Ut vehicula ipsum et hendrerit ultricies. Mauris semper, sapien dapibus dapibus commodo, metus magna euismod dui, at posuere eros justo eu risus. Donec vel urna vel leo posuere finibus. Quisque nec felis eget orci luctus ornare eget.</message>
+        <sys_class_name>sys_ui_message</sys_class_name>
+        <sys_created_by>organize.fernando</sys_created_by>
+        <sys_created_on>2020-04-15 15:18:16</sys_created_on>
+        <sys_id>76d2e7fbdb881050fa11cf24149619c3</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Lorem Ipsum</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_ui_message_76d2e7fbdb881050fa11cf24149619c3</sys_update_name>
+        <sys_updated_by>organize.fernando</sys_updated_by>
+        <sys_updated_on>2020-04-15 15:20:36</sys_updated_on>
+    </sys_ui_message>
+</record_update>

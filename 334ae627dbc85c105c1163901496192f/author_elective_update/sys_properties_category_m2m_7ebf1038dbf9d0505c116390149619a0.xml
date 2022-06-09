@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties_category_m2m">
+    <sys_properties_category_m2m action="DELETE">
+        <category display_value="Portal Category Properties">ed9cfcc8dbdd9c905c1163901496191d</category>
+        <order>2400</order>
+        <property display_value="gservice_portal_kb" name="gservice_portal_kb">25d26d80db91dc905c116390149619fa</property>
+        <sys_class_name>sys_properties_category_m2m</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-07-01 17:13:35</sys_created_on>
+        <sys_id>7ebf1038dbf9d0505c116390149619a0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>gservice_portal_kb.Portal Category Properties</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sys_properties_category_m2m_7ebf1038dbf9d0505c116390149619a0</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-01 17:13:35</sys_updated_on>
+    </sys_properties_category_m2m>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sys_properties_category_m2m_7ebf1038dbf9d0505c116390149619a0</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties_category_m2m"><sys_properties_category_m2m action="INSERT_OR_UPDATE"><category display_value="Portal Category Properties">ed9cfcc8dbdd9c905c1163901496191d</category><order>2400</order><property display_value="gservice_portal_kb" name="gservice_portal_kb">25d26d80db91dc905c116390149619fa</property><sys_class_name>sys_properties_category_m2m</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-07-01 17:13:35</sys_created_on><sys_id>7ebf1038dbf9d0505c116390149619a0</sys_id><sys_mod_count>0</sys_mod_count><sys_name>gservice_portal_kb.Portal Category Properties</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sys_properties_category_m2m_7ebf1038dbf9d0505c116390149619a0</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-07-01 17:13:35</sys_updated_on></sys_properties_category_m2m></record_update>]]></payload>
+        <payload_hash>-1471745755</payload_hash>
+        <record_name>gservice_portal_kb.Portal Category Properties</record_name>
+        <reverted_from/>
+        <source>7d96c115dbe514105c11639014961916</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-07-01 17:13:35</sys_created_on>
+        <sys_id>b6bf1038dbf9d0505c116390149619a2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1730b5e96600000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-01 17:13:35</sys_updated_on>
+        <type>Category Property</type>
+        <update_guid>bebf103886f9d050fd14f1115576d0a1</update_guid>
+        <update_guid_history>bebf103886f9d050fd14f1115576d0a1:-1471745755</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-07-01 17:14:40</sys_created_on>
+        <sys_db_object display_value="" name="sys_properties_category_m2m">sys_properties_category_m2m</sys_db_object>
+        <sys_id>34d87ebf5e4a47e69290d4040283efa9</sys_id>
+        <sys_metadata>7ebf1038dbf9d0505c116390149619a0</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>gservice_portal_kb.Portal Category Properties</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sys_properties_category_m2m_7ebf1038dbf9d0505c116390149619a0</sys_update_name>
+        <sys_update_version display_value="sys_properties_category_m2m_7ebf1038dbf9d0505c116390149619a0">b6bf1038dbf9d0505c116390149619a2</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-01 17:14:40</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

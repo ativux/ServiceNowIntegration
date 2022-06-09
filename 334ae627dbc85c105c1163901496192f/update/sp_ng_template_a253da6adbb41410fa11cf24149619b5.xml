@@ -6,14 +6,14 @@
         <sys_created_by>organize.henrique</sys_created_by>
         <sys_created_on>2020-05-18 19:05:35</sys_created_on>
         <sys_id>a253da6adbb41410fa11cf24149619b5</sys_id>
-        <sys_mod_count>273</sys_mod_count>
+        <sys_mod_count>274</sys_mod_count>
         <sys_name>gservice_my_requests_table</sys_name>
         <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
         <sys_policy/>
         <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
         <sys_update_name>sp_ng_template_a253da6adbb41410fa11cf24149619b5</sys_update_name>
         <sys_updated_by>organize.jorge.garcia</sys_updated_by>
-        <sys_updated_on>2020-06-03 14:27:34</sys_updated_on>
+        <sys_updated_on>2020-06-08 15:01:50</sys_updated_on>
         <template><![CDATA[<!-- Template created for: "MINHAS SOLICITAÇÕES" -->
 <div class="col-md-12 filter-padding">
   <sp-widget widget="data.listFilter_widget"></sp-widget>
@@ -80,19 +80,19 @@
             <p class="sla_description">SLA: {{item.delivery_time}}</p>
           </td>
           <td class="column_buttons">
-            <div ng-if="item.eraseButton" class="buttons" ng-click="c.itemAction(item, 'cancelItem')"><img src="trash.png"/>
+            <div ng-if="item.eraseButton" class="buttons buttons_list" ng-click="c.itemAction(item, 'cancelItem')"><img src="trash.png"/>
               <span class="tooltip tooltip_right">
                 <div class="tooltip_arrow arrow_left"></div>
                 <div class="tooltip_text">${Cancel Request}</div>
               </span>
             </div>
-            <div ng-if="item.acceptButton" class="buttons" ng-click="c.itemAction(item, 'acceptSolution')"><img src="gservice_dashboard_confirm.png"/>
+            <div ng-if="item.acceptButton" class="buttons buttons_list" ng-click="c.itemAction(item, 'acceptSolution')"><img src="gservice_dashboard_confirm.png"/>
               <span class="tooltip tooltip_bottom">
                 <div class="tooltip_arrow arrow_top"></div>
                 <div class="tooltip_text">${Accept Solution}</div>
               </span>
             </div>
-            <div ng-if="item.reopenButton" class="buttons" ng-click="c.itemAction(item, 'rejectSolution')"><img src="gservice_reopen.png"/>
+            <div ng-if="item.reopenButton" class="buttons buttons_list" ng-click="c.itemAction(item, 'rejectSolution')"><img src="gservice_reopen.png"/>
               <span class="tooltip tooltip_right">
                 <div class="tooltip_arrow arrow_left"></div>
                 <div class="tooltip_text">${Reopen Request}</div>

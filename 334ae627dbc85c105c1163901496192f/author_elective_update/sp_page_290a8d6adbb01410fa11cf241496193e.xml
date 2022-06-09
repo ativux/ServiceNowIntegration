@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_page">
+    <sp_page action="DELETE">
+        <category>custom</category>
+        <css>body .padding-top { padding-top: 0; }
+
+.container{
+  margin-top: 200px;
+}</css>
+        <draft>false</draft>
+        <dynamic_title_structure/>
+        <id>henrique_test</id>
+        <internal>false</internal>
+        <public>false</public>
+        <roles/>
+        <short_description/>
+        <sys_class_name>sp_page</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-18 13:44:56</sys_created_on>
+        <sys_id>290a8d6adbb01410fa11cf241496193e</sys_id>
+        <sys_mod_count>25</sys_mod_count>
+        <sys_name>henrique_test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_page_290a8d6adbb01410fa11cf241496193e</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-02 13:06:08</sys_updated_on>
+        <title>Henrique Test</title>
+    </sp_page>
+    <sys_translated_text action="DELETE" query="documentkey=290a8d6adbb01410fa11cf241496193e"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_page_290a8d6adbb01410fa11cf241496193e</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_page"><sp_page action="INSERT_OR_UPDATE"><category>custom</category><css>body .padding-top { padding-top: 0; }
+
+.container{
+  margin-top: 200px;
+}</css><draft>false</draft><dynamic_title_structure/><id>henrique_test</id><internal>false</internal><public>false</public><roles/><short_description/><sys_class_name>sp_page</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-05-18 13:44:56</sys_created_on><sys_id>290a8d6adbb01410fa11cf241496193e</sys_id><sys_mod_count>25</sys_mod_count><sys_name>henrique_test</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_page_290a8d6adbb01410fa11cf241496193e</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-07-02 13:06:08</sys_updated_on><title>Henrique Test</title></sp_page><sys_translated_text action="delete_multiple" query="documentkey=290a8d6adbb01410fa11cf241496193e"/></record_update>]]></payload>
+        <payload_hash>1048699368</payload_hash>
+        <record_name>henrique_test</record_name>
+        <reverted_from/>
+        <source>7d96c115dbe514105c11639014961916</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-07-02 13:06:08</sys_created_on>
+        <sys_id>b7a0fc0ddbbd14505c11639014961997</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1730fa2679e0000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-07-02 13:06:08</sys_updated_on>
+        <type>Page</type>
+        <update_guid>7fa0fc0d45bd145075664dec698d6c96</update_guid>
+        <update_guid_history>7fa0fc0d45bd145075664dec698d6c96:1048699368,83aef6c3b42150508c76c92d3acc9779:699559745,718efe83fc215050e3c694d78bbf51b3:1758611745,a4cd3e43e821505093b9c0b88851348f:699559745,04bb320fa9ed1050d0d0e4ef124c51aa:1841327552,118b328b3ded10507a3f878baaca0218:699559745,247b7e4bcfed10504f9d7949f0bb213d:1841327552,6bda7ec7f2ed1050ef766ec5824bc23b:-939130912,a2aabac7f5ed105069cdcd717c988d8b:1841327552,cfd8bec355ed1050d4bb2d2c963bc774:305176790,aaff1a07996d10507ffe41608aefe253:-190231797,be6865fae329dc10ec030ce9656204e1:305176790,24a7697a6329dc109fe888921b7c4d53:1206937322,b2976d7a4e29dc10fffdd2dee545b8bc:1425151294,8e832db2c029dc102a0f0adb377ec907:-1745430701,231021fe1ae5dc1034b23d3924525823:-939243559,ba00edbe88e5dc10d3d8fa05913f8e26:-957178328,ed8ed02ab3619c10f40899889f4f776a:1206937322,03d52846b5555c50ea07654d4f0df742:2023338516,c3c235fe09fc141088daf62c9a077d6d:1206937322,16c2b1fe56fc1410a8548e6063c8d8e8:-762695520,67a2b1fee3fc141016c708a1211caed9:-303313064,4da2f1feaffc1410d142a246cfaae0e4:-553694846,2002fd7e1dfc1410bec908aef510aadd:1793302767,83f1b5be4cfc14105a961a79c6531f40:-855441831,e90a8d6aa7b01410cca06678edede640:-303313064</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">ee18fbea1b9e901097c0dca0f54bcba0</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-08-01 15:59:40</sys_created_on>
+        <sys_db_object display_value="" name="sp_page">sp_page</sys_db_object>
+        <sys_id>09d65faa87a04766b44c6e3236d9de81</sys_id>
+        <sys_metadata>290a8d6adbb01410fa11cf241496193e</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>henrique_test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_page_290a8d6adbb01410fa11cf241496193e</sys_update_name>
+        <sys_update_version display_value="sp_page_290a8d6adbb01410fa11cf241496193e">b7a0fc0ddbbd14505c11639014961997</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-08-01 15:59:40</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

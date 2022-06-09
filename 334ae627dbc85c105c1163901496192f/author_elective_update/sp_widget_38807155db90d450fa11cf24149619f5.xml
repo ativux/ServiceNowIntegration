@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function($rootScope,$scope,$timeout) {
+
+	/* widget controller */
+
+	var c = this;
+
+	c.selectedPill = 'requests'; // When page loads, default pill selected
+
+	/*broadcast to other widgets after waiting for 500 milliseconds,
+
+      just to make sure other widgets are loaded and ready to listen when we broadcast.          
+
+  */
+
+	$timeout(function(){
+
+		$rootScope.$broadcast('showHideWidget', 'requests');
+
+	},500);
+
+	//broadcast the selection when ever cliked on each pill
+
+	$scope.selectPill = function(selection){
+
+		c.selectedPill = selection;
+
+		$rootScope.$broadcast('showHideWidget', selection);
+
+	};
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.pill-background {
+
+  background: url(sp-landing-back.jpg) no-repeat center center fixed;
+
+  -webkit-background-size: cover;
+
+  -moz-background-size: cover;
+
+  -o-background-size: cover;
+
+  background-size: cover;
+
+  height: 300px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-around;
+
+  .each-pill {
+
+    &amp;.active {
+
+      color: #c70000;
+
+    }
+
+    height:150px;
+
+    width:200px;
+
+    background:#ddd;
+
+    padding:50px;
+
+    text-align:center;
+
+    border-radius:4px;
+
+    cursor:pointer;
+
+
+
+    p{
+
+      margin-top:5px;
+
+    }
+
+  }
+
+}
+
+.color-red {
+
+  color: #c70000;
+
+}
+
+.remove-margin {
+
+  margin-bottom: 0px;
+
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>widget_communicate_menu_test</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>Widget Communicate Menu Test</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {  /* populate the 'data' object */  /* e.g., data.table = $sp.getValue('table'); */})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-19 22:49:17</sys_created_on>
+        <sys_id>38807155db90d450fa11cf24149619f5</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Widget Communicate Menu Test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_38807155db90d450fa11cf24149619f5</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-19 22:50:04</sys_updated_on>
+        <template><![CDATA[<div>
+
+  <!-- your widget template -->
+
+  <div class=" pill-background row">
+
+    <div class="each-pill" ng-class="{'active':c.selectedPill == 'requests'}" ng-click="selectPill('requests')">
+
+      <i class="fa fa-2x fa-list "   aria-hidden="true"></i>
+
+      <p class="remove-margin">All Requests</p>
+
+    </div>
+
+    <div class="each-pill" ng-class="{'active':c.selectedPill == 'create'}" ng-click="selectPill('create')">
+
+
+
+      <i class="fa fa-2x fa-wrench " aria-hidden="true"></i>
+
+      <p class="remove-margin">Create Request</p>
+
+    </div>
+
+    <div class="each-pill" ng-class="{'active':c.selectedPill == 'contact'}" ng-click="selectPill('contact')">
+
+
+
+      <i class="fa fa-2x fa-phone "   aria-hidden="true"></i>
+
+      <p class="remove-margin">Contact</p>
+
+    </div>
+
+  </div>
+
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_38807155db90d450fa11cf24149619f5</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function($rootScope,$scope,$timeout) {
+
+	/* widget controller */
+
+	var c = this;
+
+	c.selectedPill = 'requests'; // When page loads, default pill selected
+
+	/*broadcast to other widgets after waiting for 500 milliseconds,
+
+      just to make sure other widgets are loaded and ready to listen when we broadcast.          
+
+  */
+
+	$timeout(function(){
+
+		$rootScope.$broadcast('showHideWidget', 'requests');
+
+	},500);
+
+	//broadcast the selection when ever cliked on each pill
+
+	$scope.selectPill = function(selection){
+
+		c.selectedPill = selection;
+
+		$rootScope.$broadcast('showHideWidget', selection);
+
+	};
+
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.pill-background {
+
+  background: url(sp-landing-back.jpg) no-repeat center center fixed;
+
+  -webkit-background-size: cover;
+
+  -moz-background-size: cover;
+
+  -o-background-size: cover;
+
+  background-size: cover;
+
+  height: 300px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-around;
+
+  .each-pill {
+
+    &amp;amp;.active {
+
+      color: #c70000;
+
+    }
+
+    height:150px;
+
+    width:200px;
+
+    background:#ddd;
+
+    padding:50px;
+
+    text-align:center;
+
+    border-radius:4px;
+
+    cursor:pointer;
+
+
+
+    p{
+
+      margin-top:5px;
+
+    }
+
+  }
+
+}
+
+.color-red {
+
+  color: #c70000;
+
+}
+
+.remove-margin {
+
+  margin-bottom: 0px;
+
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;widget_communicate_menu_test&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;Widget Communicate Menu Test&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {  /* populate the 'data' object */  /* e.g., data.table = $sp.getValue('table'); */})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-19 22:49:17&lt;/sys_created_on&gt;&lt;sys_id&gt;38807155db90d450fa11cf24149619f5&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;Widget Communicate Menu Test&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_38807155db90d450fa11cf24149619f5&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.henrique&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-19 22:50:04&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div&gt;
+
+  &lt;!-- your widget template --&gt;
+
+  &lt;div class=" pill-background row"&gt;
+
+    &lt;div class="each-pill" ng-class="{'active':c.selectedPill == 'requests'}" ng-click="selectPill('requests')"&gt;
+
+      &lt;i class="fa fa-2x fa-list "   aria-hidden="true"&gt;&lt;/i&gt;
+
+      &lt;p class="remove-margin"&gt;All Requests&lt;/p&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class="each-pill" ng-class="{'active':c.selectedPill == 'create'}" ng-click="selectPill('create')"&gt;
+
+
+
+      &lt;i class="fa fa-2x fa-wrench " aria-hidden="true"&gt;&lt;/i&gt;
+
+      &lt;p class="remove-margin"&gt;Create Request&lt;/p&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class="each-pill" ng-class="{'active':c.selectedPill == 'contact'}" ng-click="selectPill('contact')"&gt;
+
+
+
+      &lt;i class="fa fa-2x fa-phone "   aria-hidden="true"&gt;&lt;/i&gt;
+
+      &lt;p class="remove-margin"&gt;Contact&lt;/p&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-947458277</payload_hash>
+        <record_name>Widget Communicate Menu Test</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-19 22:50:04</sys_created_on>
+        <sys_id>18b0b1d5db90d450fa11cf2414961972</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17194a26c010000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-19 22:50:04</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>dcb0b1d5cc90d450251eb98a37aa6c71</update_guid>
+        <update_guid_history>dcb0b1d5cc90d450251eb98a37aa6c71:-947458277,38807155db90d45031cd74ecd03a6df6:-292702055</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">bc19c651db14d450fa11cf24149619f0</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 00:36:36</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>c5e54904cc46465ca48f93bd81b5aec9</sys_id>
+        <sys_metadata>38807155db90d450fa11cf24149619f5</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Widget Communicate Menu Test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_38807155db90d450fa11cf24149619f5</sys_update_name>
+        <sys_update_version display_value="sp_widget_38807155db90d450fa11cf24149619f5">18b0b1d5db90d450fa11cf2414961972</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-20 00:36:36</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

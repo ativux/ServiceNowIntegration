@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
+    <sp_container action="DELETE">
+        <background_color/>
+        <background_image/>
+        <background_style>default</background_style>
+        <bootstrap_alt>false</bootstrap_alt>
+        <class_name>homepage-quicklinks</class_name>
+        <container_class_name/>
+        <name>Copy of Service Portal (2) - Container 3</name>
+        <order>3</order>
+        <sp_page display_value="copy_of_index_2">64777e27db40dc10fa11cf241496196c</sp_page>
+        <subheader>false</subheader>
+        <sys_class_name>sp_container</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-14 17:29:51</sys_created_on>
+        <sys_id>78777e27db40dc10fa11cf241496199a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Copy of Service Portal (2) - Container 3</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_container_78777e27db40dc10fa11cf241496199a</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-14 17:29:51</sys_updated_on>
+        <title>Quick Links</title>
+        <width>container</width>
+    </sp_container>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_container_78777e27db40dc10fa11cf241496199a</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name>homepage-quicklinks</class_name><container_class_name/><name>Copy of Service Portal (2) - Container 3</name><order>3</order><sp_page display_value="copy_of_index_2">64777e27db40dc10fa11cf241496196c</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-04-14 17:29:51</sys_created_on><sys_id>78777e27db40dc10fa11cf241496199a</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Copy of Service Portal (2) - Container 3</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_container_78777e27db40dc10fa11cf241496199a</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-04-14 17:29:51</sys_updated_on><title>Quick Links</title><width>container</width></sp_container></record_update>]]></payload>
+        <payload_hash>826181108</payload_hash>
+        <record_name>Copy of Service Portal (2) - Container 3</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-14 17:29:51</sys_created_on>
+        <sys_id>f0777e27db40dc10fa11cf241496199c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17179bd73a20000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-14 17:29:51</sys_updated_on>
+        <type>Container</type>
+        <update_guid>f8777e272940dc103b08208a6f094e9b</update_guid>
+        <update_guid_history>f8777e272940dc103b08208a6f094e9b:826181108</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">00793adcdb315450fa11cf24149619ed</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-06-30 15:08:10</sys_created_on>
+        <sys_db_object display_value="" name="sp_container">sp_container</sys_db_object>
+        <sys_id>5e306f84d67b44e1b3b2cc997be47df9</sys_id>
+        <sys_metadata>78777e27db40dc10fa11cf241496199a</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Copy of Service Portal (2) - Container 3</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_container_78777e27db40dc10fa11cf241496199a</sys_update_name>
+        <sys_update_version display_value="sp_container_78777e27db40dc10fa11cf241496199a">f0777e27db40dc10fa11cf241496199c</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-06-30 15:08:10</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

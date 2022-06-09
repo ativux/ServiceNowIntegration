@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function() {
+  /* widget controller */
+  var c = this;
+	
+	c.anim = function(){
+		c.anime = !c.anime;
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.content {
+  transition: .5s ease-in-out;
+  background-color: white;
+  padding: 20px;
+  color: white;
+  text-align: center;
+  background-color: #c5c5c5;
+
+  .header {
+    background-color: #666;
+    padding: 20px;
+  }
+  .body {
+    transition: .5s ease-in-out;
+    background-color: #999;
+    padding: 20px;
+  }
+  .body2 {
+    margin-top: 100px;
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id/>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Jorge Test</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-30 11:54:19</sys_created_on>
+        <sys_id>97fc0254db3d50505c116390149619bb</sys_id>
+        <sys_mod_count>19</sys_mod_count>
+        <sys_name>Jorge Test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_97fc0254db3d50505c116390149619bb</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-30 12:15:36</sys_updated_on>
+        <template><![CDATA[<div class="content">
+  <div class="header">
+    <div class="title" ng-click="c.anim()">Header</div>
+  </div>
+  <div class="body" ng-class="c.anime ? 'body2' : ''">
+    <div class="title">Body</div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_97fc0254db3d50505c116390149619bb</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function() {
+  /* widget controller */
+  var c = this;
+	
+	c.anim = function(){
+		c.anime = !c.anime;
+	}
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.content {
+  transition: .5s ease-in-out;
+  background-color: white;
+  padding: 20px;
+  color: white;
+  text-align: center;
+  background-color: #c5c5c5;
+
+  .header {
+    background-color: #666;
+    padding: 20px;
+  }
+  .body {
+    transition: .5s ease-in-out;
+    background-color: #999;
+    padding: 20px;
+  }
+  .body2 {
+    margin-top: 100px;
+  }
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;true&lt;/has_preview&gt;&lt;id/&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]&gt;&lt;/link&gt;&lt;name&gt;Jorge Test&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.jorge.garcia&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-06-30 11:54:19&lt;/sys_created_on&gt;&lt;sys_id&gt;97fc0254db3d50505c116390149619bb&lt;/sys_id&gt;&lt;sys_mod_count&gt;19&lt;/sys_mod_count&gt;&lt;sys_name&gt;Jorge Test&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_97fc0254db3d50505c116390149619bb&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.jorge.garcia&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-06-30 12:15:36&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div class="content"&gt;
+  &lt;div class="header"&gt;
+    &lt;div class="title" ng-click="c.anim()"&gt;Header&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="body" ng-class="c.anime ? 'body2' : ''"&gt;
+    &lt;div class="title"&gt;Body&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>723416937</payload_hash>
+        <record_name>Jorge Test</record_name>
+        <reverted_from/>
+        <source>7d96c115dbe514105c11639014961916</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-30 12:15:36</sys_created_on>
+        <sys_id>9cf19e58db3d50505c11639014961981</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17305276d990000001</sys_recorded_at>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-30 12:15:36</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>54f19e58013d505038a3602c78c6a181</update_guid>
+        <update_guid_history>54f19e58013d505038a3602c78c6a181:723416937,63c19e587f3d50503effd8123fa70362:228528291,5bb1da58ac3d50504871c9f7b8a229d7:-1247869400,679116586e3d505057938091ae50193f:228528291,b38116581a3d50504cf1e8ae8a00d3f2:1118501165,13519258833d50506f4b687b3c5956db:-1880800637,f401d258c73d5050df8311856c3ced92:-823974517,7ae01658c73d50505b8d24a5e2eabedb:-689218733,ece01658b43d50503758bf51fbfd0c79:918215701,8ad0d258483d5050ad1cbb51b93cefa5:-1769317161,f28f4ad4d03d505008715039e844436e:-1641160378,86be8694da3d50503ab3ec4391620bd3:-118536924,f37e4694643d5050333b399cba9b3c5e:-1809732428,c35e42943a3d5050a161131e14ed8cb0:1223373157,634ec294633d5050393b39a17a848b13:1635533137,cb1e0294163d505064cef3cfd1cdbb33:680446486,381e86546e3d50500ffae7fef1c36ed9:580989861,050e8654de3d50502407b4ed29311236:-536765612,d3dd0654103d50506b894950409961e8:16175041,501d4a90433d50501c7b66e6664db4de:-371532045</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">4f1c0428db7590505c11639014961923</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-30 21:09:22</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>2d5a72e4bf764ad0b89b5c4b56f63c10</sys_id>
+        <sys_metadata>97fc0254db3d50505c116390149619bb</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Jorge Test</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_97fc0254db3d50505c116390149619bb</sys_update_name>
+        <sys_update_version display_value="sp_widget_97fc0254db3d50505c116390149619bb">9cf19e58db3d50505c11639014961981</sys_update_version>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-30 21:09:22</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

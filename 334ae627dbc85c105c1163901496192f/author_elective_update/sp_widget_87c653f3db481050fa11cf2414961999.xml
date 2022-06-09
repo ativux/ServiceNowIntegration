@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function() {  /* widget controller */  var c = this;}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.align-all{
+  text-align:center;
+}
+
+.img-border{
+	padding-bottom: 30px;
+}
+
+.error-color{
+	color: $coral;
+}
+
+.error-size{
+	font-size: $font-size-h1;
+}
+
+.error-description-size{
+	font-size: $font-size-h4;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>report_an_error</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>GService Report an Error</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+	data.widget = $sp.getWidget("ocl_sc_categories");
+	
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-15 14:25:17</sys_created_on>
+        <sys_id>87c653f3db481050fa11cf2414961999</sys_id>
+        <sys_mod_count>39</sys_mod_count>
+        <sys_name>GService Report an Error</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_widget_87c653f3db481050fa11cf2414961999</sys_update_name>
+        <sys_updated_by>organize.matias</sys_updated_by>
+        <sys_updated_on>2020-04-16 13:36:43</sys_updated_on>
+        <template><![CDATA[<div class="align-all">
+  <div class="img-border">
+    <a title="Submit a new incident" href=""><img src="pineappleError.png" height="125px" alt="" data-toggle="modal" data-target="#exampleModal"/></a>  
+  </div>
+  <div class="error-color error-size">
+    REPORTE UM ERRO
+  </div>
+  <div class="error-description-size error-color">
+    Tudo travou? Alguma coisa deu errado? Nós podemos te ajudar.
+    Conte para gente o que aconteceu.
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <sp-widget widget="data.widget" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_widget_87c653f3db481050fa11cf2414961999</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function() {  /* widget controller */  var c = this;}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.align-all{
+  text-align:center;
+}
+
+.img-border{
+	padding-bottom: 30px;
+}
+
+.error-color{
+	color: $coral;
+}
+
+.error-size{
+	font-size: $font-size-h1;
+}
+
+.error-description-size{
+	font-size: $font-size-h4;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;report_an_error&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;GService Report an Error&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+	data.widget = $sp.getWidget("ocl_sc_categories");
+	
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-15 14:25:17&lt;/sys_created_on&gt;&lt;sys_id&gt;87c653f3db481050fa11cf2414961999&lt;/sys_id&gt;&lt;sys_mod_count&gt;39&lt;/sys_mod_count&gt;&lt;sys_name&gt;GService Report an Error&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_87c653f3db481050fa11cf2414961999&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.matias&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-16 13:36:43&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div class="align-all"&gt;
+  &lt;div class="img-border"&gt;
+    &lt;a title="Submit a new incident" href=""&gt;&lt;img src="pineappleError.png" height="125px" alt="" data-toggle="modal" data-target="#exampleModal"/&gt;&lt;/a&gt;  
+  &lt;/div&gt;
+  &lt;div class="error-color error-size"&gt;
+    REPORTE UM ERRO
+  &lt;/div&gt;
+  &lt;div class="error-description-size error-color"&gt;
+    Tudo travou? Alguma coisa deu errado? Nós podemos te ajudar.
+    Conte para gente o que aconteceu.
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Modal --&gt;
+&lt;div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"&gt;
+  &lt;div class="modal-dialog" role="document"&gt;
+    &lt;div class="modal-content"&gt;
+      &lt;div class="modal-header"&gt;
+        &lt;h5 class="modal-title" id="exampleModalLabel"&gt;Modal title&lt;/h5&gt;
+        &lt;button type="button" class="close" data-dismiss="modal" aria-label="Close"&gt;
+          &lt;span aria-hidden="true"&gt;&amp;times;&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="modal-body"&gt;
+        &lt;sp-widget widget="data.widget" /&gt;
+      &lt;/div&gt;
+      &lt;div class="modal-footer"&gt;
+        &lt;button type="button" class="btn btn-secondary" data-dismiss="modal"&gt;Close&lt;/button&gt;
+        &lt;button type="button" class="btn btn-primary"&gt;Save changes&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1896949327</payload_hash>
+        <record_name>GService Report an Error</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.matias</sys_created_by>
+        <sys_created_on>2020-04-16 13:36:43</sys_created_on>
+        <sys_id>15451050db9410505c116390149619bd</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1718334bc6b0000001</sys_recorded_at>
+        <sys_updated_by>organize.matias</sys_updated_by>
+        <sys_updated_on>2020-04-16 13:36:43</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>d9451050209410507913db5461280dbc</update_guid>
+        <update_guid_history>d9451050209410507913db5461280dbc:-1896949327,bf845410d39410504aff97138e0a7d2f:-1731906390,c53a4c5080541050d229d96ba613fbe9:-1896949327,98e8401099541050f7a1b996eb712ff8:718786026,afb808dcfe141050e2005ce110d20da6:1765389876,6f780c9cdf141050520624c1f59319b1:1676810225,5a27409cb614105022c77f1114f19432:-257064462,3af54c1ca3141050e38aee11c1c92f7c:228827635,93254c983814105027beb0989d9503d6:-1863908061,6bf9fbf3e94c1050e0665d69201edf98:93924687,eded1f378b8810509b2cfd061129422d:-387440191,3cfc1fb33b881050a064e8b208227eed:713003133,d29c17b378881050a2b0965821230bc1:504956963,148c57b3128810503496e0121de11837:1456212358,9c0c9773b288105099bd96c932d00323:-1488961773,20fb57736b8810504bbf7f32aae38f30:1068969874,336b1b3399881050726ccc4112fcc935:-1512512997,0f4bd333dd881050fa7b19f0f27439cb:-464625997,404b933352881050e16e647125be6556:1188993117,d1fa9bffbb481050c47d7d7eb99db1ae:-1868949883,5cba97ff9348105048ef980edcaf30c7:1166400407,569adfbf51481050c6713a7e06e5db75:1869208946,942a53bf49481050664ff46813d8d790:-43608121,521a97bfa048105020921187fe3c5e27:-863337144,5ee9537f4948105097b067ce3d839202:-12383583,dfc99f7f4b481050bf0aa3409497cd6f:1909772537,05a9137fdb481050ac230b0b935e4cee:-1576927561,3999df3f0f48105048c8a4ed011f66dd:2081485113,1a799b3f16481050f55bbabe203df1d2:-967778262,9f69db3f3e481050f8b43224ac391362:-331223640,01691b3fee481050318b7d31bbbc41d4:1596744358,125917fb55481050a5504fcc24026c64:-501999644,2a4957fb91481050f5523cf48f55d540:2045846543,050993f791481050620e8d518a0eb01b:-1722755167,8f7817b7dd4810506ae6bb1a5fa59581:736374740,ced7d377f7481050e6474da6aa15316f:-1784218570,11c753778c4810506633d237596fff3f:-904899695,02b7df377b481050ca0c0d02425e8f8c:-1784218570,187717370f4810505248dcd8b1fd5937:1028343335,8fc653f3a148105051130a9c6c62d39a:-728325187</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">6fbe9d58db589050fa11cf2414961919</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 18:57:44</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>9617860b356b44b6920293f5e3680279</sys_id>
+        <sys_metadata>87c653f3db481050fa11cf2414961999</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService Report an Error</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_widget_87c653f3db481050fa11cf2414961999</sys_update_name>
+        <sys_update_version display_value="sp_widget_87c653f3db481050fa11cf2414961999">15451050db9410505c116390149619bd</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 18:57:44</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

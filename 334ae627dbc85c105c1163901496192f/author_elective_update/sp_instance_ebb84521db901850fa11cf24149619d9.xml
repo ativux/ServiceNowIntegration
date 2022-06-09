@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css>.category-title{&#13;
+  color: $tan;&#13;
+}&#13;
+&#13;
+.description-properties {&#13;
+  color: $tan;&#13;
+}</css>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="4">098b1252db281010fa11cf2414961986</sp_column>
+        <sp_widget display_value="GService Category Items">6d5bdc2ddb5cd450fa11cf24149619c6</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-20 14:34:00</sys_created_on>
+        <sys_id>ebb84521db901850fa11cf24149619d9</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>Equipamentos Corporativos</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_instance_ebb84521db901850fa11cf24149619d9</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-05-05 14:48:33</sys_updated_on>
+        <title>Equipamentos Corporativos</title>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"parent_id": {
+		"value": "service",
+		"displayValue": "service"
+	},
+	"selected_category": {
+		"value": "548380bcdba344105c11639014961903",
+		"displayValue": "Equipamentos Corporativos"
+	},
+	"image": {
+		"value": "equipamentos.png",
+		"displayValue": "equipamentos.png"
+	}
+}]]></widget_parameters>
+    </sp_instance>
+    <sys_translated_text action="DELETE" query="documentkey=ebb84521db901850fa11cf24149619d9"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_instance_ebb84521db901850fa11cf24149619d9</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_instance"&gt;&lt;sp_instance action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;class_name/&gt;&lt;color&gt;default&lt;/color&gt;&lt;css&gt;.category-title{&amp;#13;
+  color: $tan;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.description-properties {&amp;#13;
+  color: $tan;&amp;#13;
+}&lt;/css&gt;&lt;glyph/&gt;&lt;id/&gt;&lt;order&gt;1&lt;/order&gt;&lt;roles/&gt;&lt;short_description/&gt;&lt;size&gt;md&lt;/size&gt;&lt;sp_column display_value="4"&gt;098b1252db281010fa11cf2414961986&lt;/sp_column&gt;&lt;sp_widget display_value="GService Category Items"&gt;6d5bdc2ddb5cd450fa11cf24149619c6&lt;/sp_widget&gt;&lt;sys_class_name&gt;sp_instance&lt;/sys_class_name&gt;&lt;sys_created_by&gt;organize.henrique&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-20 14:34:00&lt;/sys_created_on&gt;&lt;sys_id&gt;ebb84521db901850fa11cf24149619d9&lt;/sys_id&gt;&lt;sys_mod_count&gt;4&lt;/sys_mod_count&gt;&lt;sys_name&gt;Equipamentos Corporativos&lt;/sys_name&gt;&lt;sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ITSM Service Portal"&gt;334ae627dbc85c105c1163901496192f&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_instance_ebb84521db901850fa11cf24149619d9&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;organize.jorge.garcia&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-05-05 14:48:33&lt;/sys_updated_on&gt;&lt;title&gt;Equipamentos Corporativos&lt;/title&gt;&lt;url/&gt;&lt;widget_parameters&gt;&lt;![CDATA[{
+	"parent_id": {
+		"value": "service",
+		"displayValue": "service"
+	},
+	"selected_category": {
+		"value": "548380bcdba344105c11639014961903",
+		"displayValue": "Equipamentos Corporativos"
+	},
+	"image": {
+		"value": "equipamentos.png",
+		"displayValue": "equipamentos.png"
+	}
+}]]&gt;&lt;/widget_parameters&gt;&lt;/sp_instance&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=ebb84521db901850fa11cf24149619d9"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1266932384</payload_hash>
+        <record_name>Equipamentos Corporativos</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-05-05 14:48:33</sys_created_on>
+        <sys_id>32ebd652db281010fa11cf24149619d9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171e54f54e90000001</sys_recorded_at>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-05-05 14:48:33</sys_updated_on>
+        <type>Instance</type>
+        <update_guid>f6ebd652282810100605c879ce8c64d8</update_guid>
+        <update_guid_history>f6ebd652282810100605c879ce8c64d8:-1266932384,f8dcb3c28f1c18506f15512c6443bed9:-1822043157,98e90d6192901850e18a9182fa331943:91013418,80398d217190185066b6472c55bbbd39:2041195078,a3b84521e29018509c17ab5f2d9713db:2094570143</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">6bc0a35edbe81010fa11cf2414961968</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-05 19:49:31</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance">sp_instance</sys_db_object>
+        <sys_id>3d6b2df5b63a4b4da4bef45a77599651</sys_id>
+        <sys_metadata>ebb84521db901850fa11cf24149619d9</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Equipamentos Corporativos</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_instance_ebb84521db901850fa11cf24149619d9</sys_update_name>
+        <sys_update_version display_value="sp_instance_ebb84521db901850fa11cf24149619d9">32ebd652db281010fa11cf24149619d9</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-05-05 19:49:31</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

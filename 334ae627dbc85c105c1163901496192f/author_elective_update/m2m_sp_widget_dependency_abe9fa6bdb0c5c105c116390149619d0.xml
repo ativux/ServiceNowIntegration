@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency">
+    <m2m_sp_widget_dependency action="DELETE">
+        <sp_dependency display_value="Spectrum Color Picker">726427700b111200b0b02c6317673a6e</sp_dependency>
+        <sp_widget display_value="Copy of Portal config">efe9fa6bdb0c5c105c116390149619cd</sp_widget>
+        <sys_class_name>m2m_sp_widget_dependency</sys_class_name>
+        <sys_created_by>organize.matias</sys_created_by>
+        <sys_created_on>2020-04-14 17:40:41</sys_created_on>
+        <sys_id>abe9fa6bdb0c5c105c116390149619d0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Spectrum Color Picker.Copy of Portal config</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>m2m_sp_widget_dependency_abe9fa6bdb0c5c105c116390149619d0</sys_update_name>
+        <sys_updated_by>organize.matias</sys_updated_by>
+        <sys_updated_on>2020-04-14 17:40:41</sys_updated_on>
+    </m2m_sp_widget_dependency>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>m2m_sp_widget_dependency_abe9fa6bdb0c5c105c116390149619d0</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency"><m2m_sp_widget_dependency action="INSERT_OR_UPDATE"><sp_dependency display_value="Spectrum Color Picker">726427700b111200b0b02c6317673a6e</sp_dependency><sp_widget display_value="Copy of Portal config">efe9fa6bdb0c5c105c116390149619cd</sp_widget><sys_class_name>m2m_sp_widget_dependency</sys_class_name><sys_created_by>organize.matias</sys_created_by><sys_created_on>2020-04-14 17:40:41</sys_created_on><sys_id>abe9fa6bdb0c5c105c116390149619d0</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Spectrum Color Picker.Copy of Portal config</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>m2m_sp_widget_dependency_abe9fa6bdb0c5c105c116390149619d0</sys_update_name><sys_updated_by>organize.matias</sys_updated_by><sys_updated_on>2020-04-14 17:40:41</sys_updated_on></m2m_sp_widget_dependency></record_update>]]></payload>
+        <payload_hash>207679137</payload_hash>
+        <record_name>Spectrum Color Picker.Copy of Portal config</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.matias</sys_created_by>
+        <sys_created_on>2020-04-14 17:40:41</sys_created_on>
+        <sys_id>67e9beabdb0c5c105c1163901496190b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17179c75f640000001</sys_recorded_at>
+        <sys_updated_by>organize.matias</sys_updated_by>
+        <sys_updated_on>2020-04-14 17:40:41</sys_updated_on>
+        <type>Widget Dependency</type>
+        <update_guid>6fe9beabc90c5c109f0cf633c258380a</update_guid>
+        <update_guid_history>6fe9beabc90c5c109f0cf633c258380a:207679137</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">460a32ebdb0c5c105c1163901496192b</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.matias</sys_created_by>
+        <sys_created_on>2020-04-14 17:41:08</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_widget_dependency">m2m_sp_widget_dependency</sys_db_object>
+        <sys_id>7bef258c62aa427782f6336eb8efe059</sys_id>
+        <sys_metadata>abe9fa6bdb0c5c105c116390149619d0</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Spectrum Color Picker.Copy of Portal config</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>m2m_sp_widget_dependency_abe9fa6bdb0c5c105c116390149619d0</sys_update_name>
+        <sys_update_version display_value="m2m_sp_widget_dependency_abe9fa6bdb0c5c105c116390149619d0">67e9beabdb0c5c105c1163901496190b</sys_update_version>
+        <sys_updated_by>organize.matias</sys_updated_by>
+        <sys_updated_on>2020-04-14 17:41:08</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

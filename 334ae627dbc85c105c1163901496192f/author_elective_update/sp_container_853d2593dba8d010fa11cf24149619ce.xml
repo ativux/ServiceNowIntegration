@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
+    <sp_container action="DELETE">
+        <background_color/>
+        <background_image/>
+        <background_style>default</background_style>
+        <bootstrap_alt>false</bootstrap_alt>
+        <class_name/>
+        <container_class_name/>
+        <name>GService - Container 1</name>
+        <order>1</order>
+        <sp_page display_value="fernando_test">404f8bb3db081050fa11cf24149619a7</sp_page>
+        <subheader>false</subheader>
+        <sys_class_name>sp_container</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-05-08 13:58:23</sys_created_on>
+        <sys_id>853d2593dba8d010fa11cf24149619ce</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>GService - Container 1</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_container_853d2593dba8d010fa11cf24149619ce</sys_update_name>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-09 17:47:23</sys_updated_on>
+        <title/>
+        <width>container</width>
+    </sp_container>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_container_853d2593dba8d010fa11cf24149619ce</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name/><container_class_name/><name>GService - Container 1</name><order>1</order><sp_page display_value="fernando_test">404f8bb3db081050fa11cf24149619a7</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-05-08 13:58:23</sys_created_on><sys_id>853d2593dba8d010fa11cf24149619ce</sys_id><sys_mod_count>7</sys_mod_count><sys_name>GService - Container 1</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_container_853d2593dba8d010fa11cf24149619ce</sys_update_name><sys_updated_by>organize.jorge.garcia</sys_updated_by><sys_updated_on>2020-06-09 17:47:23</sys_updated_on><title/><width>container</width></sp_container></record_update>]]></payload>
+        <payload_hash>-615561295</payload_hash>
+        <record_name>GService - Container 1</record_name>
+        <reverted_from/>
+        <source>0ffdd18cdb51dc905c116390149619c3</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.jorge.garcia</sys_created_by>
+        <sys_created_on>2020-06-09 17:47:23</sys_created_on>
+        <sys_id>a3749b65db911c50fa11cf2414961955</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1729a31a1be0000001</sys_recorded_at>
+        <sys_updated_by>organize.jorge.garcia</sys_updated_by>
+        <sys_updated_on>2020-06-09 17:47:23</sys_updated_on>
+        <type>Container</type>
+        <update_guid>2b749b656c911c50258626d516394154</update_guid>
+        <update_guid_history>2b749b656c911c50258626d516394154:-615561295,be5e8b6d67511c50119224438faff9bc:-1723984998,12acaedfdb091c90de18926f78e42f22:1181984765,fae52217ab091c903601c07c940b44d7:2088578772,b374229399091c906e0067bce5ccc60c:-615561295,4e54ea5367091c900d8b1449c58a396a:-1551612008,d3d1e61f29c51c90b6d5d355ec5a48e6:-72129101,4d3d25935da8d0102f3a7cba2522c0cf:-615561295</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">76183fea1b9e901097c0dca0f54bcbc4</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-08-01 15:59:42</sys_created_on>
+        <sys_db_object display_value="" name="sp_container">sp_container</sys_db_object>
+        <sys_id>099dd2fcec0847e694caa74465bb5fc4</sys_id>
+        <sys_metadata>853d2593dba8d010fa11cf24149619ce</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GService - Container 1</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_container_853d2593dba8d010fa11cf24149619ce</sys_update_name>
+        <sys_update_version display_value="sp_container_853d2593dba8d010fa11cf24149619ce">a3749b65db911c50fa11cf2414961955</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-08-01 15:59:42</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

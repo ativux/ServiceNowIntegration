@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_rel_widget_clone">
+    <sp_rel_widget_clone action="DELETE">
+        <child display_value="Image Test Link">356881dcdb949050fa11cf2414961937</child>
+        <cloned>2020-04-16 17:20:07</cloned>
+        <last_validated>2020-04-16 17:20:07</last_validated>
+        <parent display_value="Image Link">86776e0453331300a699ddeeff7b12be</parent>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;sp_widget&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function() {
+  /* widget controller */
+  var c = this;
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.icon-img{position: absolute;&amp;#13;
+    right: 0;&amp;#13;
+    height: 75%;&amp;#13;
+	bottom:0&amp;#13;
+}&amp;#13;
+.image-link-header{&amp;#13;
+	font-size: 18px;&amp;#13;
+    margin: 5px 0;&amp;#13;
+}&amp;#13;
+&amp;#13;
+h2 {&amp;#13;
+  font-size: 18px;&amp;#13;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description&gt;Widget with image, title, description and link for information.&lt;/description&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;image-link&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link/&gt;&lt;name&gt;Image Link&lt;/name&gt;&lt;option_schema&gt;[{"name":"image","section":"Presentation","label":"Image","type":"string"},{"name":"title","section":"Presentation","label":"Title","type":"string"},{"name":"description","section":"Presentation","label":"Description","type":"string"},{"name":"link","section":"Presentation","label":"Link","type":"string"},{"name":"link_title","section":"Presentation","label":"Link Title","type":"string"}]&lt;/option_schema&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles&gt;admin,security_dashboard_user&lt;/roles&gt;&lt;script&gt;&lt;![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-08-03 20:37:37&lt;/sys_created_on&gt;&lt;sys_id&gt;86776e0453331300a699ddeeff7b12be&lt;/sys_id&gt;&lt;sys_mod_count&gt;48&lt;/sys_mod_count&gt;&lt;sys_name&gt;Image Link&lt;/sys_name&gt;&lt;sys_package display_value="Instance Security Center" source="com.glide.instance_sec_center"&gt;9c31bd4cdb350010fa11cf24149619c5&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_86776e0453331300a699ddeeff7b12be&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-03-12 22:31:04&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-20 imagelink"&gt;
+  &lt;img src="{{c.options.image}}" class="icon-img" alt="{{c.options.title}}"/&gt;
+  &lt;div class="col-lg-10 col-md-10 col-sm-10 col-xs-10"&gt;
+  &lt;div class="black image-link-header"&gt;
+    &lt;h2&gt;{{c.options.title}}&lt;/h2&gt;
+  &lt;/div&gt;
+  &lt;p&gt;
+    ${{{c.options.description}}}
+  &lt;/p&gt;
+	&lt;a href="{{c.options.link}}" target="_blank" class="btn btn-xs btn-primary" aria-label="{{c.options.description}} which opens in a new window"&gt;
+      ${{{c.options.link_title}}}
+    &lt;/a&gt;
+&lt;/div&gt;
+  &lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;</payload>
+        <sys_class_name>sp_rel_widget_clone</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 17:20:07</sys_created_on>
+        <sys_id>71684ddcdb949050fa11cf241496195a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>356881dcdb949050fa11cf2414961937</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_update_name>sp_rel_widget_clone_71684ddcdb949050fa11cf241496195a</sys_update_name>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 17:20:07</sys_updated_on>
+    </sp_rel_widget_clone>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</application>
+        <file_path/>
+        <instance_id>cf5b95b4dba4bb0007072f17d496195a</instance_id>
+        <instance_name>globosatdev</instance_name>
+        <name>sp_rel_widget_clone_71684ddcdb949050fa11cf241496195a</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_rel_widget_clone"><sp_rel_widget_clone action="INSERT_OR_UPDATE"><child display_value="Image Test Link">356881dcdb949050fa11cf2414961937</child><cloned>2020-04-16 17:20:07</cloned><last_validated>2020-04-16 17:20:07</last_validated><parent display_value="Image Link">86776e0453331300a699ddeeff7b12be</parent><payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;sp_widget&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function() {
+  /* widget controller */
+  var c = this;
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.icon-img{position: absolute;&amp;#13;
+    right: 0;&amp;#13;
+    height: 75%;&amp;#13;
+	bottom:0&amp;#13;
+}&amp;#13;
+.image-link-header{&amp;#13;
+	font-size: 18px;&amp;#13;
+    margin: 5px 0;&amp;#13;
+}&amp;#13;
+&amp;#13;
+h2 {&amp;#13;
+  font-size: 18px;&amp;#13;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description&gt;Widget with image, title, description and link for information.&lt;/description&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;image-link&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link/&gt;&lt;name&gt;Image Link&lt;/name&gt;&lt;option_schema&gt;[{"name":"image","section":"Presentation","label":"Image","type":"string"},{"name":"title","section":"Presentation","label":"Title","type":"string"},{"name":"description","section":"Presentation","label":"Description","type":"string"},{"name":"link","section":"Presentation","label":"Link","type":"string"},{"name":"link_title","section":"Presentation","label":"Link Title","type":"string"}]&lt;/option_schema&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles&gt;admin,security_dashboard_user&lt;/roles&gt;&lt;script&gt;&lt;![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-08-03 20:37:37&lt;/sys_created_on&gt;&lt;sys_id&gt;86776e0453331300a699ddeeff7b12be&lt;/sys_id&gt;&lt;sys_mod_count&gt;48&lt;/sys_mod_count&gt;&lt;sys_name&gt;Image Link&lt;/sys_name&gt;&lt;sys_package display_value="Instance Security Center" source="com.glide.instance_sec_center"&gt;9c31bd4cdb350010fa11cf24149619c5&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_86776e0453331300a699ddeeff7b12be&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-03-12 22:31:04&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-20 imagelink"&gt;
+  &lt;img src="{{c.options.image}}" class="icon-img" alt="{{c.options.title}}"/&gt;
+  &lt;div class="col-lg-10 col-md-10 col-sm-10 col-xs-10"&gt;
+  &lt;div class="black image-link-header"&gt;
+    &lt;h2&gt;{{c.options.title}}&lt;/h2&gt;
+  &lt;/div&gt;
+  &lt;p&gt;
+    ${{{c.options.description}}}
+  &lt;/p&gt;
+	&lt;a href="{{c.options.link}}" target="_blank" class="btn btn-xs btn-primary" aria-label="{{c.options.description}} which opens in a new window"&gt;
+      ${{{c.options.link_title}}}
+    &lt;/a&gt;
+&lt;/div&gt;
+  &lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;</payload><sys_class_name>sp_rel_widget_clone</sys_class_name><sys_created_by>organize.henrique</sys_created_by><sys_created_on>2020-04-16 17:20:07</sys_created_on><sys_id>71684ddcdb949050fa11cf241496195a</sys_id><sys_mod_count>0</sys_mod_count><sys_name>356881dcdb949050fa11cf2414961937</sys_name><sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package><sys_policy/><sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope><sys_update_name>sp_rel_widget_clone_71684ddcdb949050fa11cf241496195a</sys_update_name><sys_updated_by>organize.henrique</sys_updated_by><sys_updated_on>2020-04-16 17:20:07</sys_updated_on></sp_rel_widget_clone></record_update>]]></payload>
+        <payload_hash>-257518063</payload_hash>
+        <record_name>356881dcdb949050fa11cf2414961937</record_name>
+        <reverted_from/>
+        <source>7f4ae627dbc85c105c11639014961931</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 17:20:07</sys_created_on>
+        <sys_id>b9684ddcdb949050fa11cf241496195b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171840144560000001</sys_recorded_at>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 17:20:07</sys_updated_on>
+        <type>Widget Clone</type>
+        <update_guid>b1684ddcb0949050a1d69e2b4387885b</update_guid>
+        <update_guid_history>b1684ddcb0949050a1d69e2b4387885b:-257518063</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">3d3dc158dbd49050fa11cf2414961901</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>organize.henrique</sys_created_by>
+        <sys_created_on>2020-04-16 17:41:09</sys_created_on>
+        <sys_db_object display_value="" name="sp_rel_widget_clone">sp_rel_widget_clone</sys_db_object>
+        <sys_id>3dab2bc6162b427897022109f6e7e440</sys_id>
+        <sys_metadata>71684ddcdb949050fa11cf241496195a</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>356881dcdb949050fa11cf2414961937</sys_name>
+        <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+        <sys_scope_delete display_value="">0df1a4379dc4442b9d37a43c61c804b1</sys_scope_delete>
+        <sys_update_name>sp_rel_widget_clone_71684ddcdb949050fa11cf241496195a</sys_update_name>
+        <sys_update_version display_value="sp_rel_widget_clone_71684ddcdb949050fa11cf241496195a">b9684ddcdb949050fa11cf241496195b</sys_update_version>
+        <sys_updated_by>organize.henrique</sys_updated_by>
+        <sys_updated_on>2020-04-16 17:41:09</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

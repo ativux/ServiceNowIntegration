@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_list parent="" relationship="" sys_domain="global" table="task" version="2" view="RPT00b82d17db5a801c0df02c23ca9619dd">
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>number</element>
+            <list_id display_value="task" element="NULL" name="task" parent="NULL" relationship="NULL" sys_domain="global" view="b22ce500dbf510505c1163901496195a">f62ce500dbf510505c1163901496195b</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>0</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-29 14:52:06</sys_created_on>
+            <sys_id>f22cad00dbf510505c1163901496195c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-29 14:52:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>parent</element>
+            <list_id display_value="task" element="NULL" name="task" parent="NULL" relationship="NULL" sys_domain="global" view="b22ce500dbf510505c1163901496195a">f62ce500dbf510505c1163901496195b</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>1</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-29 14:52:06</sys_created_on>
+            <sys_id>7e2cad00dbf510505c1163901496195c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-29 14:52:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>short_description</element>
+            <list_id display_value="task" element="NULL" name="task" parent="NULL" relationship="NULL" sys_domain="global" view="b22ce500dbf510505c1163901496195a">f62ce500dbf510505c1163901496195b</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>2</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-29 14:52:06</sys_created_on>
+            <sys_id>722cad00dbf510505c1163901496195d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-29 14:52:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>assignment_group</element>
+            <list_id display_value="task" element="NULL" name="task" parent="NULL" relationship="NULL" sys_domain="global" view="b22ce500dbf510505c1163901496195a">f62ce500dbf510505c1163901496195b</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>3</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-29 14:52:06</sys_created_on>
+            <sys_id>762cad00dbf510505c1163901496195d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-29 14:52:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>opened_at</element>
+            <list_id display_value="task" element="NULL" name="task" parent="NULL" relationship="NULL" sys_domain="global" view="b22ce500dbf510505c1163901496195a">f62ce500dbf510505c1163901496195b</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>4</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-29 14:52:06</sys_created_on>
+            <sys_id>7a2cad00dbf510505c1163901496195d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-29 14:52:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>sys_updated_on</element>
+            <list_id display_value="task" element="NULL" name="task" parent="NULL" relationship="NULL" sys_domain="global" view="b22ce500dbf510505c1163901496195a">f62ce500dbf510505c1163901496195b</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>5</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-29 14:52:06</sys_created_on>
+            <sys_id>7e2cad00dbf510505c1163901496195d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-29 14:52:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>sys_updated_by</element>
+            <list_id display_value="task" element="NULL" name="task" parent="NULL" relationship="NULL" sys_domain="global" view="b22ce500dbf510505c1163901496195a">f62ce500dbf510505c1163901496195b</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>6</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-29 14:52:06</sys_created_on>
+            <sys_id>722cad00dbf510505c1163901496195e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-29 14:52:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>state</element>
+            <list_id display_value="task" element="NULL" name="task" parent="NULL" relationship="NULL" sys_domain="global" view="b22ce500dbf510505c1163901496195a">f62ce500dbf510505c1163901496195b</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>7</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-29 14:52:06</sys_created_on>
+            <sys_id>762cad00dbf510505c1163901496195e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-29 14:52:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>sla_due</element>
+            <list_id display_value="task" element="NULL" name="task" parent="NULL" relationship="NULL" sys_domain="global" view="b22ce500dbf510505c1163901496195a">f62ce500dbf510505c1163901496195b</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>8</position>
+            <sum>false</sum>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-29 14:52:06</sys_created_on>
+            <sys_id>7a2cad00dbf510505c1163901496195e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-29 14:52:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element/>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <name>task</name>
+            <parent/>
+            <position/>
+            <relationship/>
+            <sum>false</sum>
+            <sys_class_name>sys_ui_list</sys_class_name>
+            <sys_created_by>organize.fernando</sys_created_by>
+            <sys_created_on>2020-06-29 14:52:06</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>f62ce500dbf510505c1163901496195b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>task</sys_name>
+            <sys_package display_value="ITSM Service Portal" source="x_gmeps_itsm_servi">334ae627dbc85c105c1163901496192f</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="ITSM Service Portal">334ae627dbc85c105c1163901496192f</sys_scope>
+            <sys_update_name>sys_ui_list_task_RPT00b82d17db5a801c0df02c23ca9619dd</sys_update_name>
+            <sys_updated_by>organize.fernando</sys_updated_by>
+            <sys_updated_on>2020-06-29 14:52:06</sys_updated_on>
+            <sys_user/>
+            <view display_value="Rpt00b82d17db5a801c0df02c23ca9619dd" name="RPT00b82d17db5a801c0df02c23ca9619dd">b22ce500dbf510505c1163901496195a</view>
+            <view_name/>
+        </sys_ui_list>
+    </sys_ui_list>
+</record_update>
