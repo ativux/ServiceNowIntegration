@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_developer" label="developer" language="en" table="x_714305_rp_games_import2">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_developer</element>
+            <help/>
+            <hint/>
+            <label>developer</label>
+            <language>en</language>
+            <name>x_714305_rp_games_import2</name>
+            <plural>developers</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-04-16 21:41:58</sys_created_on>
+            <sys_id>4becd95b47360110b5888a5f746d43bb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>developer</sys_name>
+            <sys_package display_value="Rotten Potatoes" source="x_714305_rp">4296dd9347360110b5888a5f746d43ac</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Rotten Potatoes">4296dd9347360110b5888a5f746d43ac</sys_scope>
+            <sys_update_name>sys_documentation_x_714305_rp_games_import2_u_developer_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-04-16 21:41:58</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>
